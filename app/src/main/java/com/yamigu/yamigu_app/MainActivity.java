@@ -11,28 +11,18 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-
-    private Toolbar tb;
-
+    private Fragment homeFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tb = (Toolbar) findViewById(R.id.toolbar) ;
-        setSupportActionBar(tb) ;
-        getSupportActionBar().setElevation(0);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
-
+        homeFragment = new HomeFragment();
+        loadFragment(homeFragment);
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.actionbar_items, menu) ;
 
-        return true ;
-    }
     private boolean loadFragment(Fragment fragment) {
         if(fragment != null) {
             getSupportFragmentManager()
