@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<declare-styleable name="MeetingTeamHome">
+    <attr name="label" format="reference|integer" />
+    <attr name="description" format="reference|string" />
+    <attr name="profile1" format="reference|string" />
+    <attr name="profile2" format="reference|string" />
+    <attr name="date" format="reference|string" />
+    <attr name="place" format="reference|string" />
+</declare-styleable>
+</resources>

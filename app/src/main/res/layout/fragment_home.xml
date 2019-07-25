@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -14,7 +20,86 @@
             android:theme="@style/MyActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/box_empty_my_meeting"
+            android:scaleType="fitXY"
+            android:elevation="6dp"
+            android:outlineProvider="bounds"
+            />
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/button_yamigu_0"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:scaleType="fitXY"
+            android:background="@color/colorPrimary"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/text_how_are_today_mettings"
+            android:layout_marginLeft="34dp"
+            android:layout_marginBottom="4dp"
+            android:scaleType="fitStart"
+            />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="311dp"
+            android:background="@color/colorBorder">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground"
+                android:layout_margin="1dp">
+                <HorizontalScrollView
+                    android:id="@+id/hsv_"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:fillViewport="true"
+                    android:measureAllChildren="false"
+                    android:scrollbars="none"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <com.yamigu.yamigu_app.WaitingTeamCard
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:description="한명이 술을 잘 못마셔요!"
+                            app:profile1="연세대학교 (24)"
+                            app:profile2="전기전자공학부"
+                            app:date="5월28일"
+                            app:place="신촌/홍대"
+                        >
+                        </com.yamigu.yamigu_app.WaitingTeamCard>
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </FrameLayout>
+        </FrameLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/text_today_scheduled_meetings"
+            android:layout_marginLeft="34dp"
+            android:layout_marginBottom="4dp"
+            android:scaleType="fitStart"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBorder">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground"
+                android:layout_margin="1dp">
+            </FrameLayout>
+        </FrameLayout>
     </LinearLayout>
-
-
 </android.support.constraint.ConstraintLayout>
+</ScrollView>
