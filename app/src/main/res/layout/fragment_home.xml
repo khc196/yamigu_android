@@ -71,12 +71,25 @@
                         <com.yamigu.yamigu_app.WaitingTeamCard
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             app:description="한명이 술을 잘 못마셔요!"
                             app:profile1="연세대학교 (24)"
                             app:profile2="전기전자공학부"
                             app:date="5월28일"
                             app:place="신촌/홍대"
                         >
+                        </com.yamigu.yamigu_app.WaitingTeamCard>
+                        <com.yamigu.yamigu_app.WaitingTeamCard
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="-18dp"
+                            app:description="한명이 술을 잘 못마셔요!"
+                            app:profile1="연세대학교 (24)"
+                            app:profile2="전기전자공학부"
+                            app:date="5월28일"
+                            app:place="신촌/홍대"
+                            >
                         </com.yamigu.yamigu_app.WaitingTeamCard>
                     </LinearLayout>
                 </HorizontalScrollView>
@@ -88,10 +101,11 @@
             android:src="@drawable/text_today_scheduled_meetings"
             android:layout_marginLeft="34dp"
             android:layout_marginBottom="4dp"
+            android:layout_marginTop="17dp"
             android:scaleType="fitStart"/>
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="311dp"
             android:background="@color/colorBorder">
             <FrameLayout
                 android:layout_width="match_parent"
