@@ -13,5 +13,9 @@
         <item name="logo">@drawable/logo</item>
         <item name="displayOptions">useLogo|showHome</item>
     </style>
+    <style name="MyActionBar2" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <item name="background">@color/colorPrimary</item>
+        <item name="displayOptions">useLogo|showHome</item>
+    </style>
 
 </resources>

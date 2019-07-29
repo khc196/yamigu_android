@@ -14,7 +14,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="52dp"
             android:background="@color/colorPrimary"
             android:theme="@style/MyActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -29,7 +29,7 @@
             />
         <ImageButton
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:src="@drawable/button_yamigu_0"
             android:layout_marginTop="18dp"
             android:layout_marginBottom="18dp"
@@ -46,14 +46,17 @@
             android:layout_marginBottom="4dp"
             android:scaleType="fitStart"
             />
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="311dp"
-            android:background="@color/colorBorder">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/orange_point_bar"
+            android:layout_marginLeft="34dp"
+            android:layout_marginTop="6dp"
+            android:scaleType="fitStart"
+            />
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorBackground"
                 android:layout_margin="1dp">
                 <HorizontalScrollView
                     android:id="@+id/hsv_"
@@ -92,7 +95,6 @@
                     </LinearLayout>
                 </HorizontalScrollView>
             </FrameLayout>
-        </FrameLayout>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,14 +103,17 @@
             android:layout_marginBottom="4dp"
             android:layout_marginTop="17dp"
             android:scaleType="fitStart"/>
-        <FrameLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorBorder">
+            android:src="@drawable/orange_point_bar"
+            android:layout_marginLeft="34dp"
+            android:layout_marginTop="6dp"
+            android:scaleType="fitStart"
+            />
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorBackground"
                 android:layout_margin="1dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -135,8 +140,6 @@
                     </com.yamigu.yamigu_app.TodayScheduledTeamCard>
                 </LinearLayout>
             </FrameLayout>
-
-        </FrameLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
 </ScrollView>
