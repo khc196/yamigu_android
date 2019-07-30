@@ -29,21 +29,81 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
-            <Button
+            <RelativeLayout
                 android:id="@+id/selected_type"
                 android:layout_width="match_parent"
                 android:layout_height="81dp"
-                android:background="#32A4E0"/>
-            <Button
+                android:background="#32A4E0"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+                    <TextView
+                        android:id="@+id/selected_type_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="6dp"
+                        android:src="@drawable/triangle"/>
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/selected_date"
                 android:layout_width="match_parent"
                 android:layout_height="81dp"
-                android:background="#CC32A4E0"/>
-            <Button
+                android:background="#CC32A4E0"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+                    <TextView
+                        android:id="@+id/selected_date_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="6dp"
+                        android:src="@drawable/triangle"/>
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/selected_place"
                 android:layout_width="match_parent"
                 android:layout_height="81dp"
-                android:background="#8032A4E0"/>
+                android:background="#8032A4E0">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/selected_place_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="6dp"
+                        android:src="@drawable/triangle"/>
+                </LinearLayout>
+            </RelativeLayout>
             <LinearLayout
                 android:id="@+id/type_view"
                 android:layout_width="match_parent"
@@ -70,6 +130,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_background_non_select"
                         android:text="2:2 소개팅"
+                        android:textStyle="bold"
                         android:gravity="center"
                         />
                     <Button
@@ -79,6 +140,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_background_non_select"
                         android:text="3:3 미팅"
+                        android:textStyle="bold"
                         android:gravity="center"
                         />
                     <Button
@@ -88,6 +150,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_background_non_select"
                         android:text="4:4 미팅"
+                        android:textStyle="bold"
                         android:gravity="center"
                         />
                 </LinearLayout>
@@ -120,6 +183,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_background_non_select"
                         android:text="5월 28일"
+                        android:textStyle="bold"
                         android:gravity="center"
                         />
                     <Button
@@ -129,6 +193,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_background_non_select"
                         android:text="5월 29일"
+                        android:textStyle="bold"
                         android:gravity="center"
                         />
                     <Button
@@ -138,6 +203,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_background_non_select"
                         android:text="5월 30일"
+                        android:textStyle="bold"
                         android:gravity="center"
                         />
                     <Button
@@ -147,6 +213,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_background_non_select"
                         android:text="5월 31일"
+                        android:textStyle="bold"
                         android:gravity="center"
                         />
                     <Button
@@ -156,6 +223,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_background_non_select"
                         android:text="6월 1일"
+                        android:textStyle="bold"
                         android:gravity="center"
                         />
                     <Button
@@ -165,6 +233,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_background_non_select"
                         android:text="6월 2일"
+                        android:textStyle="bold"
                         android:gravity="center"
                         />
                     <Button
@@ -174,6 +243,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_background_non_select"
                         android:text="6월 3일"
+                        android:textStyle="bold"
                         android:gravity="center"
                         />
                 </LinearLayout>
@@ -205,6 +275,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_background_non_select"
                         android:text="신촌/홍대"
+                        android:textStyle="bold"
                         android:gravity="center"
                         />
                     <Button
@@ -214,6 +285,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_background_non_select"
                         android:text="건대/왕십리"
+                        android:textStyle="bold"
                         android:gravity="center"
                         />
                     <Button
@@ -223,6 +295,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_background_non_select"
                         android:text="강남"
+                        android:textStyle="bold"
                         android:gravity="center"
                         />
                 </LinearLayout>
@@ -249,7 +322,14 @@
                         android:layout_width="379dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/textbox_appeal"
-                        android:gravity="center"/>
+                        android:layout_marginTop="23dp"
+                        android:layout_gravity="center"
+                        android:gravity="top"
+                        android:paddingLeft="28dp"
+                        android:paddingRight="28dp"
+                        android:paddingTop="19dp"
+                        android:paddingBottom="19dp"
+                        />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
