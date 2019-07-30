@@ -28,15 +28,15 @@
             android:outlineProvider="bounds"
             />
         <ImageButton
+            android:id="@+id/btn_yamigu"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:src="@drawable/button_yamigu_0"
+            android:background="@drawable/button_yamigu_0"
             android:layout_marginTop="18dp"
             android:layout_marginBottom="18dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:scaleType="fitXY"
-            android:background="@color/colorPrimary"
             />
         <ImageView
             android:layout_width="match_parent"
