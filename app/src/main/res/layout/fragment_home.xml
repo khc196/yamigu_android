@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -19,41 +23,45 @@
             android:theme="@style/MyActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             />
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/box_empty_my_meeting"
-            android:scaleType="fitXY"
-            android:elevation="6dp"
-            android:outlineProvider="bounds"
-            />
-        <ImageButton
-            android:id="@+id/btn_yamigu"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@drawable/button_yamigu_0"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="18dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:scaleType="fitXY"
-            />
+            android:background="@drawable/banner"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/banner_title"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="26dp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/banner_subtitle"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="20dp"
+                />
+        </LinearLayout>
+
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/text_how_are_today_mettings"
+            android:layout_marginTop="28dp"
             android:layout_marginLeft="34dp"
             android:layout_marginBottom="4dp"
             android:scaleType="fitStart"
             />
-        <ImageView
+        <!--ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/orange_point_bar"
             android:layout_marginLeft="34dp"
             android:layout_marginTop="6dp"
             android:scaleType="fitStart"
-            />
+            /-->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -103,14 +111,14 @@
             android:layout_marginBottom="4dp"
             android:layout_marginTop="17dp"
             android:scaleType="fitStart"/>
-        <ImageView
+        <!--ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/orange_point_bar"
             android:layout_marginLeft="34dp"
             android:layout_marginTop="6dp"
             android:scaleType="fitStart"
-            />
+            /-->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -143,3 +151,26 @@
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
 </ScrollView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="4">
+        <Button
+            android:id="@+id/btn_yamigu"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/button_yamigu"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginRight="17dp"
+            android:layout_alignParentRight="true"
+            android:text="0/3"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="9sp"
+            android:gravity="center_horizontal|bottom"
+            android:paddingBottom="1dp"
+            >
+        </Button>
+    </RelativeLayout>
+</FrameLayout>

@@ -72,12 +72,14 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         ma.setType_string(button.getText().toString());
                         button.setBackgroundResource(R.drawable.button_background_select);
                         button.setTextColor(Color.WHITE);
+                        selected_type_text.setText(ma.getType_string());
                     }
                     else {
                         ma.setType(-1);
                         ma.setType_string("");
                         button.setBackgroundResource(R.drawable.button_background_non_select);
                         button.setTextColor(Color.BLACK);
+                        selected_type_text.setText("인원");
                     }
                 }
             });
@@ -113,12 +115,14 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         ma.setDate_string(button.getText().toString());
                         button.setBackgroundResource(R.drawable.button_background_select);
                         button.setTextColor(Color.WHITE);
+                        selected_date_text.setText(ma.getDate_string());
                     }
                     else {
                         ma.setDate(-1);
                         ma.setDate_string("");
                         button.setBackgroundResource(R.drawable.button_background_non_select);
                         button.setTextColor(Color.BLACK);
+                        selected_date_text.setText("날짜");
                     }
                 }
             });
@@ -142,12 +146,14 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         ma.setPlace_string(button.getText().toString());
                         button.setBackgroundResource(R.drawable.button_background_select);
                         button.setTextColor(Color.WHITE);
+                        selected_place_text.setText(ma.getPlace_string());
                     }
                     else {
                         ma.setPlace(-1);
                         ma.setPlace_string("");
                         button.setBackgroundResource(R.drawable.button_background_non_select);
                         button.setTextColor(Color.BLACK);
+                        selected_place_text.setText("장소");
                     }
                 }
             });
@@ -157,64 +163,79 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         place_view = (LinearLayout) findViewById(R.id.place_view);
         appeal_view = (LinearLayout) findViewById(R.id.appeal_view);
         btn_okay = (ImageButton) findViewById(R.id.btn_okay);
-        selected_type.setVisibility(View.GONE);
-        selected_date.setVisibility(View.GONE);
-        selected_place.setVisibility(View.GONE);
+        selected_type_text.setText("인원");
+        selected_date_text.setText("날짜");
+        selected_place_text.setText("장소");
         date_view.setVisibility(View.GONE);
         place_view.setVisibility(View.GONE);
         appeal_view.setVisibility(View.GONE);
 
+        selected_type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ma.reselect(ma.RESELECT_TYPE);
+
+                type_view.setVisibility(View.VISIBLE);
+                date_view.setVisibility(View.GONE);
+                place_view.setVisibility(View.GONE);
+                appeal_view.setVisibility(View.GONE);
+                btn_okay.setImageResource(R.drawable.text_next);
+            }
+        });
+        selected_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ma.reselect(ma.RESELECT_DATE);
+
+                type_view.setVisibility(View.GONE);
+                date_view.setVisibility(View.VISIBLE);
+                place_view.setVisibility(View.GONE);
+                appeal_view.setVisibility(View.GONE);
+                btn_okay.setImageResource(R.drawable.text_next);
+            }
+        });
+        selected_place.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ma.reselect(ma.RESELECT_PLACE);
+
+                type_view.setVisibility(View.GONE);
+                date_view.setVisibility(View.GONE);
+                place_view.setVisibility(View.VISIBLE);
+                appeal_view.setVisibility(View.GONE);
+                btn_okay.setImageResource(R.drawable.text_next);
+            }
+        });
         btn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ma.isType_selecting()) {
-                    if(ma.getType() == -1) {
-                        return;
-                    }
-                    else {
-                        ma.setType_selecting(false);
-                        ma.setDate_selecting(true);
-                        selected_type_text.setText(ma.getType_string());
-                        selected_type.setVisibility(View.VISIBLE);
-                        type_view.setVisibility(View.GONE);
-                        date_view.setVisibility(View.VISIBLE);
+                if(ma.getType() == -1) {
+                    ma.reselect(ma.RESELECT_TYPE);
+                    type_view.setVisibility(View.VISIBLE);
+                    date_view.setVisibility(View.GONE);
+                    place_view.setVisibility(View.GONE);
+                }
+                else if(ma.getDate() == -1) {
+                    ma.reselect(ma.RESELECT_DATE);
+                    type_view.setVisibility(View.GONE);
+                    date_view.setVisibility(View.VISIBLE);
+                    place_view.setVisibility(View.GONE);
+                }
+                else if(ma.getPlace() == -1) {
+                    ma.reselect(ma.RESELECT_PLACE);
+                    type_view.setVisibility(View.GONE);
+                    date_view.setVisibility(View.GONE);
+                    place_view.setVisibility(View.VISIBLE);
+                }
+                else {
+                    ma.reselect(ma.RESELECT_APPEAL);
+                    type_view.setVisibility(View.GONE);
+                    date_view.setVisibility(View.GONE);
+                    place_view.setVisibility(View.GONE);
+                    appeal_view.setVisibility(View.VISIBLE);
+                    btn_okay.setImageResource(R.drawable.text_apply_meeting);
+                }
 
-                    }
-                }
-                else if(ma.isDate_selecting()) {
-                    if(ma.getDate() == -1) {
-                        return;
-                    }
-                    else {
-                        ma.setDate_selecting(false);
-                        ma.setPlace_selecting(true);
-                        selected_date_text.setText(ma.getDate_string());
-                        selected_date.setVisibility(View.VISIBLE);
-                        date_view.setVisibility(View.GONE);
-                        place_view.setVisibility(View.VISIBLE);
-                    }
-                }
-                else if(ma.isPlace_selecting()) {
-                    if(ma.getPlace() == -1) {
-                        return;
-                    }
-                    else {
-                        ma.setPlace_selecting(false);
-                        ma.setAppeal_selecting(true);
-                        selected_place_text.setText(ma.getPlace_string());
-                        selected_place.setVisibility(View.VISIBLE);
-                        place_view.setVisibility(View.GONE);
-                        appeal_view.setVisibility(View.VISIBLE);
-                    }
-                }
-                else if(ma.isAppeal_selecting()) {
-                    if(ma.getAppeal().trim().length() == 0) {
-                        return;
-                    }
-                    else {
-                        ma.setAppeal_selecting(false);
-                    }
-                }
             }
         });
     }
@@ -223,6 +244,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         private String appeal;
         private boolean type_selecting, date_selecting, place_selecting, appeal_selecting;
         private String type_string, date_string, place_string;
+        public final int RESELECT_TYPE = 1, RESELECT_DATE = 2, RESELECT_PLACE = 3, RESELECT_APPEAL = 4;
         MeetingApplication() {
             type = -1;
             date = -1;
@@ -304,6 +326,33 @@ public class MeetingApplicationActivity extends AppCompatActivity {
 
         public boolean isAppeal_selecting() {
             return appeal_selecting;
+        }
+        public void reselect(int reselect_target) {
+            switch(reselect_target) {
+                case RESELECT_TYPE:
+                    type_selecting = true;
+                    date_selecting = false;
+                    place_selecting = false;
+                    appeal_selecting = false;
+                    break;
+                case RESELECT_DATE:
+                    type_selecting = false;
+                    date_selecting = true;
+                    place_selecting = false;
+                    appeal_selecting = false;
+                    break;
+                case RESELECT_PLACE:
+                    type_selecting = false;
+                    date_selecting = false;
+                    place_selecting = true;
+                    appeal_selecting = false;
+                    break;
+                case RESELECT_APPEAL:
+                    type_selecting = false;
+                    date_selecting = false;
+                    place_selecting = false;
+                    appeal_selecting = true;
+            }
         }
     }
 }
