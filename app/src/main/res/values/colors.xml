@@ -6,4 +6,5 @@
     <color name="colorBackground">#FCFCFC</color>
     <color name="colorBorder">#E5E5E5</color>
     <color name="colorRed">#FF4D00</color>
+    <color name="colorPoint">#FC903B</color>
 </resources>
