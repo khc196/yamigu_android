@@ -13,7 +13,7 @@ public class WaitingTeamCard extends LinearLayout {
 
     LinearLayout bg;
     ImageView label;
-    TextView description, profile1, profile2, date, place;
+    TextView description, profile1, profile2, date, place, rating;
 
     public WaitingTeamCard(Context context) {
         super(context);
@@ -44,6 +44,7 @@ public class WaitingTeamCard extends LinearLayout {
         profile2 = (TextView) findViewById(R.id.profile2);
         date = (TextView) findViewById(R.id.date);
         place = (TextView) findViewById(R.id.place);
+        rating = (TextView) findViewById(R.id.rating);
     }
     private void getAttrs(AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MeetingTeamHome);
@@ -54,8 +55,24 @@ public class WaitingTeamCard extends LinearLayout {
         setTypeArray(typedArray);
     }
     private void setTypeArray(TypedArray typedArray) {
-        int label_img = typedArray.getResourceId(R.styleable.MeetingTeamHome_label, R.drawable.label_2vs2);
-        label.setImageResource(label_img);
+        int label_img = typedArray.getInteger(R.styleable.MeetingTeamHome_label, 1);
+        switch(label_img){
+            case 1:
+                label.setImageResource(R.drawable.label_2vs2);
+                bg.setBackgroundResource(R.drawable.meeting_card_bg_home);
+                rating.setTextColor(getResources().getColor(R.color.colorPoint));
+                break;
+            case 2:
+                label.setImageResource(R.drawable.label_3vs3);
+                bg.setBackgroundResource(R.drawable.meeting_card_bg_home_2);
+                rating.setTextColor(getResources().getColor(R.color.color3vs3));
+                break;
+            case 3:
+                label.setImageResource(R.drawable.label_4vs4);
+                bg.setBackgroundResource(R.drawable.meeting_card_bg_home_3);
+                rating.setTextColor(getResources().getColor(R.color.color4vs4));
+                break;
+        }
 
         String desc_string = typedArray.getString(R.styleable.MeetingTeamHome_description);
         description.setText(desc_string);

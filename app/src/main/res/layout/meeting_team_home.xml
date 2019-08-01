@@ -2,14 +2,10 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bg"
-    android:layout_height="282dp"
-    android:layout_width="321dp"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
-    android:paddingTop="15dp"
-    android:paddingBottom="15dp"
+    android:layout_height="222dp"
+    android:layout_width="293dp"
     android:orientation="vertical"
-    android:background="@drawable/card_with_shadow">
+    android:background="@drawable/meeting_card_bg_home">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,14 +15,14 @@
             android:src="@drawable/label_2vs2"
             android:layout_width="99dp"
             android:layout_height="24dp"
-            android:layout_marginLeft="21dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="7dp"
             android:scaleType="fitStart"
             >
         </ImageView>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="105dp">
+            android:layout_height="93.6dp">
             <TextView
                 android:id="@+id/description"
                 android:layout_marginTop="5dp"
@@ -35,35 +31,36 @@
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal|center_vertical"
                 android:textStyle="bold"
+                android:textSize="16sp"
                 android:text="한명이 술을 잘 못마셔요!"
                 />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="18.4dp"
             >
-            <ImageView
+            <TextView
+                android:id="@+id/rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:scaleType="fitStart"
-                android:src="@drawable/home_waiting_team_rating_2"/>
+                android:text="★★☆☆☆"
+                android:gravity="center_horizontal|center_vertical"
+                android:textColor="#FF8424"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="57dp"
             android:layout_gravity="bottom"
-            android:background="#383633"
-            android:layout_marginTop="18dp"
             android:orientation="horizontal"
             >
             <LinearLayout
-                android:layout_width="115.5dp"
+                android:layout_width="127.5dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_marginTop="17dp"
-                android:layout_marginBottom="17dp"
-                android:layout_marginLeft="30dp">
+                android:layout_marginTop="11dp"
+                android:layout_marginBottom="11dp"
+                android:layout_marginLeft="19dp">
                 <TextView
                     android:id="@+id/profile1"
                     android:layout_width="wrap_content"
@@ -81,12 +78,12 @@
                     android:textColor="@color/colorPrimary"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_width="115.5dp"
+                android:layout_width="127.5dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_marginTop="17dp"
-                android:layout_marginBottom="17dp"
-                android:layout_marginRight="30dp">
+                android:layout_marginTop="11dp"
+                android:layout_marginBottom="11dp"
+                android:layout_marginRight="19dp">
                 <TextView
                     android:id="@+id/date"
                     android:layout_width="match_parent"

@@ -7,32 +7,117 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="52dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:src="@drawable/title_wlist_fragment"
-            />
-        <RelativeLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/category_frame_wlist">
-            <ImageButton
-                android:layout_height="wrap_content"
+            android:layout_height="52dp"
+            android:background="@color/colorPrimary"
+            android:theme="@style/MyActionBar2"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            <ImageView
                 android:layout_width="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/category_btn_wlist"
-                android:background="@null"
-            />
-        </RelativeLayout>
+                android:layout_height="52dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:src="@drawable/title_wlist_fragment"
+                />
+        </android.support.v7.widget.Toolbar>
+        <LinearLayout
+            android:layout_width="394dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/wlist_date_bar_bg">
+            <TextView
+                android:layout_width="56.28dp"
+                android:layout_height="match_parent"
+                android:text="5/28"
+                android:textSize="14sp"
+                android:textColor="#FC7F2D"
+                android:gravity="center_vertical|center_horizontal"/>
+            <TextView
+                android:layout_width="56.28dp"
+                android:layout_height="match_parent"
+                android:text="5/29"
+                android:textSize="14sp"
+                android:gravity="center_vertical|center_horizontal"/>
+            <TextView
+                android:layout_width="56.28dp"
+                android:layout_height="match_parent"
+                android:text="5/30"
+                android:textSize="14sp"
+                android:textColor="#FC7F2D"
+                android:gravity="center_vertical|center_horizontal"/>
+            <TextView
+                android:layout_width="56.28dp"
+                android:layout_height="match_parent"
+                android:text="5/31"
+                android:textSize="14sp"
+                android:gravity="center_vertical|center_horizontal"/>
+            <TextView
+                android:layout_width="56.28dp"
+                android:layout_height="match_parent"
+                android:text="6/1"
+                android:textSize="14sp"
+                android:gravity="center_vertical|center_horizontal"/>
+            <TextView
+                android:layout_width="56.28dp"
+                android:layout_height="match_parent"
+                android:text="6/2"
+                android:textSize="14sp"
+                android:gravity="center_vertical|center_horizontal"/>
+            <TextView
+                android:layout_width="56.28dp"
+                android:layout_height="match_parent"
+                android:text="6/3"
+                android:textSize="14sp"
+                android:gravity="center_vertical|center_horizontal"/>
+
+
+        </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-                <com.yamigu.yamigu_app.WaitingTeamCard
+                android:orientation="vertical"
+                android:background="#FFFFFF">
+                <com.yamigu.yamigu_app.WaitingTeamCard2
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="21dp"
+                    app:label="1"
+                    app:date="5월28일"
+                    app:description="한명이 술을 잘 못마셔요!"
+                    app:place="신촌/홍대"
+                    app:profile1="연세대학교 (24)"
+                    app:profile2="전기전자공학부">
+                </com.yamigu.yamigu_app.WaitingTeamCard2>
+                <com.yamigu.yamigu_app.WaitingTeamCard2
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="21dp"
+                    app:label="2"
+                    app:date="5월28일"
+                    app:description="저희랑 재밌게 노실 분~"
+                    app:place="건대/왕십리"
+                    app:profile1="고려대학교 (21)"
+                    app:profile2="기계공학부">
+                </com.yamigu.yamigu_app.WaitingTeamCard2>
+                <com.yamigu.yamigu_app.WaitingTeamCard2
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="21dp"
+                    app:label="3"
+                    app:date="5월28일"
+                    app:description="서강대 새내기랑 미팅하실 분!"
+                    app:place="강남"
+                    app:profile1="서강대학교 (20)"
+                    app:profile2="경제학부">
+                </com.yamigu.yamigu_app.WaitingTeamCard2>
+                <com.yamigu.yamigu_app.WaitingTeamCard2
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -41,37 +126,7 @@
                     app:place="신촌/홍대"
                     app:profile1="연세대학교 (24)"
                     app:profile2="전기전자공학부">
-                </com.yamigu.yamigu_app.WaitingTeamCard>
-                <com.yamigu.yamigu_app.WaitingTeamCard
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:date="5월28일"
-                    app:description="한명이 술을 잘 못마셔요!"
-                    app:place="신촌/홍대"
-                    app:profile1="연세대학교 (24)"
-                    app:profile2="전기전자공학부">
-                </com.yamigu.yamigu_app.WaitingTeamCard>
-                <com.yamigu.yamigu_app.WaitingTeamCard
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:date="5월28일"
-                    app:description="한명이 술을 잘 못마셔요!"
-                    app:place="신촌/홍대"
-                    app:profile1="연세대학교 (24)"
-                    app:profile2="전기전자공학부">
-                </com.yamigu.yamigu_app.WaitingTeamCard>
-                <com.yamigu.yamigu_app.WaitingTeamCard
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:date="5월28일"
-                    app:description="한명이 술을 잘 못마셔요!"
-                    app:place="신촌/홍대"
-                    app:profile1="연세대학교 (24)"
-                    app:profile2="전기전자공학부">
-                </com.yamigu.yamigu_app.WaitingTeamCard>
+                </com.yamigu.yamigu_app.WaitingTeamCard2>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

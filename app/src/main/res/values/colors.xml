@@ -7,4 +7,6 @@
     <color name="colorBorder">#E5E5E5</color>
     <color name="colorRed">#FF4D00</color>
     <color name="colorPoint">#FC903B</color>
+    <color name="color3vs3">#FF6024</color>
+    <color name="color4vs4">#FF4600</color>
 </resources>
