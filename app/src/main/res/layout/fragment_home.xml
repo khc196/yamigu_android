@@ -4,9 +4,7 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
 <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -23,134 +21,142 @@
             android:theme="@style/MyActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             />
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/banner"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/banner_title"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="26dp"
-                />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/banner_subtitle"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="20dp"
-                />
-        </LinearLayout>
-
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/text_how_are_today_mettings"
-            android:layout_marginTop="28dp"
-            android:layout_marginLeft="34dp"
-            android:layout_marginBottom="4dp"
-            android:scaleType="fitStart"
-            />
-        <!--ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/orange_point_bar"
-            android:layout_marginLeft="34dp"
-            android:layout_marginTop="6dp"
-            android:scaleType="fitStart"
-            /-->
-            <FrameLayout
+            android:layout_height="match_parent">
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="1dp">
-                <HorizontalScrollView
-                    android:id="@+id/hsv_"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentTop="true"
-                    android:fillViewport="true"
-                    android:measureAllChildren="false"
-                    android:scrollbars="none"
-                    >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <com.yamigu.yamigu_app.WaitingTeamCard
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            app:description="한명이 술을 잘 못마셔요!"
-                            app:profile1="연세대학교 (24)"
-                            app:profile2="전기전자공학부"
-                            app:date="5월28일"
-                            app:place="신촌/홍대"
-                        >
-                        </com.yamigu.yamigu_app.WaitingTeamCard>
-
-                        <com.yamigu.yamigu_app.WaitingTeamCard
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="-18dp"
-                            app:date="5월28일"
-                            app:description="한명이 술을 잘 못마셔요!"
-                            app:place="신촌/홍대"
-                            app:profile1="연세대학교 (24)"
-                            app:profile2="전기전자공학부"></com.yamigu.yamigu_app.WaitingTeamCard>
-                    </LinearLayout>
-                </HorizontalScrollView>
-            </FrameLayout>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/text_today_scheduled_meetings"
-            android:layout_marginLeft="34dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="17dp"
-            android:scaleType="fitStart"/>
-        <!--ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/orange_point_bar"
-            android:layout_marginLeft="34dp"
-            android:layout_marginTop="6dp"
-            android:scaleType="fitStart"
-            /-->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp">
+                android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/banner"
                     android:orientation="vertical">
-                    <com.yamigu.yamigu_app.TodayScheduledTeamCard
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_marginBottom="-18dp"
-                        app:place="신촌/홍대"
-                        app:man="연세대학교 24살"
-                        app:woman="이화여자대학교 21살"
-                        >
-                    </com.yamigu.yamigu_app.TodayScheduledTeamCard>
-                    <com.yamigu.yamigu_app.TodayScheduledTeamCard
+                        android:background="@drawable/banner_title"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="26dp"
+                        />
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        app:place="건대/왕십리"
-                        app:man="고려대학교 22살"
-                        app:woman="연세대학교 22살"
-                        >
-                    </com.yamigu.yamigu_app.TodayScheduledTeamCard>
+                        android:src="@drawable/banner_subtitle"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="20dp"
+                        />
                 </LinearLayout>
-            </FrameLayout>
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/text_how_are_today_mettings"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginLeft="34dp"
+                    android:layout_marginBottom="4dp"
+                    android:scaleType="fitStart"
+                    />
+                <!--ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/orange_point_bar"
+                    android:layout_marginLeft="34dp"
+                    android:layout_marginTop="6dp"
+                    android:scaleType="fitStart"
+                    /-->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp">
+                    <HorizontalScrollView
+                        android:id="@+id/hsv_"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:fillViewport="true"
+                        android:measureAllChildren="false"
+                        android:scrollbars="none"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <com.yamigu.yamigu_app.WaitingTeamCard
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                app:description="한명이 술을 잘 못마셔요!"
+                                app:profile1="연세대학교 (24)"
+                                app:profile2="전기전자공학부"
+                                app:date="5월28일"
+                                app:place="신촌/홍대"
+                                >
+                            </com.yamigu.yamigu_app.WaitingTeamCard>
+
+                            <com.yamigu.yamigu_app.WaitingTeamCard
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="-18dp"
+                                app:date="5월28일"
+                                app:description="한명이 술을 잘 못마셔요!"
+                                app:place="신촌/홍대"
+                                app:profile1="연세대학교 (24)"
+                                app:profile2="전기전자공학부"></com.yamigu.yamigu_app.WaitingTeamCard>
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                </FrameLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/text_today_scheduled_meetings"
+                    android:layout_marginLeft="34dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="17dp"
+                    android:scaleType="fitStart"/>
+                <!--ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/orange_point_bar"
+                    android:layout_marginLeft="34dp"
+                    android:layout_marginTop="6dp"
+                    android:scaleType="fitStart"
+                    /-->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <com.yamigu.yamigu_app.TodayScheduledTeamCard
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginBottom="-18dp"
+                            app:place="신촌/홍대"
+                            app:man="연세대학교 24살"
+                            app:woman="이화여자대학교 21살"
+                            >
+                        </com.yamigu.yamigu_app.TodayScheduledTeamCard>
+                        <com.yamigu.yamigu_app.TodayScheduledTeamCard
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            app:place="건대/왕십리"
+                            app:man="고려대학교 22살"
+                            app:woman="연세대학교 22살"
+                            >
+                        </com.yamigu.yamigu_app.TodayScheduledTeamCard>
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+    </ScrollView>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
-</ScrollView>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

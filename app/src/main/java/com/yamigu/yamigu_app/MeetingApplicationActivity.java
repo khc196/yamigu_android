@@ -35,7 +35,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private LinearLayout type_view, date_view, place_view, appeal_view;
     private MeetingApplication ma;
     private TextView tv_max_appeal_length;
-    private final int MAX_APPEAL_LENGTH = 100;
+    Toast toast;
+    private final int MAX_APPEAL_LENGTH = 50;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +66,12 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         tv_max_appeal_length = (TextView) findViewById(R.id.max_appeal_length);
         tv_max_appeal_length.setText("0 / "+Integer.toString(MAX_APPEAL_LENGTH));
         ma = new MeetingApplication();
+        toast = Toast.makeText(getApplicationContext(), "뭐라도 써주세요!", Toast.LENGTH_SHORT);
+        View toastView = toast.getView();
+        int toastbackgroundColor = ResourcesCompat.getColor(toastView.getResources(), R.color.colorPoint, null);
+        toastView.getBackground().setColorFilter(toastbackgroundColor, PorterDuff.Mode.SRC_IN);
+        TextView toasttv = (TextView) toastView.findViewById(android.R.id.message);
+        toasttv.setTextColor(Color.WHITE);
         et_appeal.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -255,21 +262,11 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 else if(ma.isAppeal_selecting()) {
                     ma.setAppeal(et_appeal.getText().toString());
                     if(ma.getAppeal().trim().isEmpty()) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "뭐라도 써주세요!", Toast.LENGTH_LONG);
-                        View toastView = toast.getView();
-                        int backgroundColor = ResourcesCompat.getColor(toastView.getResources(), R.color.colorPoint, null);
-                        toastView.getBackground().setColorFilter(backgroundColor, PorterDuff.Mode.SRC_IN);
-                        TextView t = (TextView) toastView.findViewById(android.R.id.message);
-                        t.setTextColor(Color.WHITE);
+                        toast.setText("뭐라도 써주세요!");
                         toast.show();
                     }
                     else if(ma.getAppeal().length() > MAX_APPEAL_LENGTH) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "100자를 넘기면 안돼요~", Toast.LENGTH_LONG);
-                        View toastView = toast.getView();
-                        int backgroundColor = ResourcesCompat.getColor(toastView.getResources(), R.color.colorPoint, null);
-                        toastView.getBackground().setColorFilter(backgroundColor, PorterDuff.Mode.SRC_IN);
-                        TextView t = (TextView) toastView.findViewById(android.R.id.message);
-                        t.setTextColor(Color.WHITE);
+                        toast.setText(Integer.toString(MAX_APPEAL_LENGTH) + "자를 넘기면 안돼요~");
                         toast.show();
                     }
                     else {
