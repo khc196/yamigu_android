@@ -55,7 +55,7 @@
             android:orientation="horizontal"
             >
             <LinearLayout
-                android:layout_width="127.5dp"
+                android:layout_width="133.9dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_marginTop="11dp"
@@ -78,7 +78,7 @@
                     android:textColor="@color/colorPrimary"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_width="127.5dp"
+                android:layout_width="133.9dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_marginTop="11dp"
