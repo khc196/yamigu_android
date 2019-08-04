@@ -3,14 +3,15 @@
 <declare-styleable name="MeetingTeam">
     <attr name="label" format="reference|integer" />
     <attr name="place" format="reference|string" />
+    <attr name="date" format="reference|string" />
 </declare-styleable>
 <declare-styleable name="MeetingTeamHome" parent="MeetingTeam">
     <attr name="label" />
     <attr name="place" />
+    <attr name="date" />
     <attr name="description" format="reference|string" />
     <attr name="profile1" format="reference|string" />
     <attr name="profile2" format="reference|string" />
-    <attr name="date" format="reference|string" />
 </declare-styleable>
 <declare-styleable name="ScheduledTeamHome" parent="MeetingTeam">
     <attr name="label"/>
@@ -23,4 +24,17 @@
     <attr name="company" format="reference|string" />
     <attr name="department" format="reference|string" />
 </declare-styleable>
+<declare-styleable name="MyMeetingCard" parent="MeetingTeam">
+    <attr name="label" />
+    <attr name="place" />
+    <attr name="date" />
+    <attr name="noa" format="reference|integer" />
+    <attr name="month" format="reference|string" />
+    <attr name="dday" format="reference|string" />
+</declare-styleable>
+    <declare-styleable name="MyMeetingCard_Chat">
+        <attr name="unread" format="reference|integer" />
+        <attr name="chat" format="reference|string" />
+        <attr name="time" format="reference|string" />
+    </declare-styleable>
 </resources>

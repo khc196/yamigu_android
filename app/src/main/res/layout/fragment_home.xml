@@ -48,12 +48,29 @@
                         android:layout_marginTop="20dp"
                         />
                 </LinearLayout>
-
-
+                <com.yamigu.yamigu_app.MyMeetingCard
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    app:label="1"
+                    app:place="건대/왕십리"
+                    app:noa="2"
+                    app:month="5월"
+                    app:date="28일"
+                    app:dday="Today"
+                    >
+                </com.yamigu.yamigu_app.MyMeetingCard>
+                <com.yamigu.yamigu_app.MyMeetingCard_Chat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chat="오늘 재밌게 놀아요~"
+                    app:unread="2"
+                    app:time="오후 2:22">
+                </com.yamigu.yamigu_app.MyMeetingCard_Chat>
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/text_how_are_today_mettings"
+                    android:src="@drawable/text_how_are_today_meetings"
                     android:layout_marginTop="28dp"
                     android:layout_marginLeft="34dp"
                     android:layout_marginBottom="4dp"

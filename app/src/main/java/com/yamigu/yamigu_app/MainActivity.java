@@ -1,6 +1,7 @@
 package com.yamigu.yamigu_app;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,16 +12,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private Fragment homeFragment;
+    private LinearLayout nav_bar;
     private ImageButton nav_home, nav_wlist, nav_yamigu, nav_mypage, nav_more;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        nav_bar = (LinearLayout) findViewById(R.id.nav_bar);
         nav_home = (ImageButton) findViewById(R.id.nav_home);
         nav_wlist = (ImageButton) findViewById(R.id.nav_wlist);
         nav_yamigu = (ImageButton) findViewById(R.id.nav_yamigu);
@@ -77,8 +81,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //BottomNavigationView navigation = findViewById(R.id.navigation);
-        //navigation.setOnNavigationItemSelectedListener(this);
         homeFragment = new HomeFragment();
         loadFragment(homeFragment);
     }
@@ -93,28 +95,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        Fragment fragment = null;
-//
-//        switch(item.getItemId()) {
-//            case R.id.navigation_home:
-//                fragment = new HomeFragment();
-//                break;
-//            case R.id.navigation_list:
-//                fragment = new WListFragment();
-//                break;
-//            case R.id.navigation_yamigu:
-//                Intent intent = new Intent(this, MeetingApplicationActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.navigation_mypage:
-//                fragment = new MypageFragment();
-//                break;
-//            case R.id.navigation_more:
-//                fragment = new MoreFragment();
-//                break;
-//        }
-//        return loadFragment(fragment);
-//    }
+
 }
