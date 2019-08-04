@@ -19,7 +19,6 @@ import android.widget.ImageButton;
 
 public class HomeFragment extends Fragment {
     private Toolbar tb;
-    private ImageButton btn_yamigu;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -29,15 +28,6 @@ public class HomeFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
-
-        btn_yamigu = (ImageButton) view.findViewById(R.id.btn_yamigu);
-        btn_yamigu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MeetingApplicationActivity.class);
-                startActivity(intent);
-            }
-        });
 
         return view;
     }

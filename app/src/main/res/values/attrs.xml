@@ -22,6 +22,5 @@
     <attr name="name_and_age" format="reference|string" />
     <attr name="company" format="reference|string" />
     <attr name="department" format="reference|string" />
-    <attr name="rating" format="integer" />
 </declare-styleable>
 </resources>

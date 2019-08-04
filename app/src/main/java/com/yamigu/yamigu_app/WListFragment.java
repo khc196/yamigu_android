@@ -10,9 +10,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class WListFragment extends Fragment {
     private Toolbar tb;
+    private Button[] btn_date_list;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -22,6 +28,20 @@ public class WListFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("M/d");
+
+        btn_date_list = new Button[7];
+        int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
+        int i = 0;
+        for(Button btn_date : btn_date_list) {
+            btn_date = (Button) view.findViewById(btn_date_id_list[i]);
+            String getTime = sdf.format(cal.getTime());
+            cal.add(Calendar.DATE, 1);
+            i++;
+            btn_date.setText(getTime);
+        }
         return view;
     }
     @Override

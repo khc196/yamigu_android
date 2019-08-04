@@ -6,5 +6,5 @@
     android:drawable="@drawable/state_pressed_ripple"/>
 <item
     android:state_enabled="true"
-    android:drawable="@drawable/button_yamigu" />
+    android:drawable="@drawable/yamigu_btn_bg_red" />
 </selector>

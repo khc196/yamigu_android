@@ -10,13 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ImageView
-            android:id="@+id/rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/home_waiting_team_rating_2"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"/>
         <TextView
             android:id="@+id/name_and_age"
             android:layout_width="match_parent"
@@ -26,8 +19,15 @@
             android:textColor="#000000"
             android:textSize="19sp"
             android:gravity="center_horizontal"
-            android:layout_marginTop="6dp">
+            android:layout_marginTop="41dp">
         </TextView>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/button_edit_nickname"
+            android:background="@null"
+            android:layout_marginTop="7dp"/>
         <TextView
             android:id="@+id/company"
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:textColor="#000000"
             android:textSize="14sp"
             android:gravity="center_horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="15dp">
         </TextView>
         <TextView
             android:id="@+id/department"
@@ -53,9 +53,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/button_edit_profile"
+            android:src="@drawable/button_edit_belong"
             android:background="@null"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="7dp"/>
     </LinearLayout>
 
 </LinearLayout>

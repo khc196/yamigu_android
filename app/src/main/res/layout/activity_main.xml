@@ -7,11 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     tools:context=".MainActivity">
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="47dp">
+        android:layout_marginBottom="48dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,21 +21,69 @@
         </LinearLayout>
     </FrameLayout>
 
-
-
-    <android.support.design.widget.BottomNavigationView
+    <!--android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/navbar_bg"
         app:itemIconTint="@color/bnv_tab_item_foreground"
         app:itemTextColor="@color/bnv_tab_item_foreground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/navigation" />
-
+        app:menu="@menu/navigation"/-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            android:weightSum="10">
+            <ImageButton
+                android:id="@+id/nav_home"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/nav_home_selected"
+                />
+            <ImageButton
+                android:id="@+id/nav_wlist"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/nav_wlist"
+                />
+            <ImageButton
+                android:id="@+id/nav_yamigu"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/ic_filter_state"
+                android:src="@drawable/nav_yamigu_0"
+                />
+            <ImageButton
+                android:id="@+id/nav_mypage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/nav_mypage"
+                />
+            <ImageButton
+                android:id="@+id/nav_more"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/nav_more"
+                />
+        </LinearLayout>
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

@@ -163,17 +163,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ImageButton
-            android:id="@+id/btn_yamigu"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
-            android:background="@drawable/ic_filter_state"
-            android:src="@drawable/button_yamigu_noback_0"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="17dp"
-            android:layout_marginRight="17dp"
-            android:layout_alignParentRight="true"
-            >
-        </ImageButton>
+
     </RelativeLayout>
 </FrameLayout>

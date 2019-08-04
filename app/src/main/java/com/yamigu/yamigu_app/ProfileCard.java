@@ -12,7 +12,6 @@ import android.widget.TextView;
 public class ProfileCard extends LinearLayout {
 
     LinearLayout bg;
-    ImageView rating;
     TextView name_and_age, company, department;
 
 
@@ -39,7 +38,6 @@ public class ProfileCard extends LinearLayout {
         addView(v);
 
         bg = (LinearLayout) findViewById(R.id.bg);
-        rating = (ImageView) findViewById(R.id.rating);
         name_and_age = (TextView) findViewById(R.id.name_and_age);
         company = (TextView) findViewById(R.id.company);
         department = (TextView) findViewById(R.id.department);
@@ -53,8 +51,6 @@ public class ProfileCard extends LinearLayout {
         setTypeArray(typedArray);
     }
     private void setTypeArray(TypedArray typedArray) {
-        int rating_img = typedArray.getResourceId(R.styleable.ProfileCard_rating, R.drawable.home_waiting_team_rating_2);
-        rating.setImageResource(rating_img);
 
         String profile_string = typedArray.getString(R.styleable.ProfileCard_name_and_age);
         name_and_age.setText(profile_string);
@@ -68,10 +64,6 @@ public class ProfileCard extends LinearLayout {
         typedArray.recycle();
     }
 
-
-    void setRating(int rating_resID) {
-        rating.setImageResource(rating_resID);
-    }
 
     void setName_and_Age(int name_and_age_resID) { name_and_age.setText(name_and_age_resID);
     }
