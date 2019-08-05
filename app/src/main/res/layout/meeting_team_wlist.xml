@@ -22,7 +22,7 @@
         </ImageView>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="93.6dp">
+            android:layout_height="102.6dp">
             <TextView
                 android:id="@+id/description"
                 android:layout_marginTop="5dp"
@@ -38,7 +38,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="18.4dp"
+            android:layout_marginBottom="9.4dp"
             >
             <TextView
                 android:id="@+id/rating"

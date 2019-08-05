@@ -1,20 +1,28 @@
 package com.yamigu.yamigu_app;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.LayoutInflaterFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.zip.Inflater;
 
 public class WListFragment extends Fragment {
     private Toolbar tb;
@@ -42,6 +50,8 @@ public class WListFragment extends Fragment {
             i++;
             btn_date.setText(getTime);
         }
+
+
         return view;
     }
     @Override
@@ -49,4 +59,17 @@ public class WListFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.actionbar_filter, menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_filter :
+                FilterSetFragment f = FilterSetFragment.getInstance();
+                f.show(super.getActivity().getSupportFragmentManager(), FilterSetFragment.TAG_DIALOG_EVENT);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }

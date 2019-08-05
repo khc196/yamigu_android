@@ -86,7 +86,7 @@ public class MyMeetingCard extends LinearLayout {
         String date_string = typedArray.getString(R.styleable.MyMeetingCard_date);
         date.setText(date_string);
         String dday_string = typedArray.getString(R.styleable.MyMeetingCard_dday);
-        dday.setText(date_string);
+        dday.setText(dday_string);
 
         String place_string = typedArray.getString(R.styleable.MyMeetingCard_place);
         place.setText(place_string);

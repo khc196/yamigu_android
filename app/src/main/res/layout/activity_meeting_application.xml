@@ -121,7 +121,7 @@
                     android:id="@+id/select_pane_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="29dp"
+                    android:layout_marginTop="7dp"
                     android:orientation="vertical">
                     <Button
                         android:id="@+id/btn_select_2vs2"
@@ -325,7 +325,7 @@
                             android:layout_width="379dp"
                             android:layout_height="wrap_content"
                             android:background="@drawable/textbox_appeal"
-                            android:layout_marginTop="23dp"
+                            android:layout_marginTop="7dp"
                             android:layout_gravity="center"
                             android:gravity="top"
                             android:paddingLeft="28dp"
