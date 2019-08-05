@@ -32,7 +32,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.03">
             </LinearLayout>
-            <Button
+            <TextView
                 android:id="@+id/btn_date_1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -42,7 +42,7 @@
                 android:textColor="#FC7F2D"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1.43"/>
-            <Button
+            <TextView
                 android:id="@+id/btn_date_2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -51,7 +51,7 @@
                 android:textSize="14sp"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1.43"/>
-            <Button
+            <TextView
                 android:id="@+id/btn_date_3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -61,7 +61,7 @@
                 android:textColor="#FC7F2D"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1.42"/>
-            <Button
+            <TextView
                 android:id="@+id/btn_date_4"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -70,7 +70,7 @@
                 android:textSize="14sp"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1.42"/>
-            <Button
+            <TextView
                 android:id="@+id/btn_date_5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -79,7 +79,7 @@
                 android:textSize="14sp"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1.42"/>
-            <Button
+            <TextView
                 android:id="@+id/btn_date_6"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -88,7 +88,7 @@
                 android:textSize="14sp"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1.42"/>
-            <Button
+            <TextView
                 android:id="@+id/btn_date_7"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
