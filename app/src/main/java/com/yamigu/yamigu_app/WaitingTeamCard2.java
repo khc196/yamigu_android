@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class WaitingTeamCard2 extends LinearLayout {
 
-    LinearLayout bg;
+    LinearLayout bg, top_bg;
     RelativeLayout rl_applying;
     ImageView label, point_line;
     TextView description, profile1, profile2, date, place, rating;
@@ -43,6 +43,7 @@ public class WaitingTeamCard2 extends LinearLayout {
         addView(v);
 
         bg = (LinearLayout) findViewById(R.id.bg);
+        top_bg = (LinearLayout) findViewById(R.id.top_bg);
         rl_applying = (RelativeLayout) findViewById(R.id.rl_applying);
         label = (ImageView) findViewById(R.id.label);
         point_line = (ImageView) findViewById(R.id.point_line);
@@ -53,11 +54,11 @@ public class WaitingTeamCard2 extends LinearLayout {
         place = (TextView) findViewById(R.id.place);
         rating = (TextView) findViewById(R.id.rating);
 
-        bg.setOnClickListener(new OnClickListener() {
+        top_bg.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(rl_applying.getVisibility() == View.INVISIBLE) {
-                    
+
                     rl_applying.setVisibility(View.VISIBLE);
                     rl_applying.animate()
                             .translationY(rl_applying.getHeight())
