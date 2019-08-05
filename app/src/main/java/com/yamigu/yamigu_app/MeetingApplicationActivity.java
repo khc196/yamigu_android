@@ -37,7 +37,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private TextView tv_max_appeal_length;
     Toast toast;
     private final int MAX_APPEAL_LENGTH = 50;
-    private final String[] DOW = {"", "일", "월", "화", "수", "목", "금", "토"};
+    private final String[] DOW = {"", "월", "화", "수", "목", "금", "토", "일"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
