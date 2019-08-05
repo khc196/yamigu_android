@@ -37,7 +37,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private TextView tv_max_appeal_length;
     Toast toast;
     private final int MAX_APPEAL_LENGTH = 50;
-    private final String[] DOW = {"", "월", "화", "수", "목", "금", "토", "일"};
+    private final String[] DOW = {"", "일", "월", "화", "수", "목", "금", "토"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,8 +131,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
 
         for (final Button button : btn_select_date_array) {
             String getTime = sdf.format(cal.getTime());
-            cal.add(Calendar.DATE, 1);
             int day_of_week = cal.get(Calendar.DAY_OF_WEEK);
+            cal.add(Calendar.DATE, 1);
             button.setText(getTime + " " + DOW[day_of_week]);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
