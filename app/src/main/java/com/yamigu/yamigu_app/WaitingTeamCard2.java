@@ -1,18 +1,23 @@
 package com.yamigu.yamigu_app;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class WaitingTeamCard2 extends LinearLayout {
 
     LinearLayout bg;
-    ImageView label;
+    RelativeLayout rl_applying;
+    ImageView label, point_line;
     TextView description, profile1, profile2, date, place, rating;
 
     public WaitingTeamCard2(Context context) {
@@ -38,13 +43,43 @@ public class WaitingTeamCard2 extends LinearLayout {
         addView(v);
 
         bg = (LinearLayout) findViewById(R.id.bg);
+        rl_applying = (RelativeLayout) findViewById(R.id.rl_applying);
         label = (ImageView) findViewById(R.id.label);
+        point_line = (ImageView) findViewById(R.id.point_line);
         description = (TextView) findViewById(R.id.description);
         profile1 = (TextView) findViewById(R.id.profile1);
         profile2 = (TextView) findViewById(R.id.profile2);
         date = (TextView) findViewById(R.id.date);
         place = (TextView) findViewById(R.id.place);
         rating = (TextView) findViewById(R.id.rating);
+
+        bg.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(rl_applying.getVisibility() == View.INVISIBLE) {
+                    
+                    rl_applying.setVisibility(View.VISIBLE);
+                    rl_applying.animate()
+                            .translationY(rl_applying.getHeight())
+                            .alpha(1.0f)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                }});
+                }
+                else
+                    rl_applying.animate()
+                            .translationY(0)
+                            .alpha(0.0f)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    rl_applying.setVisibility(View.INVISIBLE);
+                                }});
+            }
+        });
     }
     private void getAttrs(AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MeetingTeamHome);
@@ -59,18 +94,21 @@ public class WaitingTeamCard2 extends LinearLayout {
         switch(label_img){
             case 1:
                 label.setImageResource(R.drawable.label_2vs2);
-                bg.setBackgroundResource(R.drawable.meeting_card_bg_wlist);
+                point_line.setBackgroundColor(getResources().getColor(R.color.colorPoint));
                 rating.setTextColor(getResources().getColor(R.color.colorPoint));
+                rl_applying.setBackgroundResource(R.drawable.bottom_rounded_orange);
                 break;
             case 2:
                 label.setImageResource(R.drawable.label_3vs3);
-                bg.setBackgroundResource(R.drawable.meeting_card_bg_wlist_2);
+                point_line.setBackgroundColor(getResources().getColor(R.color.color3vs3));
                 rating.setTextColor(getResources().getColor(R.color.color3vs3));
+                rl_applying.setBackgroundResource(R.drawable.bottom_rounded_3vs3);
                 break;
             case 3:
                 label.setImageResource(R.drawable.label_4vs4);
-                bg.setBackgroundResource(R.drawable.meeting_card_bg_wlist_3);
+                point_line.setBackgroundColor(getResources().getColor(R.color.color4vs4));
                 rating.setTextColor(getResources().getColor(R.color.color4vs4));
+                rl_applying.setBackgroundResource(R.drawable.bottom_rounded_4vs4);
                 break;
         }
 

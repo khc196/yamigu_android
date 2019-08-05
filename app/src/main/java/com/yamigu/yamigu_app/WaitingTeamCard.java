@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class WaitingTeamCard extends LinearLayout {
 
     LinearLayout bg;
-    ImageView label;
+    ImageView label, point_line;
     TextView description, profile1, profile2, date, place, rating;
 
     public WaitingTeamCard(Context context) {
@@ -39,6 +39,7 @@ public class WaitingTeamCard extends LinearLayout {
 
         bg = (LinearLayout) findViewById(R.id.bg);
         label = (ImageView) findViewById(R.id.label);
+        point_line = (ImageView) findViewById(R.id.point_line);
         description = (TextView) findViewById(R.id.description);
         profile1 = (TextView) findViewById(R.id.profile1);
         profile2 = (TextView) findViewById(R.id.profile2);
@@ -59,17 +60,17 @@ public class WaitingTeamCard extends LinearLayout {
         switch(label_img){
             case 1:
                 label.setImageResource(R.drawable.label_2vs2);
-                bg.setBackgroundResource(R.drawable.meeting_card_bg_home);
+                point_line.setBackgroundColor(getResources().getColor(R.color.colorPoint));
                 rating.setTextColor(getResources().getColor(R.color.colorPoint));
                 break;
             case 2:
                 label.setImageResource(R.drawable.label_3vs3);
-                bg.setBackgroundResource(R.drawable.meeting_card_bg_home_2);
+                point_line.setBackgroundColor(getResources().getColor(R.color.color3vs3));
                 rating.setTextColor(getResources().getColor(R.color.color3vs3));
                 break;
             case 3:
                 label.setImageResource(R.drawable.label_4vs4);
-                bg.setBackgroundResource(R.drawable.meeting_card_bg_home_3);
+                point_line.setBackgroundColor(getResources().getColor(R.color.color4vs4));
                 rating.setTextColor(getResources().getColor(R.color.color4vs4));
                 break;
         }
