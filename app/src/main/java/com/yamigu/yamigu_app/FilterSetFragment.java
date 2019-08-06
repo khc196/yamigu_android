@@ -19,9 +19,12 @@ import android.widget.Toast;
 public class FilterSetFragment extends DialogFragment implements View.OnClickListener {
     public static final String TAG_DIALOG_EVENT = "dialog_event";
     private Button btn_type_2vs2, btn_type_3vs3, btn_type_4vs4, btn_place_1, btn_place_2, btn_place_3;
-    private ImageView iv_minimum_age, iv_maximum_age, iv_minimum_age_bg_deactivate, iv_maximum_age_bg_deactivate;
+    private ImageView iv_minimum_age, iv_maximum_age, iv_minimum_age_bg_deactivate, iv_maximum_age_bg_deactivate, iv_seekbar_bg;
+    private TextView tv_minimum_age, tv_maximum_age;
     private Filter filter;
     private float sx, sy, cx, cy;
+    private int c_move;
+    private ViewGroup.MarginLayoutParams params;
     public static FilterSetFragment getInstance() {
         FilterSetFragment f = new FilterSetFragment();
         return f;
@@ -50,11 +53,18 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         iv_minimum_age = (ImageView) view.findViewById(R.id.iv_minimum_age);
         iv_minimum_age_bg_deactivate = (ImageView) view.findViewById(R.id.iv_minimum_age_bg_deactivate);
         iv_maximum_age_bg_deactivate = (ImageView) view.findViewById(R.id.iv_maximum_age_bg_deactivate);
+        iv_seekbar_bg = (ImageView) view.findViewById(R.id.seekbar_bg);
+        tv_minimum_age = (TextView) view.findViewById(R.id.tv_minimum_age);
+        tv_maximum_age = (TextView) view.findViewById(R.id.tv_maximum_age);
+
         filter = new Filter();
         iv_minimum_age.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 float distanceX, distanceY;
+                int seekbar_length = iv_seekbar_bg.getWidth();
+                int l_unit = seekbar_length / 11;
+
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     sx = motionEvent.getX();
                     sy = motionEvent.getY();
@@ -63,14 +73,25 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                     cy = motionEvent.getY();
                     distanceX = cx - sx;
                     distanceY = cy - sy;
-                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams)view.getLayoutParams();
+                    params = (ViewGroup.MarginLayoutParams)view.getLayoutParams();
                     int movex = params.leftMargin + (int)distanceX;
-                    if(movex >= 0) {
+                    if(movex >= 0 && (int)(movex / l_unit) <= filter.getMaximum_age_current()) {
                         params.setMargins(movex, 0, 0, 0);
                         iv_minimum_age.setLayoutParams(params);
                         iv_minimum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(movex, ViewGroup.LayoutParams.MATCH_PARENT));
+                        c_move = movex;
+                        tv_minimum_age.setText(Integer.toString(20 + movex / l_unit)+"살");
+                        filter.setMinimum_age_current((movex / l_unit));
                     }
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    int new_move;
+                    new_move = (int)(c_move / l_unit) * l_unit;
+                    new_move = Math.min(Math.max(0, new_move), seekbar_length);
+                    tv_minimum_age.setText(Integer.toString(20 + new_move / l_unit)+"살");
+                    params.setMargins(new_move, 0, 0, 0);
+                    iv_minimum_age.setLayoutParams(params);
+                    iv_minimum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(new_move, ViewGroup.LayoutParams.MATCH_PARENT));
+                    filter.setMinimum_age_current((new_move / l_unit));
                 }
                 return true;
             }
@@ -79,6 +100,8 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 float distanceX, distanceY;
+                int seekbar_length = iv_seekbar_bg.getWidth();
+                int l_unit = seekbar_length / 11;
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     sx = motionEvent.getX();
                     sy = motionEvent.getY();
@@ -87,16 +110,35 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                     cy = motionEvent.getY();
                     distanceX = sx - cx;
                     distanceY = sy - cy;
-                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams)view.getLayoutParams();
+                    params = (ViewGroup.MarginLayoutParams)view.getLayoutParams();
                     int movex = params.rightMargin + (int)distanceX;
-                    if(movex >= 0) {
+                    if(movex >= 0 && (11 - (int)(movex / l_unit)) >= filter.getMinimum_age_current()) {
                         params.setMargins(0, 0, movex, 0);
                         iv_maximum_age.setLayoutParams(params);
                         RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(movex, ViewGroup.LayoutParams.MATCH_PARENT);
                         params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                         iv_maximum_age_bg_deactivate.setLayoutParams(params2);
+                        c_move = movex;
+                        if(movex / l_unit > 0)
+                            tv_maximum_age.setText(Integer.toString(31 - movex / l_unit)+"살");
+                        else
+                            tv_maximum_age.setText("30살+");
+                        filter.setMaximum_age_current(11- movex / l_unit);
                     }
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    int new_move;
+                    new_move = (int)(c_move / l_unit) * l_unit;
+                    new_move = Math.min(Math.max(0, new_move), seekbar_length);
+                    if(new_move / l_unit > 0)
+                        tv_maximum_age.setText(Integer.toString(31 - new_move / l_unit)+"살");
+                    else
+                        tv_maximum_age.setText("30살+");
+                    params.setMargins(0, 0, new_move, 0);
+                    iv_maximum_age.setLayoutParams(params);
+                    RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(new_move, ViewGroup.LayoutParams.MATCH_PARENT);
+                    params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                    iv_maximum_age_bg_deactivate.setLayoutParams(params2);
+                    filter.setMaximum_age_current(11 - new_move / l_unit);
                 }
                 return true;
             }
@@ -234,6 +276,8 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         public void setSelected_place_3(boolean onoff) {
             selected_place_3 = onoff;
         }
+        public void setMinimum_age_current(int current) { minimum_age_current = current; }
+        public void setMaximum_age_current(int current) { maximum_age_current = current; }
 
         public boolean isSelected_type_2vs2() {
             return selected_type_2vs2;
@@ -257,6 +301,14 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
 
         public boolean isSelected_place_3() {
             return selected_place_3;
+        }
+
+        public int getMinimum_age_current() {
+            return minimum_age_current;
+        }
+
+        public int getMaximum_age_current() {
+            return maximum_age_current;
         }
     }
 }
