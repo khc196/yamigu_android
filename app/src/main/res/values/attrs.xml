@@ -32,9 +32,10 @@
     <attr name="month" format="reference|string" />
     <attr name="dday" format="reference|string" />
 </declare-styleable>
-    <declare-styleable name="MyMeetingCard_Chat">
-        <attr name="unread" format="reference|integer" />
-        <attr name="chat" format="reference|string" />
-        <attr name="time" format="reference|string" />
-    </declare-styleable>
+<declare-styleable name="MyMeetingCard_Chat">
+    <attr name="unread" format="reference|integer" />
+    <attr name="chat" format="reference|string" />
+    <attr name="time" format="reference|string" />
+</declare-styleable>
+
 </resources>
