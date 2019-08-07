@@ -4,6 +4,8 @@ import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -21,9 +23,11 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
     private Button btn_type_2vs2, btn_type_3vs3, btn_type_4vs4, btn_place_1, btn_place_2, btn_place_3;
     private ImageView iv_minimum_age, iv_maximum_age, iv_minimum_age_bg_deactivate, iv_maximum_age_bg_deactivate, iv_seekbar_bg;
     private TextView tv_minimum_age, tv_maximum_age;
+    private RelativeLayout age_bar_bg;
     private Filter filter;
-    private float sx, sy, cx, cy;
-    private int c_move;
+    private float sx, sy, cx, cy, cx2;
+    private int c_move, dpi;
+
     private ViewGroup.MarginLayoutParams params;
     public static FilterSetFragment getInstance() {
         FilterSetFragment f = new FilterSetFragment();
@@ -56,15 +60,19 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         iv_seekbar_bg = (ImageView) view.findViewById(R.id.seekbar_bg);
         tv_minimum_age = (TextView) view.findViewById(R.id.tv_minimum_age);
         tv_maximum_age = (TextView) view.findViewById(R.id.tv_maximum_age);
-
+        age_bar_bg = (RelativeLayout) view.findViewById(R.id.age_bar_bg);
         filter = new Filter();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getDialog().getWindow().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        dpi = displayMetrics.densityDpi;
+
         iv_minimum_age.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 float distanceX, distanceY;
                 int seekbar_length = iv_seekbar_bg.getWidth();
                 int l_unit = seekbar_length / 11;
-
+                Log.d("mmmmmmmmmmmmmmmmmmmm", "mmmmmmmmmmmmmmmmmmmmm");
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     sx = motionEvent.getX();
                     sy = motionEvent.getY();
@@ -75,9 +83,11 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                     distanceY = cy - sy;
                     params = (ViewGroup.MarginLayoutParams)view.getLayoutParams();
                     int movex = params.leftMargin + (int)distanceX;
-                    if(movex >= 0 && (int)(movex / l_unit) <= filter.getMaximum_age_current()) {
-                        params.setMargins(movex, 0, 0, 0);
+
+                    if(movex >= 0 && movex / l_unit <= filter.getMaximum_age_current()) {
                         iv_minimum_age.setLayoutParams(params);
+                        movex = Math.min(movex, filter.getMaximum_age_current() * l_unit);
+                        params.setMargins(movex, 0, 0, 0);
                         iv_minimum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(movex, ViewGroup.LayoutParams.MATCH_PARENT));
                         c_move = movex;
                         tv_minimum_age.setText(Integer.toString(20 + movex / l_unit)+"살");
@@ -112,7 +122,9 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                     distanceY = sy - cy;
                     params = (ViewGroup.MarginLayoutParams)view.getLayoutParams();
                     int movex = params.rightMargin + (int)distanceX;
+
                     if(movex >= 0 && (11 - (int)(movex / l_unit)) >= filter.getMinimum_age_current()) {
+                        movex = Math.min(movex, seekbar_length - filter.getMinimum_age_current() * l_unit);
                         params.setMargins(0, 0, movex, 0);
                         iv_maximum_age.setLayoutParams(params);
                         RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(movex, ViewGroup.LayoutParams.MATCH_PARENT);
