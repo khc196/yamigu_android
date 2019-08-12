@@ -20,15 +20,15 @@ import android.widget.Toast;
 
 public class FilterSetFragment extends DialogFragment implements View.OnClickListener {
     public static final String TAG_DIALOG_EVENT = "dialog_event";
-    private Button btn_type_2vs2, btn_type_3vs3, btn_type_4vs4, btn_place_1, btn_place_2, btn_place_3;
+    private Button btn_type_2vs2, btn_type_3vs3, btn_type_4vs4, btn_place_1, btn_place_2, btn_place_3, btn_apply_filter, btn_cancel_filter;
     private ImageView iv_minimum_age, iv_maximum_age, iv_minimum_age_bg_deactivate, iv_maximum_age_bg_deactivate, iv_seekbar_bg;
     private TextView tv_minimum_age, tv_maximum_age;
     private RelativeLayout age_bar_bg;
     private Filter filter;
     private float sx, sy, cx, cy, cx2;
     private int c_move, dpi;
-    private boolean is_same_age = false;
-    private ViewGroup.MarginLayoutParams params;
+    private boolean is_same_age = false, left_move_flag = false;
+    private ViewGroup.MarginLayoutParams params_l, params_r;
     public static FilterSetFragment getInstance() {
         FilterSetFragment f = new FilterSetFragment();
         return f;
@@ -53,6 +53,8 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         btn_place_1 = (Button) view.findViewById(R.id.btn_place_1);
         btn_place_2 = (Button) view.findViewById(R.id.btn_place_2);
         btn_place_3 = (Button) view.findViewById(R.id.btn_place_3);
+        btn_apply_filter = (Button) view.findViewById(R.id.btn_apply_filter);
+        btn_cancel_filter = (Button) view.findViewById(R.id.btn_cancel_filter);
         iv_maximum_age = (ImageView) view.findViewById(R.id.iv_maximum_age);
         iv_minimum_age = (ImageView) view.findViewById(R.id.iv_minimum_age);
         iv_minimum_age_bg_deactivate = (ImageView) view.findViewById(R.id.iv_minimum_age_bg_deactivate);
@@ -80,24 +82,34 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                     cy = motionEvent.getY();
                     distanceX = cx - sx;
                     distanceY = cy - sy;
-                    params = (ViewGroup.MarginLayoutParams)iv_minimum_age.getLayoutParams();
-                    iv_minimum_age.setLayoutParams(params);
-                    int movex = params.leftMargin + (int)distanceX;
+                    params_l = (ViewGroup.MarginLayoutParams)iv_minimum_age.getLayoutParams();
+                    iv_minimum_age.setLayoutParams(params_l);
+                    int movex = params_l.leftMargin + (int)distanceX;
                     if(movex >= 0 && movex / l_unit <= filter.getMaximum_age_current()) {
                         movex = Math.min(movex, filter.getMaximum_age_current() * l_unit);
-                        params.setMargins(movex, 0, 0, 0);
+                        params_l.setMargins(movex, 0, 0, 0);
                         iv_minimum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(movex, ViewGroup.LayoutParams.MATCH_PARENT));
                         c_move = movex;
-                        tv_minimum_age.setText(Integer.toString(20 + movex / l_unit)+"살");
+                        if(movex / l_unit > 10) {
+                            tv_minimum_age.setText("30살+");
+                        }
+                        else {
+                            tv_minimum_age.setText(Integer.toString(20 + movex / l_unit) + "살");
+                        }
                         filter.setMinimum_age_current((movex / l_unit));
                     }
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     int new_move;
                     new_move = (int)(c_move / l_unit) * l_unit;
                     new_move = Math.min(Math.max(0, new_move), seekbar_length);
-                    tv_minimum_age.setText(Integer.toString(20 + new_move / l_unit)+"살");
-                    params.setMargins(new_move, 0, 0, 0);
-                    iv_minimum_age.setLayoutParams(params);
+                    if(new_move / l_unit > 10) {
+                        tv_minimum_age.setText("30살+");
+                    }
+                    else {
+                        tv_minimum_age.setText(Integer.toString(20 + new_move / l_unit) + "살");
+                    }
+                    params_l.setMargins(new_move, 0, 0, 0);
+                    iv_minimum_age.setLayoutParams(params_l);
                     iv_minimum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(new_move, ViewGroup.LayoutParams.MATCH_PARENT));
                     filter.setMinimum_age_current((new_move / l_unit));
                 }
@@ -113,39 +125,50 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     sx = motionEvent.getX();
                     sy = motionEvent.getY();
-                    if(filter.getMinimum_age_current() == filter.getMaximum_age_current()) {
-                        is_same_age = true;
-                    }
+                    is_same_age = filter.getMinimum_age_current() == filter.getMaximum_age_current();
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
                     cx = motionEvent.getX();
                     cy = motionEvent.getY();
                     distanceX = sx - cx;
                     distanceY = sy - cy;
-                    params = (ViewGroup.MarginLayoutParams)iv_maximum_age.getLayoutParams();
-                    int movex = params.rightMargin + (int)distanceX;
+                    params_r = (ViewGroup.MarginLayoutParams)iv_maximum_age.getLayoutParams();
+                    Log.d("distanceX", Float.toString(distanceX));
                     if(is_same_age) {
-                        if(distanceX >= -2 || (distanceX < 0 && filter.getMinimum_age_current() != filter.getMaximum_age_current())) {
-                            params = (ViewGroup.MarginLayoutParams)iv_minimum_age.getLayoutParams();
+                        if(distanceX >= -1.2 || (distanceX < 0 && filter.getMinimum_age_current() != filter.getMaximum_age_current())) {
+                            params_l = (ViewGroup.MarginLayoutParams)iv_minimum_age.getLayoutParams();
 
-                            movex = params.leftMargin - (int)distanceX;
+                            int movex = params_l.leftMargin - (int)distanceX;
                             if(movex >= 0 && movex / l_unit <= filter.getMaximum_age_current()) {
                                 movex = Math.min(movex, filter.getMaximum_age_current() * l_unit);
-                                params.setMargins(movex, 0, 0, 0);
+                                params_l.setMargins(movex, 0, 0, 0);
 
                                 iv_minimum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(movex, ViewGroup.LayoutParams.MATCH_PARENT));
                                 c_move = movex;
-                                tv_minimum_age.setText(Integer.toString(20 + movex / l_unit)+"살");
+                                if(movex / l_unit > 10) {
+                                    tv_minimum_age.setText("30살+");
+                                }
+                                else {
+                                    tv_minimum_age.setText(Integer.toString(20 + movex / l_unit) + "살");
+                                }
                                 filter.setMinimum_age_current((movex / l_unit));
-                                iv_minimum_age.setLayoutParams(params);
+                                iv_minimum_age.setLayoutParams(params_l);
                                 sx = cx;
+                                if(filter.getMinimum_age_current() != filter.getMaximum_age_current()) {
+                                    left_move_flag = true;
+                                }
+                                else {
+                                    left_move_flag = false;
+                                }
                             }
                             return true;
                         }
                     }
-                    if(movex >= 0 && (11 - (int)(movex / l_unit)) >= filter.getMinimum_age_current()) {
+                    int movex = params_r.rightMargin + (int)distanceX;
+
+                    if(!left_move_flag && movex >= 0 && (11 - (int)(movex / l_unit)) >= filter.getMinimum_age_current()) {
                         movex = Math.min(movex, seekbar_length - filter.getMinimum_age_current() * l_unit);
-                        params.setMargins(0, 0, movex, 0);
-                        iv_maximum_age.setLayoutParams(params);
+                        params_r.setMargins(0, 0, movex, 0);
+                        iv_maximum_age.setLayoutParams(params_r);
                         RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(movex, ViewGroup.LayoutParams.MATCH_PARENT);
                         params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                         iv_maximum_age_bg_deactivate.setLayoutParams(params2);
@@ -155,25 +178,31 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                         else
                             tv_maximum_age.setText("30살+");
                         filter.setMaximum_age_current(11- movex / l_unit);
-                        is_same_age = false;
+
                         if(c_move >= seekbar_length) {
                             iv_maximum_age.setPadding(0, iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingRight(), iv_maximum_age.getPaddingBottom());
                         }
                         else {
                             iv_maximum_age.setPadding(iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingRight(), iv_maximum_age.getPaddingBottom());
                         }
+                        is_same_age = false;
                     }
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     int new_move;
                     new_move = (int)(c_move / l_unit) * l_unit;
+                    if(left_move_flag && filter.getMaximum_age_current() == filter.getMinimum_age_current()){
+                        left_move_flag = false;
+                        return true;
+                    }
                     if(is_same_age) {
-                        iv_minimum_age.setLayoutParams(params);
+                        iv_minimum_age.setLayoutParams(params_l);
                         new_move = Math.min(Math.max(0, new_move), seekbar_length);
                         tv_minimum_age.setText(Integer.toString(20 + new_move / l_unit)+"살");
-                        params.setMargins(new_move, 0, 0, 0);
+                        params_l.setMargins(new_move, 0, 0, 0);
                         iv_minimum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(new_move, ViewGroup.LayoutParams.MATCH_PARENT));
                         filter.setMinimum_age_current((new_move / l_unit));
                         is_same_age = false;
+                        left_move_flag = false;
                         return true;
                     }
                     else {
@@ -182,8 +211,8 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                             tv_maximum_age.setText(Integer.toString(31 - new_move / l_unit) + "살");
                         else
                             tv_maximum_age.setText("30살+");
-                        params.setMargins(0, 0, new_move, 0);
-                        iv_maximum_age.setLayoutParams(params);
+                        params_r.setMargins(0, 0, new_move, 0);
+                        iv_maximum_age.setLayoutParams(params_r);
                         RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(new_move, ViewGroup.LayoutParams.MATCH_PARENT);
                         params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                         iv_maximum_age_bg_deactivate.setLayoutParams(params2);
@@ -284,6 +313,49 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                 }
             }
         });
+        btn_apply_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getDialog().dismiss();
+            }
+        });
+        btn_cancel_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btn_type_2vs2.setBackgroundResource(R.drawable.rounded_gray_solid);
+                btn_type_2vs2.setTextColor(getResources().getColor(R.color.colorGray));
+                btn_type_3vs3.setBackgroundResource(R.drawable.rounded_gray_solid);
+                btn_type_3vs3.setTextColor(getResources().getColor(R.color.colorGray));
+                btn_type_4vs4.setBackgroundResource(R.drawable.rounded_gray_solid);
+                btn_type_4vs4.setTextColor(getResources().getColor(R.color.colorGray));
+                btn_place_1.setBackgroundResource(R.drawable.rounded_gray_solid);
+                btn_place_1.setTextColor(getResources().getColor(R.color.colorGray));
+                btn_place_2.setBackgroundResource(R.drawable.rounded_gray_solid);
+                btn_place_2.setTextColor(getResources().getColor(R.color.colorGray));
+                btn_place_3.setBackgroundResource(R.drawable.rounded_gray_solid);
+                btn_place_3.setTextColor(getResources().getColor(R.color.colorGray));
+                filter.setSelected_type_2vs2(false);
+                filter.setSelected_type_3vs3(false);
+                filter.setSelected_type_4vs4(false);
+                filter.setSelected_place_1(false);
+                filter.setSelected_place_2(false);
+                filter.setSelected_place_3(false);
+                tv_minimum_age.setText("20살");
+                params_l = (ViewGroup.MarginLayoutParams)iv_minimum_age.getLayoutParams();
+                params_l.setMargins(0, 0, 0, 0);
+                iv_minimum_age.setLayoutParams(params_l);
+                iv_minimum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT));
+                filter.setMinimum_age_current(0);
+                tv_maximum_age.setText("30살+");
+                params_r = (ViewGroup.MarginLayoutParams)iv_maximum_age.getLayoutParams();
+                params_r.setMargins(0, 0, 0, 0);
+                iv_maximum_age.setLayoutParams(params_r);
+                iv_maximum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT));
+                filter.setMaximum_age_current(11);
+            }
+        });
+
+
 
         return view;
     }

@@ -5,13 +5,14 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ProfileCard extends LinearLayout {
 
-    LinearLayout bg;
+    FrameLayout bg;
     TextView name_and_age, company, department;
 
 
@@ -37,7 +38,7 @@ public class ProfileCard extends LinearLayout {
         View v = li.inflate(R.layout.profile_card, this, false);
         addView(v);
 
-        bg = (LinearLayout) findViewById(R.id.bg);
+        bg = (FrameLayout) findViewById(R.id.bg);
         name_and_age = (TextView) findViewById(R.id.name_and_age);
         company = (TextView) findViewById(R.id.company);
         department = (TextView) findViewById(R.id.department);

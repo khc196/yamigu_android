@@ -37,5 +37,7 @@
     <attr name="chat" format="reference|string" />
     <attr name="time" format="reference|string" />
 </declare-styleable>
-
+    <declare-styleable name="InviteFriends">
+        <attr name="code" format="reference|string" />
+    </declare-styleable>
 </resources>

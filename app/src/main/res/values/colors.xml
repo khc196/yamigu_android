@@ -11,5 +11,8 @@
     <color name="color3vs3">#FF6024</color>
     <color name="color4vs4">#FF4600</color>
     <color name="colorBrown">#383633</color>
-    <color name="colorGray">#707070</color>
+    <color name="colorGray">#A0A0A0</color>
+    <color name="colorKakao">#FDDC3F</color>
+    <color name="colorGoogle">#DC4E41</color>
+
 </resources>
