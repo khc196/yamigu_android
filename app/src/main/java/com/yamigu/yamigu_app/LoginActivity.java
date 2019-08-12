@@ -18,9 +18,8 @@ public class LoginActivity extends AppCompatActivity {
         btn_login_kakao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), VerificationActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
     }
