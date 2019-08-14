@@ -9,25 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TermsActivity"></activity>
-        <activity android:name=".PrivacyActivity"></activity>
+        <activity android:name=".TicketActivity"></activity>
+        <activity android:name=".TermsActivity" />
+        <activity android:name=".PrivacyActivity" />
         <activity android:name=".SettingActivity" />
         <activity android:name=".AllianceListActivity" />
         <activity android:name=".FAQActivity" />
         <activity android:name=".GuideActivity" />
         <activity android:name=".WhatisYamiguActivity" />
-        <activity android:name=".CertificationWActivity">
-            android:windowSoftInputMode="adjustResize|adjustPan">
-        </activity>
-        <activity android:name=".CertificationUActivity">
-            android:windowSoftInputMode="adjustResize|adjustPan">
-        </activity>
-        <activity android:name=".SignUpActivity"
-            android:windowSoftInputMode="adjustResize|adjustPan">
-        </activity>
+        <activity android:name=".CertificationWActivity"></activity>
+        <activity android:name=".CertificationUActivity"></activity>
+        <activity
+            android:name=".SignUpActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".VerificationActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainOnboardingActivity" />
+        <activity android:name=".TicketOnboardingActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,9 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MeetingApplicationActivity" >
-            android:windowSoftInputMode="adjustResize|adjustPan">
-        </activity>
+        <activity android:name=".MeetingApplicationActivity"></activity>
         <activity android:name=".MainActivity" />
     </application>
 
