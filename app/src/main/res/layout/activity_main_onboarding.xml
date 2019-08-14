@@ -6,28 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".MainOnboardingActivity"
     android:background="@color/colorPrimary">
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="100">
+        android:layout_height="match_parent">
         <android.support.v4.view.ViewPager
             android:id="@+id/screen_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="68">
+            android:layout_height="match_parent">
         </android.support.v4.view.ViewPager>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="32">
+            android:layout_height="match_parent">
             <android.support.design.widget.TabLayout
                 app:tabBackground="@drawable/page_indicator_selector"
                 app:tabIndicatorHeight="0dp"
                 android:id="@+id/tab_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="117dp">
             </android.support.design.widget.TabLayout>
             <ImageButton
                 android:id="@+id/btn_start"
@@ -40,6 +38,6 @@
                 android:layout_marginBottom="17dp"
                 android:layout_marginRight="18dp"/>
         </RelativeLayout>
-    </LinearLayout>
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

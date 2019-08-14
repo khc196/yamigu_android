@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpActivity">
+    tools:context=".SignUpActivity"
     android:background="@color/colorPrimary">
     <LinearLayout
         android:layout_width="match_parent"
@@ -64,12 +64,13 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="6.6dp"/>
         </LinearLayout>
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="47dp"
             android:background="@drawable/bottom_border"
             >
             <RadioButton
+                android:id="@+id/radio_agree_all"
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"
                 android:layout_width="match_parent"
@@ -79,13 +80,14 @@
                 android:layout_gravity="start"
                 android:text="전체동의"
                 android:buttonTint="@color/colorPoint"/>
-        </LinearLayout>
-        <LinearLayout
+        </FrameLayout>
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="47dp"
             android:background="@drawable/bottom_border"
             >
             <RadioButton
+                android:id="@+id/radio_agree_using"
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"
                 android:layout_width="match_parent"
@@ -95,13 +97,23 @@
                 android:layout_gravity="start"
                 android:text="이용약관에 동의 (필수)"
                 android:buttonTint="@color/colorPoint"/>
-        </LinearLayout>
-        <LinearLayout
+            <TextView
+                android:id="@+id/btn_view_using"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="이용약관"
+                android:textSize="14dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="36dp"
+                android:textColor="@color/colorBlack"/>
+        </FrameLayout>
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="47dp"
             android:background="@drawable/bottom_border"
             >
             <RadioButton
+                android:id="@+id/radio_agree_private"
                 android:layout_marginLeft="36dp"
                 android:layout_marginRight="36dp"
                 android:layout_width="match_parent"
@@ -110,8 +122,18 @@
                 android:textAlignment="textStart"
                 android:layout_gravity="start"
                 android:text="개인정보 취급방침에 동의 (필수)"
+                android:textSize="14dp"
                 android:buttonTint="@color/colorPoint"/>
-        </LinearLayout>
+            <TextView
+                android:id="@+id/btn_view_private"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="개인정보 취급방침"
+                android:textSize="14dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="36dp"
+                android:textColor="@color/colorBlack"/>
+        </FrameLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -127,13 +149,16 @@
                 android:textSize="14dp"
                 />
             <EditText
+                android:id="@+id/et_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:text="미입력시 이름"
+                android:hint="미입력시 이름"
                 android:textSize="12dp"
                 android:background="@drawable/edittext_signup"
                 android:gravity="center_vertical"
-                android:textColor="#1E20252C"/>
+                android:textColorHint="#1E20252C"
+                android:imeOptions="actionNext"
+                android:layout_marginTop="6.1dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -143,13 +168,16 @@
                 android:textSize="14dp"
                 />
             <EditText
+                android:id="@+id/et_friendcode"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:text="선택사항: 코드 입력시 친구에게 티켓 한장 제공!"
+                android:hint="선택사항: 코드 입력시 친구에게 티켓 한장 제공!"
                 android:textSize="12dp"
                 android:background="@drawable/edittext_signup"
                 android:gravity="center_vertical"
-                android:textColor="#1E20252C"/>
+                android:textColorHint="#1E20252C"
+                android:imeOptions="actionDone"
+                android:layout_marginTop="6.1dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -162,8 +190,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="100">
+                android:weightSum="100"
+                android:layout_marginTop="6.1dp">
                 <Button
+                    android:id="@+id/btn_select_student"
                     android:layout_width="0dp"
                     android:layout_height="42dp"
                     android:layout_weight="48"
@@ -178,25 +208,33 @@
                     android:layout_height="42dp"
                     android:layout_weight="4"/>
                 <Button
+                    android:id="@+id/btn_select_worker"
                     android:layout_width="0dp"
                     android:layout_height="42dp"
                     android:layout_weight="48"
                     android:background="@drawable/state_pressed_gray"
-                    android:text="직업 O"
+                    android:text="직장인"
                     android:textColor="#C6C6C6"
                     android:textSize="12dp"
                     style="?android:attr/borderlessButtonStyle"
                     />
             </LinearLayout>
-            <Button
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/state_pressed_orange"
-                android:text="인증하기"
-                android:textSize="14dp"
-                android:textColor="@color/colorPoint"
-                style="?android:attr/borderlessButtonStyle"/>
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp">
+                <Button
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/btn_certify"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/state_pressed_orange"
+                    android:text="인증하기"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorPoint"
+                    style="?android:attr/borderlessButtonStyle"/>
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

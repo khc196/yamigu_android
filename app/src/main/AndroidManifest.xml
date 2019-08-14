@@ -9,7 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".TermsActivity"></activity>
+        <activity android:name=".PrivacyActivity"></activity>
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".AllianceListActivity" />
+        <activity android:name=".FAQActivity" />
+        <activity android:name=".GuideActivity" />
+        <activity android:name=".WhatisYamiguActivity" />
+        <activity android:name=".CertificationWActivity" />
+        <activity android:name=".CertificationUActivity" />
+        <activity android:name=".SignUpActivity" />
         <activity android:name=".VerificationActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainOnboardingActivity" />

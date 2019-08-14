@@ -37,16 +37,6 @@
                     android:src="@drawable/btn_login_kakao"
                     >
                 </ImageButton>
-                <ImageButton
-                    android:id="@+id/btn_login_google"
-                    android:layout_width="320dp"
-                    android:layout_height="51.35dp"
-                    android:background="@drawable/ic_filter_state_google_login"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/btn_login_google"
-                    android:layout_marginTop="11.7dp"
-                    >
-                </ImageButton>
             </LinearLayout>
         </RelativeLayout>
 

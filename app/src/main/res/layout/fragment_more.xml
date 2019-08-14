@@ -26,21 +26,25 @@
                 android:id="@+id/toolbar_title" />
         </android.support.v7.widget.Toolbar>
         <ImageButton
+            android:id="@+id/btn_whatis_yamigu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/yamigu_info_more"
             android:layout_marginBottom="1.5dp"/>
         <ImageButton
+            android:id="@+id/btn_alliance_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/yamigu_premium_more"
             android:layout_marginBottom="1.5dp"/>
         <ImageButton
+            android:id="@+id/btn_guide"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/yamigu_guide_more"
             android:layout_marginBottom="1.5dp"/>
         <ImageButton
+            android:id="@+id/btn_faq"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/yamigu_faq_more"/>
