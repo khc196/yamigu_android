@@ -58,5 +58,37 @@ public class TicketOnboardingActivity extends AppCompatActivity {
                 finish();
             }
         });
+        screenPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            boolean lastPageChange = false;
+            @Override
+            public void onPageSelected(int arg0) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                int lastIdx = ticketOnboardingPagerAdapter.getCount() - 1;
+
+                if(lastPageChange && position == lastIdx) {
+                    // next
+
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                int lastIdx = ticketOnboardingPagerAdapter.getCount() - 1;
+
+                int curItem = screenPager.getCurrentItem();
+                if(curItem==lastIdx /*&& lastPos==lastIdx*/  && state==1) {
+                    lastPageChange = true;
+                    startActivity(new Intent(getApplicationContext(), TicketActivity.class));
+                    finish();
+                } else {
+                    lastPageChange = false;
+                }
+            }
+        });
     }
 }
