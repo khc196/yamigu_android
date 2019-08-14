@@ -16,9 +16,15 @@
         <activity android:name=".FAQActivity" />
         <activity android:name=".GuideActivity" />
         <activity android:name=".WhatisYamiguActivity" />
-        <activity android:name=".CertificationWActivity" />
-        <activity android:name=".CertificationUActivity" />
-        <activity android:name=".SignUpActivity" />
+        <activity android:name=".CertificationWActivity">
+            android:windowSoftInputMode="adjustResize|adjustPan">
+        </activity>
+        <activity android:name=".CertificationUActivity">
+            android:windowSoftInputMode="adjustResize|adjustPan">
+        </activity>
+        <activity android:name=".SignUpActivity"
+            android:windowSoftInputMode="adjustResize|adjustPan">
+        </activity>
         <activity android:name=".VerificationActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainOnboardingActivity" />
@@ -29,7 +35,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MeetingApplicationActivity" />
+        <activity android:name=".MeetingApplicationActivity" >
+            android:windowSoftInputMode="adjustResize|adjustPan">
+        </activity>
         <activity android:name=".MainActivity" />
     </application>
 
