@@ -99,13 +99,21 @@
                         />
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginRight="18dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="12.1dp">
-                    
+                    <com.yamigu.yamigu_app.PlaceCard
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:name="오렌지룸 신촌점"
+                        app:phone="02-365=0789"
+                        app:location="신촌역 5분거리"
+                        app:benefit1="제휴 10,000원 쿠폰"
+                        app:benefit2="*소주 또는 맥주 2병 제공"
+                        app:image="@drawable/img_orangeroom">
+                    </com.yamigu.yamigu_app.PlaceCard>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

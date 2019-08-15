@@ -37,7 +37,15 @@
     <attr name="chat" format="reference|string" />
     <attr name="time" format="reference|string" />
 </declare-styleable>
-    <declare-styleable name="InviteFriends">
-        <attr name="code" format="reference|string" />
-    </declare-styleable>
+<declare-styleable name="InviteFriends">
+    <attr name="code" format="reference|string" />
+</declare-styleable>
+<declare-styleable name="PlaceCard">
+    <attr name="name" format="reference|string" />
+    <attr name="location" format="reference|string" />
+    <attr name="phone" format="reference|string" />
+    <attr name="benefit1" format="reference|string" />
+    <attr name="benefit2" format="reference|string" />
+    <attr name="image" format="reference|integer" />
+</declare-styleable>
 </resources>
