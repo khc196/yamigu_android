@@ -23,80 +23,80 @@
         </android.support.v7.widget.Toolbar>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:orientation="horizontal"
             android:weightSum="10"
-            android:background="@drawable/wlist_date_bar_bg">
+            android:background="@drawable/rectangle_gray_solid">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.03">
             </LinearLayout>
-            <TextView
+            <Button
                 android:id="@+id/btn_date_1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="5/28"
-                android:background="#F7F7F7"
                 android:textSize="14sp"
                 android:textColor="#FC7F2D"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_weight="1.43"/>
-            <TextView
+                android:layout_weight="1.43"
+                android:background="?android:selectableItemBackgroundBorderless"/>
+            <Button
                 android:id="@+id/btn_date_2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="5/29"
-                android:background="#F7F7F7"
                 android:textSize="14sp"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_weight="1.43"/>
-            <TextView
+                android:layout_weight="1.43"
+                android:background="?android:selectableItemBackgroundBorderless"/>
+            <Button
                 android:id="@+id/btn_date_3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="5/30"
-                android:background="#F7F7F7"
                 android:textSize="14sp"
                 android:textColor="#FC7F2D"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_weight="1.42"/>
-            <TextView
+                android:layout_weight="1.42"
+                android:background="?android:selectableItemBackgroundBorderless"/>
+            <Button
                 android:id="@+id/btn_date_4"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="5/31"
-                android:background="#F7F7F7"
                 android:textSize="14sp"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_weight="1.42"/>
-            <TextView
+                android:layout_weight="1.42"
+                android:background="?android:selectableItemBackgroundBorderless"/>
+            <Button
                 android:id="@+id/btn_date_5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="6/1"
-                android:background="#F7F7F7"
                 android:textSize="14sp"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_weight="1.42"/>
-            <TextView
+                android:layout_weight="1.42"
+                android:background="?android:selectableItemBackgroundBorderless"/>
+            <Button
                 android:id="@+id/btn_date_6"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="6/2"
-                android:background="#F7F7F7"
                 android:textSize="14sp"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_weight="1.42"/>
-            <TextView
+                android:layout_weight="1.42"
+                android:background="?android:selectableItemBackgroundBorderless"/>
+            <Button
                 android:id="@+id/btn_date_7"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="6/3"
-                android:background="#F7F7F7"
                 android:textSize="14sp"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_weight="1.42"/>
+                android:layout_weight="1.42"
+                android:background="?android:selectableItemBackgroundBorderless"/>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

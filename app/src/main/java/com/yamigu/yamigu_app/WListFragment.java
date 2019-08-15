@@ -29,7 +29,7 @@ import java.util.zip.Inflater;
 
 public class WListFragment extends Fragment {
     private Toolbar tb;
-    private TextView[] btn_date_list;
+    private Button[] btn_date_list;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
