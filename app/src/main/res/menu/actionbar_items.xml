@@ -8,11 +8,24 @@
         android:icon="@drawable/actionbar_notification"
         app:showAsAction="always"
     />
-    <item
+    <!--item
         android:id="@+id/menu_ticket"
         android:title="search"
         android:icon="@drawable/actionbar_ticket"
         app:showAsAction="always"
-    />
+    /-->
+    <item
+        android:id="@+id/menu_ticket"
+        android:title="ticket"
+        android:icon="@drawable/actionbar_ticket"
+        app:showAsAction="always">
+    </item>
+    <!--item
+        android:id="@+id/menu_count"
+        android:title="count"
+        app:actionLayout="@layout/badge_layout_ticket"
+        app:showAsAction="always">
+
+    </item-->
 </menu>
 

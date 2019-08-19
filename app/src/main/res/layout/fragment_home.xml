@@ -13,14 +13,27 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:background="@color/colorPrimary"
-            android:theme="@style/MyActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            />
+            android:layout_height="match_parent">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@color/colorPrimary"
+                android:theme="@style/MyActionBar"
+                android:layout_marginRight="10.3dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:text="0"
+                android:textSize="14dp"
+                android:layout_marginRight="12.4dp"/>
+        </FrameLayout>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -61,6 +74,7 @@
                     >
                 </com.yamigu.yamigu_app.MyMeetingCard>
                 <com.yamigu.yamigu_app.MyMeetingCard_Chat
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:chat="오늘 재밌게 놀아요~"

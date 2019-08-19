@@ -13,12 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+
 public class WaitingTeamCard2 extends LinearLayout {
 
     LinearLayout bg, top_bg;
     RelativeLayout rl_applying;
-    ImageView label, point_line;
-    TextView description, profile1, profile2, date, place, rating;
+    ImageView point_line;
+    TextView description, profile1, profile2, date, place, rating, label;
 
     public WaitingTeamCard2(Context context) {
         super(context);
@@ -45,7 +46,7 @@ public class WaitingTeamCard2 extends LinearLayout {
         bg = (LinearLayout) findViewById(R.id.bg);
         top_bg = (LinearLayout) findViewById(R.id.top_bg);
         rl_applying = (RelativeLayout) findViewById(R.id.rl_applying);
-        label = (ImageView) findViewById(R.id.label);
+        label = (TextView) findViewById(R.id.label);
         point_line = (ImageView) findViewById(R.id.point_line);
         description = (TextView) findViewById(R.id.description);
         profile1 = (TextView) findViewById(R.id.profile1);
@@ -94,19 +95,22 @@ public class WaitingTeamCard2 extends LinearLayout {
         int label_img = typedArray.getInteger(R.styleable.MeetingTeamHome_label, 1);
         switch(label_img){
             case 1:
-                label.setImageResource(R.drawable.label_2vs2);
+                label.setBackgroundResource(R.drawable.label_2vs2_bg);
+                label.setText("2:2 소개팅");
                 point_line.setBackgroundColor(getResources().getColor(R.color.colorPoint));
                 rating.setTextColor(getResources().getColor(R.color.colorPoint));
                 rl_applying.setBackgroundResource(R.drawable.bottom_rounded_orange);
                 break;
             case 2:
-                label.setImageResource(R.drawable.label_3vs3);
+                label.setBackgroundResource(R.drawable.label_3vs3_bg);
+                label.setText("3:3 미팅");
                 point_line.setBackgroundColor(getResources().getColor(R.color.color3vs3));
                 rating.setTextColor(getResources().getColor(R.color.color3vs3));
                 rl_applying.setBackgroundResource(R.drawable.bottom_rounded_3vs3);
                 break;
             case 3:
-                label.setImageResource(R.drawable.label_4vs4);
+                label.setBackgroundResource(R.drawable.label_4vs4_bg);
+                label.setText("4:4 미팅");
                 point_line.setBackgroundColor(getResources().getColor(R.color.color4vs4));
                 rating.setTextColor(getResources().getColor(R.color.color4vs4));
                 rl_applying.setBackgroundResource(R.drawable.bottom_rounded_4vs4);
@@ -133,7 +137,7 @@ public class WaitingTeamCard2 extends LinearLayout {
 
 
     void setLabel(int label_resID) {
-        label.setImageResource(label_resID);
+        label.setBackgroundResource(label_resID);
     }
 
     void setDescription(int description_resID) {

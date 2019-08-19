@@ -19,7 +19,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), VerificationActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_slide_out_right);
     }
 }

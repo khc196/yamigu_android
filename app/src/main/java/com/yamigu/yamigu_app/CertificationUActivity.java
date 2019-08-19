@@ -38,9 +38,15 @@ public class CertificationUActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
         });
         btn_skip = (TextView) findViewById(R.id.btn_skip);
         btn_skip.setPaintFlags(btn_skip.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_slide_out_right);
     }
 }

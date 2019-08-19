@@ -12,8 +12,8 @@ import android.widget.TextView;
 public class WaitingTeamCard extends LinearLayout {
 
     LinearLayout bg;
-    ImageView label, point_line;
-    TextView description, profile1, profile2, date, place, rating;
+    ImageView point_line;
+    TextView description, profile1, profile2, date, place, rating, label;
 
     public WaitingTeamCard(Context context) {
         super(context);
@@ -38,7 +38,7 @@ public class WaitingTeamCard extends LinearLayout {
         addView(v);
 
         bg = (LinearLayout) findViewById(R.id.bg);
-        label = (ImageView) findViewById(R.id.label);
+        label = (TextView) findViewById(R.id.label);
         point_line = (ImageView) findViewById(R.id.point_line);
         description = (TextView) findViewById(R.id.description);
         profile1 = (TextView) findViewById(R.id.profile1);
@@ -59,17 +59,20 @@ public class WaitingTeamCard extends LinearLayout {
         int label_img = typedArray.getInteger(R.styleable.MeetingTeamHome_label, 1);
         switch(label_img){
             case 1:
-                label.setImageResource(R.drawable.label_2vs2);
+                label.setBackgroundResource(R.drawable.label_2vs2_bg);
+                label.setText("2:2 소개팅");
                 point_line.setBackgroundColor(getResources().getColor(R.color.colorPoint));
                 rating.setTextColor(getResources().getColor(R.color.colorPoint));
                 break;
             case 2:
-                label.setImageResource(R.drawable.label_3vs3);
+                label.setBackgroundResource(R.drawable.label_3vs3_bg);
+                label.setText("3:3 미팅");
                 point_line.setBackgroundColor(getResources().getColor(R.color.color3vs3));
                 rating.setTextColor(getResources().getColor(R.color.color3vs3));
                 break;
             case 3:
-                label.setImageResource(R.drawable.label_4vs4);
+                label.setBackgroundResource(R.drawable.label_4vs4_bg);
+                label.setText("4:4 미팅");
                 point_line.setBackgroundColor(getResources().getColor(R.color.color4vs4));
                 rating.setTextColor(getResources().getColor(R.color.color4vs4));
                 break;
@@ -94,7 +97,7 @@ public class WaitingTeamCard extends LinearLayout {
 
 
     void setLabel(int label_resID) {
-        label.setImageResource(label_resID);
+        label.setBackgroundResource(label_resID);
     }
 
     void setDescription(int description_resID) {

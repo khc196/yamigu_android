@@ -287,6 +287,10 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
     class MeetingApplication {
         private int type, date, place;
         private String appeal;

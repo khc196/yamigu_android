@@ -106,7 +106,6 @@
                 android:gravity="right">
             </TextView>
             <TextView
-                android:id="@+id/btn_skip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="26dp"
@@ -158,6 +157,7 @@
                     style="?android:attr/borderlessButtonStyle"/>
 
                 <TextView
+                    android:id="@+id/btn_skip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/btn_gohome"

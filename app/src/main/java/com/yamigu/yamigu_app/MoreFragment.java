@@ -17,10 +17,11 @@ import android.widget.ImageButton;
 public class MoreFragment extends Fragment {
     private Toolbar tb;
     private ImageButton btn_whatis_yamigu, btn_alliance_list, btn_guide, btn_faq;
+    View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_more, container, false);
+        view = inflater.inflate(R.layout.fragment_more, container, false);
         tb = (Toolbar) view.findViewById(R.id.toolbar) ;
         ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
@@ -37,6 +38,7 @@ public class MoreFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), WhatisYamiguActivity.class);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
         });
         btn_alliance_list.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +46,7 @@ public class MoreFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), AllianceListActivity.class);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
         });
         btn_guide.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +54,7 @@ public class MoreFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), GuideActivity.class);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
         });
         btn_faq.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +62,7 @@ public class MoreFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), FAQActivity.class);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
         });
         return view;
@@ -66,12 +71,12 @@ public class MoreFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.actionbar_setting, menu);
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(getContext(), SettingActivity.class);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
         return true;
     }
 }

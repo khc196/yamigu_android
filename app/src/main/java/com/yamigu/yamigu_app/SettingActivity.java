@@ -45,4 +45,9 @@ public class SettingActivity extends AppCompatActivity {
 
         btn_withdrawal.setPaintFlags(btn_withdrawal.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_slide_out_right);
+    }
 }

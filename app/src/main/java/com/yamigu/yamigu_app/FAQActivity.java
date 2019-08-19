@@ -28,4 +28,9 @@ public class FAQActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_slide_out_right);
+    }
 }

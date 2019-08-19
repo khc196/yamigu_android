@@ -18,23 +18,26 @@
             android:layout_width="match_parent"
             android:layout_height="34dp"
             android:orientation="horizontal">
-        <ImageView
-            android:id="@+id/label"
-            android:src="@drawable/label_2vs2"
-            android:layout_width="99dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="10dp"
-            android:scaleType="fitStart"
-            >
-        </ImageView>
+            <TextView
+                android:id="@+id/label"
+                android:background="@drawable/label_2vs2_bg"
+                android:layout_width="99dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="7dp"
+                android:scaleType="fitStart"
+                android:textColor="@color/colorPrimary"
+                android:text="2:2 소개팅"
+                android:textSize="12dp"
+                android:gravity="center_vertical|center_horizontal">
+            </TextView>
         <TextView
             android:id="@+id/place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="신촌/홍대"
-            android:layout_marginRight="12dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:textStyle="bold"
             />

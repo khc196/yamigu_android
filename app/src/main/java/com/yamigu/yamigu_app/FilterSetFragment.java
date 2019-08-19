@@ -33,6 +33,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         FilterSetFragment f = new FilterSetFragment();
         return f;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

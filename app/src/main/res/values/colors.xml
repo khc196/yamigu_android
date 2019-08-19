@@ -3,11 +3,11 @@
     <color name="colorBlack">#000000</color>
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#FFFFFF</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#FC903B</color>
     <color name="colorBackground">#FCFCFC</color>
     <color name="colorBorder">#E5E5E5</color>
     <color name="colorRed">#FF4D00</color>
-    <color name="colorPoint">#FC903B</color>
+    <color name="colorPoint">#FF7B22</color>
     <color name="color3vs3">#FF6024</color>
     <color name="color4vs4">#FF4600</color>
     <color name="colorBrown">#383633</color>

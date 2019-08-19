@@ -37,6 +37,7 @@ public class MypageFragment extends Fragment {
             case R.id.menu_ticket:
                 Intent intent = new Intent(getContext(), TicketOnboardingActivity.class);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                 return true;
         }
         return true;

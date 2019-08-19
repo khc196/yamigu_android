@@ -55,6 +55,7 @@ public class TicketOnboardingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), TicketActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                 finish();
             }
         });
@@ -84,11 +85,17 @@ public class TicketOnboardingActivity extends AppCompatActivity {
                 if(curItem==lastIdx /*&& lastPos==lastIdx*/  && state==1) {
                     lastPageChange = true;
                     startActivity(new Intent(getApplicationContext(), TicketActivity.class));
+                    overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                     finish();
                 } else {
                     lastPageChange = false;
                 }
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_slide_out_right);
     }
 }

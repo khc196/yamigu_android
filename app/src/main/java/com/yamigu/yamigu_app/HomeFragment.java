@@ -17,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 public class HomeFragment extends Fragment {
     private Toolbar tb;
@@ -28,6 +29,7 @@ public class HomeFragment extends Fragment {
         ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         setHasOptionsMenu(true);
 
         return view;
@@ -36,6 +38,7 @@ public class HomeFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.actionbar_items, menu);
+        RelativeLayout badgeLayout = (RelativeLayout) menu.findItem(R.id.menu_ticket).getActionView();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -43,6 +46,7 @@ public class HomeFragment extends Fragment {
             case R.id.menu_ticket:
                 Intent intent = new Intent(getContext(), TicketOnboardingActivity.class);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                 return true;
         }
         return true;

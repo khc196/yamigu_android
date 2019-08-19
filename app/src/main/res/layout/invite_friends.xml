@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/text_invite_freinds_desc"
                     android:layout_marginTop="13dp"
-                    android:layout_marginLeft="12dp"/>
+                    android:layout_marginLeft="10dp"/>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

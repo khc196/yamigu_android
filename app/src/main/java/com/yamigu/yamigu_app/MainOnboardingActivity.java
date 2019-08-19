@@ -18,6 +18,10 @@ public class MainOnboardingActivity extends AppCompatActivity {
     ImageButton btn_start;
     int tabsize;
     @Override
+    public void onBackPressed() {
+        finish();
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_onboarding);
@@ -43,6 +47,8 @@ public class MainOnboardingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+
                 finish();
             }
         });
@@ -93,6 +99,7 @@ public class MainOnboardingActivity extends AppCompatActivity {
                 if(curItem==lastIdx /*&& lastPos==lastIdx*/  && state==1) {
                     lastPageChange = true;
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                     finish();
                 } else {
                     lastPageChange = false;

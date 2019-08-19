@@ -49,11 +49,16 @@ public class SplashActivity extends AppCompatActivity {
                 //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 Intent intent = new Intent(getApplicationContext(), MainOnboardingActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                 finish();
             }
         };
         mHandler = new Handler();
         mHandler.postDelayed(mRunnable1, 1000);
         mHandler.postDelayed(mRunnable2, 1500);
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

@@ -12,8 +12,7 @@ import android.widget.TextView;
 public class TodayScheduledTeamCard extends LinearLayout {
 
     LinearLayout bg;
-    ImageView label;
-    TextView place, man, woman;
+    TextView place, man, woman, label;
 
     public TodayScheduledTeamCard(Context context) {
         super(context);
@@ -38,7 +37,7 @@ public class TodayScheduledTeamCard extends LinearLayout {
         addView(v);
 
         bg = (LinearLayout) findViewById(R.id.bg);
-        label = (ImageView) findViewById(R.id.label);
+        label = (TextView) findViewById(R.id.label);
         place = (TextView) findViewById(R.id.place);
         man = (TextView) findViewById(R.id.man);
         woman = (TextView) findViewById(R.id.woman);
@@ -52,8 +51,8 @@ public class TodayScheduledTeamCard extends LinearLayout {
         setTypeArray(typedArray);
     }
     private void setTypeArray(TypedArray typedArray) {
-        int label_img = typedArray.getResourceId(R.styleable.ScheduledTeamHome_label, R.drawable.label_2vs2);
-        label.setImageResource(label_img);
+        int label_img = typedArray.getResourceId(R.styleable.ScheduledTeamHome_label, R.drawable.label_2vs2_bg);
+        label.setBackgroundResource(label_img);
 
         String place_string = typedArray.getString(R.styleable.ScheduledTeamHome_place);
         place.setText(place_string);
@@ -69,7 +68,7 @@ public class TodayScheduledTeamCard extends LinearLayout {
 
 
     void setLabel(int label_resID) {
-        label.setImageResource(label_resID);
+        label.setBackgroundResource(label_resID);
     }
 
     void setPlace(int description_resID) { place.setText(description_resID);

@@ -59,6 +59,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), TermsActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
         });
         btn_view_private.setPaintFlags(btn_view_private.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -67,6 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), PrivacyActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
         });
         btn_certify.setTextColor(getResources().getColor(R.color.colorNonselect));
@@ -134,6 +136,7 @@ public class SignUpActivity extends AppCompatActivity {
                     return;
                 }
                 startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
         });
         radio_agree_all.setOnClickListener(new View.OnClickListener() {
@@ -202,6 +205,11 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_slide_out_right);
     }
     private class Selector {
         private boolean student, worker;

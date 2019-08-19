@@ -18,121 +18,156 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginRight="25dp"
             >
-            <ImageView
-                android:id="@+id/label"
-                android:src="@drawable/label2_2vs2"
-                android:layout_width="99dp"
-                android:layout_height="24dp"
-                android:scaleType="fitStart"
-                android:layout_alignParentLeft="true"
-                >
-            </ImageView>
-            <ImageButton
-                android:id="@+id/btn_edit_card"
-                android:layout_width="114.5dp"
-                android:layout_height="16dp"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/button_edit_meeting"
-                />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="35dp"
-                >
-                <ImageView
-                    android:id="@+id/label_matching_completed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/label_matching_completed"
-                    android:visibility="invisible"/>
+                android:layout_alignParentLeft="true"
+                android:orientation="vertical">
                 <TextView
-                    android:id="@+id/place"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="30dp"
-                    android:text="건대/왕십리"
-                    android:textColor="@color/colorBlack"/>
-                <TextView
-                    android:id="@+id/num_of_applying"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="17dp"
+                    android:id="@+id/label"
+                    android:background="@drawable/label_2vs2_bg"
+                    android:layout_width="99dp"
+                    android:layout_height="24dp"
+                    android:text="2:2 소개팅"
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center_horizontal|center_vertical"
                     android:textSize="16dp"
-                    android:text="2팀 신청!"
-                    android:textColor="@color/colorBlack"/>
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginRight="35dp"
                     >
-                    <ImageButton
+                </TextView>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="3dp"
+                    >
+                    <TextView
+                        android:id="@+id/label_matching_completed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="매칭 완료!"
+                        android:textColor="@color/colorPoint"
+                        android:textSize="21dp"
+                        android:visibility="invisible"/>
+                    <TextView
+                        android:id="@+id/place"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="30dp"
+                        android:text="건대/왕십리"
+                        android:textColor="@color/colorBlack"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/right_pane"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/btn_edit_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="17dp"
+                    >
+                    <ImageView
+                        android:id="@+id/icon_edit_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/icon_edit"
+                        android:layout_gravity="bottom"
+                        />
+                    <TextView
+                        android:id="@+id/text_edit_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="신청내역 수정하기"
+                        android:textColor="@color/colorPoint"
+                        android:gravity="center_vertical"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="83.6dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    >
+                    <TextView
+                        android:id="@+id/month"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cal_month_2vs2"
+                        android:text="5월"
+                        android:textColor="@color/colorPrimary"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:textSize="13dp"/>
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/cal_date"
+                            android:text="28일"
+                            android:textColor="@color/colorBlack"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:textSize="30dp"
+                            />
+                        <TextView
+                            android:id="@+id/dday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/cal_dday"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="43dp"
+                            android:text="Today"
+                            android:textSize="10dp"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:textColor="@color/colorPrimary"
+                            />
+                    </FrameLayout>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/btn_view_waiting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="대기팀 보기"
+                    android:textColor="@color/colorPoint"
+                    android:layout_marginTop="4dp"
+                    android:textSize="16dp"
+                    android:layout_gravity="center_horizontal"/>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/right_pane">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/num_of_applying"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:textSize="16dp"
+                        android:text="2팀 신청!"
+                        android:textColor="@color/colorBlack"/>
+                    <TextView
                         android:id="@+id/btn_view_applying"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/btn_view_applying"/>
-                    <ImageButton
-                        android:id="@+id/btn_view_waiting"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/btn_view_waiting"
-                        android:layout_alignParentRight="true"/>
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="83.6dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="35dp"
-                >
-                <TextView
-                    android:id="@+id/month"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/cal_month"
-                    android:text="5월"
-                    android:textColor="@color/colorPrimary"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:textSize="13dp"
-                    android:textStyle="bold"/>
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/cal_date"
-                        android:text="28일"
-                        android:textColor="@color/colorBlack"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:textSize="30dp"
-                        />
-                    <TextView
-                        android:id="@+id/dday"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/cal_dday"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="43dp"
-                        android:text="Today"
-                        android:textSize="10dp"
-                        android:textStyle="bold"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:textColor="@color/colorPrimary"
-                        />
-                </FrameLayout>
-            </LinearLayout>
+                        android:text="신청팀 보기"
+                        android:textColor="@color/colorPoint"
+                        android:textSize="16dp"
+                        android:layout_alignParentBottom="true"/>
+                </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
     <ImageView
