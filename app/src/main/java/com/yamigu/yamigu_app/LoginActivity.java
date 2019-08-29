@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     ImageButton btn_login_kakao;
     private LoginButton btn_kakao_login;
     private SessionCallback callback;
-
+    private String auth_token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,13 +111,15 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    protected void redirectSignupActivity() {
-        final Intent intent = new Intent(this, SignUpActivity.class);
+    protected void redirectVerificationActivity() {
+        final Intent intent = new Intent(this, VerificationActivity.class);
+        intent.putExtra("auth_token", auth_token);
         startActivity(intent);
         finish();
     }
     protected void redirectMainActivity() {
         final Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("auth_token", auth_token);
         startActivity(intent);
         finish();
     }
@@ -162,6 +164,7 @@ public class LoginActivity extends AppCompatActivity {
                 NetworkTask2 networkTask2 = new NetworkTask2(url, values, jsonObject.getString("key"));
                 Log.d("onPostExecute :: ", "jsonObject key: " + jsonObject.getString("key"));
                 networkTask2.execute();
+                auth_token = jsonObject.getString("key");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -205,7 +208,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if (!isFirstRun) {
                 if(signup_flag) {
-                    redirectSignupActivity();
+                    redirectVerificationActivity();
                 }
                 else {
                     redirectMainActivity();

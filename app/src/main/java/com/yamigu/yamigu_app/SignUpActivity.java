@@ -1,11 +1,16 @@
 package com.yamigu.yamigu_app;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -13,16 +18,24 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
     private Toolbar tb;
     private RadioButton radio_agree_all, radio_agree_using, radio_agree_private;
     private EditText et_nickname, et_friendcode;
     private Button btn_select_student, btn_select_worker, btn_certify;
-    private TextView btn_view_using, btn_view_private;
+    private TextView btn_view_using, btn_view_private, tv_nickname_available;
     private Selector selector;
     private SelectorR selectorR;
+    private boolean nickname_validated;
+    private String nickname;
+    private String friend_code;
+    private String auth_token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +52,8 @@ public class SignUpActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        Intent intent = getIntent();
+        auth_token = intent.getExtras().getString("auth_token");
 
         radio_agree_all = (RadioButton) findViewById(R.id.radio_agree_all);
         radio_agree_using = (RadioButton) findViewById(R.id.radio_agree_using);
@@ -50,6 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
         btn_certify = (Button) findViewById(R.id.btn_certify);
         btn_view_using = (TextView) findViewById(R.id.btn_view_using);
         btn_view_private = (TextView) findViewById(R.id.btn_view_private);
+        tv_nickname_available = (TextView) findViewById(R.id.tv_available_nickname);
 
         selector = new Selector();
         selectorR = new SelectorR();
@@ -135,6 +151,9 @@ public class SignUpActivity extends AppCompatActivity {
                 if(!selectorR.isAgreed_all()) {
                     return;
                 }
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("friend_code", friend_code);
+                intent.putExtra("auth_token", auth_token);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
@@ -205,6 +224,45 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
+        et_nickname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                boolean is_validate = false;
+                String url = "http://192.168.43.223:9999/api/validation/nickname/"+editable.toString();
+                ContentValues values = new ContentValues();
+                NetworkTask networkTask = new NetworkTask(url, values);
+                String pattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]*$";
+                nickname_validated = false;
+                is_validate = editable.length() <= 6 && Pattern.matches(pattern, editable.toString());
+                if(!editable.toString().isEmpty()) {
+                    tv_nickname_available.setVisibility(View.VISIBLE);
+                    if (!is_validate || networkTask.execute() == null) {
+                        tv_nickname_available.setTextColor(getResources().getColor(R.color.colorRed));
+                        tv_nickname_available.setText("사용 불가능한 닉네입입니다.");
+                        nickname_validated = false;
+                        nickname = "";
+                    } else {
+                        tv_nickname_available.setTextColor(getResources().getColor(R.color.colorGreen));
+                        tv_nickname_available.setText("사용 가능한 닉네입입니다.");
+                        nickname_validated = true;
+                        nickname = editable.toString();
+                    }
+                }
+                else {
+                    tv_nickname_available.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
     @Override
     public void onBackPressed() {
@@ -257,6 +315,32 @@ public class SignUpActivity extends AppCompatActivity {
         }
         public void turnOffAgreed_privacy() {
             agreed_privacy = false;
+        }
+    }
+    public class NetworkTask extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(url, values, "GET", ""); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
         }
     }
 }

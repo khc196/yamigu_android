@@ -10,6 +10,7 @@ import android.widget.Button;
 public class VerificationActivity extends AppCompatActivity {
     private Toolbar tb;
     private Button btn_verify_phone;
+    private String auth_token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,12 +23,15 @@ public class VerificationActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        Intent intent = getIntent();
+        auth_token = intent.getExtras().getString("auth_token");
 
         btn_verify_phone = (Button) findViewById(R.id.btn_verify_phone);
         btn_verify_phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                intent.putExtra("auth_token", auth_token);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
 
