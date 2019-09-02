@@ -1,5 +1,9 @@
 package com.yamigu.yamigu_app;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,6 +17,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -43,6 +49,21 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private final int MAX_APPEAL_LENGTH = 50;
     private final String[] DOW = {"", "일", "월", "화", "수", "목", "금", "토"};
     private String auth_token;
+    private void start_fadein(final Button button) {
+        Thread animationThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    AlphaAnimation aAnim = new AlphaAnimation(0.0f, 1.0f);
+                    aAnim.setDuration(500);
+                    button.startAnimation(aAnim);
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            }
+        });
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,9 +120,9 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             }
         });
 
+
         for (int i = 0; i < btn_select_type_array.length; i++) {
             final Button button = btn_select_type_array[i];
-            final Button obutton;
             final int me = i+1;
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -117,29 +138,56 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                     if(me != ma.getType()) {
                         ma.setType(me);
                         ma.setType_string(button.getText().toString());
-                        button.setBackgroundResource(R.drawable.button_background_select);
-                        button.setTextColor(Color.WHITE);
-                        selected_type_text.setText(ma.getType_string());
-                        if(ma.getDate() == -1) {
-                            ma.reselect(ma.RESELECT_DATE);
-                            type_view.setVisibility(View.GONE);
-                            date_view.setVisibility(View.VISIBLE);
-                            place_view.setVisibility(View.GONE);
-                        }
-                        else if(ma.getPlace() == -1) {
-                            ma.reselect(ma.RESELECT_PLACE);
-                            type_view.setVisibility(View.GONE);
-                            date_view.setVisibility(View.GONE);
-                            place_view.setVisibility(View.VISIBLE);
-                        }
-                        else {
-                            ma.reselect(ma.RESELECT_APPEAL);
-                            type_view.setVisibility(View.GONE);
-                            date_view.setVisibility(View.GONE);
-                            place_view.setVisibility(View.GONE);
-                            appeal_view.setVisibility(View.VISIBLE);
-                            btn_okay.setVisibility(View.VISIBLE);
-                        }
+
+                        int colorFrom = getResources().getColor(R.color.colorPrimary);
+                        int colorTo = getResources().getColor(R.color.colorPoint);
+                        int colorFrom2 = getResources().getColor(R.color.colorBlack);
+                        int colorTo2 = getResources().getColor(R.color.colorPrimary);
+                        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                        ValueAnimator colorAnimation2 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom2, colorTo2);
+                        colorAnimation.setDuration(350); // milliseconds
+                        colorAnimation2.setDuration(350);
+                        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animator) {
+                                button.setBackgroundColor((int) animator.getAnimatedValue());
+                            }
+
+                        });
+                        colorAnimation.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                if (ma.getDate() == -1) {
+                                    ma.reselect(ma.RESELECT_DATE);
+                                    type_view.setVisibility(View.GONE);
+                                    date_view.setVisibility(View.VISIBLE);
+                                    place_view.setVisibility(View.GONE);
+                                } else if (ma.getPlace() == -1) {
+                                    ma.reselect(ma.RESELECT_PLACE);
+                                    type_view.setVisibility(View.GONE);
+                                    date_view.setVisibility(View.GONE);
+                                    place_view.setVisibility(View.VISIBLE);
+                                } else {
+                                    ma.reselect(ma.RESELECT_APPEAL);
+                                    type_view.setVisibility(View.GONE);
+                                    date_view.setVisibility(View.GONE);
+                                    place_view.setVisibility(View.GONE);
+                                    appeal_view.setVisibility(View.VISIBLE);
+                                    btn_okay.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
+                        colorAnimation2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animator) {
+                                button.setTextColor((int) animator.getAnimatedValue());
+                                selected_type_text.setText(ma.getType_string());
+
+                            }
+                        });
+                        colorAnimation.start();
+                        colorAnimation2.start();
                     }
                     else {
                         ma.setType(-1);
@@ -164,8 +212,9 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         cal.setTime(new Date());
         SimpleDateFormat sdf = new SimpleDateFormat("M월 d일");
 
-
-        for (final Button button : btn_select_date_array) {
+        for (int i = 0; i < btn_select_date_array.length; i++) {
+            final Button button = btn_select_date_array[i];
+            final int me = i+1;
             String getTime = sdf.format(cal.getTime());
             int day_of_week = cal.get(Calendar.DAY_OF_WEEK);
             cal.add(Calendar.DATE, 1);
@@ -173,38 +222,68 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view){
-                    for (Button obutton : btn_select_date_array) {
-                        if(button.getId() != obutton.getId()) {
+                    Button obutton;
+                    for (int j = 0; j < btn_select_date_array.length; j++) {
+                        obutton = btn_select_date_array[j];
+                        if(me != j+1) {
                             obutton.setBackgroundResource(R.drawable.button_background_non_select);
                             obutton.setTextColor(Color.BLACK);
                         }
                     }
-                    if(button.getId() != ma.getDate()) {
-                        ma.setDate(button.getId());
+                    if(me != ma.getDate()) {
+                        ma.setDate(me);
                         ma.setDate_string(button.getText().toString());
-                        button.setBackgroundResource(R.drawable.button_background_select);
-                        button.setTextColor(Color.WHITE);
-                        selected_date_text.setText(ma.getDate_string());
-                        if(ma.getType() == -1) {
-                            ma.reselect(ma.RESELECT_TYPE);
-                            type_view.setVisibility(View.VISIBLE);
-                            date_view.setVisibility(View.GONE);
-                            place_view.setVisibility(View.GONE);
-                        }
-                        else if(ma.getPlace() == -1) {
-                            ma.reselect(ma.RESELECT_PLACE);
-                            type_view.setVisibility(View.GONE);
-                            date_view.setVisibility(View.GONE);
-                            place_view.setVisibility(View.VISIBLE);
-                        }
-                        else {
-                            ma.reselect(ma.RESELECT_APPEAL);
-                            type_view.setVisibility(View.GONE);
-                            date_view.setVisibility(View.GONE);
-                            place_view.setVisibility(View.GONE);
-                            appeal_view.setVisibility(View.VISIBLE);
-                            btn_okay.setVisibility(View.VISIBLE);
-                        }
+                        int colorFrom = getResources().getColor(R.color.colorPrimary);
+                        int colorTo = getResources().getColor(R.color.colorPoint);
+                        int colorFrom2 = getResources().getColor(R.color.colorBlack);
+                        int colorTo2 = getResources().getColor(R.color.colorPrimary);
+                        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                        ValueAnimator colorAnimation2 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom2, colorTo2);
+                        colorAnimation.setDuration(350); // milliseconds
+                        colorAnimation2.setDuration(350);
+                        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animator) {
+                                button.setBackgroundColor((int) animator.getAnimatedValue());
+                            }
+
+                        });
+                        colorAnimation.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                if(ma.getType() == -1) {
+                                    ma.reselect(ma.RESELECT_TYPE);
+                                    type_view.setVisibility(View.VISIBLE);
+                                    date_view.setVisibility(View.GONE);
+                                    place_view.setVisibility(View.GONE);
+                                }
+                                else if(ma.getPlace() == -1) {
+                                    ma.reselect(ma.RESELECT_PLACE);
+                                    type_view.setVisibility(View.GONE);
+                                    date_view.setVisibility(View.GONE);
+                                    place_view.setVisibility(View.VISIBLE);
+                                }
+                                else {
+                                    ma.reselect(ma.RESELECT_APPEAL);
+                                    type_view.setVisibility(View.GONE);
+                                    date_view.setVisibility(View.GONE);
+                                    place_view.setVisibility(View.GONE);
+                                    appeal_view.setVisibility(View.VISIBLE);
+                                    btn_okay.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
+                        colorAnimation2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animator) {
+                                button.setTextColor((int) animator.getAnimatedValue());
+                                selected_date_text.setText(ma.getDate_string());
+
+                            }
+                        });
+                        colorAnimation.start();
+                        colorAnimation2.start();
                     }
                     else {
                         ma.setDate(-1);
@@ -229,38 +308,66 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Button obutton;
                     for(int j = 0; j < btn_select_place_array.length; j++) {
-                        obutton = btn_select_type_array[j];
+                        obutton = btn_select_place_array[j];
                         if(me != j+1) {
                             obutton.setBackgroundResource(R.drawable.button_background_non_select);
                             obutton.setTextColor(Color.BLACK);
                         }
                     }
-                    if(button.getId() != ma.getPlace()) {
+                    if(me != ma.getPlace()) {
                         ma.setPlace(me);
                         ma.setPlace_string(button.getText().toString());
-                        button.setBackgroundResource(R.drawable.button_background_select);
-                        button.setTextColor(Color.WHITE);
-                        selected_place_text.setText(ma.getPlace_string());
-                        if(ma.getType() == -1) {
-                            ma.reselect(ma.RESELECT_TYPE);
-                            type_view.setVisibility(View.VISIBLE);
-                            date_view.setVisibility(View.GONE);
-                            place_view.setVisibility(View.GONE);
-                        }
-                        else if(ma.getDate() == -1) {
-                            ma.reselect(ma.RESELECT_DATE);
-                            type_view.setVisibility(View.GONE);
-                            date_view.setVisibility(View.VISIBLE);
-                            place_view.setVisibility(View.GONE);
-                        }
-                        else {
-                            ma.reselect(ma.RESELECT_APPEAL);
-                            type_view.setVisibility(View.GONE);
-                            date_view.setVisibility(View.GONE);
-                            place_view.setVisibility(View.GONE);
-                            appeal_view.setVisibility(View.VISIBLE);
-                            btn_okay.setVisibility(View.VISIBLE);
-                        }
+                        int colorFrom = getResources().getColor(R.color.colorPrimary);
+                        int colorTo = getResources().getColor(R.color.colorPoint);
+                        int colorFrom2 = getResources().getColor(R.color.colorBlack);
+                        int colorTo2 = getResources().getColor(R.color.colorPrimary);
+                        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                        ValueAnimator colorAnimation2 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom2, colorTo2);
+                        colorAnimation.setDuration(350); // milliseconds
+                        colorAnimation2.setDuration(350);
+                        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animator) {
+                                button.setBackgroundColor((int) animator.getAnimatedValue());
+                            }
+
+                        });
+                        colorAnimation.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                if(ma.getType() == -1) {
+                                    ma.reselect(ma.RESELECT_TYPE);
+                                    type_view.setVisibility(View.VISIBLE);
+                                    date_view.setVisibility(View.GONE);
+                                    place_view.setVisibility(View.GONE);
+                                }
+                                else if(ma.getDate() == -1) {
+                                    ma.reselect(ma.RESELECT_DATE);
+                                    type_view.setVisibility(View.GONE);
+                                    date_view.setVisibility(View.VISIBLE);
+                                    place_view.setVisibility(View.GONE);
+                                }
+                                else {
+                                    ma.reselect(ma.RESELECT_APPEAL);
+                                    type_view.setVisibility(View.GONE);
+                                    date_view.setVisibility(View.GONE);
+                                    place_view.setVisibility(View.GONE);
+                                    appeal_view.setVisibility(View.VISIBLE);
+                                    btn_okay.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
+                        colorAnimation2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animator) {
+                                button.setTextColor((int) animator.getAnimatedValue());
+                                selected_place_text.setText(ma.getPlace_string());
+
+                            }
+                        });
+                        colorAnimation.start();
+                        colorAnimation2.start();
                     }
                     else {
                         ma.setPlace(-1);
