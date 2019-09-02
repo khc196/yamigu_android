@@ -1,7 +1,9 @@
 package com.yamigu.yamigu_app;
 
+import android.content.ContentValues;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.AsyncTask;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +30,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private Toolbar tb;
     private RelativeLayout selected_type, selected_date, selected_place;
     private TextView selected_type_text, selected_date_text, selected_place_text;
-    private ImageButton btn_okay;
+    private Button btn_okay;
     private Button[] btn_select_type_array, btn_select_date_array, btn_select_place_array;
     private ImageView iv_question_type, iv_question_when, iv_question_where, iv_question_appeal;
     private EditText et_appeal;
@@ -38,6 +40,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     Toast toast;
     private final int MAX_APPEAL_LENGTH = 50;
     private final String[] DOW = {"", "일", "월", "화", "수", "목", "금", "토"};
+    private String auth_token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +108,26 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         button.setBackgroundResource(R.drawable.button_background_select);
                         button.setTextColor(Color.WHITE);
                         selected_type_text.setText(ma.getType_string());
+                        if(ma.getDate() == -1) {
+                            ma.reselect(ma.RESELECT_DATE);
+                            type_view.setVisibility(View.GONE);
+                            date_view.setVisibility(View.VISIBLE);
+                            place_view.setVisibility(View.GONE);
+                        }
+                        else if(ma.getPlace() == -1) {
+                            ma.reselect(ma.RESELECT_PLACE);
+                            type_view.setVisibility(View.GONE);
+                            date_view.setVisibility(View.GONE);
+                            place_view.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            ma.reselect(ma.RESELECT_APPEAL);
+                            type_view.setVisibility(View.GONE);
+                            date_view.setVisibility(View.GONE);
+                            place_view.setVisibility(View.GONE);
+                            appeal_view.setVisibility(View.VISIBLE);
+                            btn_okay.setVisibility(View.VISIBLE);
+                        }
                     }
                     else {
                         ma.setType(-1);
@@ -113,6 +136,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         button.setTextColor(Color.BLACK);
                         selected_type_text.setText("인원");
                     }
+
                 }
             });
         }
@@ -149,6 +173,26 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         button.setBackgroundResource(R.drawable.button_background_select);
                         button.setTextColor(Color.WHITE);
                         selected_date_text.setText(ma.getDate_string());
+                        if(ma.getType() == -1) {
+                            ma.reselect(ma.RESELECT_TYPE);
+                            type_view.setVisibility(View.VISIBLE);
+                            date_view.setVisibility(View.GONE);
+                            place_view.setVisibility(View.GONE);
+                        }
+                        else if(ma.getPlace() == -1) {
+                            ma.reselect(ma.RESELECT_PLACE);
+                            type_view.setVisibility(View.GONE);
+                            date_view.setVisibility(View.GONE);
+                            place_view.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            ma.reselect(ma.RESELECT_APPEAL);
+                            type_view.setVisibility(View.GONE);
+                            date_view.setVisibility(View.GONE);
+                            place_view.setVisibility(View.GONE);
+                            appeal_view.setVisibility(View.VISIBLE);
+                            btn_okay.setVisibility(View.VISIBLE);
+                        }
                     }
                     else {
                         ma.setDate(-1);
@@ -157,6 +201,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         button.setTextColor(Color.BLACK);
                         selected_date_text.setText("날짜");
                     }
+
                 }
             });
         }
@@ -180,6 +225,26 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         button.setBackgroundResource(R.drawable.button_background_select);
                         button.setTextColor(Color.WHITE);
                         selected_place_text.setText(ma.getPlace_string());
+                        if(ma.getType() == -1) {
+                            ma.reselect(ma.RESELECT_TYPE);
+                            type_view.setVisibility(View.VISIBLE);
+                            date_view.setVisibility(View.GONE);
+                            place_view.setVisibility(View.GONE);
+                        }
+                        else if(ma.getDate() == -1) {
+                            ma.reselect(ma.RESELECT_DATE);
+                            type_view.setVisibility(View.GONE);
+                            date_view.setVisibility(View.VISIBLE);
+                            place_view.setVisibility(View.GONE);
+                        }
+                        else {
+                            ma.reselect(ma.RESELECT_APPEAL);
+                            type_view.setVisibility(View.GONE);
+                            date_view.setVisibility(View.GONE);
+                            place_view.setVisibility(View.GONE);
+                            appeal_view.setVisibility(View.VISIBLE);
+                            btn_okay.setVisibility(View.VISIBLE);
+                        }
                     }
                     else {
                         ma.setPlace(-1);
@@ -195,13 +260,14 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         date_view = (LinearLayout) findViewById(R.id.date_view);
         place_view = (LinearLayout) findViewById(R.id.place_view);
         appeal_view = (LinearLayout) findViewById(R.id.appeal_view);
-        btn_okay = (ImageButton) findViewById(R.id.btn_okay);
+        btn_okay = (Button) findViewById(R.id.btn_okay);
         selected_type_text.setText("인원");
         selected_date_text.setText("날짜");
         selected_place_text.setText("장소");
         date_view.setVisibility(View.GONE);
         place_view.setVisibility(View.GONE);
         appeal_view.setVisibility(View.GONE);
+        btn_okay.setVisibility(View.INVISIBLE);
 
         selected_type.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,7 +278,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 date_view.setVisibility(View.GONE);
                 place_view.setVisibility(View.GONE);
                 appeal_view.setVisibility(View.GONE);
-                btn_okay.setImageResource(R.drawable.text_next);
+                btn_okay.setVisibility(View.INVISIBLE);
             }
         });
         selected_date.setOnClickListener(new View.OnClickListener() {
@@ -224,7 +290,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 date_view.setVisibility(View.VISIBLE);
                 place_view.setVisibility(View.GONE);
                 appeal_view.setVisibility(View.GONE);
-                btn_okay.setImageResource(R.drawable.text_next);
+                btn_okay.setVisibility(View.INVISIBLE);
             }
         });
         selected_place.setOnClickListener(new View.OnClickListener() {
@@ -236,32 +302,13 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 date_view.setVisibility(View.GONE);
                 place_view.setVisibility(View.VISIBLE);
                 appeal_view.setVisibility(View.GONE);
-                btn_okay.setImageResource(R.drawable.text_next);
+                btn_okay.setVisibility(View.INVISIBLE);
             }
         });
         btn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ma.getType() == -1) {
-                    ma.reselect(ma.RESELECT_TYPE);
-                    type_view.setVisibility(View.VISIBLE);
-                    date_view.setVisibility(View.GONE);
-                    place_view.setVisibility(View.GONE);
-                }
-                else if(ma.getDate() == -1) {
-                    ma.reselect(ma.RESELECT_DATE);
-                    type_view.setVisibility(View.GONE);
-                    date_view.setVisibility(View.VISIBLE);
-                    place_view.setVisibility(View.GONE);
-                }
-                else if(ma.getPlace() == -1) {
-                    ma.reselect(ma.RESELECT_PLACE);
-                    type_view.setVisibility(View.GONE);
-                    date_view.setVisibility(View.GONE);
-                    place_view.setVisibility(View.VISIBLE);
-                }
-
-                else if(ma.isAppeal_selecting()) {
+                if(ma.isAppeal_selecting()) {
                     ma.setAppeal(et_appeal.getText().toString());
                     if(ma.getAppeal().trim().isEmpty()) {
                         toast.setText("뭐라도 써주세요!");
@@ -275,15 +322,6 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         // TODO: do applying meeting.
                     }
                 }
-                else {
-                    ma.reselect(ma.RESELECT_APPEAL);
-                    type_view.setVisibility(View.GONE);
-                    date_view.setVisibility(View.GONE);
-                    place_view.setVisibility(View.GONE);
-                    appeal_view.setVisibility(View.VISIBLE);
-                    btn_okay.setImageResource(R.drawable.text_apply_meeting);
-                }
-
             }
         });
     }
@@ -405,6 +443,32 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                     place_selecting = false;
                     appeal_selecting = true;
             }
+        }
+    }
+    public class NetworkTask extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(url, values, "POST", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
         }
     }
 }

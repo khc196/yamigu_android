@@ -353,13 +353,15 @@
 
 
         </LinearLayout>
-        <ImageButton
+        <Button
             android:id="@+id/btn_okay"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="#2B2825"
-            android:gravity="bottom"
-            android:src="@drawable/text_next"
+            android:layout_gravity="bottom"
+            android:text="미팅 신청하기!"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14dp"
             />
     </LinearLayout>
 
