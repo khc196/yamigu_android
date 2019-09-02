@@ -118,19 +118,57 @@ public class MyMeetingCard extends LinearLayout {
         typedArray.recycle();
     }
 
-
+    void setType(int type) {
+        switch(type){
+            case 1:
+                label.setBackgroundResource(R.drawable.label_2vs2_bg);
+                label.setText("2:2 소개팅");
+                point_line.setBackgroundColor(getResources().getColor(R.color.colorPoint));
+                month.setBackgroundResource(R.drawable.cal_month_2vs2_bg);
+                btn_view_waiting.setTextColor(getResources().getColor(R.color.colorPoint));
+                btn_view_applying.setTextColor(getResources().getColor(R.color.colorPoint));
+                icon_edit_card.setBackgroundResource(R.drawable.icon_edit_2vs2);
+                text_edit_card.setTextColor(getResources().getColor(R.color.colorPoint));
+                break;
+            case 2:
+                label.setBackgroundResource(R.drawable.label_3vs3_bg);
+                label.setText("3:3 미팅");
+                point_line.setBackgroundColor(getResources().getColor(R.color.color3vs3));
+                month.setBackgroundResource(R.drawable.cal_month_3vs3_bg);
+                btn_view_waiting.setTextColor(getResources().getColor(R.color.color3vs3));
+                btn_view_applying.setTextColor(getResources().getColor(R.color.color3vs3));
+                icon_edit_card.setBackgroundResource(R.drawable.icon_edit_3vs3);
+                text_edit_card.setTextColor(getResources().getColor(R.color.color3vs3));
+                break;
+            case 3:
+                label.setBackgroundResource(R.drawable.label_4vs4_bg);
+                label.setText("4:4 미팅");
+                point_line.setBackgroundColor(getResources().getColor(R.color.color4vs4));
+                month.setBackgroundResource(R.drawable.cal_month_4vs4_bg);
+                btn_view_waiting.setTextColor(getResources().getColor(R.color.color4vs4));
+                btn_view_applying.setTextColor(getResources().getColor(R.color.color4vs4));
+                icon_edit_card.setBackgroundResource(R.drawable.icon_edit_4vs4);
+                text_edit_card.setTextColor(getResources().getColor(R.color.color4vs4));
+                break;
+        }
+    }
     void setLabel(int label_resID) {
         label.setBackgroundResource(label_resID);
     }
-    void setMonth(int month_resID) { month.setText(month_resID); }
-    void setDate(int date_resID) {
-        date.setText(date_resID);
+    void setMonth(int month_integer) { month.setText(Integer.toString(month_integer+1)+"월"); }
+    void setDate(int date_integer) { date.setText(Integer.toString(date_integer)+"일"); }
+    void setDday(int dday_integer) {
+        if(dday_integer == 0) {
+            dday.setText("Today");
+        }
+        else {
+            dday.setText("D-"+Integer.toString(dday_integer));
+        }
     }
-    void setDday(int dday_resID) {
-        dday.setText(dday_resID);
+    void setPlace(String place_string) {
+        place.setText(place_string);
     }
-    void setPlace(int place_resID) {
-        place.setText(place_resID);
+    void setNum_of_applying(int num_of_applying_integer) {
+        num_of_applying.setText(Integer.toString(num_of_applying_integer) + "팀 대기중!");
     }
-    void setNum_of_applying(int num_of_applying_resID) { num_of_applying.setText(num_of_applying_resID); }
 }

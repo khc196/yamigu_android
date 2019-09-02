@@ -56,6 +56,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="30dp"
                         android:text="건대/왕십리"
+                        android:layout_marginTop="-5dp"
                         android:textColor="@color/colorBlack"/>
                 </LinearLayout>
             </LinearLayout>
@@ -108,16 +109,16 @@
                     <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
+
                         <TextView
                             android:id="@+id/date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/cal_date"
+                            android:gravity="center_horizontal|center_vertical"
                             android:text="28일"
                             android:textColor="@color/colorBlack"
-                            android:gravity="center_horizontal|center_vertical"
-                            android:textSize="30dp"
-                            />
+                            android:textSize="30dp" />
                         <TextView
                             android:id="@+id/dday"
                             android:layout_width="wrap_content"

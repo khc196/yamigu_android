@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,12 +24,23 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class HomeFragment extends Fragment {
     private Toolbar tb;
     private String auth_token;
+    MyMeetingCardFrame myMeetingCardFrame;
+
     private class MyMeetingCardFrame {
         private MyMeetingCard mmc_list[];
         private MyMeetingCard_Chat mmc_c_list[];
+        private int active_length;
         public MyMeetingCardFrame(View view) {
             mmc_list = new MyMeetingCard[3];
             mmc_c_list = new MyMeetingCard_Chat[3];
@@ -48,6 +60,15 @@ public class HomeFragment extends Fragment {
             }
         }
 
+        public int getActive_length() {
+            return active_length;
+        }
+        public void setActive_length(int length) {
+            active_length = length;
+        }
+        public void initialize() {
+
+        }
         public MyMeetingCard[] getMmc_list() {
             return mmc_list;
         }
@@ -66,9 +87,9 @@ public class HomeFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
-        MyMeetingCardFrame myMeetingCardFrame = new MyMeetingCardFrame(view);
+        myMeetingCardFrame = new MyMeetingCardFrame(view);
 
-        String url = "http://192.168.43.223:9999/api/meetings/my/";
+        String url = "http://192.168.0.10:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -116,6 +137,38 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+
+            Log.d("MymeetingList: ", s);
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = new JSONArray(s);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            myMeetingCardFrame.setActive_length(jsonArray.length());
+            for(int i = 0; i < myMeetingCardFrame.getActive_length(); i++) {
+                try {
+                    myMeetingCardFrame.mmc_list[i].setType(jsonArray.getJSONObject(i).getInt("meeting_type"));
+                    myMeetingCardFrame.mmc_list[i].setPlace(jsonArray.getJSONObject(i).getString("place_type_name"));
+                    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                    Date translated_date;
+                    Date today = new Date();
+                    try {
+                        translated_date = transFormat.parse(jsonArray.getJSONObject(i).getString("date"));
+                        myMeetingCardFrame.mmc_list[i].setMonth(translated_date.getMonth());
+                        myMeetingCardFrame.mmc_list[i].setDate(translated_date.getDate());
+                        myMeetingCardFrame.mmc_list[i].setDday(translated_date.getDate() - today.getDate());
+                        //TODO: request num_of_applying
+                        myMeetingCardFrame.mmc_list[i].setNum_of_applying(0);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                myMeetingCardFrame.mmc_list[i].setVisibility(View.VISIBLE);
+            }
         }
     }
 }
