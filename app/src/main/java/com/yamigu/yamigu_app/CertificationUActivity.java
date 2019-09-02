@@ -53,7 +53,7 @@ public class CertificationUActivity extends AppCompatActivity {
                 major = et_major.getText().toString();
                 String url = "http://192.168.43.223:9999/api/auth/signup/";
                 ContentValues values = new ContentValues();
-                values.put("name", "홍길동");
+                values.put("real_name", "홍길동");
                 values.put("age", 1);
                 values.put("phone", "010-0000-0000");
                 values.put("gender", 1);
