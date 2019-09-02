@@ -62,6 +62,7 @@
                         />
                 </LinearLayout>
                 <com.yamigu.yamigu_app.MyMeetingCard
+                    android:id="@+id/mmc_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
@@ -74,7 +75,49 @@
                     >
                 </com.yamigu.yamigu_app.MyMeetingCard>
                 <com.yamigu.yamigu_app.MyMeetingCard_Chat
-                    android:visibility="gone"
+                    android:id="@+id/mmc_c_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chat="오늘 재밌게 놀아요~"
+                    app:unread="2"
+                    app:time="오후 2:22">
+                </com.yamigu.yamigu_app.MyMeetingCard_Chat>
+                <com.yamigu.yamigu_app.MyMeetingCard
+                    android:id="@+id/mmc_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    app:label="1"
+                    app:place="건대/왕십리"
+                    app:noa="2"
+                    app:month="5월"
+                    app:date="28일"
+                    app:dday="Today"
+                    >
+                </com.yamigu.yamigu_app.MyMeetingCard>
+                <com.yamigu.yamigu_app.MyMeetingCard_Chat
+                    android:id="@+id/mmc_c_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chat="오늘 재밌게 놀아요~"
+                    app:unread="2"
+                    app:time="오후 2:22">
+                </com.yamigu.yamigu_app.MyMeetingCard_Chat>
+                <com.yamigu.yamigu_app.MyMeetingCard
+                    android:id="@+id/mmc_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    app:label="1"
+                    app:place="건대/왕십리"
+                    app:noa="2"
+                    app:month="5월"
+                    app:date="28일"
+                    app:dday="Today"
+                    >
+                </com.yamigu.yamigu_app.MyMeetingCard>
+                <com.yamigu.yamigu_app.MyMeetingCard_Chat
+                    android:id="@+id/mmc_c_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:chat="오늘 재밌게 놀아요~"

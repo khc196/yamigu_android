@@ -1,6 +1,7 @@
 package com.yamigu.yamigu_app;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,6 +47,10 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meeting_application);
+
+        Intent intent = getIntent();
+        auth_token = intent.getExtras().getString("auth_token");
+
         tb = (Toolbar) findViewById(R.id.toolbar) ;
         setSupportActionBar(tb) ;
         getSupportActionBar().setElevation(0);
@@ -92,18 +98,24 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 tv_max_appeal_length.setText(Integer.toString(et_appeal.getText().length()) + " / " + Integer.toString(MAX_APPEAL_LENGTH));
             }
         });
-        for (final Button button : btn_select_type_array) {
+
+        for (int i = 0; i < btn_select_type_array.length; i++) {
+            final Button button = btn_select_type_array[i];
+            final Button obutton;
+            final int me = i+1;
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    for (Button obutton : btn_select_type_array) {
-                        if(button.getId() != obutton.getId()) {
+                    Button obutton;
+                    for (int j = 0; j < btn_select_type_array.length; j++){
+                        obutton = btn_select_type_array[j];
+                        if(me != j+1) {
                             obutton.setBackgroundResource(R.drawable.button_background_non_select);
                             obutton.setTextColor(Color.BLACK);
                         }
                     }
-                    if(button.getId() != ma.getType()) {
-                        ma.setType(button.getId());
+                    if(me != ma.getType()) {
+                        ma.setType(me);
                         ma.setType_string(button.getText().toString());
                         button.setBackgroundResource(R.drawable.button_background_select);
                         button.setTextColor(Color.WHITE);
@@ -209,18 +221,22 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         btn_select_place_array[0] = (Button) findViewById(R.id.btn_select_place1);
         btn_select_place_array[1] = (Button) findViewById(R.id.btn_select_place2);
         btn_select_place_array[2] = (Button) findViewById(R.id.btn_select_place3);
-        for (final Button button : btn_select_place_array) {
+        for (int i = 0; i < btn_select_place_array.length; i++) {
+            final Button button = btn_select_place_array[i];
+            final int me = i+1;
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    for (Button obutton : btn_select_place_array) {
-                        if(button.getId() != obutton.getId()) {
+                    Button obutton;
+                    for(int j = 0; j < btn_select_place_array.length; j++) {
+                        obutton = btn_select_type_array[j];
+                        if(me != j+1) {
                             obutton.setBackgroundResource(R.drawable.button_background_non_select);
                             obutton.setTextColor(Color.BLACK);
                         }
                     }
                     if(button.getId() != ma.getPlace()) {
-                        ma.setPlace(button.getId());
+                        ma.setPlace(me);
                         ma.setPlace_string(button.getText().toString());
                         button.setBackgroundResource(R.drawable.button_background_select);
                         button.setTextColor(Color.WHITE);
@@ -319,7 +335,20 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         toast.show();
                     }
                     else {
-                        // TODO: do applying meeting.
+                        String url = "http://192.168.43.223:9999/api/meetings/create/";
+                        ContentValues values = new ContentValues();
+                        String new_date = ma.getDate_string().substring(0, ma.getDate_string().length()-1);
+                        Log.d("MeetingApplication", "meeting_type: "+ma.getType());
+                        Log.d("MeetingApplication", "date: "+new_date.trim());
+                        Log.d("MeetingApplication", "place: "+ma.getPlace());
+                        values.put("meeting_type", ma.getType());
+
+                        values.put("date", new_date.trim());
+                        values.put("place", ma.getPlace());
+                        values.put("appeal", ma.getAppeal());
+
+                        NetworkTask networkTask = new NetworkTask(url, values);
+                        networkTask.execute();
                     }
                 }
             }
@@ -469,6 +498,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            finish();
         }
     }
 }

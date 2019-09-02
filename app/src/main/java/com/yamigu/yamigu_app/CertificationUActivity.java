@@ -64,13 +64,6 @@ public class CertificationUActivity extends AppCompatActivity {
 
                 NetworkTask networkTask = new NetworkTask(url, values);
                 networkTask.execute();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
-
-
-
             }
         });
         btn_skip.setPaintFlags(btn_skip.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -78,6 +71,7 @@ public class CertificationUActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("auth_token", auth_token);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
@@ -113,6 +107,11 @@ public class CertificationUActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("auth_token", auth_token);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
         }
     }
 }

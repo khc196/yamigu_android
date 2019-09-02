@@ -28,12 +28,16 @@ public class MainActivity extends AppCompatActivity {
     private Fragment homeFragment;
     private LinearLayout nav_bar;
     private ImageButton nav_home, nav_wlist, nav_yamigu, nav_mypage, nav_more;
+    private String auth_token;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getHashKey(getApplicationContext());
+        Intent intent = getIntent();
+        auth_token = intent.getExtras().getString("auth_token");
 
         nav_bar = (LinearLayout) findViewById(R.id.nav_bar);
         nav_home = (ImageButton) findViewById(R.id.nav_home);
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
+                intent.putExtra("auth_token", auth_token);
                 startActivity(intent);
             }
         });
