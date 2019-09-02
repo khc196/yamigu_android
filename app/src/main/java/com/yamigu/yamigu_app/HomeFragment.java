@@ -97,6 +97,14 @@ public class HomeFragment extends Fragment {
         return view;
     }
     @Override
+    public void onResume() {
+        super.onResume();
+        String url = "http://192.168.0.10:9999/api/meetings/my/";
+        ContentValues values = new ContentValues();
+        NetworkTask networkTask = new NetworkTask(url, values);
+        networkTask.execute();
+    }
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.actionbar_items, menu);

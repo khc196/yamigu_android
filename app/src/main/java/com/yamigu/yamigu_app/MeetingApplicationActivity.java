@@ -183,7 +183,6 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                             public void onAnimationUpdate(ValueAnimator animator) {
                                 button.setTextColor((int) animator.getAnimatedValue());
                                 selected_type_text.setText(ma.getType_string());
-
                             }
                         });
                         colorAnimation.start();
