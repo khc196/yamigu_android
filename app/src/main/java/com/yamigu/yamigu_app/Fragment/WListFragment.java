@@ -133,7 +133,6 @@ public class WListFragment extends Fragment {
                     active_date_set.add(jsonArray.getJSONObject(i).getString("date"));
                 }
                 SimpleDateFormat sdf = new SimpleDateFormat("M/d");
-                int i = 0;
                 int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
                 String url = "http://192.168.0.10:9999/api/meetings/waiting/";
                 url += "?";
@@ -146,12 +145,11 @@ public class WListFragment extends Fragment {
                         e.printStackTrace();
                     }
                     String to = sdf.format(from);
-                    for(TextView btn_date : btn_date_list) {
-                        btn_date = (TextView) view.findViewById(btn_date_id_list[i]);
+                    for(int i = 0; i < btn_date_id_list.length; i++) {
+                        TextView btn_date = (TextView) view.findViewById(btn_date_id_list[i]);
                         if(btn_date.getText().equals(to)) {
                             btn_date.setTextColor(view.getResources().getColor(R.color.colorPoint));
                         }
-                        i++;
                     }
                     url += "date="+active_date + "&";
                 }
@@ -205,8 +203,8 @@ public class WListFragment extends Fragment {
                 rating = (TextView) view.findViewById(R.id.rating);
                 String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
                 desc_string = json_data.getString("appeal");
-                profile1_string = json_data.getString("openby_belong") + "(" +json_data.getString("openby_age") + ")";
-                profile2_string = json_data.getString("openby_department");
+                profile1_string = json_data.getString("openby_nickname") + "(" +json_data.getString("openby_age") + ")";
+                profile2_string = json_data.getString("openby_belong") + ", "+ json_data.getString("openby_department");
                 before_date_string = json_data.getString("date");
                 try {
                     int label_type = json_data.getInt("meeting_type");
@@ -264,7 +262,7 @@ public class WListFragment extends Fragment {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-           }
+            }
         }
     }
 }
