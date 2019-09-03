@@ -25,8 +25,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
-    ImageButton btn_login_kakao;
 
+
+    ImageButton btn_login_kakao;
+    private LoginButton btn_kakao_login;
+    private SessionCallback callback;
     private String auth_token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +43,73 @@ public class LoginActivity extends AppCompatActivity {
         btn_login_kakao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://192.168.0.10:9999/api/auth/login/";
-                ContentValues values = new ContentValues();
-                values.put("username", "manager");
-                values.put("password", "ghkscjf123");
-                //values.put("kakao_account", userProfile.toString());
-                NetworkTask networkTask = new NetworkTask(url, values);
-                networkTask.execute();
+                Session session = Session.getCurrentSession();
+                session.addCallback(new SessionCallback());
+                session.open(AuthType.KAKAO_LOGIN_ALL, LoginActivity.this);
             }
         });
-
+        btn_kakao_login = (LoginButton) findViewById(R.id.btn_kakao_login);
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Session.getCurrentSession().removeCallback(callback);
+    }
+
+    public class SessionCallback implements ISessionCallback {
+        // 로그인에 성공한 상태
+        @Override
+        public void onSessionOpened() {
+            requestMe();
+        }
+        // 로그인에 실패한 상태
+        @Override
+        public void onSessionOpenFailed(KakaoException exception) {
+            Log.e("SessionCallback :: ", "onSessionOpenFailed : " + exception.getMessage());
+        }
+        // 사용자 정보 요청
+        public void requestMe() {
+            // 사용자정보 요청 결과에 대한 Callback
+            UserManagement.getInstance().requestMe(new MeResponseCallback() {
+                // 세션 오픈 실패. 세션이 삭제된 경우,
+                @Override
+                public void onSessionClosed(ErrorResult errorResult) {
+                    Log.e("SessionCallback :: ", "onSessionClosed : " + errorResult.getErrorMessage());
+                }
+                // 회원이 아닌 경우,
+                @Override
+                public void onNotSignedUp() {
+                    Log.e("SessionCallback :: ", "onNotSignedUp");
+                }
+                // 사용자정보 요청에 성공한 경우,
+                @Override
+                public void onSuccess(UserProfile userProfile) {
+                    String url = "http://192.168.0.10:9999/api/oauth/kakao/";
+                    String access_token = Session.getCurrentSession().getTokenInfo().getAccessToken();
+                    ContentValues values = new ContentValues();
+                    values.put("access_token", access_token);
+                    //values.put("kakao_account", userProfile.toString());
+                    NetworkTask networkTask = new NetworkTask(url, values);
+                    networkTask.execute();
+                }
+                // 사용자 정보 요청 실패
+                @Override
+                public void onFailure(ErrorResult errorResult) {
+                    Log.e("SessionCallback :: ", "onFailure : " + errorResult.getErrorMessage());
+                }
+            });
+        }
+    }
+
     protected void redirectVerificationActivity() {
         final Intent intent = new Intent(this, VerificationActivity.class);
         intent.putExtra("auth_token", auth_token);
