@@ -1,6 +1,7 @@
 package com.yamigu.yamigu_app.Fragment;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.R;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 
@@ -185,22 +187,24 @@ public class WListFragment extends Fragment {
         private void createWaitingTeamCard(JSONObject json_data) {
             try {
                 LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
-                View v = mRootLinear.inflate(getContext(), R.layout.meeting_team_wlist, mRootLinear);
-
+                //View v = mRootLinear.inflate(getContext(), R.layout.meeting_team_wlist, mRootLinear);
+                final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View mtw = inflater.inflate(R.layout.meeting_team_wlist, mRootLinear, false);
+                mRootLinear.addView(mtw);
                 LinearLayout top_bg;
                 RelativeLayout rl_applying;
                 ImageView point_line;
                 TextView description, profile1, profile2, date, place, rating, label;
-                top_bg = (LinearLayout) view.findViewById(R.id.top_bg);
-                rl_applying = (RelativeLayout) view.findViewById(R.id.rl_applying);
-                label = (TextView) view.findViewById(R.id.label);
-                point_line = (ImageView) view.findViewById(R.id.point_line);
-                description = (TextView) view.findViewById(R.id.description);
-                profile1 = (TextView) view.findViewById(R.id.profile1);
-                profile2 = (TextView) view.findViewById(R.id.profile2);
-                date = (TextView) view.findViewById(R.id.date);
-                place = (TextView) view.findViewById(R.id.place);
-                rating = (TextView) view.findViewById(R.id.rating);
+                top_bg = (LinearLayout) mtw.findViewById(R.id.top_bg);
+                rl_applying = (RelativeLayout) mtw.findViewById(R.id.rl_applying);
+                label = (TextView) mtw.findViewById(R.id.label);
+                point_line = (ImageView) mtw.findViewById(R.id.point_line);
+                description = (TextView) mtw.findViewById(R.id.description);
+                profile1 = (TextView) mtw.findViewById(R.id.profile1);
+                profile2 = (TextView) mtw.findViewById(R.id.profile2);
+                date = (TextView) mtw.findViewById(R.id.date);
+                place = (TextView) mtw.findViewById(R.id.place);
+                rating = (TextView) mtw.findViewById(R.id.rating);
                 String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
                 desc_string = json_data.getString("appeal");
                 profile1_string = json_data.getString("openby_nickname") + "(" +json_data.getString("openby_age") + ")";
@@ -258,6 +262,7 @@ public class WListFragment extends Fragment {
                 jsonObject = new JSONObject(s);
                 JSONArray json_results = jsonObject.getJSONArray("results");
                 for(int i = 0; i < json_results.length(); i++) {
+                    Log.d("results:", json_results.getJSONObject(i).toString());
                     createWaitingTeamCard(json_results.getJSONObject(i));
                 }
             } catch (JSONException e) {
