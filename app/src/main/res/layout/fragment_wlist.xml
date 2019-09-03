@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:text="5/28"
                 android:textSize="14sp"
-                android:textColor="#FC7F2D"
+                android:textColor="@color/colorBlack"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1.43"
                 android:background="?android:selectableItemBackgroundBorderless"/>
@@ -48,6 +48,7 @@
                 android:layout_height="match_parent"
                 android:text="5/29"
                 android:textSize="14sp"
+                android:textColor="@color/colorBlack"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1.43"
                 android:background="?android:selectableItemBackgroundBorderless"/>
@@ -57,7 +58,7 @@
                 android:layout_height="match_parent"
                 android:text="5/30"
                 android:textSize="14sp"
-                android:textColor="#FC7F2D"
+                android:textColor="@color/colorBlack"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1.42"
                 android:background="?android:selectableItemBackgroundBorderless"/>
@@ -67,6 +68,7 @@
                 android:layout_height="match_parent"
                 android:text="5/31"
                 android:textSize="14sp"
+                android:textColor="@color/colorBlack"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1.42"
                 android:background="?android:selectableItemBackgroundBorderless"/>
@@ -76,6 +78,7 @@
                 android:layout_height="match_parent"
                 android:text="6/1"
                 android:textSize="14sp"
+                android:textColor="@color/colorBlack"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1.42"
                 android:background="?android:selectableItemBackgroundBorderless"/>
@@ -85,6 +88,7 @@
                 android:layout_height="match_parent"
                 android:text="6/2"
                 android:textSize="14sp"
+                android:textColor="@color/colorBlack"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1.42"
                 android:background="?android:selectableItemBackgroundBorderless"/>
@@ -94,6 +98,7 @@
                 android:layout_height="match_parent"
                 android:text="6/3"
                 android:textSize="14sp"
+                android:textColor="@color/colorBlack"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1.42"
                 android:background="?android:selectableItemBackgroundBorderless"/>
@@ -109,11 +114,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
+                android:id="@+id/wating_card_root"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:background="#FFFFFF">
-                <com.yamigu.yamigu_app.WaitingTeamCard2
+                <!--com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -124,8 +130,8 @@
                     app:place="신촌/홍대"
                     app:profile1="연세대학교 (24)"
                     app:profile2="전기전자공학부">
-                </com.yamigu.yamigu_app.WaitingTeamCard2>
-                <com.yamigu.yamigu_app.WaitingTeamCard2
+                </com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2>
+                <com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -136,8 +142,8 @@
                     app:place="건대/왕십리"
                     app:profile1="고려대학교 (21)"
                     app:profile2="기계공학부">
-                </com.yamigu.yamigu_app.WaitingTeamCard2>
-                <com.yamigu.yamigu_app.WaitingTeamCard2
+                </com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2>
+                <com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -148,8 +154,8 @@
                     app:place="강남"
                     app:profile1="서강대학교 (20)"
                     app:profile2="경제학부">
-                </com.yamigu.yamigu_app.WaitingTeamCard2>
-                <com.yamigu.yamigu_app.WaitingTeamCard2
+                </com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2>
+                <com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -158,7 +164,7 @@
                     app:place="신촌/홍대"
                     app:profile1="연세대학교 (24)"
                     app:profile2="전기전자공학부">
-                </com.yamigu.yamigu_app.WaitingTeamCard2>
+                </com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2-->
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

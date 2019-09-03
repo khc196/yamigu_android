@@ -52,7 +52,7 @@
                 android:text="3:3 미팅"
                 android:textSize="12dp"
                 android:layout_weight="99"
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 android:layout_marginLeft="23dp"
                 android:layout_marginRight="23dp"
                 >
@@ -65,7 +65,7 @@
                 android:text="4:4 미팅"
                 android:textSize="12dp"
                 android:layout_weight="99"
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 >
             </Button>
         </LinearLayout>
@@ -91,7 +91,7 @@
                 android:text="신촌/홍대"
                 android:textSize="12dp"
                 android:layout_weight="99"
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 >
             </Button>
             <Button
@@ -102,7 +102,7 @@
                 android:text="건대/왕십리"
                 android:textSize="12dp"
                 android:layout_weight="99"
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 android:layout_marginLeft="23dp"
                 android:layout_marginRight="23dp"
                 >
@@ -115,7 +115,7 @@
                 android:text="강남"
                 android:textSize="12dp"
                 android:layout_weight="99"
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 >
             </Button>
         </LinearLayout>
@@ -137,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="20살"
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 android:textSize="12dp"
                 android:textStyle="bold"
                 android:layout_alignParentLeft="true"/>
@@ -146,7 +146,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="30+살"
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 android:textSize="12dp"
                 android:textStyle="bold"
                 android:layout_alignParentRight="true"/>

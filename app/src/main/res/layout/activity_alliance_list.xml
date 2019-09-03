@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AllianceListActivity"
+    tools:context=".Activity.AllianceListActivity"
     android:background="@color/colorPrimary">
     <LinearLayout
         android:layout_width="match_parent"
@@ -104,7 +104,7 @@
                     android:orientation="vertical"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="12.1dp">
-                    <com.yamigu.yamigu_app.PlaceCard
+                    <com.yamigu.yamigu_app.CustomLayout.PlaceCard
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:name="오렌지룸 신촌점"
@@ -113,7 +113,7 @@
                         app:benefit1="제휴 10,000원 쿠폰"
                         app:benefit2="*소주 또는 맥주 2병 제공"
                         app:image="@drawable/img_orangeroom">
-                    </com.yamigu.yamigu_app.PlaceCard>
+                    </com.yamigu.yamigu_app.CustomLayout.PlaceCard>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

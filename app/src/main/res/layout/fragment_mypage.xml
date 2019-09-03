@@ -49,20 +49,20 @@
                 android:layout_marginRight="18dp"
                 />
         </RelativeLayout-->
-        <com.yamigu.yamigu_app.ProfileCard
+        <com.yamigu.yamigu_app.CustomLayout.ProfileCard
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             app:name_and_age="김찬열 (24)"
             app:company="연세대학교"
             app:department="전기전자공학부">
-        </com.yamigu.yamigu_app.ProfileCard>
-        <com.yamigu.yamigu_app.InviteFriends
+        </com.yamigu.yamigu_app.CustomLayout.ProfileCard>
+        <com.yamigu.yamigu_app.Activity.InviteFriends
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="33dp"
             app:code="q7tik3">
-        </com.yamigu.yamigu_app.InviteFriends>
+        </com.yamigu.yamigu_app.Activity.InviteFriends>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="132.26dp"

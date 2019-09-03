@@ -14,7 +14,7 @@
     <color name="colorGray">#A0A0A0</color>
     <color name="colorKakao">#FDDC3F</color>
     <color name="colorGoogle">#DC4E41</color>
-    <color name="colorNonselect">#C6C6C6</color>
+    <color name="colorNonselect">#707070</color>
     <color name="colorYellow">#FFC850</color>
     <color name="colorGreen">#00AB66</color>
 </resources>
