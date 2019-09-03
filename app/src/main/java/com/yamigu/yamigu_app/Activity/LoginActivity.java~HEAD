@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
+<<<<<<< HEAD:app/src/main/java/com/yamigu/yamigu_app/Activity/LoginActivity.java
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -20,6 +22,8 @@ import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
+=======
+>>>>>>> b3f3c9ebc8827f61d2108ad83fc1453ead4e3d5d:app/src/main/java/com/yamigu/yamigu_app/LoginActivity.java
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,8 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     ImageButton btn_login_kakao;
-    private LoginButton btn_kakao_login;
-    private SessionCallback callback;
+
     private String auth_token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,27 +46,18 @@ public class LoginActivity extends AppCompatActivity {
         btn_login_kakao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Session session = Session.getCurrentSession();
-                session.addCallback(new SessionCallback());
-                session.open(AuthType.KAKAO_LOGIN_ALL, LoginActivity.this);
+                String url = "http://192.168.43.223:9999/api/auth/login/";
+                ContentValues values = new ContentValues();
+                values.put("username", "manager");
+                values.put("password", "ghkscjf123");
+                //values.put("kakao_account", userProfile.toString());
+                NetworkTask networkTask = new NetworkTask(url, values);
+                networkTask.execute();
             }
         });
-        btn_kakao_login = (LoginButton) findViewById(R.id.btn_kakao_login);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            return;
-        }
 
-        super.onActivityResult(requestCode, resultCode, data);
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Session.getCurrentSession().removeCallback(callback);
-    }
+<<<<<<< HEAD:app/src/main/java/com/yamigu/yamigu_app/Activity/LoginActivity.java
 
     public class SessionCallback implements ISessionCallback {
         // 로그인에 성공한 상태
@@ -93,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                 // 사용자정보 요청에 성공한 경우,
                 @Override
                 public void onSuccess(UserProfile userProfile) {
-                    String url = "http://192.168.0.10:9999/api/oauth/kakao/";
+                    String url = "http://192.168.43.223:9999/api/oauth/kakao/";
                     String access_token = Session.getCurrentSession().getTokenInfo().getAccessToken();
                     ContentValues values = new ContentValues();
                     values.put("access_token", access_token);
@@ -110,6 +104,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+=======
+>>>>>>> b3f3c9ebc8827f61d2108ad83fc1453ead4e3d5d:app/src/main/java/com/yamigu/yamigu_app/LoginActivity.java
     protected void redirectVerificationActivity() {
         final Intent intent = new Intent(this, VerificationActivity.class);
         intent.putExtra("auth_token", auth_token);
@@ -151,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            String url = "http://192.168.0.10:9999/api/user/info/";
+            String url = "http://192.168.43.223:9999/api/user/info/";
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);

@@ -5,6 +5,8 @@
     android:layout_height="222dp"
     android:layout_width="351.8dp"
     android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="21dp"
     >
     <FrameLayout
         android:layout_width="match_parent"

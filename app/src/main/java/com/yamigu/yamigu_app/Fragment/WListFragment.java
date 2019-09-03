@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yamigu.yamigu_app.R;
@@ -75,7 +78,7 @@ public class WListFragment extends Fragment {
 
 
 
-        String url = "http://192.168.43.223:9999/api/meetings/my/";
+        String url = "http://192.168.0.10:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -132,7 +135,7 @@ public class WListFragment extends Fragment {
                 SimpleDateFormat sdf = new SimpleDateFormat("M/d");
                 int i = 0;
                 int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
-                String url = "http://192.168.43.223:9999/api/meetings/waiting/";
+                String url = "http://192.168.0.10:9999/api/meetings/waiting/";
                 url += "?";
                 ContentValues values = new ContentValues();
                 for(String active_date : active_date_set) {
@@ -181,7 +184,72 @@ public class WListFragment extends Fragment {
 
             return result;
         }
+        private void createWaitingTeamCard(JSONObject json_data) {
+            try {
+                LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
+                View v = mRootLinear.inflate(getContext(), R.layout.meeting_team_wlist, mRootLinear);
 
+                LinearLayout top_bg;
+                RelativeLayout rl_applying;
+                ImageView point_line;
+                TextView description, profile1, profile2, date, place, rating, label;
+                top_bg = (LinearLayout) view.findViewById(R.id.top_bg);
+                rl_applying = (RelativeLayout) view.findViewById(R.id.rl_applying);
+                label = (TextView) view.findViewById(R.id.label);
+                point_line = (ImageView) view.findViewById(R.id.point_line);
+                description = (TextView) view.findViewById(R.id.description);
+                profile1 = (TextView) view.findViewById(R.id.profile1);
+                profile2 = (TextView) view.findViewById(R.id.profile2);
+                date = (TextView) view.findViewById(R.id.date);
+                place = (TextView) view.findViewById(R.id.place);
+                rating = (TextView) view.findViewById(R.id.rating);
+                String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
+                desc_string = json_data.getString("appeal");
+                profile1_string = json_data.getString("openby_belong") + "(" +json_data.getString("openby_age") + ")";
+                profile2_string = json_data.getString("openby_department");
+                before_date_string = json_data.getString("date");
+                try {
+                    int label_type = json_data.getInt("meeting_type");
+                    switch(label_type){
+                        case 1:
+                            label.setBackgroundResource(R.drawable.label_2vs2_bg);
+                            label.setText("2:2 소개팅");
+                            point_line.setBackgroundColor(getResources().getColor(R.color.colorPoint));
+                            rating.setTextColor(getResources().getColor(R.color.colorPoint));
+                            rl_applying.setBackgroundResource(R.drawable.bottom_rounded_orange);
+                            break;
+                        case 2:
+                            label.setBackgroundResource(R.drawable.label_3vs3_bg);
+                            label.setText("3:3 미팅");
+                            point_line.setBackgroundColor(getResources().getColor(R.color.color3vs3));
+                            rating.setTextColor(getResources().getColor(R.color.color3vs3));
+                            rl_applying.setBackgroundResource(R.drawable.bottom_rounded_3vs3);
+                            break;
+                        case 3:
+                            label.setBackgroundResource(R.drawable.label_4vs4_bg);
+                            label.setText("4:4 미팅");
+                            point_line.setBackgroundColor(getResources().getColor(R.color.color4vs4));
+                            rating.setTextColor(getResources().getColor(R.color.color4vs4));
+                            rl_applying.setBackgroundResource(R.drawable.bottom_rounded_4vs4);
+                            break;
+                    }
+
+                    Date before_date = new SimpleDateFormat("yyyy-MM-dd").parse(before_date_string);
+                    SimpleDateFormat sdf = new SimpleDateFormat("M월d일");
+                    date_string = sdf.format(before_date);
+                    place_string = json_data.getString("place_type_name");
+                    description.setText(desc_string);
+                    profile1.setText(profile1_string);
+                    profile2.setText(profile2_string);
+                    date.setText(date_string);
+                    place.setText(place_string);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
@@ -190,20 +258,13 @@ public class WListFragment extends Fragment {
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);
-                LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
-                int w_id = findId();
+                JSONArray json_results = jsonObject.getJSONArray("results");
+                for(int i = 0; i < json_results.length(); i++) {
+                    createWaitingTeamCard(json_results.getJSONObject(i));
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
+           }
         }
-    }
-
-    // Returns a valid id that isn't in use
-    public int findId(){
-        View v = view.findViewById(id);
-        while (v != null){
-            v = view.findViewById(++id);
-        }
-        return id++;
     }
 }
