@@ -48,21 +48,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private final int MAX_APPEAL_LENGTH = 50;
     private final String[] DOW = {"", "일", "월", "화", "수", "목", "금", "토"};
     private String auth_token;
-    private void start_fadein(final Button button) {
-        Thread animationThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    AlphaAnimation aAnim = new AlphaAnimation(0.0f, 1.0f);
-                    aAnim.setDuration(500);
-                    button.startAnimation(aAnim);
-                } catch (Throwable t) {
-                    t.printStackTrace();
-                }
-            }
-        });
 
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -440,7 +426,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         toast.show();
                     }
                     else {
-                        String url = "http://192.168.0.10:9999/api/meetings/create/";
+                        String url = "http://192.168.43.223:9999/api/meetings/create/";
                         ContentValues values = new ContentValues();
                         String new_date = ma.getDate_string().substring(0, ma.getDate_string().length()-1);
                         Log.d("MeetingApplication", "meeting_type: "+ma.getType());

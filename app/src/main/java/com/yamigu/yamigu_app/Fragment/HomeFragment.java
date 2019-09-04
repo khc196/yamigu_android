@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
         setHasOptionsMenu(true);
         myMeetingCardFrame = new MyMeetingCardFrame(view);
 
-        String url = "http://192.168.0.10:9999/api/meetings/my/";
+        String url = "http://192.168.43.223:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        String url = "http://192.168.0.10:9999/api/meetings/my/";
+        String url = "http://192.168.43.223:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();

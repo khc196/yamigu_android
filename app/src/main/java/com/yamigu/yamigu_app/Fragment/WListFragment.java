@@ -1,5 +1,7 @@
 package com.yamigu.yamigu_app.Fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -46,7 +48,7 @@ public class WListFragment extends Fragment {
     private LayoutInflater mInflater;
     private View view;
     static int id = 1;
-
+    private boolean is_initialized = false;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,23 +69,43 @@ public class WListFragment extends Fragment {
         btn_date_list = new Button[7];
         date_list = new String[7];
         int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
-        int i = 0;
-        for(TextView btn_date : btn_date_list) {
-            btn_date = (TextView) view.findViewById(btn_date_id_list[i]);
+        for(int i = 0; i < btn_date_list.length; i++) {
+            final TextView btn_date = (TextView) view.findViewById(btn_date_id_list[i]);
             String getTime = sdf.format(cal.getTime());
             String getTime2 = sdf2.format(cal.getTime());
             cal.add(Calendar.DATE, 1);
             date_list[i] = getTime2;
-            i++;
             btn_date.setText(getTime);
+            btn_date.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(!is_initialized) return;
+                    String btn_text_before = btn_date.getText().toString();
+                    String btn_text = "";
+                    Date now = new Date();
+                    Date from = null;
+                    try {
+                         from = new SimpleDateFormat("M/d").parse(btn_text_before);
+                         from.setYear(now.getYear());
+                         btn_text = new SimpleDateFormat("yyyy-MM-dd").format(from);
+                    } catch (ParseException e){
+                        e.printStackTrace();
+                    }
+                    if(!active_date_set.remove(btn_text)) {
+                        active_date_set.add(btn_text);
+                    }
+                    activateDates(active_date_set);
+                }
+            });
         }
 
 
 
-        String url = "http://192.168.0.10:9999/api/meetings/my/";
+        String url = "http://192.168.43.223:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
+
 
         return view;
     }
@@ -102,6 +124,52 @@ public class WListFragment extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void activateDates(Set<String> active_dates) {
+        int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
+        String url = "http://192.168.43.223:9999/api/meetings/waiting/";
+        url += "?";
+        ContentValues values = new ContentValues();
+        SimpleDateFormat sdf = new SimpleDateFormat("M/d");
+        for(int i = 0; i < btn_date_id_list.length; i++) {
+            TextView btn_date = (TextView) view.findViewById(btn_date_id_list[i]);
+            btn_date.setTextColor(view.getResources().getColor(R.color.colorBlack));
+        }
+        if(active_dates.size() == 0) {
+            for(int i = 0; i < btn_date_id_list.length; i++) {
+                TextView btn_date = (TextView) view.findViewById(btn_date_id_list[i]);
+                try {
+                    Date from = new SimpleDateFormat("M/d").parse(btn_date.getText().toString());
+                    Date now = new Date();
+                    from.setYear(now.getYear());
+                    String date = new SimpleDateFormat("yyyy-MM-dd").format(from);
+                    url += "date=" + date + "&";
+                } catch(ParseException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        else {
+            for (String active_date : active_dates) {
+                Date from = null;
+
+                try {
+                    from = new SimpleDateFormat("yyyy-MM-dd").parse(active_date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String to = sdf.format(from);
+                for (int i = 0; i < btn_date_id_list.length; i++) {
+                    TextView btn_date = (TextView) view.findViewById(btn_date_id_list[i]);
+                    if (btn_date.getText().equals(to)) {
+                        btn_date.setTextColor(view.getResources().getColor(R.color.colorPoint));
+                    }
+                }
+                url += "date=" + active_date + "&";
+            }
+        }
+        NetworkTask2 networkTask2 = new NetworkTask2(url, values);
+        networkTask2.execute();
     }
     public class NetworkTask extends AsyncTask<Void, Void, String> {
 
@@ -134,34 +202,11 @@ public class WListFragment extends Fragment {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     active_date_set.add(jsonArray.getJSONObject(i).getString("date"));
                 }
-                SimpleDateFormat sdf = new SimpleDateFormat("M/d");
-                int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
-                String url = "http://192.168.0.10:9999/api/meetings/waiting/";
-                url += "?";
-                ContentValues values = new ContentValues();
-                for(String active_date : active_date_set) {
-                    Date from = null;
-                    try {
-                        from = new SimpleDateFormat("yyyy-MM-dd").parse(active_date);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    String to = sdf.format(from);
-                    for(int i = 0; i < btn_date_id_list.length; i++) {
-                        TextView btn_date = (TextView) view.findViewById(btn_date_id_list[i]);
-                        if(btn_date.getText().equals(to)) {
-                            btn_date.setTextColor(view.getResources().getColor(R.color.colorPoint));
-                        }
-                    }
-                    url += "date="+active_date + "&";
-                }
-                NetworkTask2 networkTask2 = new NetworkTask2(url, values);
-                networkTask2.execute();
-            }
-            catch (JSONException e) {
+                activateDates(active_date_set);
+                is_initialized = true;
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
     }
     public class NetworkTask2 extends AsyncTask<Void, Void, String> {
@@ -184,90 +229,146 @@ public class WListFragment extends Fragment {
 
             return result;
         }
+        private void removeAllWaitingTeamCard() {
+            final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
+            mRootLinear.removeAllViews();
+        }
         private void createWaitingTeamCard(JSONObject json_data) {
             try {
-                LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
-                //View v = mRootLinear.inflate(getContext(), R.layout.meeting_team_wlist, mRootLinear);
-                final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View mtw = inflater.inflate(R.layout.meeting_team_wlist, mRootLinear, false);
-                mRootLinear.addView(mtw);
-                LinearLayout top_bg;
-                RelativeLayout rl_applying;
-                ImageView point_line;
-                TextView description, profile1, profile2, date, place, rating, label;
-                top_bg = (LinearLayout) mtw.findViewById(R.id.top_bg);
-                rl_applying = (RelativeLayout) mtw.findViewById(R.id.rl_applying);
-                label = (TextView) mtw.findViewById(R.id.label);
-                point_line = (ImageView) mtw.findViewById(R.id.point_line);
-                description = (TextView) mtw.findViewById(R.id.description);
-                profile1 = (TextView) mtw.findViewById(R.id.profile1);
-                profile2 = (TextView) mtw.findViewById(R.id.profile2);
-                date = (TextView) mtw.findViewById(R.id.date);
-                place = (TextView) mtw.findViewById(R.id.place);
-                rating = (TextView) mtw.findViewById(R.id.rating);
-                String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
-                desc_string = json_data.getString("appeal");
-                profile1_string = json_data.getString("openby_nickname") + "(" +json_data.getString("openby_age") + ")";
-                profile2_string = json_data.getString("openby_belong") + ", "+ json_data.getString("openby_department");
-                before_date_string = json_data.getString("date");
                 try {
-                    int label_type = json_data.getInt("meeting_type");
-                    switch(label_type){
-                        case 1:
-                            label.setBackgroundResource(R.drawable.label_2vs2_bg);
-                            label.setText("2:2 소개팅");
-                            point_line.setBackgroundColor(getResources().getColor(R.color.colorPoint));
-                            rating.setTextColor(getResources().getColor(R.color.colorPoint));
-                            rl_applying.setBackgroundResource(R.drawable.bottom_rounded_orange);
-                            break;
-                        case 2:
-                            label.setBackgroundResource(R.drawable.label_3vs3_bg);
-                            label.setText("3:3 미팅");
-                            point_line.setBackgroundColor(getResources().getColor(R.color.color3vs3));
-                            rating.setTextColor(getResources().getColor(R.color.color3vs3));
-                            rl_applying.setBackgroundResource(R.drawable.bottom_rounded_3vs3);
-                            break;
-                        case 3:
-                            label.setBackgroundResource(R.drawable.label_4vs4_bg);
-                            label.setText("4:4 미팅");
-                            point_line.setBackgroundColor(getResources().getColor(R.color.color4vs4));
-                            rating.setTextColor(getResources().getColor(R.color.color4vs4));
-                            rl_applying.setBackgroundResource(R.drawable.bottom_rounded_4vs4);
-                            break;
-                    }
+                    LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
 
-                    Date before_date = new SimpleDateFormat("yyyy-MM-dd").parse(before_date_string);
-                    SimpleDateFormat sdf = new SimpleDateFormat("M월d일");
-                    date_string = sdf.format(before_date);
-                    place_string = json_data.getString("place_type_name");
-                    description.setText(desc_string);
-                    profile1.setText(profile1_string);
-                    profile2.setText(profile2_string);
-                    date.setText(date_string);
-                    place.setText(place_string);
-                } catch (ParseException e) {
+
+                    //View v = mRootLinear.inflate(getContext(), R.layout.meeting_team_wlist, mRootLinear);
+                    final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View mtw = inflater.inflate(R.layout.meeting_team_wlist, mRootLinear, false);
+                    mRootLinear.addView(mtw);
+                    LinearLayout top_bg;
+                    final RelativeLayout rl_applying;
+                    ImageView point_line;
+                    TextView description, profile1, profile2, date, place, rating, label;
+                    top_bg = (LinearLayout) mtw.findViewById(R.id.top_bg);
+                    rl_applying = (RelativeLayout) mtw.findViewById(R.id.rl_applying);
+                    label = (TextView) mtw.findViewById(R.id.label);
+                    point_line = (ImageView) mtw.findViewById(R.id.point_line);
+                    description = (TextView) mtw.findViewById(R.id.description);
+                    profile1 = (TextView) mtw.findViewById(R.id.profile1);
+                    profile2 = (TextView) mtw.findViewById(R.id.profile2);
+                    date = (TextView) mtw.findViewById(R.id.date);
+                    place = (TextView) mtw.findViewById(R.id.place);
+                    rating = (TextView) mtw.findViewById(R.id.rating);
+                    top_bg.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(rl_applying.getVisibility() == View.INVISIBLE) {
+
+                                rl_applying.setVisibility(View.VISIBLE);
+                                rl_applying.animate()
+                                        .translationY(rl_applying.getHeight())
+                                        .alpha(1.0f)
+                                        .setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                super.onAnimationEnd(animation);
+                                            }});
+                            }
+                            else
+                                rl_applying.animate()
+                                        .translationY(0)
+                                        .alpha(0.0f)
+                                        .setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                super.onAnimationEnd(animation);
+                                                rl_applying.setVisibility(View.INVISIBLE);
+                                            }});
+                        }
+                    });
+                    String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
+                    desc_string = json_data.getString("appeal");
+                    profile1_string = json_data.getString("openby_nickname") + " (" +json_data.getString("openby_age") + ")";
+                    profile2_string = json_data.getString("openby_belong") + ", "+ json_data.getString("openby_department");
+                    before_date_string = json_data.getString("date");
+                    try {
+                        int label_type = json_data.getInt("meeting_type");
+                        switch(label_type){
+                            case 1:
+                                label.setBackgroundResource(R.drawable.label_2vs2_bg);
+                                label.setText("2:2 소개팅");
+                                point_line.setBackgroundColor(getResources().getColor(R.color.colorPoint));
+                                rating.setTextColor(getResources().getColor(R.color.colorPoint));
+                                rl_applying.setBackgroundResource(R.drawable.bottom_rounded_orange);
+                                break;
+                            case 2:
+                                label.setBackgroundResource(R.drawable.label_3vs3_bg);
+                                label.setText("3:3 미팅");
+                                point_line.setBackgroundColor(getResources().getColor(R.color.color3vs3));
+                                rating.setTextColor(getResources().getColor(R.color.color3vs3));
+                                rl_applying.setBackgroundResource(R.drawable.bottom_rounded_3vs3);
+                                break;
+                            case 3:
+                                label.setBackgroundResource(R.drawable.label_4vs4_bg);
+                                label.setText("4:4 미팅");
+                                point_line.setBackgroundColor(getResources().getColor(R.color.color4vs4));
+                                rating.setTextColor(getResources().getColor(R.color.color4vs4));
+                                rl_applying.setBackgroundResource(R.drawable.bottom_rounded_4vs4);
+                                break;
+                        }
+
+                        Date before_date = new SimpleDateFormat("yyyy-MM-dd").parse(before_date_string);
+                        SimpleDateFormat sdf = new SimpleDateFormat("M월d일");
+                        date_string = sdf.format(before_date);
+                        place_string = json_data.getString("place_type_name");
+                        description.setText(desc_string);
+                        profile1.setText(profile1_string);
+                        profile2.setText(profile2_string);
+                        date.setText(date_string);
+                        place.setText(place_string);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } catch (JSONException e) {
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
+
         }
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
-            Log.d("MeetingList: ", s);
-            JSONObject jsonObject = null;
-            try {
-                jsonObject = new JSONObject(s);
-                JSONArray json_results = jsonObject.getJSONArray("results");
-                for(int i = 0; i < json_results.length(); i++) {
-                    Log.d("results:", json_results.getJSONObject(i).toString());
-                    createWaitingTeamCard(json_results.getJSONObject(i));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            final String data = s;
+            final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
+            mRootLinear.animate()
+                .setDuration(150)
+                .translationX(-100)
+                .alpha(0.0f)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        JSONObject jsonObject = null;
+                        try {
+                            removeAllWaitingTeamCard();
+                            if(data == null) return;
+                            jsonObject = new JSONObject(data);
+                            JSONArray json_results = jsonObject.getJSONArray("results");
+                            for(int i = 0; i < json_results.length(); i++) {
+                                Log.d("results:", json_results.getJSONObject(i).toString());
+                                createWaitingTeamCard(json_results.getJSONObject(i));
+                            }
+                            mRootLinear.setTranslationX(100);
+                            mRootLinear.animate()
+                                    .setDuration(150)
+                                    .alpha(1.0f)
+                                    .translationX(0)
+                                    .setListener(null);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
         }
     }
 }
