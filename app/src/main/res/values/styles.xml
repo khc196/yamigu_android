@@ -23,7 +23,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
 
         <!-- Set this to true if you want Full Screen without status bar -->
-        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowFullscreen">true</item>
 
         <item name="android:windowIsFloating">false</item>
 
@@ -33,5 +33,6 @@
         <!-- Additionally if you want animations when dialog opening -->
         <item name="android:windowEnterAnimation">@anim/anim_slideup</item>
         <item name="android:windowExitAnimation">@anim/anim_slidedown</item>
+        <item name="android:windowIsTranslucent">false</item>
     </style>
 </resources>

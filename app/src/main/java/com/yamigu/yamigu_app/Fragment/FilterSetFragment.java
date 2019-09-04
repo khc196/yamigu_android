@@ -1,8 +1,15 @@
 package com.yamigu.yamigu_app.Fragment;
 
+import android.content.ContentValues;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -10,12 +17,19 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.HashSet;
 
 
 public class FilterSetFragment extends DialogFragment implements View.OnClickListener {
@@ -29,6 +43,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
     private int c_move, dpi;
     private boolean is_same_age = false, left_move_flag = false;
     private ViewGroup.MarginLayoutParams params_l, params_r;
+    private String auth_token;
     public static FilterSetFragment getInstance() {
         FilterSetFragment f = new FilterSetFragment();
         return f;
@@ -37,7 +52,8 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.FullScreenDialogStyle);
+        setStyle(DialogFragment.STYLE_NO_FRAME, R.style.FullScreenDialogStyle);
+        auth_token = getActivity().getIntent().getExtras().getString("auth_token");
     }
     @Nullable
     @Override
@@ -45,8 +61,10 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filter_set, container, false);
         // Inflate the layout for this fragment
+
         getDialog().getWindow().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
 
         btn_type_2vs2 = (Button) view.findViewById(R.id.btn_type_2vs2);
         btn_type_3vs3 = (Button) view.findViewById(R.id.btn_type_3vs3);
@@ -367,7 +385,8 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
     @Override
     public void onStart() {
         super.onStart();
-        getDialog().getWindow().setWindowAnimations(R.style.FullScreenDialogStyle);
+        //getDialog().getWindow().setWindowAnimations(R.style.FullScreenDialogStyle);
+
     }
     private class Filter {
         boolean selected_type_2vs2, selected_type_3vs3, selected_type_4vs4, selected_place_1, selected_place_2, selected_place_3;
@@ -433,6 +452,44 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
 
         public int getMaximum_age_current() {
             return maximum_age_current;
+        }
+    }
+    public class NetworkTask extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            JSONArray jsonArray = null;
+//            active_date_set = new HashSet<>();
+//            try {
+//                jsonArray = new JSONArray(s);
+//                for (int i = 0; i < jsonArray.length(); i++) {
+//                    active_date_set.add(jsonArray.getJSONObject(i).getString("date"));
+//                }
+//                activateDates(active_date_set);
+//                is_initialized = true;
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 }

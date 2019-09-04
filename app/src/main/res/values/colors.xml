@@ -17,4 +17,5 @@
     <color name="colorNonselect">#707070</color>
     <color name="colorYellow">#FFC850</color>
     <color name="colorGreen">#00AB66</color>
+    <color name="colorBlackTransparent">#4D000000</color>
 </resources>
