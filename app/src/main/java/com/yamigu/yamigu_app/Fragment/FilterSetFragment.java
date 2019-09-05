@@ -430,7 +430,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         super.onStart();
 
 
-        //getDialog().getWindow().setWindowAnimations(R.style.FullScreenDialogStyle);
+        getDialog().getWindow().setWindowAnimations(R.style.FullScreenDialogStyle);
 
     }
 
