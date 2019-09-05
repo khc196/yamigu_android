@@ -6,13 +6,18 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yamigu.yamigu_app.Activity.MainActivity;
+import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.R;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 
@@ -35,6 +41,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -259,6 +270,38 @@ public class WListFragment extends Fragment {
             }
         }
     }
+    public class NetworkTask3 extends AsyncTask<Void, Void, Bitmap> {
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        private CircularImageView civ;
+        public NetworkTask3(String url, ContentValues values,  CircularImageView civ) {
+            this.url = url;
+            this.values = values;
+            this.civ = civ;
+        }
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+
+
+            try {
+                URL urlO = new URL(url);
+
+                URLConnection conn = urlO.openConnection();
+                conn.connect();
+                InputStream urlInputStream = conn.getInputStream();
+                return BitmapFactory.decodeStream(urlInputStream);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Bitmap bm) {
+            civ.setImageBitmap(bm);
+        }
+    }
     public class NetworkTask2 extends AsyncTask<Void, Void, String> {
 
         private String url;
@@ -268,7 +311,6 @@ public class WListFragment extends Fragment {
             this.url = url;
             this.values = values;
         }
-
         @Override
         protected String doInBackground(Void... params) {
 
@@ -280,6 +322,7 @@ public class WListFragment extends Fragment {
 
             return result;
         }
+
         private void removeAllWaitingTeamCard() {
             final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
             mRootLinear.removeAllViews();
@@ -308,6 +351,13 @@ public class WListFragment extends Fragment {
                     date = (TextView) mtw.findViewById(R.id.date);
                     place = (TextView) mtw.findViewById(R.id.place);
                     rating = (TextView) mtw.findViewById(R.id.rating);
+                    CircularImageView profile_img = (CircularImageView) mtw.findViewById(R.id.iv_profile);
+
+                    //profile_img.setImageURI(Uri.parse(json_data.getString("openby_profile")));
+                    String url = json_data.getString("openby_profile");
+                    ContentValues values = new ContentValues();
+                    NetworkTask3 networkTask3 = new NetworkTask3(url, values, profile_img);
+                    networkTask3.execute();
                     top_bg.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

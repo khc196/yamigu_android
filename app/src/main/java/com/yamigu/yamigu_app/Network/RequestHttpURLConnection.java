@@ -154,5 +154,6 @@ public class RequestHttpURLConnection {
         edit.putString("sessionid",sessionid);
         edit.apply(); //비동기 처리
     }
+
 }
 
