@@ -470,7 +470,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             String result; // 요청 결과를 저장할 변수.
             requestHttpURLConnection = new RequestHttpURLConnection();
 
-            result = requestHttpURLConnection.request(url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+            result = requestHttpURLConnection.request(getContext(), url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
 
             return result;
         }

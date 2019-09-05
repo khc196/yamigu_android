@@ -235,7 +235,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 boolean is_validate = false;
-                String url = "http://192.168.0.10:9999/api/validation/nickname/"+editable.toString();
+                String url = "http://147.47.208.44:9999/api/validation/nickname/"+editable.toString();
                 ContentValues values = new ContentValues();
                 NetworkTask networkTask = new NetworkTask(url, values);
                 String pattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]*$";
@@ -330,7 +330,7 @@ public class SignUpActivity extends AppCompatActivity {
             String result; // 요청 결과를 저장할 변수.
             requestHttpURLConnection = new RequestHttpURLConnection();
 
-            result = requestHttpURLConnection.request(url, values, "GET", ""); // 해당 URL로 부터 결과물을 얻어온다.
+            result = requestHttpURLConnection.request(getApplicationContext(), url, values, "GET", ""); // 해당 URL로 부터 결과물을 얻어온다.
 
             return result;
         }

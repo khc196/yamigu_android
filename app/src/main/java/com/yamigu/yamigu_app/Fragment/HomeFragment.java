@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
         setHasOptionsMenu(true);
         myMeetingCardFrame = new MyMeetingCardFrame(view);
 
-        String url = "http://192.168.0.10:9999/api/meetings/my/";
+        String url = "http://147.47.208.44:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        String url = "http://192.168.0.10:9999/api/meetings/my/";
+        String url = "http://147.47.208.44:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -135,7 +135,7 @@ public class HomeFragment extends Fragment {
             String result; // 요청 결과를 저장할 변수.
             requestHttpURLConnection = new RequestHttpURLConnection();
 
-            result = requestHttpURLConnection.request(url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+            result = requestHttpURLConnection.request(getContext(), url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
 
             return result;
         }

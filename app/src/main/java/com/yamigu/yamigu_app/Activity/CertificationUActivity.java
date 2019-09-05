@@ -54,7 +54,7 @@ public class CertificationUActivity extends AppCompatActivity {
             public void onClick(View view) {
                 university = et_university.getText().toString();
                 major = et_major.getText().toString();
-                String url = "http://192.168.0.10:9999/api/auth/signup/";
+                String url = "http://147.47.208.44:9999/api/auth/signup/";
                 ContentValues values = new ContentValues();
                 values.put("real_name", "홍길동");
                 values.put("age", 1);
@@ -102,7 +102,7 @@ public class CertificationUActivity extends AppCompatActivity {
             String result; // 요청 결과를 저장할 변수.
             requestHttpURLConnection = new RequestHttpURLConnection();
 
-            result = requestHttpURLConnection.request(url, values, "POST", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+            result = requestHttpURLConnection.request(getApplicationContext(), url, values, "POST", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
 
             return result;
         }

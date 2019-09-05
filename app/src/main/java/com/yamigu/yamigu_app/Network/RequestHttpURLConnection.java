@@ -3,6 +3,7 @@ package com.yamigu.yamigu_app.Network;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 import android.webkit.CookieManager;
 
@@ -13,12 +14,14 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 public class RequestHttpURLConnection {
     private HttpURLConnection urlConn;
-    public String request(String _url, ContentValues _params, String type, String token){
-
+    private Context context;
+    public String request(Context context, String _url, ContentValues _params, String type, String token){
+        this.context = context;
         // HttpURLConnection 참조 변수.
         urlConn = null;
         // URL 뒤에 붙여서 보낼 파라미터.
@@ -61,10 +64,11 @@ public class RequestHttpURLConnection {
         try{
             URL url = new URL(_url);
             urlConn = (HttpURLConnection) url.openConnection();
-            String cookieString = CookieManager.getInstance().getCookie(_url);
-            if (cookieString != null) {
-                urlConn.setRequestProperty("Cookie", cookieString);
-            }
+//            String cookieString = CookieManager.getInstance().getCookie(_url);
+//            if (cookieString != null) {
+//                urlConn.setRequestProperty("Cookie", cookieString);
+//            }
+            setCookieHeader();
             // [2-1]. urlConn 설정.
             urlConn.setRequestMethod(type); // URL 요청에 대한 메소드 설정
             urlConn.setRequestProperty("Accept-Charset", "UTF-8"); // Accept-Charset 설정.
@@ -98,6 +102,7 @@ public class RequestHttpURLConnection {
                 page += line;
             }
 
+            getCookieHeader();
             return page;
 
         } catch (MalformedURLException e) { // for URL.
@@ -111,6 +116,43 @@ public class RequestHttpURLConnection {
 
         return null;
 
+    }
+    private void setCookieHeader(){
+        SharedPreferences pref = context.getSharedPreferences("sessionCookie",Context.MODE_PRIVATE);
+        String sessionid = pref.getString("sessionid",null);
+        if(sessionid!=null) {
+            Log.d("LOG","세션 아이디"+sessionid+"가 요청 헤더에 포함 되었습니다.");
+            urlConn.setRequestProperty("Cookie", sessionid);
+        }
+    }
+
+
+    private void getCookieHeader(){//Set-Cookie에 배열로 돼있는 쿠키들을 스트링 한줄로 변환
+        List<String> cookies = urlConn.getHeaderFields().get("Set-Cookie");
+        //cookies -> [JSESSIONID=D3F829CE262BC65853F851F6549C7F3E; Path=/smartudy; HttpOnly] -> []가 쿠키1개임.
+        //Path -> 쿠키가 유효한 경로 ,/smartudy의 하위 경로에 위의 쿠키를 사용 가능.
+        if (cookies != null) {
+            for (String cookie : cookies) {
+                String sessionid = cookie.split(";\\s*")[0];
+                //JSESSIONID=FB42C80FC3428ABBEF185C24DBBF6C40를 얻음.
+                //세션아이디가 포함된 쿠키를 얻었음.
+                setSessionIdInSharedPref(sessionid);
+
+            }
+        }
+        return;
+    }
+    private void setSessionIdInSharedPref(String sessionid){
+        SharedPreferences pref = context.getSharedPreferences("sessionCookie",Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = pref.edit();
+        if(pref.getString("sessionid",null) == null){ //처음 로그인하여 세션아이디를 받은 경우
+            Log.d("LOG","처음 로그인하여 세션 아이디를 pref에 넣었습니다."+sessionid);
+        }else if(!pref.getString("sessionid",null).equals(sessionid)){ //서버의 세션 아이디 만료 후 갱신된 아이디가 수신된경우
+            Log.d("LOG","기존의 세션 아이디"+pref.getString("sessionid",null)+"가 만료 되어서 "
+                    +"서버의 세션 아이디 "+sessionid+" 로 교체 되었습니다.");
+        }
+        edit.putString("sessionid",sessionid);
+        edit.apply(); //비동기 처리
     }
 }
 
