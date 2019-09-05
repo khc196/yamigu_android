@@ -2,8 +2,10 @@ package com.yamigu.yamigu_app.Fragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -44,12 +46,20 @@ public class WListFragment extends Fragment {
     private Toolbar tb;
     private String auth_token;
     private Button[] btn_date_list;
-    private String[] date_list;
-    private Set<String> active_date_set;
+    public static String[] date_list;
+    public static Set<String> active_date_set;
+    public static Set<Integer> active_place_set;
+    public static Set<Integer> active_type_set;
+    public static int minimum_age = 0;
+    public static int maximum_age = 11;
     private LayoutInflater mInflater;
     private View view;
     static int id = 1;
     private boolean is_initialized = false;
+    public WListFragment() {
+        this.active_type_set = new HashSet<>();
+        this.active_place_set = new HashSet<>();
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -121,10 +131,29 @@ public class WListFragment extends Fragment {
         switch(item.getItemId()) {
             case R.id.menu_filter :
                 FilterSetFragment f = FilterSetFragment.getInstance();
+                f.setTargetFragment(WListFragment.this, 1);
                 f.show(super.getActivity().getSupportFragmentManager(), FilterSetFragment.TAG_DIALOG_EVENT);
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if( resultCode != Activity.RESULT_OK ) {
+            return;
+        }
+        if( requestCode == 1 ) {
+            String url = data.getStringExtra("url");
+            ContentValues values = new ContentValues();
+            NetworkTask2 networkTask2 = new NetworkTask2(url, values);
+            networkTask2.execute();
+        }
+    }
+    public static Intent newIntent(String message) {
+        Intent intent = new Intent();
+        intent.putExtra("url", message);
+
+        return intent;
     }
     private void activateDates(Set<String> active_dates) {
         int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
@@ -167,6 +196,26 @@ public class WListFragment extends Fragment {
                     }
                 }
                 url += "date=" + active_date + "&";
+            }
+        }
+        if(active_type_set.size() != 0) {
+            for (int active_type : active_type_set) {
+                url += "type=" + active_type + "&";
+            }
+        }
+        else {
+            for (int i = 1; i <= 3; i++) {
+                url += "type=" + i + "&";
+            }
+        }
+        if(active_place_set.size() != 0) {
+            for (int active_place : active_place_set) {
+                url += "place=" + active_place + "&";
+            }
+        }
+        else{
+            for (int i = 1; i <= 3; i++) {
+                url += "place=" + i + "&";
             }
         }
         NetworkTask2 networkTask2 = new NetworkTask2(url, values);
@@ -222,6 +271,7 @@ public class WListFragment extends Fragment {
 
         @Override
         protected String doInBackground(Void... params) {
+
 
             String result; // 요청 결과를 저장할 변수.
             requestHttpURLConnection = new RequestHttpURLConnection();
