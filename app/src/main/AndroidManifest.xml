@@ -3,6 +3,7 @@
     package="com.yamigu.yamigu_app">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".Activity.GlobalApplication"
         android:allowBackup="true"
@@ -12,10 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Activity.ChattingActivity"></activity>
+
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
-        <activity android:name=".Activity.TicketActivity"></activity>
+
+        <activity android:name=".Activity.TicketActivity" />
         <activity android:name=".Activity.TermsActivity" />
         <activity android:name=".Activity.PrivacyActivity" />
         <activity android:name=".Activity.SettingActivity" />
@@ -23,8 +27,8 @@
         <activity android:name=".Activity.FAQActivity" />
         <activity android:name=".Activity.GuideActivity" />
         <activity android:name=".Activity.WhatisYamiguActivity" />
-        <activity android:name=".Activity.CertificationWActivity"></activity>
-        <activity android:name=".Activity.CertificationUActivity"></activity>
+        <activity android:name=".Activity.CertificationWActivity" />
+        <activity android:name=".Activity.CertificationUActivity" />
         <activity
             android:name=".Activity.SignUpActivity"
             android:windowSoftInputMode="adjustPan" />
@@ -39,7 +43,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.MeetingApplicationActivity"></activity>
+        <activity android:name=".Activity.MeetingApplicationActivity" />
         <activity android:name=".Activity.MainActivity" />
     </application>
 

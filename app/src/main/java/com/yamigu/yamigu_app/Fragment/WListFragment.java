@@ -275,15 +275,17 @@ public class WListFragment extends Fragment {
         private ContentValues values;
         private RequestHttpURLConnection requestHttpURLConnection;
         private CircularImageView civ;
-        public NetworkTask3(String url, ContentValues values,  CircularImageView civ) {
+        private LinearLayout rootLayout;
+        private View view;
+        public NetworkTask3(String url, ContentValues values,  CircularImageView civ, LinearLayout rootLayout, View view) {
             this.url = url;
             this.values = values;
             this.civ = civ;
+            this.rootLayout = rootLayout;
+            this.view = view;
         }
         @Override
         protected Bitmap doInBackground(Void... params) {
-
-
             try {
                 URL urlO = new URL(url);
 
@@ -300,6 +302,7 @@ public class WListFragment extends Fragment {
         @Override
         protected void onPostExecute(Bitmap bm) {
             civ.setImageBitmap(bm);
+            rootLayout.addView(view);
         }
     }
     public class NetworkTask2 extends AsyncTask<Void, Void, String> {
@@ -336,7 +339,7 @@ public class WListFragment extends Fragment {
                     //View v = mRootLinear.inflate(getContext(), R.layout.meeting_team_wlist, mRootLinear);
                     final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View mtw = inflater.inflate(R.layout.meeting_team_wlist, mRootLinear, false);
-                    mRootLinear.addView(mtw);
+                    //mRootLinear.addView(mtw);
                     LinearLayout top_bg;
                     final RelativeLayout rl_applying;
                     ImageView point_line;
@@ -353,10 +356,9 @@ public class WListFragment extends Fragment {
                     rating = (TextView) mtw.findViewById(R.id.rating);
                     CircularImageView profile_img = (CircularImageView) mtw.findViewById(R.id.iv_profile);
 
-                    //profile_img.setImageURI(Uri.parse(json_data.getString("openby_profile")));
                     String url = json_data.getString("openby_profile");
                     ContentValues values = new ContentValues();
-                    NetworkTask3 networkTask3 = new NetworkTask3(url, values, profile_img);
+                    NetworkTask3 networkTask3 = new NetworkTask3(url, values, profile_img, mRootLinear, mtw);
                     networkTask3.execute();
                     top_bg.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -383,6 +385,12 @@ public class WListFragment extends Fragment {
                                                 super.onAnimationEnd(animation);
                                                 rl_applying.setVisibility(View.INVISIBLE);
                                             }});
+                        }
+                    });
+                    rl_applying.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
                         }
                     });
                     String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
