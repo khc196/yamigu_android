@@ -426,7 +426,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         toast.show();
                     }
                     else {
-                        String url = "http://147.47.208.44:9999/api/meetings/create/";
+                        String url = "http://192.168.0.10:9999/api/meetings/create/";
                         ContentValues values = new ContentValues();
                         String new_date = ma.getDate_string().substring(0, ma.getDate_string().length()-1);
                         Log.d("MeetingApplication", "meeting_type: "+ma.getType());

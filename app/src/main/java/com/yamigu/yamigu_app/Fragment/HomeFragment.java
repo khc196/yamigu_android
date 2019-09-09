@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
         setHasOptionsMenu(true);
         myMeetingCardFrame = new MyMeetingCardFrame(view);
 
-        String url = "http://147.47.208.44:9999/api/meetings/my/";
+        String url = "http://192.168.0.10:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        String url = "http://147.47.208.44:9999/api/meetings/my/";
+        String url = "http://192.168.0.10:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -154,6 +154,7 @@ public class HomeFragment extends Fragment {
             myMeetingCardFrame.setActive_length(jsonArray.length());
             for(int i = 0; i < myMeetingCardFrame.getActive_length(); i++) {
                 try {
+                    myMeetingCardFrame.mmc_list[i].setId(jsonArray.getJSONObject(i).getInt("id"));
                     myMeetingCardFrame.mmc_list[i].setType(jsonArray.getJSONObject(i).getInt("meeting_type"));
                     myMeetingCardFrame.mmc_list[i].setPlace(jsonArray.getJSONObject(i).getString("place_type_name"));
                     SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
