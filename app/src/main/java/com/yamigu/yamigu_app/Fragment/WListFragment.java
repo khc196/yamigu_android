@@ -33,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yamigu.yamigu_app.Activity.MainActivity;
+import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.R;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
@@ -270,41 +271,7 @@ public class WListFragment extends Fragment {
             }
         }
     }
-    public class NetworkTask3 extends AsyncTask<Void, Void, Bitmap> {
-        private String url;
-        private ContentValues values;
-        private RequestHttpURLConnection requestHttpURLConnection;
-        private CircularImageView civ;
-        private LinearLayout rootLayout;
-        private View view;
-        public NetworkTask3(String url, ContentValues values,  CircularImageView civ, LinearLayout rootLayout, View view) {
-            this.url = url;
-            this.values = values;
-            this.civ = civ;
-            this.rootLayout = rootLayout;
-            this.view = view;
-        }
-        @Override
-        protected Bitmap doInBackground(Void... params) {
-            try {
-                URL urlO = new URL(url);
 
-                URLConnection conn = urlO.openConnection();
-                conn.connect();
-                InputStream urlInputStream = conn.getInputStream();
-                return BitmapFactory.decodeStream(urlInputStream);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Bitmap bm) {
-            civ.setImageBitmap(bm);
-            rootLayout.addView(view);
-        }
-    }
     public class NetworkTask2 extends AsyncTask<Void, Void, String> {
 
         private String url;
@@ -330,7 +297,7 @@ public class WListFragment extends Fragment {
             final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
             mRootLinear.removeAllViews();
         }
-        private void createWaitingTeamCard(JSONObject json_data) {
+        private void createWaitingTeamCard(final JSONObject json_data) {
             try {
                 try {
                     LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
@@ -387,12 +354,7 @@ public class WListFragment extends Fragment {
                                             }});
                         }
                     });
-                    rl_applying.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
 
-                        }
-                    });
                     String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
                     desc_string = json_data.getString("appeal");
                     profile1_string = json_data.getString("openby_nickname") + " (" +json_data.getString("openby_age") + ")";
@@ -433,6 +395,26 @@ public class WListFragment extends Fragment {
                         profile2.setText(profile2_string);
                         date.setText(date_string);
                         place.setText(place_string);
+                        final String date_string_f = date_string;
+                        final String place_string_f = place_string;
+                        rl_applying.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
+                                intent.putExtra("auth_token", auth_token);
+                                try{
+                                    intent.putExtra("type", json_data.getInt("meeting_type"));
+                                    intent.putExtra("date_string", date_string_f);
+                                    intent.putExtra("place", json_data.getInt("place_type"));
+                                    intent.putExtra("place_string", place_string_f);
+                                    intent.putExtra("id", json_data.getInt("id"));
+                                    startActivity(intent);
+                                }
+                                catch(JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -478,6 +460,41 @@ public class WListFragment extends Fragment {
                         }
                     }
                 });
+        }
+    }
+    public class NetworkTask3 extends AsyncTask<Void, Void, Bitmap> {
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        private CircularImageView civ;
+        private LinearLayout rootLayout;
+        private View view;
+        public NetworkTask3(String url, ContentValues values,  CircularImageView civ, LinearLayout rootLayout, View view) {
+            this.url = url;
+            this.values = values;
+            this.civ = civ;
+            this.rootLayout = rootLayout;
+            this.view = view;
+        }
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            try {
+                URL urlO = new URL(url);
+
+                URLConnection conn = urlO.openConnection();
+                conn.connect();
+                InputStream urlInputStream = conn.getInputStream();
+                return BitmapFactory.decodeStream(urlInputStream);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Bitmap bm) {
+            civ.setImageBitmap(bm);
+            rootLayout.addView(view);
         }
     }
 }

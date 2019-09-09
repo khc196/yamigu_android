@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         loadFragment(homeFragment);
     }
 
-    private boolean loadFragment(Fragment fragment) {
+    public boolean loadFragment(Fragment fragment) {
         if(fragment != null) {
             getSupportFragmentManager()
                     .beginTransaction()
