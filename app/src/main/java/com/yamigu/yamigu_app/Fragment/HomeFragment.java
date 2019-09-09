@@ -144,7 +144,6 @@ public class HomeFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            Log.d("MymeetingList: ", s);
             JSONArray jsonArray = null;
             try {
                 jsonArray = new JSONArray(s);

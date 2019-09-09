@@ -419,41 +419,39 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         btn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ma.isAppeal_selecting()) {
-                    ma.setAppeal(et_appeal.getText().toString());
-                    if(ma.getAppeal().trim().isEmpty()) {
-                        toast.setText("뭐라도 써주세요!");
-                        toast.show();
-                    }
-                    else if(ma.getAppeal().length() > MAX_APPEAL_LENGTH) {
-                        toast.setText(Integer.toString(MAX_APPEAL_LENGTH) + "자를 넘기면 안돼요~");
-                        toast.show();
+                ma.setAppeal(et_appeal.getText().toString());
+                if(ma.getAppeal().trim().isEmpty()) {
+                    toast.setText("뭐라도 써주세요!");
+                    toast.show();
+                }
+                else if(ma.getAppeal().length() > MAX_APPEAL_LENGTH) {
+                    toast.setText(Integer.toString(MAX_APPEAL_LENGTH) + "자를 넘기면 안돼요~");
+                    toast.show();
+                }
+                else {
+                    if(is_changeable) {
+                        String url = "http://147.47.208.44:9999/api/meetings/create/";
+                        ContentValues values = new ContentValues();
+                        String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
+                        values.put("meeting_type", ma.getType());
+                        values.put("date", new_date.trim());
+                        values.put("place", ma.getPlace());
+                        values.put("appeal", ma.getAppeal());
+
+                        NetworkTask networkTask = new NetworkTask(url, values);
+                        networkTask.execute();
                     }
                     else {
-                        if(is_changeable) {
-                            String url = "http://147.47.208.44:9999/api/meetings/create/";
-                            ContentValues values = new ContentValues();
-                            String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
-                            values.put("meeting_type", ma.getType());
-                            values.put("date", new_date.trim());
-                            values.put("place", ma.getPlace());
-                            values.put("appeal", ma.getAppeal());
-
-                            NetworkTask networkTask = new NetworkTask(url, values);
-                            networkTask.execute();
-                        }
-                        else {
-                            String url = "http://147.47.208.44:9999/api/meetings/apply/";
-                            ContentValues values = new ContentValues();
-                            String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
-                            values.put("meeting_type", ma.getType());
-                            values.put("date", new_date.trim());
-                            values.put("place", ma.getPlace());
-                            values.put("appeal", ma.getAppeal());
-                            values.put("meeting_id", meeting_id);
-                            NetworkTask networkTask = new NetworkTask(url, values);
-                            networkTask.execute();
-                        }
+                        String url = "http://147.47.208.44:9999/api/meetings/request_match/";
+                        ContentValues values = new ContentValues();
+                        String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
+                        values.put("meeting_type", ma.getType());
+                        values.put("date", new_date.trim());
+                        values.put("place", ma.getPlace());
+                        values.put("appeal", ma.getAppeal());
+                        values.put("meeting_id", meeting_id);
+                        NetworkTask networkTask = new NetworkTask(url, values);
+                        networkTask.execute();
                     }
                 }
             }
