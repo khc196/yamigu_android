@@ -4,8 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard
-        android:id="@+id/wating_team_card"
+    <com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard3
+        android:id="@+id/waiting_team_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
@@ -16,7 +16,7 @@
         app:place="신촌/홍대"
         app:profile1="연세대학교 (24)"
         app:profile2="전기전자공학부"
-        android:alpha="0.4"></com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard>
+        android:alpha="0.4"></com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard3>
     <LinearLayout
         android:id="@+id/btn_layout"
         android:layout_width="276dp"

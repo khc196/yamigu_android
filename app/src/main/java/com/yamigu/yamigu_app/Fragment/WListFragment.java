@@ -270,41 +270,7 @@ public class WListFragment extends Fragment {
             }
         }
     }
-    public class NetworkTask3 extends AsyncTask<Void, Void, Bitmap> {
-        private String url;
-        private ContentValues values;
-        private RequestHttpURLConnection requestHttpURLConnection;
-        private CircularImageView civ;
-        private LinearLayout rootLayout;
-        private View view;
-        public NetworkTask3(String url, ContentValues values,  CircularImageView civ, LinearLayout rootLayout, View view) {
-            this.url = url;
-            this.values = values;
-            this.civ = civ;
-            this.rootLayout = rootLayout;
-            this.view = view;
-        }
-        @Override
-        protected Bitmap doInBackground(Void... params) {
-            try {
-                URL urlO = new URL(url);
 
-                URLConnection conn = urlO.openConnection();
-                conn.connect();
-                InputStream urlInputStream = conn.getInputStream();
-                return BitmapFactory.decodeStream(urlInputStream);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Bitmap bm) {
-            civ.setImageBitmap(bm);
-            rootLayout.addView(view);
-        }
-    }
     public class NetworkTask2 extends AsyncTask<Void, Void, String> {
 
         private String url;
@@ -478,6 +444,41 @@ public class WListFragment extends Fragment {
                         }
                     }
                 });
+        }
+    }
+    public class NetworkTask3 extends AsyncTask<Void, Void, Bitmap> {
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        private CircularImageView civ;
+        private LinearLayout rootLayout;
+        private View view;
+        public NetworkTask3(String url, ContentValues values,  CircularImageView civ, LinearLayout rootLayout, View view) {
+            this.url = url;
+            this.values = values;
+            this.civ = civ;
+            this.rootLayout = rootLayout;
+            this.view = view;
+        }
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            try {
+                URL urlO = new URL(url);
+
+                URLConnection conn = urlO.openConnection();
+                conn.connect();
+                InputStream urlInputStream = conn.getInputStream();
+                return BitmapFactory.decodeStream(urlInputStream);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Bitmap bm) {
+            civ.setImageBitmap(bm);
+            rootLayout.addView(view);
         }
     }
 }

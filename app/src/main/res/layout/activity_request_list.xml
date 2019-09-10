@@ -32,7 +32,7 @@
             android:layout_height="50dp"
             android:weightSum="10"
             android:orientation="horizontal"
-            android:background="@drawable/rectangle_gray_solid">>
+            android:background="@drawable/rectangle_gray_solid">
             <Button
                 android:id="@+id/btn_received"
                 android:layout_width="0dp"
