@@ -124,7 +124,7 @@ public class WListFragment extends Fragment {
 
 
 
-        String url = "http://147.47.208.44:9999/api/meetings/my/";
+        String url = "http://192.168.0.10:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -169,7 +169,7 @@ public class WListFragment extends Fragment {
     }
     private void activateDates(Set<String> active_dates) {
         int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
-        String url = "http://147.47.208.44:9999/api/meetings/waiting/";
+        String url = "http://192.168.0.10:9999/api/meetings/waiting/";
         url += "?";
         ContentValues values = new ContentValues();
         SimpleDateFormat sdf = new SimpleDateFormat("M/d");

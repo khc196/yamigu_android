@@ -185,14 +185,15 @@
                         </LinearLayout>
                     </HorizontalScrollView>
                 </FrameLayout>
-                <ImageView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/text_today_scheduled_meetings"
+                    android:text="오늘 예정 미팅"
                     android:layout_marginLeft="34dp"
                     android:layout_marginBottom="4dp"
                     android:layout_marginTop="17dp"
-                    android:scaleType="fitStart"/>
+                    android:textColor="@color/colorBlack"
+                    android:textSize="18dp"/>
                 <!--ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

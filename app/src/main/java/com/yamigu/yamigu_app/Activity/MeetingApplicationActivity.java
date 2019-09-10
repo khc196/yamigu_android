@@ -419,6 +419,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         btn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 ma.setAppeal(et_appeal.getText().toString());
                 if(ma.getAppeal().trim().isEmpty()) {
                     toast.setText("뭐라도 써주세요!");
@@ -431,6 +432,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 else {
                     if(is_changeable) {
                         String url = "http://147.47.208.44:9999/api/meetings/create/";
+
                         ContentValues values = new ContentValues();
                         String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
                         values.put("meeting_type", ma.getType());

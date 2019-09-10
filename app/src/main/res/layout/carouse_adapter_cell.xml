@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <com.yamigu.yamigu_app.CustomLayout.CarouselPagerLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard
+                    android:id="@+id/waiting_team_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    app:label="2"
+                    app:date="5월28일"
+                    app:description="한명이 술을 잘 못마셔요!"
+                    app:place="신촌/홍대"
+                    app:profile1="연세대학교 (24)"
+                    app:profile2="전기전자공학부"></com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard>
+            </LinearLayout>
+        </FrameLayout>
+    </com.yamigu.yamigu_app.CustomLayout.CarouselPagerLayout>
+</LinearLayout>
+
+
