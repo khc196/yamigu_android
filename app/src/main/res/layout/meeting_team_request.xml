@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bg"
     android:layout_height="222dp"
-    android:layout_width="351.8dp"
+    android:layout_width="315dp"
     android:orientation="vertical"
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="21dp"
@@ -138,7 +138,7 @@
                     android:id="@+id/iv_profile"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="23dp"
                     android:src="@drawable/account"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"/>

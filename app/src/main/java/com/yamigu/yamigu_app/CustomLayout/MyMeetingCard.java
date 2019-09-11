@@ -27,6 +27,7 @@ public class MyMeetingCard extends LinearLayout {
     ImageView point_line, icon_edit_card;
     TextView place, num_of_applying, month, date, dday, label, btn_view_applying, btn_view_waiting, label_matching_completed, text_edit_card;
     private int id;
+    private String auth_token;
 
     public MyMeetingCard(Context context) {
         super(context);
@@ -72,6 +73,8 @@ public class MyMeetingCard extends LinearLayout {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), RequestListActivity.class);
+                intent.putExtra("auth_token", auth_token);
+                intent.putExtra("meeting_id", id);
                 intent.putExtra("date", month.getText().toString() + date.getText().toString());
                 intent.putExtra("place", place.getText().toString());
                 intent.putExtra("type", label.getText().toString());
@@ -140,6 +143,7 @@ public class MyMeetingCard extends LinearLayout {
     public void setId(int id) {
         this.id = id;
     }
+    public void setAuth_token(String token) { auth_token = token; }
     public void setType(int type) {
         switch(type){
             case 1:
