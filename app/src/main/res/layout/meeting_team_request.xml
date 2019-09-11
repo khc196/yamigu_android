@@ -33,12 +33,12 @@
                     android:background="@drawable/bottom_rounded_brown"
                     >
                     <LinearLayout
-                        android:layout_width="133.9dp"
+                        android:layout_width="137.5dp"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:layout_marginTop="4.5dp"
                         android:layout_marginBottom="11dp"
-                        android:layout_marginLeft="42dp"
+                        android:layout_marginLeft="20dp"
                         >
                         <TextView
                             android:id="@+id/profile1"
@@ -59,12 +59,12 @@
                             android:layout_marginTop="1dp"/>
                     </LinearLayout>
                     <LinearLayout
-                        android:layout_width="133.9dp"
+                        android:layout_width="137.5dp"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:layout_marginTop="4.5dp"
                         android:layout_marginBottom="11dp"
-                        android:layout_marginRight="42dp">
+                        android:layout_marginRight="20dp">
                         <TextView
                             android:id="@+id/date"
                             android:layout_width="match_parent"
@@ -138,24 +138,30 @@
                     android:id="@+id/iv_profile"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:layout_marginTop="23dp"
-                    android:src="@drawable/account"
-                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginLeft="14dp"
+                    android:src="@drawable/user_profile_no_img"
                     android:layout_centerVertical="true"/>
             </RelativeLayout>
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+            <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
                 android:layout_weight="7"
-                android:gravity="center_horizontal|center_vertical"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:text="한명이 술을 잘 못마셔요!"
-                />
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="left|center_vertical"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:breakStrategy="high_quality"
+                    android:text="안녕하세요 연세대학교 24살 전기전자공학부에 재학중인 학생입니다 5월 28일 신촌 홍대에서 노실 분을 구합니다."
+                    />
+            </RelativeLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

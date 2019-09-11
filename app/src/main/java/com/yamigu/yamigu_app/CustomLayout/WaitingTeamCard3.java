@@ -122,6 +122,7 @@ public class WaitingTeamCard3 extends LinearLayout {
 
 
         String desc_string = typedArray.getString(R.styleable.MeetingTeamHome_description);
+        desc_string.replace("", "\u00A0");
         description.setText(desc_string);
 
         String profile1_string = typedArray.getString(R.styleable.MeetingTeamHome_profile1);

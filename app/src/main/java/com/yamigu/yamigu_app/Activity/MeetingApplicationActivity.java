@@ -444,7 +444,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         networkTask.execute();
                     }
                     else {
-                        String url = "http://147.47.208.44:9999/api/meetings/request_match/";
+                        String url = "http://147.47.208.44:9999/api/meetings/send_request/";
                         ContentValues values = new ContentValues();
                         String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
                         values.put("meeting_type", ma.getType());

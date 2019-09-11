@@ -157,6 +157,7 @@ public class HomeFragment extends Fragment {
                     myMeetingCardFrame.mmc_list[i].setId(jsonArray.getJSONObject(i).getInt("id"));
                     myMeetingCardFrame.mmc_list[i].setType(jsonArray.getJSONObject(i).getInt("meeting_type"));
                     myMeetingCardFrame.mmc_list[i].setPlace(jsonArray.getJSONObject(i).getString("place_type_name"));
+                    myMeetingCardFrame.mmc_list[i].setNum_of_applying(jsonArray.getJSONObject(i).getInt("received_request"));
                     SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
 
                     Date translated_date;
@@ -166,8 +167,6 @@ public class HomeFragment extends Fragment {
                         myMeetingCardFrame.mmc_list[i].setMonth(translated_date.getMonth());
                         myMeetingCardFrame.mmc_list[i].setDate(translated_date.getDate());
                         myMeetingCardFrame.mmc_list[i].setDday(translated_date.getDate() - today.getDate());
-                        //TODO: request num_of_applying
-                        myMeetingCardFrame.mmc_list[i].setNum_of_applying(0);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }

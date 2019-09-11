@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -47,8 +49,11 @@ public class MeetingCardFragment extends Fragment {
         RelativeLayout rl_applying;
         ImageView point_line;
         TextView description, profile1, profile2, date, place, rating, label;
+        Button btn_left, btn_right;
+        String TAG;
         if (getArguments() != null) {
             Bundle args = getArguments();
+            TAG = args.getString("TAG");
             rl_applying = (RelativeLayout) waitingTeamCard.findViewById(R.id.rl_applying);
             label = (TextView) waitingTeamCard.findViewById(R.id.label);
             point_line = (ImageView) waitingTeamCard.findViewById(R.id.point_line);
@@ -59,7 +64,12 @@ public class MeetingCardFragment extends Fragment {
             place = (TextView) waitingTeamCard.findViewById(R.id.place);
             rating = (TextView) waitingTeamCard.findViewById(R.id.rating);
             CircularImageView profile_img = (CircularImageView) waitingTeamCard.findViewById(R.id.iv_profile);
-
+            btn_left = view.findViewById(R.id.btn_left);
+            btn_right = view.findViewById(R.id.btn_right);
+            if(TAG.equals("sent")) {
+                btn_left.setText("수락 대기중");
+                btn_right.setText("취소");
+            }
             String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
             desc_string = args.getString("appeal");
             profile1_string = args.getString("nickname") + " (" + args.getInt("age") + ")";
@@ -101,9 +111,11 @@ public class MeetingCardFragment extends Fragment {
                 date.setText(date_string);
                 place.setText(place_string);
                 String url = args.getString("profile_img_url");
-                ContentValues values = new ContentValues();
-                NetworkTask networkTask = new NetworkTask(url, values, profile_img);
-                networkTask.execute();
+                if(!url.isEmpty()) {
+                    ContentValues values = new ContentValues();
+                    NetworkTask networkTask = new NetworkTask(url, values, profile_img);
+                    networkTask.execute();
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }

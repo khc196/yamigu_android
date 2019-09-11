@@ -324,9 +324,11 @@ public class WListFragment extends Fragment {
                     CircularImageView profile_img = (CircularImageView) mtw.findViewById(R.id.iv_profile);
 
                     String url = json_data.getString("openby_profile");
-                    ContentValues values = new ContentValues();
-                    NetworkTask3 networkTask3 = new NetworkTask3(url, values, profile_img, mRootLinear, mtw);
-                    networkTask3.execute();
+                    if(!url.isEmpty()) {
+                        ContentValues values = new ContentValues();
+                        NetworkTask3 networkTask3 = new NetworkTask3(url, values, profile_img, mRootLinear, mtw);
+                        networkTask3.execute();
+                    }
                     top_bg.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -360,6 +362,7 @@ public class WListFragment extends Fragment {
                     profile1_string = json_data.getString("openby_nickname") + " (" +json_data.getString("openby_age") + ")";
                     profile2_string = json_data.getString("openby_belong") + ", "+ json_data.getString("openby_department");
                     before_date_string = json_data.getString("date");
+                    desc_string.replace("", "\u00A0");
                     try {
                         int label_type = json_data.getInt("meeting_type");
                         switch(label_type){
@@ -408,6 +411,7 @@ public class WListFragment extends Fragment {
                                     intent.putExtra("place", json_data.getInt("place_type"));
                                     intent.putExtra("place_string", place_string_f);
                                     intent.putExtra("id", json_data.getInt("id"));
+                                    rl_applying.setVisibility(View.INVISIBLE);
                                     startActivity(intent);
                                 }
                                 catch(JSONException e) {
