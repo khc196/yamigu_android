@@ -11,10 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard;
+import com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2;
 import com.yamigu.yamigu_app.R;
 
 public class MeetingCardFragment extends Fragment {
-    public WaitingTeamCard waitingTeamCard;
+    public WaitingTeamCard2 waitingTeamCard;
     public LinearLayout ll_btn_layout;
     @Nullable
     @Override
