@@ -140,7 +140,7 @@ public class RequestListActivity extends AppCompatActivity {
 
         viewPager.setClipToPadding(false);
 
-        String url = "http://192.168.0.10:9999/api/meetings/request_match/?meeting_id="+meeting_id;
+        String url = "http://147.47.208.44:9999/api/meetings/request_match/?meeting_id="+meeting_id;
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
