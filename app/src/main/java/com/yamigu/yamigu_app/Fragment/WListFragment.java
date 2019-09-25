@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -333,7 +334,7 @@ public class WListFragment extends Fragment {
                         NetworkTask3 networkTask3 = new NetworkTask3(url, values, profile_img, mRootLinear, mtw);
                         networkTask3.execute();
                     }
-                    top_bg.setOnClickListener(new View.OnClickListener() {
+                    mtw.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             if(rl_applying.getVisibility() == View.INVISIBLE) {
@@ -360,7 +361,37 @@ public class WListFragment extends Fragment {
                                             }});
                         }
                     });
+                    description_w.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View view, MotionEvent motionEvent) {
+                            if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                                if (rl_applying.getVisibility() == View.INVISIBLE) {
 
+                                    rl_applying.setVisibility(View.VISIBLE);
+                                    rl_applying.animate()
+                                            .translationY(rl_applying.getHeight())
+                                            .alpha(1.0f)
+                                            .setListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationEnd(Animator animation) {
+                                                    super.onAnimationEnd(animation);
+                                                }
+                                            });
+                                } else
+                                    rl_applying.animate()
+                                            .translationY(0)
+                                            .alpha(0.0f)
+                                            .setListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationEnd(Animator animation) {
+                                                    super.onAnimationEnd(animation);
+                                                    rl_applying.setVisibility(View.INVISIBLE);
+                                                }
+                                            });
+                            }
+                            return true;
+                        }
+                    });
                     String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
                     desc_string = json_data.getString("appeal");
                     profile1_string = json_data.getString("openby_nickname") + " (" +json_data.getString("openby_age") + ")";
@@ -369,6 +400,7 @@ public class WListFragment extends Fragment {
                     //desc_string = desc_string.replaceAll("", "\u00A0");
                     description_w.setBackgroundColor(Color.TRANSPARENT);
                     description_w.loadData("<div style=\"display:table; width:100%; height:100%; wbackground-color:rgba(255,255,255, 0);\"><div style=\"display: table-cell; vertical-align: middle; text-align:center; word-break: break-all; color: black; font-size:14px; padding:3px;\">"+desc_string+"</div></div>", "text/html;charset=UTF-8", "UTF-8");
+
                     try {
                         int label_type = json_data.getInt("meeting_type");
                         switch(label_type){
