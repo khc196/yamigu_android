@@ -1,6 +1,8 @@
 package com.yamigu.yamigu_app.Fragment;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +28,9 @@ import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 
 import com.yamigu.yamigu_app.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -32,12 +38,14 @@ import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 
 public class MeetingCardFragment extends Fragment {
 
     public WaitingTeamCard3 waitingTeamCard;
 
     public LinearLayout ll_btn_layout;
+    private String auth_token;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,16 +56,20 @@ public class MeetingCardFragment extends Fragment {
         ll_btn_layout = view.findViewById(R.id.btn_layout);
         RelativeLayout rl_applying;
         ImageView point_line;
-        TextView description, profile1, profile2, date, place, rating, label;
+        TextView profile1, profile2, date, place, rating, label;
+        WebView description;
         Button btn_left, btn_right;
-        String TAG;
+        String TAG, auth_token;
+        final int request_id;
         if (getArguments() != null) {
             Bundle args = getArguments();
             TAG = args.getString("TAG");
+            auth_token = args.getString("auth_token");
+            request_id = args.getInt("request_id");
             rl_applying = (RelativeLayout) waitingTeamCard.findViewById(R.id.rl_applying);
             label = (TextView) waitingTeamCard.findViewById(R.id.label);
             point_line = (ImageView) waitingTeamCard.findViewById(R.id.point_line);
-            description = (TextView) waitingTeamCard.findViewById(R.id.description);
+            description = (WebView) waitingTeamCard.findViewById(R.id.description);
             profile1 = (TextView) waitingTeamCard.findViewById(R.id.profile1);
             profile2 = (TextView) waitingTeamCard.findViewById(R.id.profile2);
             date = (TextView) waitingTeamCard.findViewById(R.id.date);
@@ -66,9 +78,96 @@ public class MeetingCardFragment extends Fragment {
             CircularImageView profile_img = (CircularImageView) waitingTeamCard.findViewById(R.id.iv_profile);
             btn_left = view.findViewById(R.id.btn_left);
             btn_right = view.findViewById(R.id.btn_right);
+            final MeetingCardFragment me = this;
             if(TAG.equals("sent")) {
                 btn_left.setText("수락 대기중");
                 btn_right.setText("취소");
+                btn_right.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        AlertDialog.Builder alert_confirm = new AlertDialog.Builder(getContext());
+                        alert_confirm.setMessage("요청을 취소하시겠습니까?").setCancelable(false).setPositiveButton("확인",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String url = "http://147.47.208.44:9999/api/meetings/request/cancel/";
+                                        int id = request_id;
+                                        ContentValues values = new ContentValues();
+                                        values.put("request_id", id);
+                                        NetworkTask2 networkTask2 = new NetworkTask2(url, values);
+                                        networkTask2.execute();
+                                        getActivity().getSupportFragmentManager().beginTransaction().remove(me).commit();
+                                    }
+                                }).setNegativeButton("취소",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        return;
+                                    }
+                                });
+                        AlertDialog alert = alert_confirm.create();
+                        alert.show();
+                    }
+                });
+            }
+            else {
+                btn_left.setText("미팅 수락");
+                btn_right.setText("거절");
+
+                btn_left.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AlertDialog.Builder alert_confirm = new AlertDialog.Builder(getContext());
+                        alert_confirm.setMessage("미팅을 수락하시겠습니까?").setCancelable(false).setPositiveButton("확인",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String url = "http://147.47.208.44:9999/api/meetings/request/accept/";
+                                        int id = request_id;
+                                        ContentValues values = new ContentValues();
+                                        values.put("request_id", id);
+                                        NetworkTask2 networkTask2 = new NetworkTask2(url, values);
+                                        networkTask2.execute();
+                                    }
+                                }).setNegativeButton("취소",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        return;
+                                    }
+                                });
+                        AlertDialog alert = alert_confirm.create();
+                        alert.show();
+                    }
+                });
+                btn_right.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AlertDialog.Builder alert_confirm = new AlertDialog.Builder(getContext());
+                        alert_confirm.setMessage("미팅을 거절하시겠습니까?").setCancelable(false).setPositiveButton("확인",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String url = "http://147.47.208.44:9999/api/meetings/request/decline/";
+                                        int id = request_id;
+                                        ContentValues values = new ContentValues();
+                                        values.put("request_id", id);
+                                        NetworkTask2 networkTask2 = new NetworkTask2(url, values);
+                                        networkTask2.execute();
+                                        getActivity().getSupportFragmentManager().beginTransaction().remove(me).commit();
+                                    }
+                                }).setNegativeButton("취소",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        return;
+                                    }
+                                });
+                        AlertDialog alert = alert_confirm.create();
+                        alert.show();
+                    }
+                });
             }
             String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
             desc_string = args.getString("appeal");
@@ -105,7 +204,7 @@ public class MeetingCardFragment extends Fragment {
                 SimpleDateFormat sdf = new SimpleDateFormat("M월d일");
                 date_string = sdf.format(before_date);
                 place_string = args.getString("place_type_name");
-                description.setText(desc_string);
+                description.loadData("<div style=\"display:table; width:100%; height:100%; background-color:rgba(255,255,255, 0);\"><div style=\"display: table-cell; vertical-align: middle; text-align:center; word-break: break-all; color: black; font-size:12px; padding:3px;\">"+desc_string+"</div></div>", "text/html;charset=UTF-8", "UTF-8");
                 profile1.setText(profile1_string);
                 profile2.setText(profile2_string);
                 date.setText(date_string);
@@ -151,6 +250,34 @@ public class MeetingCardFragment extends Fragment {
         @Override
         protected void onPostExecute(Bitmap bm) {
             civ.setImageBitmap(bm);
+        }
+    }
+    public class NetworkTask2 extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask2(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(getContext(), url, values, "POST", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            JSONArray jsonArray = null;
+
         }
     }
 }

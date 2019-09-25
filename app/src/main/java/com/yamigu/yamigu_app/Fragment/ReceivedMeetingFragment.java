@@ -60,7 +60,6 @@ public class ReceivedMeetingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_received_meeting, container, false);
         // Inflate the layout for this fragment
-
         page_layout = view.findViewById(R.id.page_view);
         empty_layout = view.findViewById(R.id.empty_view);
         tv_current = view.findViewById(R.id.tv_num_of_recv);
@@ -149,7 +148,6 @@ public class ReceivedMeetingFragment extends Fragment {
         super.onDetach();
     }
     public void refresh() {
-        Log.d("ReceivedMeetingFragment", "Refresh");
         if(fragmentAdapter != null) {
             fragmentAdapter.notifyDataSetChanged();
         }
@@ -185,13 +183,15 @@ public class ReceivedMeetingFragment extends Fragment {
                 total_num = jsonArray.length();
                 tv_total.setText(Integer.toString(total_num));
                 for(int i = 0; i < jsonArray.length(); i++) {
-
+                    int request_id = jsonArray.getJSONObject(i).getInt("id");
                     JSONObject json_data = jsonArray.getJSONObject(i).getJSONObject("sender");
                     Log.d("onPostExecute", json_data.toString());
 
                     MeetingCardFragment meetingCardFragment = new MeetingCardFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("TAG", "received");
+                    bundle.putString("auth_token", auth_token);
+                    bundle.putInt("request_id", request_id);
                     bundle.putInt("type", json_data.getInt("meeting_type"));
                     bundle.putString("nickname", json_data.getString("openby_nickname"));
                     bundle.putInt("age", json_data.getInt("openby_age"));
