@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="친구들과 안전한 미팅하세요! "
                 android:textSize="12dp"
-                android:textColor="#C6C6C6"
+                android:textColor="@color/colorNonselect"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="6.6dp"/>
         </LinearLayout>

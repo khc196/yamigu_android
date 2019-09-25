@@ -1,4 +1,4 @@
-package com.yamigu.yamigu_app.Activity;
+package com.yamigu.yamigu_app.CustomLayout;
 
 import android.content.Context;
 import android.content.res.TypedArray;
