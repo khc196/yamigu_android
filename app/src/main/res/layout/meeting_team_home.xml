@@ -25,7 +25,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="102.6dp">
-            <TextView
+            <!--TextView
                 android:id="@+id/description"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
@@ -35,7 +35,16 @@
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:text="한명이 술을 잘 못마셔요!"
-                />
+                /-->
+            <WebView
+                android:id="@+id/description"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="left|center_vertical">
+            </WebView>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

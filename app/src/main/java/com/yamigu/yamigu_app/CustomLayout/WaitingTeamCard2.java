@@ -4,10 +4,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,6 +24,7 @@ public class WaitingTeamCard2 extends LinearLayout {
     RelativeLayout rl_applying;
     ImageView point_line;
     TextView description, profile1, profile2, date, place, rating, label;
+    WebView description_w;
 
     public WaitingTeamCard2(Context context) {
         super(context);
@@ -50,7 +53,8 @@ public class WaitingTeamCard2 extends LinearLayout {
         rl_applying = (RelativeLayout) findViewById(R.id.rl_applying);
         label = (TextView) findViewById(R.id.label);
         point_line = (ImageView) findViewById(R.id.point_line);
-        description = (TextView) findViewById(R.id.description);
+        //description = (TextView) findViewById(R.id.description);
+        description_w = (WebView) findViewById(R.id.description);
         profile1 = (TextView) findViewById(R.id.profile1);
         profile2 = (TextView) findViewById(R.id.profile2);
         date = (TextView) findViewById(R.id.date);
@@ -121,8 +125,10 @@ public class WaitingTeamCard2 extends LinearLayout {
 
 
         String desc_string = typedArray.getString(R.styleable.MeetingTeamHome_description);
-        desc_string.replace("", "\u00A0");
-        description.setText(desc_string);
+        desc_string = desc_string.replaceAll("\\u00A0", "");
+        //description.setText(desc_string);
+        description_w.setBackgroundColor(Color.TRANSPARENT);
+        description_w.loadData("<div style=\"display:table; width:100%; height:100%; wbackground-color:rgba(255,255,255, 0);\"><div style=\"display: table-cell; vertical-align: middle; text-align:center; word-break: break-all; color: black; font-size:14px; padding:3px;\">"+desc_string+"</div></div>", "text/html;charset=UTF-8", "UTF-8");
 
         String profile1_string = typedArray.getString(R.styleable.MeetingTeamHome_profile1);
         profile1.setText(profile1_string);

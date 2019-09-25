@@ -147,7 +147,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="7"
                 android:layout_height="match_parent">
-                <TextView
+                <!--TextView
                     android:id="@+id/description"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
@@ -160,7 +160,17 @@
                     android:textSize="12dp"
                     android:breakStrategy="high_quality"
                     android:text="안녕하세요 연세대학교 24살 전기전자공학부에 재학중인 학생입니다 5월 28일 신촌 홍대에서 노실 분을 구합니다."
-                    />
+                    /-->
+                <WebView
+                    android:id="@+id/description"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="left|center_vertical">
+                </WebView>
             </RelativeLayout>
         </LinearLayout>
         <LinearLayout

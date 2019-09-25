@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -311,11 +313,13 @@ public class WListFragment extends Fragment {
                     final RelativeLayout rl_applying;
                     ImageView point_line;
                     TextView description, profile1, profile2, date, place, rating, label;
+                    WebView description_w;
                     top_bg = (LinearLayout) mtw.findViewById(R.id.top_bg);
                     rl_applying = (RelativeLayout) mtw.findViewById(R.id.rl_applying);
                     label = (TextView) mtw.findViewById(R.id.label);
                     point_line = (ImageView) mtw.findViewById(R.id.point_line);
-                    description = (TextView) mtw.findViewById(R.id.description);
+                    //description = (TextView) mtw.findViewById(R.id.description);
+                    description_w = (WebView) mtw.findViewById(R.id.description);
                     profile1 = (TextView) mtw.findViewById(R.id.profile1);
                     profile2 = (TextView) mtw.findViewById(R.id.profile2);
                     date = (TextView) mtw.findViewById(R.id.date);
@@ -362,7 +366,9 @@ public class WListFragment extends Fragment {
                     profile1_string = json_data.getString("openby_nickname") + " (" +json_data.getString("openby_age") + ")";
                     profile2_string = json_data.getString("openby_belong") + ", "+ json_data.getString("openby_department");
                     before_date_string = json_data.getString("date");
-                    desc_string.replace("", "\u00A0");
+                    //desc_string = desc_string.replaceAll("", "\u00A0");
+                    description_w.setBackgroundColor(Color.TRANSPARENT);
+                    description_w.loadData("<div style=\"display:table; width:100%; height:100%; wbackground-color:rgba(255,255,255, 0);\"><div style=\"display: table-cell; vertical-align: middle; text-align:center; word-break: break-all; color: black; font-size:14px; padding:3px;\">"+desc_string+"</div></div>", "text/html;charset=UTF-8", "UTF-8");
                     try {
                         int label_type = json_data.getInt("meeting_type");
                         switch(label_type){
@@ -393,7 +399,7 @@ public class WListFragment extends Fragment {
                         SimpleDateFormat sdf = new SimpleDateFormat("M월d일");
                         date_string = sdf.format(before_date);
                         place_string = json_data.getString("place_type_name");
-                        description.setText(desc_string);
+                        //description.setText(desc_string);
                         profile1.setText(profile1_string);
                         profile2.setText(profile2_string);
                         date.setText(date_string);
