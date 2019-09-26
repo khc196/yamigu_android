@@ -110,6 +110,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                 Log.d("seekbar_length", ""+seekbar_length);
                 Log.d("l_unit", ""+l_unit);
                 filter.initialize();
+
             }
         });
 
@@ -383,37 +384,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         btn_cancel_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btn_type_2vs2.setBackgroundResource(R.drawable.rounded_gray_solid);
-                btn_type_2vs2.setTextColor(getResources().getColor(R.color.colorNonselect));
-                btn_type_3vs3.setBackgroundResource(R.drawable.rounded_gray_solid);
-                btn_type_3vs3.setTextColor(getResources().getColor(R.color.colorNonselect));
-                btn_type_4vs4.setBackgroundResource(R.drawable.rounded_gray_solid);
-                btn_type_4vs4.setTextColor(getResources().getColor(R.color.colorNonselect));
-                btn_place_1.setBackgroundResource(R.drawable.rounded_gray_solid);
-                btn_place_1.setTextColor(getResources().getColor(R.color.colorNonselect));
-                btn_place_2.setBackgroundResource(R.drawable.rounded_gray_solid);
-                btn_place_2.setTextColor(getResources().getColor(R.color.colorNonselect));
-                btn_place_3.setBackgroundResource(R.drawable.rounded_gray_solid);
-                btn_place_3.setTextColor(getResources().getColor(R.color.colorNonselect));
-                filter.setSelected_type_2vs2(false);
-                filter.setSelected_type_3vs3(false);
-                filter.setSelected_type_4vs4(false);
-                filter.setSelected_place_1(false);
-                filter.setSelected_place_2(false);
-                filter.setSelected_place_3(false);
-                tv_minimum_age.setText("20살");
-                params_l = (ViewGroup.MarginLayoutParams)iv_minimum_age.getLayoutParams();
-                params_l.setMargins(0, 0, 0, 0);
-                iv_minimum_age.setLayoutParams(params_l);
-                iv_minimum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT));
-                filter.setMinimum_age_current(0);
-                tv_maximum_age.setText("30살+");
-                params_r = (ViewGroup.MarginLayoutParams)iv_maximum_age.getLayoutParams();
-                params_r.setMargins(0, 0, 0, 0);
-                iv_maximum_age.setLayoutParams(params_r);
-                iv_maximum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT));
-                filter.setMaximum_age_current(11);
-                requestFilteredDataNumber();
+                initialize_ui();
             }
         });
 
@@ -428,12 +399,42 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
     @Override
     public void onStart() {
         super.onStart();
-
-
         getDialog().getWindow().setWindowAnimations(R.style.FullScreenDialogStyle);
 
     }
-
+    private void initialize_ui() {
+        btn_type_2vs2.setBackgroundResource(R.drawable.rounded_gray_solid);
+        btn_type_2vs2.setTextColor(getResources().getColor(R.color.colorNonselect));
+        btn_type_3vs3.setBackgroundResource(R.drawable.rounded_gray_solid);
+        btn_type_3vs3.setTextColor(getResources().getColor(R.color.colorNonselect));
+        btn_type_4vs4.setBackgroundResource(R.drawable.rounded_gray_solid);
+        btn_type_4vs4.setTextColor(getResources().getColor(R.color.colorNonselect));
+        btn_place_1.setBackgroundResource(R.drawable.rounded_gray_solid);
+        btn_place_1.setTextColor(getResources().getColor(R.color.colorNonselect));
+        btn_place_2.setBackgroundResource(R.drawable.rounded_gray_solid);
+        btn_place_2.setTextColor(getResources().getColor(R.color.colorNonselect));
+        btn_place_3.setBackgroundResource(R.drawable.rounded_gray_solid);
+        btn_place_3.setTextColor(getResources().getColor(R.color.colorNonselect));
+        filter.setSelected_type_2vs2(false);
+        filter.setSelected_type_3vs3(false);
+        filter.setSelected_type_4vs4(false);
+        filter.setSelected_place_1(false);
+        filter.setSelected_place_2(false);
+        filter.setSelected_place_3(false);
+        tv_minimum_age.setText("20살");
+        params_l = (ViewGroup.MarginLayoutParams)iv_minimum_age.getLayoutParams();
+        params_l.setMargins(0, 0, 0, 0);
+        iv_minimum_age.setLayoutParams(params_l);
+        iv_minimum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT));
+        filter.setMinimum_age_current(0);
+        tv_maximum_age.setText("30살+");
+        params_r = (ViewGroup.MarginLayoutParams)iv_maximum_age.getLayoutParams();
+        params_r.setMargins(0, 0, 0, 0);
+        iv_maximum_age.setLayoutParams(params_r);
+        iv_maximum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT));
+        filter.setMaximum_age_current(11);
+        requestFilteredDataNumber();
+    }
     private void requestFilteredDataNumber() {
         String url = "http://147.47.208.44:9999/api/meetings/waiting/count/?";
         ContentValues values = new ContentValues();
@@ -624,6 +625,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                 iv_maximum_age.setPadding(0, iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingRight(), iv_maximum_age.getPaddingBottom());
             else
                 iv_maximum_age.setPadding(iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingRight(), iv_maximum_age.getPaddingBottom());
+            initialize_ui();
             is_initialized = true;
         }
         public void setSelected_type_2vs2(boolean onoff) {
