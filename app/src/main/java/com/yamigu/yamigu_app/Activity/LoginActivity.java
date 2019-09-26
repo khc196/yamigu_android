@@ -123,11 +123,13 @@ public class LoginActivity extends AppCompatActivity {
 
     protected void redirectVerificationActivity() {
         final Intent intent = new Intent(this, VerificationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
         finish();
     }
     protected void redirectMainActivity() {
         final Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
         finish();
     }

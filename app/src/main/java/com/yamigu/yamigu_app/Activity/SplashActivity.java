@@ -125,16 +125,19 @@ public class SplashActivity extends AppCompatActivity {
     }
     protected void redirectVerificationActivity() {
         final Intent intent = new Intent(this, VerificationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
         finish();
     }
     protected void redirectMainActivity() {
         final Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
         finish();
     }
     protected void redirectMainOnboardingActivity() {
         Intent intent = new Intent(getApplicationContext(), MainOnboardingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
         finish();
