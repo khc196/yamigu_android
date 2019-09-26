@@ -51,6 +51,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private String auth_token;
     private boolean is_changeable;
     private int meeting_id;
+    private boolean is_changing;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +91,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         toastView.getBackground().setColorFilter(toastbackgroundColor, PorterDuff.Mode.SRC_IN);
         TextView toasttv = (TextView) toastView.findViewById(android.R.id.message);
         toasttv.setTextColor(Color.WHITE);
+        is_changing = false;
         et_appeal.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -114,6 +116,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(is_changing)
+                        return;
                     Button obutton;
                     for (int j = 0; j < btn_select_type_array.length; j++){
                         obutton = btn_select_type_array[j];
@@ -145,6 +149,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
+                                is_changing = false;
                                 if (ma.getDate() == -1) {
                                     ma.reselect(ma.RESELECT_DATE);
                                     type_view.setVisibility(View.GONE);
@@ -172,6 +177,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                 selected_type_text.setText(ma.getType_string());
                             }
                         });
+                        is_changing = true;
                         colorAnimation.start();
                         colorAnimation2.start();
                     }
@@ -208,6 +214,9 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view){
+                    if(is_changing) {
+                        return;
+                    }
                     Button obutton;
                     for (int j = 0; j < btn_select_date_array.length; j++) {
                         obutton = btn_select_date_array[j];
@@ -238,6 +247,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
+                                is_changing = false;
                                 if(ma.getType() == -1) {
                                     ma.reselect(ma.RESELECT_TYPE);
                                     type_view.setVisibility(View.VISIBLE);
@@ -268,6 +278,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
 
                             }
                         });
+                        is_changing = true;
                         colorAnimation.start();
                         colorAnimation2.start();
                     }
@@ -292,6 +303,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(is_changing)
+                        return;
                     Button obutton;
                     for(int j = 0; j < btn_select_place_array.length; j++) {
                         obutton = btn_select_place_array[j];
@@ -322,6 +335,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
+                                is_changing = false;
                                 if(ma.getType() == -1) {
                                     ma.reselect(ma.RESELECT_TYPE);
                                     type_view.setVisibility(View.VISIBLE);
@@ -352,6 +366,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
 
                             }
                         });
+                        is_changing = true;
                         colorAnimation.start();
                         colorAnimation2.start();
                     }
