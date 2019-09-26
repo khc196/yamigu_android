@@ -5,9 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -58,6 +60,7 @@ public class RequestListActivity extends AppCompatActivity {
 
     private String auth_token;
     int meeting_id;
+    private SharedPreferences preferences;
     private ArrayList<Integer> received_list = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +77,9 @@ public class RequestListActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Intent intent = getIntent();
-        auth_token = intent.getExtras().getString("auth_token");
+        auth_token = preferences.getString("auth_token", "");
         String date = intent.getExtras().getString("date");
         String place = intent.getExtras().getString("place");
         String type = intent.getExtras().getString("type");
@@ -145,7 +149,6 @@ public class RequestListActivity extends AppCompatActivity {
             mf2 = new SentMeetingFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("meeting_id", meeting_id);
-            bundle.putString("auth_token", auth_token);
             mf1.setArguments(bundle);
             mf2.setArguments(bundle);
         }

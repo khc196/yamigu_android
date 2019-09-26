@@ -2,7 +2,9 @@ package com.yamigu.yamigu_app.Activity;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +26,11 @@ import com.yamigu.yamigu_app.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 public class LoginActivity extends AppCompatActivity {
 
 
@@ -31,10 +38,14 @@ public class LoginActivity extends AppCompatActivity {
     private LoginButton btn_kakao_login;
     private SessionCallback callback;
     private String auth_token;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
 //        callback = new SessionCallback();
 //        Session.getCurrentSession().addCallback(callback);
 //        Session.getCurrentSession().checkAndImplicitOpen();
@@ -112,13 +123,11 @@ public class LoginActivity extends AppCompatActivity {
 
     protected void redirectVerificationActivity() {
         final Intent intent = new Intent(this, VerificationActivity.class);
-        intent.putExtra("auth_token", auth_token);
         startActivity(intent);
         finish();
     }
     protected void redirectMainActivity() {
         final Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("auth_token", auth_token);
         startActivity(intent);
         finish();
     }
@@ -164,6 +173,8 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("onPostExecute :: ", "jsonObject key: " + jsonObject.getString("key"));
                 networkTask2.execute();
                 auth_token = jsonObject.getString("key");
+                editor.putString("auth_token", auth_token);
+                editor.apply();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -202,15 +213,30 @@ public class LoginActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            signup_flag = jsonObject.isNull("gender") || jsonObject.isNull("nickname") || jsonObject.isNull("phone") || jsonObject.isNull("belong") || jsonObject.isNull("department") || jsonObject.isNull("age") || jsonObject.isNull("email");
-            isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
-
+            try {
+                signup_flag = jsonObject.getString("nickname").isEmpty();
+                isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
+            } catch(JSONException e) {
+                e.printStackTrace();
+            }
             if (!isFirstRun) {
                 if(signup_flag) {
                     redirectVerificationActivity();
                 }
                 else {
-                    redirectMainActivity();
+                    try {
+                        editor.putString("nickname", jsonObject.getString("nickname"));
+                        editor.putString("phone", jsonObject.getString("phone"));
+                        editor.putString("belong", jsonObject.getString("belong"));
+                        editor.putString("department", jsonObject.getString("department"));
+                        editor.putString("profile", jsonObject.getString("image"));
+                        editor.putInt("gender", jsonObject.getInt("gender"));
+                        editor.putInt("age", jsonObject.getInt("age"));
+                        editor.apply();
+                        redirectMainActivity();
+                    } catch(JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();

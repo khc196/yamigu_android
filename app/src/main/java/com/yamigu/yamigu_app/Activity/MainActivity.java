@@ -2,10 +2,12 @@ package com.yamigu.yamigu_app.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout nav_bar;
     private ImageButton nav_home, nav_wlist, nav_yamigu, nav_mypage, nav_more;
     private String auth_token;
+    private SharedPreferences preferences;
 
 
     @Override
@@ -36,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getHashKey(getApplicationContext());
         Intent intent = getIntent();
-        auth_token = intent.getExtras().getString("auth_token");
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        auth_token = preferences.getString("auth_token", "");
 
         nav_bar = (LinearLayout) findViewById(R.id.nav_bar);
         nav_home = (ImageButton) findViewById(R.id.nav_home);
@@ -48,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
-                intent.putExtra("auth_token", auth_token);
                 startActivity(intent);
             }
         });

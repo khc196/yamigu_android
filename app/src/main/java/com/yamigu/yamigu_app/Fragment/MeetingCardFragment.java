@@ -3,10 +3,12 @@ package com.yamigu.yamigu_app.Fragment;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -46,10 +48,13 @@ public class MeetingCardFragment extends Fragment {
 
     public LinearLayout ll_btn_layout;
     private String auth_token;
+    private SharedPreferences preferences;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meeting_card, container, false);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         //LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
         //View waitingTeamCard = inflater.inflate(R.layout.meeting_team_request, mRootLinear, false);
         waitingTeamCard = view.findViewById(R.id.waiting_team_card);
@@ -64,7 +69,7 @@ public class MeetingCardFragment extends Fragment {
         if (getArguments() != null) {
             Bundle args = getArguments();
             TAG = args.getString("TAG");
-            auth_token = args.getString("auth_token");
+            auth_token = preferences.getString("auth_token", "");
             request_id = args.getInt("request_id");
             rl_applying = (RelativeLayout) waitingTeamCard.findViewById(R.id.rl_applying);
             label = (TextView) waitingTeamCard.findViewById(R.id.label);
