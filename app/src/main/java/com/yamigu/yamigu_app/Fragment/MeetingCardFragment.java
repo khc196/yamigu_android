@@ -64,7 +64,7 @@ public class MeetingCardFragment extends Fragment {
         TextView profile1, profile2, date, place, rating, label;
         WebView description;
         Button btn_left, btn_right;
-        String TAG, auth_token;
+        String TAG;
         final int request_id;
         if (getArguments() != null) {
             Bundle args = getArguments();
@@ -84,7 +84,13 @@ public class MeetingCardFragment extends Fragment {
             btn_left = view.findViewById(R.id.btn_left);
             btn_right = view.findViewById(R.id.btn_right);
             final MeetingCardFragment me = this;
+
+
+
+
+
             if(TAG.equals("sent")) {
+                final SentMeetingFragment parent_s = (SentMeetingFragment) getParentFragment();
                 btn_left.setText("수락 대기중");
                 btn_right.setText("취소");
                 btn_right.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +108,8 @@ public class MeetingCardFragment extends Fragment {
                                         values.put("request_id", id);
                                         NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                                         networkTask2.execute();
-                                        getActivity().getSupportFragmentManager().beginTransaction().remove(me).commit();
+                                        //getActivity().getSupportFragmentManager().beginTransaction().remove(me).commit();
+                                        parent_s.getActivity().getSupportFragmentManager().beginTransaction().detach(parent_s).attach(parent_s).commit();
                                     }
                                 }).setNegativeButton("취소",
                                 new DialogInterface.OnClickListener() {
@@ -117,6 +124,7 @@ public class MeetingCardFragment extends Fragment {
                 });
             }
             else {
+                final ReceivedMeetingFragment parent_r = (ReceivedMeetingFragment) getParentFragment();
                 btn_left.setText("미팅 수락");
                 btn_right.setText("거절");
 
@@ -160,7 +168,8 @@ public class MeetingCardFragment extends Fragment {
                                         values.put("request_id", id);
                                         NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                                         networkTask2.execute();
-                                        getActivity().getSupportFragmentManager().beginTransaction().remove(me).commit();
+                                        //getActivity().getSupportFragmentManager().beginTransaction().remove(me).commit();
+                                        parent_r.getActivity().getSupportFragmentManager().beginTransaction().detach(parent_r).attach(parent_r).commit();
                                     }
                                 }).setNegativeButton("취소",
                                 new DialogInterface.OnClickListener() {
