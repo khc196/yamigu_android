@@ -172,6 +172,10 @@ public class HomeFragment extends Fragment {
                         myMeetingCardFrame.mmc_list[i].setMonth(translated_date.getMonth());
                         myMeetingCardFrame.mmc_list[i].setDate(translated_date.getDate());
                         myMeetingCardFrame.mmc_list[i].setDday(translated_date.getDate() - today.getDate());
+                        if(jsonArray.getJSONObject(i).getBoolean("is_matched")) {
+                            myMeetingCardFrame.mmc_c_list[i].setVisibility(View.VISIBLE);
+                            myMeetingCardFrame.mmc_list[i].setMatched(true);
+                        }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }

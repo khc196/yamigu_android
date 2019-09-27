@@ -3,6 +3,7 @@ package com.yamigu.yamigu_app.Fragment;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard3;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
@@ -108,7 +110,6 @@ public class MeetingCardFragment extends Fragment {
                                         values.put("request_id", id);
                                         NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                                         networkTask2.execute();
-                                        //getActivity().getSupportFragmentManager().beginTransaction().remove(me).commit();
                                         parent_s.getActivity().getSupportFragmentManager().beginTransaction().detach(parent_s).attach(parent_s).commit();
                                     }
                                 }).setNegativeButton("취소",
@@ -142,8 +143,13 @@ public class MeetingCardFragment extends Fragment {
                                         values.put("request_id", id);
                                         NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                                         networkTask2.execute();
+                                        final Intent intent = new Intent(getContext(), MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                        startActivity(intent);
+                                        getActivity().finish();
                                     }
                                 }).setNegativeButton("취소",
+
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -168,7 +174,6 @@ public class MeetingCardFragment extends Fragment {
                                         values.put("request_id", id);
                                         NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                                         networkTask2.execute();
-                                        //getActivity().getSupportFragmentManager().beginTransaction().remove(me).commit();
                                         parent_r.getActivity().getSupportFragmentManager().beginTransaction().detach(parent_r).attach(parent_r).commit();
                                     }
                                 }).setNegativeButton("취소",
@@ -236,6 +241,7 @@ public class MeetingCardFragment extends Fragment {
 
         return view;
     }
+
     public class NetworkTask extends AsyncTask<Void, Void, Bitmap> {
         private String url;
         private ContentValues values;

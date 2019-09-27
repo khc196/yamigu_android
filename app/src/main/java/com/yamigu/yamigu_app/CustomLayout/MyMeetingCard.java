@@ -201,4 +201,18 @@ public class MyMeetingCard extends LinearLayout {
     public void setNum_of_applying(int num_of_applying_integer) {
         num_of_applying.setText(Integer.toString(num_of_applying_integer) + "팀 신청!");
     }
+    public void setMatched(boolean is_matched) {
+        if(is_matched) {
+            label_matching_completed.setVisibility(VISIBLE);
+            btn_view_applying.setVisibility(INVISIBLE);
+            btn_view_waiting.setVisibility(INVISIBLE);
+            num_of_applying.setVisibility(INVISIBLE);
+        }
+        else {
+            label_matching_completed.setVisibility(INVISIBLE);
+            btn_view_applying.setVisibility(VISIBLE);
+            btn_view_waiting.setVisibility(VISIBLE);
+            num_of_applying.setVisibility(VISIBLE);
+        }
+    }
 }
