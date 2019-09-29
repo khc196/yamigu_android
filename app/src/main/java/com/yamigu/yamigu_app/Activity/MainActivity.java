@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
         homeFragment = new HomeFragment();
         loadFragment(homeFragment);
     }
-
     public boolean loadFragment(Fragment fragment) {
         if(fragment != null) {
             getSupportFragmentManager()

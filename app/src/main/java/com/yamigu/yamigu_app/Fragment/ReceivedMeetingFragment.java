@@ -132,7 +132,7 @@ public class ReceivedMeetingFragment extends Fragment {
 
         viewPager.setClipToPadding(false);
 
-        String url = "http://192.168.43.223:9999/api/meetings/received_request/?meeting_id="+meeting_id;
+        String url = "http://192.168.0.10:9999/api/meetings/received_request/?meeting_id="+meeting_id;
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();

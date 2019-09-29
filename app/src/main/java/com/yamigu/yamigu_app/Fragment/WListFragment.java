@@ -71,6 +71,7 @@ public class WListFragment extends Fragment {
     public static int maximum_age = 11;
     private LayoutInflater mInflater;
     private View view;
+    private Context context;
     static int id = 1;
     private boolean is_initialized = false;
     private SharedPreferences preferences;
@@ -132,7 +133,7 @@ public class WListFragment extends Fragment {
 
 
 
-        String url = "http://192.168.43.223:9999/api/meetings/my/";
+        String url = "http://192.168.0.10:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -158,6 +159,11 @@ public class WListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if( resultCode != Activity.RESULT_OK ) {
             return;
@@ -177,7 +183,7 @@ public class WListFragment extends Fragment {
     }
     private void activateDates(Set<String> active_dates) {
         int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
-        String url = "http://192.168.43.223:9999/api/meetings/waiting/";
+        String url = "http://192.168.0.10:9999/api/meetings/waiting/";
         url += "?";
         ContentValues values = new ContentValues();
         SimpleDateFormat sdf = new SimpleDateFormat("M/d");
@@ -257,7 +263,7 @@ public class WListFragment extends Fragment {
             String result; // 요청 결과를 저장할 변수.
             requestHttpURLConnection = new RequestHttpURLConnection();
 
-            result = requestHttpURLConnection.request(getContext(), url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+            result = requestHttpURLConnection.request(context, url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
 
             return result;
         }
@@ -296,7 +302,7 @@ public class WListFragment extends Fragment {
             String result; // 요청 결과를 저장할 변수.
             requestHttpURLConnection = new RequestHttpURLConnection();
 
-            result = requestHttpURLConnection.request(getContext(), url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+            result = requestHttpURLConnection.request(context, url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
 
             return result;
         }
@@ -311,7 +317,7 @@ public class WListFragment extends Fragment {
                     LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
 
 
-                    //View v = mRootLinear.inflate(getContext(), R.layout.meeting_team_wlist, mRootLinear);
+                    //View v = mRootLinear.inflate(context, R.layout.meeting_team_wlist, mRootLinear);
                     final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View mtw = inflater.inflate(R.layout.meeting_team_wlist, mRootLinear, false);
                     //mRootLinear.addView(mtw);
@@ -404,7 +410,7 @@ public class WListFragment extends Fragment {
                     before_date_string = json_data.getString("date");
                     //desc_string = desc_string.replaceAll("", "\u00A0");
                     description_w.setBackgroundColor(Color.TRANSPARENT);
-                    description_w.loadData("<div style=\"display:table; width:100%; height:100%; wbackground-color:rgba(255,255,255, 0);\"><div style=\"display: table-cell; vertical-align: middle; text-align:center; word-break: break-all; color: black; font-size:14px; padding:3px;\">"+desc_string+"</div></div>", "text/html;charset=UTF-8", "UTF-8");
+                    description_w.loadData("<div style=\"display:table; width:100%; height:100%; wbackground-color:rgba(255,255,255, 0);overflow-y:hidden;\"><div style=\"display: table-cell; vertical-align: middle; text-align:center; word-break: break-all; color: black; font-size:14px; padding:3px;overflow-y:hidden;overflow-x:hidden;\">"+desc_string+"</div></div>", "text/html;charset=UTF-8", "UTF-8");
 
                     try {
                         int label_type = json_data.getInt("meeting_type");
@@ -452,7 +458,7 @@ public class WListFragment extends Fragment {
                                     intent.putExtra("date_string", date_string_f);
                                     intent.putExtra("place", json_data.getInt("place_type"));
                                     intent.putExtra("place_string", place_string_f);
-                                    intent.putExtra("id", json_data.getInt("id"));
+                                    intent.putExtra("target_id", json_data.getInt("id"));
                                     rl_applying.setVisibility(View.INVISIBLE);
                                     startActivity(intent);
                                 }

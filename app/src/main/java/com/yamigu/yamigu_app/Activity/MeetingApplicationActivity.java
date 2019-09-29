@@ -40,21 +40,25 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private Toolbar tb;
     private RelativeLayout selected_type, selected_date, selected_place;
     private TextView selected_type_text, selected_date_text, selected_place_text;
-    private Button btn_okay;
+    private Button btn_okay, btn_edit, btn_delete;
     private Button[] btn_select_type_array, btn_select_date_array, btn_select_place_array;
     private ImageView iv_question_type, iv_question_when, iv_question_where, iv_question_appeal;
     private EditText et_appeal;
-    private LinearLayout type_view, date_view, place_view, appeal_view;
+    private LinearLayout type_view, date_view, place_view, appeal_view, ll_for_edit;
     private MeetingApplication ma;
     private TextView tv_max_appeal_length;
     Toast toast;
-    private final int MAX_APPEAL_LENGTH = 50;
+    private final int MAX_APPEAL_LENGTH = 100;
     private final String[] DOW = {"", "일", "월", "화", "수", "목", "금", "토"};
     private String auth_token;
-    private boolean is_changeable;
-    private int meeting_id;
+    private int form_code;
+    private int target_id, edit_id;
     private boolean is_changing;
     private SharedPreferences preferences;
+    private final int NEW_MEETING = 0;
+    private final int SEND_REQUEST = 1;
+    private final int EDIT_MEETING = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,12 +85,16 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         selected_type_text = (TextView) findViewById(R.id.selected_type_text);
         selected_date_text = (TextView) findViewById(R.id.selected_date_text);
         selected_place_text = (TextView) findViewById(R.id.selected_place_text);
+        ll_for_edit = (LinearLayout) findViewById(R.id.ll_for_edit);
+        btn_edit = (Button) findViewById(R.id.btn_edit);
+        btn_delete = (Button) findViewById(R.id.btn_delete);
         btn_select_type_array = new Button[3];
         btn_select_type_array[0] = (Button) findViewById(R.id.btn_select_2vs2);
         btn_select_type_array[1] = (Button) findViewById(R.id.btn_select_3vs3);
         btn_select_type_array[2] = (Button) findViewById(R.id.btn_select_4vs4);
         et_appeal = (EditText) findViewById(R.id.edittext_appeal);
         tv_max_appeal_length = (TextView) findViewById(R.id.max_appeal_length);
+        ll_for_edit.setVisibility(View.INVISIBLE);
         tv_max_appeal_length.setText("0 / "+Integer.toString(MAX_APPEAL_LENGTH));
         ma = new MeetingApplication();
         toast = Toast.makeText(getApplicationContext(), "뭐라도 써주세요!", Toast.LENGTH_SHORT);
@@ -95,7 +103,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         toastView.getBackground().setColorFilter(toastbackgroundColor, PorterDuff.Mode.SRC_IN);
         TextView toasttv = (TextView) toastView.findViewById(android.R.id.message);
         toasttv.setTextColor(Color.WHITE);
-        is_changing = false;
+        form_code = 0;
         et_appeal.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -114,9 +122,155 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         });
 
 
+
+        btn_select_date_array = new Button[7];
+        btn_select_date_array[0] = (Button) findViewById(R.id.btn_select_date1);
+        btn_select_date_array[1] = (Button) findViewById(R.id.btn_select_date2);
+        btn_select_date_array[2] = (Button) findViewById(R.id.btn_select_date3);
+        btn_select_date_array[3] = (Button) findViewById(R.id.btn_select_date4);
+        btn_select_date_array[4] = (Button) findViewById(R.id.btn_select_date5);
+        btn_select_date_array[5] = (Button) findViewById(R.id.btn_select_date6);
+        btn_select_date_array[6] = (Button) findViewById(R.id.btn_select_date7);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("M월 d일");
+
+
+        btn_select_place_array = new Button[3];
+        btn_select_place_array[0] = (Button) findViewById(R.id.btn_select_place1);
+        btn_select_place_array[1] = (Button) findViewById(R.id.btn_select_place2);
+        btn_select_place_array[2] = (Button) findViewById(R.id.btn_select_place3);
+
+        type_view = (LinearLayout) findViewById(R.id.type_view);
+        date_view = (LinearLayout) findViewById(R.id.date_view);
+        place_view = (LinearLayout) findViewById(R.id.place_view);
+        appeal_view = (LinearLayout) findViewById(R.id.appeal_view);
+        btn_okay = (Button) findViewById(R.id.btn_okay);
+        selected_type_text.setText("인원");
+        selected_date_text.setText("날짜");
+        selected_place_text.setText("장소");
+        date_view.setVisibility(View.GONE);
+        place_view.setVisibility(View.GONE);
+        appeal_view.setVisibility(View.GONE);
+        btn_okay.setVisibility(View.INVISIBLE);
+        form_code = initialize_with_prefilled_data(intent);
+        if(form_code == NEW_MEETING || form_code == EDIT_MEETING) {
+            selected_type.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ma.reselect(ma.RESELECT_TYPE);
+
+                    type_view.setVisibility(View.VISIBLE);
+                    date_view.setVisibility(View.GONE);
+                    place_view.setVisibility(View.GONE);
+                    appeal_view.setVisibility(View.GONE);
+                    btn_okay.setVisibility(View.INVISIBLE);
+                }
+            });
+            selected_date.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ma.reselect(ma.RESELECT_DATE);
+
+                    type_view.setVisibility(View.GONE);
+                    date_view.setVisibility(View.VISIBLE);
+                    place_view.setVisibility(View.GONE);
+                    appeal_view.setVisibility(View.GONE);
+                    btn_okay.setVisibility(View.INVISIBLE);
+                }
+            });
+            selected_place.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ma.reselect(ma.RESELECT_PLACE);
+
+                    type_view.setVisibility(View.GONE);
+                    date_view.setVisibility(View.GONE);
+                    place_view.setVisibility(View.VISIBLE);
+                    appeal_view.setVisibility(View.GONE);
+                    btn_okay.setVisibility(View.INVISIBLE);
+                }
+            });
+        }
+        btn_okay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ma.setAppeal(et_appeal.getText().toString());
+                if(ma.getAppeal().trim().isEmpty()) {
+                    toast.setText("뭐라도 써주세요!");
+                    toast.show();
+                }
+                else if(ma.getAppeal().length() > MAX_APPEAL_LENGTH) {
+                    toast.setText(Integer.toString(MAX_APPEAL_LENGTH) + "자를 넘기면 안돼요~");
+                    toast.show();
+                }
+                else {
+                    if(form_code == NEW_MEETING) {
+                        String url = "http://192.168.0.10:9999/api/meetings/create/";
+
+                        ContentValues values = new ContentValues();
+                        String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
+                        values.put("meeting_type", ma.getType());
+                        values.put("date", new_date.trim());
+                        values.put("place", ma.getPlace());
+                        values.put("appeal", ma.getAppeal());
+
+                        NetworkTask networkTask = new NetworkTask(url, values);
+                        networkTask.execute();
+                    }
+                    else if(form_code == SEND_REQUEST){
+                        String url = "http://192.168.0.10:9999/api/meetings/send_request/";
+                        ContentValues values = new ContentValues();
+                        String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
+                        values.put("meeting_type", ma.getType());
+                        values.put("date", new_date.trim());
+                        values.put("place", ma.getPlace());
+                        values.put("appeal", ma.getAppeal());
+                        values.put("meeting_id", target_id);
+                        NetworkTask networkTask = new NetworkTask(url, values);
+                        networkTask.execute();
+                    }
+                }
+            }
+        });
+        if(form_code == EDIT_MEETING) {
+
+            btn_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ma.setAppeal(et_appeal.getText().toString());
+                    String url = "http://192.168.0.10:9999/api/meetings/edit/";
+                    ContentValues values = new ContentValues();
+                    String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
+                    values.put("meeting_type", ma.getType());
+                    values.put("date", new_date.trim());
+                    values.put("place", ma.getPlace());
+                    values.put("appeal", ma.getAppeal());
+                    values.put("meeting_id", edit_id);
+                    NetworkTask networkTask = new NetworkTask(url, values);
+                    networkTask.execute();
+                }
+            });
+            btn_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String url = "http://192.168.0.10:9999/api/meetings/delete/";
+                    ContentValues values = new ContentValues();
+                    values.put("meeting_id", edit_id);
+                    NetworkTask networkTask = new NetworkTask(url, values);
+                    networkTask.execute();
+                }
+            });
+        }
         for (int i = 0; i < btn_select_type_array.length; i++) {
             final Button button = btn_select_type_array[i];
             final int me = i+1;
+            if(ma.getType() == me) {
+                button.setBackgroundColor(getResources().getColor(R.color.colorPoint));
+                button.setTextColor(Color.WHITE);
+            }
+
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -170,7 +324,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                     date_view.setVisibility(View.GONE);
                                     place_view.setVisibility(View.GONE);
                                     appeal_view.setVisibility(View.VISIBLE);
-                                    btn_okay.setVisibility(View.VISIBLE);
+                                    if(form_code == NEW_MEETING)
+                                        btn_okay.setVisibility(View.VISIBLE);
                                 }
                             }
                         });
@@ -196,25 +351,20 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 }
             });
         }
-        btn_select_date_array = new Button[7];
-        btn_select_date_array[0] = (Button) findViewById(R.id.btn_select_date1);
-        btn_select_date_array[1] = (Button) findViewById(R.id.btn_select_date2);
-        btn_select_date_array[2] = (Button) findViewById(R.id.btn_select_date3);
-        btn_select_date_array[3] = (Button) findViewById(R.id.btn_select_date4);
-        btn_select_date_array[4] = (Button) findViewById(R.id.btn_select_date5);
-        btn_select_date_array[5] = (Button) findViewById(R.id.btn_select_date6);
-        btn_select_date_array[6] = (Button) findViewById(R.id.btn_select_date7);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        SimpleDateFormat sdf = new SimpleDateFormat("M월 d일");
-
         for (int i = 0; i < btn_select_date_array.length; i++) {
             final Button button = btn_select_date_array[i];
             final int me = i+1;
+
             String getTime = sdf.format(cal.getTime());
             int day_of_week = cal.get(Calendar.DAY_OF_WEEK);
             cal.add(Calendar.DATE, 1);
-            button.setText(getTime + " " + DOW[day_of_week]);
+            String date_text = getTime + " " + DOW[day_of_week];
+            button.setText(date_text);
+            if(ma.getDate_string().equals(date_text)) {
+                ma.setDate(me);
+                button.setBackgroundColor(getResources().getColor(R.color.colorPoint));
+                button.setTextColor(Color.WHITE);
+            }
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view){
@@ -270,7 +420,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                     date_view.setVisibility(View.GONE);
                                     place_view.setVisibility(View.GONE);
                                     appeal_view.setVisibility(View.VISIBLE);
-                                    btn_okay.setVisibility(View.VISIBLE);
+                                    if(form_code == NEW_MEETING)
+                                        btn_okay.setVisibility(View.VISIBLE);
                                 }
                             }
                         });
@@ -297,13 +448,13 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 }
             });
         }
-        btn_select_place_array = new Button[3];
-        btn_select_place_array[0] = (Button) findViewById(R.id.btn_select_place1);
-        btn_select_place_array[1] = (Button) findViewById(R.id.btn_select_place2);
-        btn_select_place_array[2] = (Button) findViewById(R.id.btn_select_place3);
         for (int i = 0; i < btn_select_place_array.length; i++) {
             final Button button = btn_select_place_array[i];
             final int me = i+1;
+            if(ma.getPlace() == me) {
+                button.setBackgroundColor(getResources().getColor(R.color.colorPoint));
+                button.setTextColor(Color.WHITE);
+            }
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -358,7 +509,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                     date_view.setVisibility(View.GONE);
                                     place_view.setVisibility(View.GONE);
                                     appeal_view.setVisibility(View.VISIBLE);
-                                    btn_okay.setVisibility(View.VISIBLE);
+                                    if(form_code == NEW_MEETING)
+                                        btn_okay.setVisibility(View.VISIBLE);
                                 }
                             }
                         });
@@ -384,99 +536,6 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 }
             });
         }
-        type_view = (LinearLayout) findViewById(R.id.type_view);
-        date_view = (LinearLayout) findViewById(R.id.date_view);
-        place_view = (LinearLayout) findViewById(R.id.place_view);
-        appeal_view = (LinearLayout) findViewById(R.id.appeal_view);
-        btn_okay = (Button) findViewById(R.id.btn_okay);
-        selected_type_text.setText("인원");
-        selected_date_text.setText("날짜");
-        selected_place_text.setText("장소");
-        date_view.setVisibility(View.GONE);
-        place_view.setVisibility(View.GONE);
-        appeal_view.setVisibility(View.GONE);
-        btn_okay.setVisibility(View.INVISIBLE);
-        is_changeable = !initialize_with_prefilled_data(intent);
-        if(is_changeable) {
-            selected_type.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ma.reselect(ma.RESELECT_TYPE);
-
-                    type_view.setVisibility(View.VISIBLE);
-                    date_view.setVisibility(View.GONE);
-                    place_view.setVisibility(View.GONE);
-                    appeal_view.setVisibility(View.GONE);
-                    btn_okay.setVisibility(View.INVISIBLE);
-                }
-            });
-            selected_date.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ma.reselect(ma.RESELECT_DATE);
-
-                    type_view.setVisibility(View.GONE);
-                    date_view.setVisibility(View.VISIBLE);
-                    place_view.setVisibility(View.GONE);
-                    appeal_view.setVisibility(View.GONE);
-                    btn_okay.setVisibility(View.INVISIBLE);
-                }
-            });
-            selected_place.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ma.reselect(ma.RESELECT_PLACE);
-
-                    type_view.setVisibility(View.GONE);
-                    date_view.setVisibility(View.GONE);
-                    place_view.setVisibility(View.VISIBLE);
-                    appeal_view.setVisibility(View.GONE);
-                    btn_okay.setVisibility(View.INVISIBLE);
-                }
-            });
-        }
-        btn_okay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                ma.setAppeal(et_appeal.getText().toString());
-                if(ma.getAppeal().trim().isEmpty()) {
-                    toast.setText("뭐라도 써주세요!");
-                    toast.show();
-                }
-                else if(ma.getAppeal().length() > MAX_APPEAL_LENGTH) {
-                    toast.setText(Integer.toString(MAX_APPEAL_LENGTH) + "자를 넘기면 안돼요~");
-                    toast.show();
-                }
-                else {
-                    if(is_changeable) {
-                        String url = "http://192.168.43.223:9999/api/meetings/create/";
-
-                        ContentValues values = new ContentValues();
-                        String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
-                        values.put("meeting_type", ma.getType());
-                        values.put("date", new_date.trim());
-                        values.put("place", ma.getPlace());
-                        values.put("appeal", ma.getAppeal());
-
-                        NetworkTask networkTask = new NetworkTask(url, values);
-                        networkTask.execute();
-                    }
-                    else {
-                        String url = "http://192.168.43.223:9999/api/meetings/send_request/";
-                        ContentValues values = new ContentValues();
-                        String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
-                        values.put("meeting_type", ma.getType());
-                        values.put("date", new_date.trim());
-                        values.put("place", ma.getPlace());
-                        values.put("appeal", ma.getAppeal());
-                        values.put("meeting_id", meeting_id);
-                        NetworkTask networkTask = new NetworkTask(url, values);
-                        networkTask.execute();
-                    }
-                }
-            }
-        });
     }
     @Override
     public void onBackPressed() {
@@ -598,26 +657,36 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             }
         }
     }
-    private boolean initialize_with_prefilled_data(Intent intent) {
+    private int initialize_with_prefilled_data(Intent intent) {
         try {
             if (intent.getExtras().getInt("type") <= 0) {
-                return false;
+                return NEW_MEETING;
             }
         }
         catch (NullPointerException e){
-            return false;
+            return NEW_MEETING;
         }
         int typeInt = intent.getExtras().getInt("type");
         int placeInt = intent.getExtras().getInt("place");
         String dateString = intent.getExtras().getString("date_string");
-        meeting_id = intent.getExtras().getInt("id");
+        String appealString = intent.getExtras().getString("appeal");
+        target_id = intent.getExtras().getInt("target_id");
+        edit_id = intent.getExtras().getInt("meeting_id");
+
         SimpleDateFormat sdf = new SimpleDateFormat("m월d일");
         try {
             Date date = sdf.parse(dateString);
             dateString = new SimpleDateFormat("m월 d일").format(date);
             Calendar cal = Calendar.getInstance();
-            cal.setTime(new Date());
-            String getTime = sdf.format(cal.getTime());
+            Date today = new Date();
+            cal.setTime(today);
+
+            for(int i = 0; i < 7; i++) {
+                if(date.getDate() == cal.getTime().getDate()) {
+                    break;
+                }
+                cal.add(Calendar.DATE, 1);
+            }
             int day_of_week = cal.get(Calendar.DAY_OF_WEEK);
             dateString += " " + DOW[day_of_week];
 
@@ -641,15 +710,31 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         ma.setDate_string(dateString);
         ma.setPlace(placeInt);
         ma.setPlace_string(placeString);
+        ma.setAppeal(appealString);
         selected_type_text.setText(ma.getType_string());
         selected_date_text.setText(ma.getDate_string());
         selected_place_text.setText(ma.getPlace_string());
-        type_view.setVisibility(View.GONE);
-        date_view.setVisibility(View.GONE);
-        place_view.setVisibility(View.GONE);
-        appeal_view.setVisibility(View.VISIBLE);
-        btn_okay.setVisibility(View.VISIBLE);
-        return true;
+
+        if(target_id == 0) {
+            ma.reselect(ma.RESELECT_TYPE);
+            type_view.setVisibility(View.GONE);
+            date_view.setVisibility(View.GONE);
+            place_view.setVisibility(View.GONE);
+            appeal_view.setVisibility(View.VISIBLE);
+            btn_okay.setVisibility(View.INVISIBLE);
+            ll_for_edit.setVisibility(View.VISIBLE);
+            et_appeal.setText(ma.getAppeal());
+            return EDIT_MEETING;
+        }
+        else {
+            type_view.setVisibility(View.GONE);
+            date_view.setVisibility(View.GONE);
+            place_view.setVisibility(View.GONE);
+            appeal_view.setVisibility(View.VISIBLE);
+            btn_okay.setVisibility(View.VISIBLE);
+            return SEND_REQUEST;
+        }
+
     }
     public class NetworkTask extends AsyncTask<Void, Void, String> {
 
@@ -675,6 +760,9 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
             finish();
         }
     }

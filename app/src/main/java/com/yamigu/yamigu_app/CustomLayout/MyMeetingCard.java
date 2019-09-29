@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yamigu.yamigu_app.Activity.MainActivity;
+import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.Activity.RequestListActivity;
 import com.yamigu.yamigu_app.Activity.TicketOnboardingActivity;
 import com.yamigu.yamigu_app.R;
@@ -28,7 +29,8 @@ public class MyMeetingCard extends LinearLayout {
     LinearLayout bg, btn_edit_card;
     ImageView point_line, icon_edit_card;
     TextView place, num_of_applying, month, date, dday, label, btn_view_applying, btn_view_waiting, label_matching_completed, text_edit_card;
-    private int id;
+    private int id, typeInt, placeInt;
+    private String appeal;
     private String auth_token;
     private SharedPreferences preferences;
 
@@ -88,6 +90,22 @@ public class MyMeetingCard extends LinearLayout {
                 ((MainActivity)getContext()).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
         });
+        text_edit_card.setOnClickListener((new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MeetingApplicationActivity.class);
+                intent.putExtra("meeting_id", id);
+                intent.putExtra("type", typeInt);
+                intent.putExtra("date_string", month.getText().toString() + date.getText().toString());
+                intent.putExtra("place_string", place.getText().toString());
+                intent.putExtra("appeal", appeal);
+                intent.putExtra("place", placeInt);
+                getContext().startActivity(intent);
+            }
+        }));
+    }
+    public void setAppeal(String appeal) {
+        this.appeal = appeal;
     }
     private void getAttrs(AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MyMeetingCard);
@@ -149,6 +167,7 @@ public class MyMeetingCard extends LinearLayout {
         this.id = id;
     }
     public void setType(int type) {
+        typeInt = type;
         switch(type){
             case 1:
                 label.setBackgroundResource(R.drawable.label_2vs2_bg);
@@ -195,7 +214,10 @@ public class MyMeetingCard extends LinearLayout {
             dday.setText("D-"+Integer.toString(dday_integer));
         }
     }
-    public void setPlace(String place_string) {
+    public void setPlace(int place) {
+        placeInt = place;
+    }
+    public void setPlaceString(String place_string) {
         place.setText(place_string);
     }
     public void setNum_of_applying(int num_of_applying_integer) {

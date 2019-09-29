@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         auth_token = preferences.getString("auth_token", "");
@@ -93,9 +93,9 @@ public class HomeFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
-        myMeetingCardFrame = new MyMeetingCardFrame(view);
 
-        String url = "http://192.168.43.223:9999/api/meetings/my/";
+
+        String url = "http://192.168.0.10:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -103,9 +103,10 @@ public class HomeFragment extends Fragment {
         return view;
     }
     @Override
-    public void onResume() {
-        super.onResume();
-        String url = "http://192.168.43.223:9999/api/meetings/my/";
+    public void onStart() {
+        super.onStart();
+        myMeetingCardFrame = new MyMeetingCardFrame(getView());
+        String url = "http://192.168.0.10:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -125,7 +126,7 @@ public class HomeFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.menu_ticket:
-                Intent intent = new Intent(getContext(), TicketOnboardingActivity.class);
+                Intent intent = new Intent(context, TicketOnboardingActivity.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                 return true;
@@ -148,7 +149,7 @@ public class HomeFragment extends Fragment {
             String result; // 요청 결과를 저장할 변수.
             requestHttpURLConnection = new RequestHttpURLConnection();
 
-            result = requestHttpURLConnection.request(getContext(), url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+            result = requestHttpURLConnection.request(context, url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
 
             return result;
         }
@@ -156,20 +157,22 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
             JSONArray jsonArray = null;
             try {
                 jsonArray = new JSONArray(s);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
             myMeetingCardFrame.setActive_length(jsonArray.length());
             for(int i = 0; i < myMeetingCardFrame.getActive_length(); i++) {
                 try {
                     myMeetingCardFrame.mmc_list[i].setId(jsonArray.getJSONObject(i).getInt("id"));
                     myMeetingCardFrame.mmc_list[i].setType(jsonArray.getJSONObject(i).getInt("meeting_type"));
-                    myMeetingCardFrame.mmc_list[i].setPlace(jsonArray.getJSONObject(i).getString("place_type_name"));
+                    myMeetingCardFrame.mmc_list[i].setPlace(jsonArray.getJSONObject(i).getInt("place_type"));
+                    myMeetingCardFrame.mmc_list[i].setPlaceString(jsonArray.getJSONObject(i).getString("place_type_name"));
                     myMeetingCardFrame.mmc_list[i].setNum_of_applying(jsonArray.getJSONObject(i).getInt("received_request"));
+                    myMeetingCardFrame.mmc_list[i].setAppeal(jsonArray.getJSONObject(i).getString("appeal"));
                     SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
 
                     Date translated_date;
