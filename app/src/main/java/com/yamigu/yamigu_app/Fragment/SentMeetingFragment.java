@@ -2,9 +2,11 @@ package com.yamigu.yamigu_app.Fragment;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -37,6 +39,7 @@ public class SentMeetingFragment extends Fragment {
     private int total_num = 0;
     int dpValue = 0;
     int meeting_id;
+    private SharedPreferences preferences;
     public SentMeetingFragment() {
         // Required empty public constructor
     }
@@ -51,9 +54,10 @@ public class SentMeetingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (getArguments() != null) {
             meeting_id = getArguments().getInt("meeting_id");
-            auth_token = getArguments().getString("auth_token");
+            auth_token = preferences.getString("auth_token", "");
         }
 
     }
@@ -193,7 +197,6 @@ public class SentMeetingFragment extends Fragment {
                     MeetingCardFragment meetingCardFragment = new MeetingCardFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("TAG", "sent");
-                    bundle.putString("auth_token", auth_token);
                     bundle.putInt("request_id", request_id);
                     bundle.putInt("type", json_data.getInt("meeting_type"));
                     bundle.putString("nickname", json_data.getString("openby_nickname"));

@@ -2,10 +2,12 @@ package com.yamigu.yamigu_app.CustomLayout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.Image;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ public class MyMeetingCard extends LinearLayout {
     TextView place, num_of_applying, month, date, dday, label, btn_view_applying, btn_view_waiting, label_matching_completed, text_edit_card;
     private int id;
     private String auth_token;
+    private SharedPreferences preferences;
 
     public MyMeetingCard(Context context) {
         super(context);
@@ -50,6 +53,9 @@ public class MyMeetingCard extends LinearLayout {
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(infService);
         View v = li.inflate(R.layout.my_meeting_card, this, false);
         addView(v);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        auth_token = preferences.getString("auth_token", "");
 
         bg = (LinearLayout) findViewById(R.id.bg);
         label = (TextView) findViewById(R.id.label);
@@ -73,7 +79,6 @@ public class MyMeetingCard extends LinearLayout {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), RequestListActivity.class);
-                intent.putExtra("auth_token", auth_token);
                 intent.putExtra("meeting_id", id);
                 intent.putExtra("date", month.getText().toString() + date.getText().toString());
                 intent.putExtra("place", place.getText().toString());
@@ -143,7 +148,6 @@ public class MyMeetingCard extends LinearLayout {
     public void setId(int id) {
         this.id = id;
     }
-    public void setAuth_token(String token) { auth_token = token; }
     public void setType(int type) {
         switch(type){
             case 1:
@@ -196,5 +200,19 @@ public class MyMeetingCard extends LinearLayout {
     }
     public void setNum_of_applying(int num_of_applying_integer) {
         num_of_applying.setText(Integer.toString(num_of_applying_integer) + "팀 신청!");
+    }
+    public void setMatched(boolean is_matched) {
+        if(is_matched) {
+            label_matching_completed.setVisibility(VISIBLE);
+            btn_view_applying.setVisibility(INVISIBLE);
+            btn_view_waiting.setVisibility(INVISIBLE);
+            num_of_applying.setVisibility(INVISIBLE);
+        }
+        else {
+            label_matching_completed.setVisibility(INVISIBLE);
+            btn_view_applying.setVisibility(VISIBLE);
+            btn_view_waiting.setVisibility(VISIBLE);
+            num_of_applying.setVisibility(VISIBLE);
+        }
     }
 }

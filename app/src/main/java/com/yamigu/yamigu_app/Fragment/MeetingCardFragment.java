@@ -3,10 +3,13 @@ package com.yamigu.yamigu_app.Fragment;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard3;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
@@ -46,10 +50,13 @@ public class MeetingCardFragment extends Fragment {
 
     public LinearLayout ll_btn_layout;
     private String auth_token;
+    private SharedPreferences preferences;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meeting_card, container, false);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         //LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
         //View waitingTeamCard = inflater.inflate(R.layout.meeting_team_request, mRootLinear, false);
         waitingTeamCard = view.findViewById(R.id.waiting_team_card);
@@ -59,12 +66,12 @@ public class MeetingCardFragment extends Fragment {
         TextView profile1, profile2, date, place, rating, label;
         WebView description;
         Button btn_left, btn_right;
-        String TAG, auth_token;
+        String TAG;
         final int request_id;
         if (getArguments() != null) {
             Bundle args = getArguments();
             TAG = args.getString("TAG");
-            auth_token = args.getString("auth_token");
+            auth_token = preferences.getString("auth_token", "");
             request_id = args.getInt("request_id");
             rl_applying = (RelativeLayout) waitingTeamCard.findViewById(R.id.rl_applying);
             label = (TextView) waitingTeamCard.findViewById(R.id.label);
@@ -79,7 +86,13 @@ public class MeetingCardFragment extends Fragment {
             btn_left = view.findViewById(R.id.btn_left);
             btn_right = view.findViewById(R.id.btn_right);
             final MeetingCardFragment me = this;
+
+
+
+
+
             if(TAG.equals("sent")) {
+                final SentMeetingFragment parent_s = (SentMeetingFragment) getParentFragment();
                 btn_left.setText("수락 대기중");
                 btn_right.setText("취소");
                 btn_right.setOnClickListener(new View.OnClickListener() {
@@ -91,13 +104,13 @@ public class MeetingCardFragment extends Fragment {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        String url = "http://147.47.208.44:9999/api/meetings/request/cancel/";
+                                        String url = "http://147.47.208.44:9999/api/meetings/cancel_request/";
                                         int id = request_id;
                                         ContentValues values = new ContentValues();
                                         values.put("request_id", id);
                                         NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                                         networkTask2.execute();
-                                        getActivity().getSupportFragmentManager().beginTransaction().remove(me).commit();
+                                        parent_s.getActivity().getSupportFragmentManager().beginTransaction().detach(parent_s).attach(parent_s).commit();
                                     }
                                 }).setNegativeButton("취소",
                                 new DialogInterface.OnClickListener() {
@@ -112,6 +125,7 @@ public class MeetingCardFragment extends Fragment {
                 });
             }
             else {
+                final ReceivedMeetingFragment parent_r = (ReceivedMeetingFragment) getParentFragment();
                 btn_left.setText("미팅 수락");
                 btn_right.setText("거절");
 
@@ -123,14 +137,19 @@ public class MeetingCardFragment extends Fragment {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        String url = "http://147.47.208.44:9999/api/meetings/request/accept/";
+                                        String url = "http://147.47.208.44:9999/api/meetings/accept_request/";
                                         int id = request_id;
                                         ContentValues values = new ContentValues();
                                         values.put("request_id", id);
                                         NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                                         networkTask2.execute();
+                                        final Intent intent = new Intent(getContext(), MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                        startActivity(intent);
+                                        getActivity().finish();
                                     }
                                 }).setNegativeButton("취소",
+
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -149,13 +168,13 @@ public class MeetingCardFragment extends Fragment {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        String url = "http://147.47.208.44:9999/api/meetings/request/decline/";
+                                        String url = "http://147.47.208.44:9999/api/meetings/decline_request/";
                                         int id = request_id;
                                         ContentValues values = new ContentValues();
                                         values.put("request_id", id);
                                         NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                                         networkTask2.execute();
-                                        getActivity().getSupportFragmentManager().beginTransaction().remove(me).commit();
+                                        parent_r.getActivity().getSupportFragmentManager().beginTransaction().detach(parent_r).attach(parent_r).commit();
                                     }
                                 }).setNegativeButton("취소",
                                 new DialogInterface.OnClickListener() {
@@ -222,6 +241,7 @@ public class MeetingCardFragment extends Fragment {
 
         return view;
     }
+
     public class NetworkTask extends AsyncTask<Void, Void, Bitmap> {
         private String url;
         private ContentValues values;

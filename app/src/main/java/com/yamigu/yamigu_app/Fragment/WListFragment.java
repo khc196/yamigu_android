@@ -6,12 +6,14 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -71,6 +73,7 @@ public class WListFragment extends Fragment {
     private View view;
     static int id = 1;
     private boolean is_initialized = false;
+    private SharedPreferences preferences;
     public WListFragment() {
         this.active_type_set = new HashSet<>();
         this.active_place_set = new HashSet<>();
@@ -78,9 +81,11 @@ public class WListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        // SharedPreferences 수정을 위한 Editor 객체를 얻어옵니다.
         mInflater = inflater;
         view = inflater.inflate(R.layout.fragment_wlist, container, false);
-        auth_token = getActivity().getIntent().getExtras().getString("auth_token");
+        auth_token = preferences.getString("auth_token", "");
         tb = (Toolbar) view.findViewById(R.id.toolbar) ;
         ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
@@ -442,7 +447,6 @@ public class WListFragment extends Fragment {
                             @Override
                             public void onClick(View view) {
                                 Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
-                                intent.putExtra("auth_token", auth_token);
                                 try{
                                     intent.putExtra("type", json_data.getInt("meeting_type"));
                                     intent.putExtra("date_string", date_string_f);

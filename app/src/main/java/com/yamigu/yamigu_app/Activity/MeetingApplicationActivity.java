@@ -6,9 +6,11 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,13 +54,15 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private boolean is_changeable;
     private int meeting_id;
     private boolean is_changing;
+    private SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meeting_application);
 
         Intent intent = getIntent();
-        auth_token = intent.getExtras().getString("auth_token");
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        auth_token = preferences.getString("auth_token", "");
 
         tb = (Toolbar) findViewById(R.id.toolbar) ;
         setSupportActionBar(tb) ;

@@ -3,9 +3,11 @@ package com.yamigu.yamigu_app.Fragment;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.transition.Explode;
@@ -57,6 +59,8 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
     private int l_unit;
     private int seekbar_length;
     private String auth_token;
+    private SharedPreferences preferences;
+
     public static FilterSetFragment getInstance() {
         FilterSetFragment f = new FilterSetFragment();
         return f;
@@ -66,7 +70,9 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.FullScreenDialogStyle);
-        auth_token = getActivity().getIntent().getExtras().getString("auth_token");
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        auth_token = preferences.getString("auth_token", "");
     }
     @Nullable
     @Override

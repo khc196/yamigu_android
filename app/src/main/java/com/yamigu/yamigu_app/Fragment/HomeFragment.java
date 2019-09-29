@@ -2,8 +2,10 @@ package com.yamigu.yamigu_app.Fragment;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +35,7 @@ import java.util.Date;
 public class HomeFragment extends Fragment {
     private Toolbar tb;
     private String auth_token;
+    private SharedPreferences preferences;
     MyMeetingCardFrame myMeetingCardFrame;
 
     private class MyMeetingCardFrame {
@@ -78,8 +81,11 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        auth_token = getActivity().getIntent().getExtras().getString("auth_token");
+        auth_token = preferences.getString("auth_token", "");
+
         tb = (Toolbar) view.findViewById(R.id.toolbar) ;
         ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
@@ -153,7 +159,6 @@ public class HomeFragment extends Fragment {
             myMeetingCardFrame.setActive_length(jsonArray.length());
             for(int i = 0; i < myMeetingCardFrame.getActive_length(); i++) {
                 try {
-                    myMeetingCardFrame.mmc_list[i].setAuth_token(auth_token);
                     myMeetingCardFrame.mmc_list[i].setId(jsonArray.getJSONObject(i).getInt("id"));
                     myMeetingCardFrame.mmc_list[i].setType(jsonArray.getJSONObject(i).getInt("meeting_type"));
                     myMeetingCardFrame.mmc_list[i].setPlace(jsonArray.getJSONObject(i).getString("place_type_name"));
@@ -167,6 +172,10 @@ public class HomeFragment extends Fragment {
                         myMeetingCardFrame.mmc_list[i].setMonth(translated_date.getMonth());
                         myMeetingCardFrame.mmc_list[i].setDate(translated_date.getDate());
                         myMeetingCardFrame.mmc_list[i].setDday(translated_date.getDate() - today.getDate());
+                        if(jsonArray.getJSONObject(i).getBoolean("is_matched")) {
+                            myMeetingCardFrame.mmc_c_list[i].setVisibility(View.VISIBLE);
+                            myMeetingCardFrame.mmc_list[i].setMatched(true);
+                        }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }

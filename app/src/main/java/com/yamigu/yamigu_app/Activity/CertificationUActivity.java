@@ -2,8 +2,10 @@ package com.yamigu.yamigu_app.Activity;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +26,8 @@ public class CertificationUActivity extends AppCompatActivity {
     private EditText et_university, et_major;
     private String university, major, nickname, friend_code;
     private String auth_token;
+    private SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +46,9 @@ public class CertificationUActivity extends AppCompatActivity {
         Intent intent = getIntent();
         nickname = intent.getExtras().getString("nickname");
         friend_code = intent.getExtras().getString("friend_code");
-        auth_token = intent.getExtras().getString("auth_token");
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        auth_token = preferences.getString("auth_token", "");
 
         btn_go_home = (Button) findViewById(R.id.btn_gohome);
         btn_skip = (TextView) findViewById(R.id.btn_skip);
@@ -74,7 +80,6 @@ public class CertificationUActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("auth_token", auth_token);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
@@ -111,7 +116,6 @@ public class CertificationUActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("auth_token", auth_token);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
