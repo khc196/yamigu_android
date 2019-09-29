@@ -104,7 +104,7 @@ public class MeetingCardFragment extends Fragment {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        String url = "http://147.47.208.44:9999/api/meetings/cancel_request/";
+                                        String url = "http://192.168.43.223:9999/api/meetings/cancel_request/";
                                         int id = request_id;
                                         ContentValues values = new ContentValues();
                                         values.put("request_id", id);
@@ -137,7 +137,7 @@ public class MeetingCardFragment extends Fragment {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        String url = "http://147.47.208.44:9999/api/meetings/accept_request/";
+                                        String url = "http://192.168.43.223:9999/api/meetings/accept_request/";
                                         int id = request_id;
                                         ContentValues values = new ContentValues();
                                         values.put("request_id", id);
@@ -168,7 +168,7 @@ public class MeetingCardFragment extends Fragment {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        String url = "http://147.47.208.44:9999/api/meetings/decline_request/";
+                                        String url = "http://192.168.43.223:9999/api/meetings/decline_request/";
                                         int id = request_id;
                                         ContentValues values = new ContentValues();
                                         values.put("request_id", id);

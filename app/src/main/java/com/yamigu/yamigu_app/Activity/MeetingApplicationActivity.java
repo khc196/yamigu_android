@@ -450,7 +450,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 }
                 else {
                     if(is_changeable) {
-                        String url = "http://147.47.208.44:9999/api/meetings/create/";
+                        String url = "http://192.168.43.223:9999/api/meetings/create/";
 
                         ContentValues values = new ContentValues();
                         String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
@@ -463,7 +463,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         networkTask.execute();
                     }
                     else {
-                        String url = "http://147.47.208.44:9999/api/meetings/send_request/";
+                        String url = "http://192.168.43.223:9999/api/meetings/send_request/";
                         ContentValues values = new ContentValues();
                         String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
                         values.put("meeting_type", ma.getType());
@@ -599,8 +599,12 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         }
     }
     private boolean initialize_with_prefilled_data(Intent intent) {
-        Log.d("TypeInt:", ""+intent.getExtras().getInt("type"));
-        if(intent.getExtras().getInt("type") <= 0) {
+        try {
+            if (intent.getExtras().getInt("type") <= 0) {
+                return false;
+            }
+        }
+        catch (NullPointerException e){
             return false;
         }
         int typeInt = intent.getExtras().getInt("type");

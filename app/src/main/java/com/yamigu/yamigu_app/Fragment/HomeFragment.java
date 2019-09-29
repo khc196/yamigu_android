@@ -1,6 +1,7 @@
 package com.yamigu.yamigu_app.Fragment;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -36,6 +37,7 @@ public class HomeFragment extends Fragment {
     private Toolbar tb;
     private String auth_token;
     private SharedPreferences preferences;
+    private Context context;
     MyMeetingCardFrame myMeetingCardFrame;
 
     private class MyMeetingCardFrame {
@@ -93,7 +95,7 @@ public class HomeFragment extends Fragment {
         setHasOptionsMenu(true);
         myMeetingCardFrame = new MyMeetingCardFrame(view);
 
-        String url = "http://147.47.208.44:9999/api/meetings/my/";
+        String url = "http://192.168.43.223:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -103,10 +105,15 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        String url = "http://147.47.208.44:9999/api/meetings/my/";
+        String url = "http://192.168.43.223:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
