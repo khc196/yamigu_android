@@ -23,7 +23,9 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:text="야미구 티켓으로"
                 android:textSize="14dp"
-                android:textColor="#20252C">
+                android:textColor="@color/colorNormal"
+                android:fontFamily="@font/nanumgothic_font_family"
+                android:textStyle="bold">
             </TextView>
         </android.support.v7.widget.Toolbar>
     <FrameLayout
@@ -63,7 +65,8 @@
                     android:text="야미구 티켓 구매하기"
                     android:textSize="14dp"
                     android:textColor="@color/colorPoint"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    style="?android:attr/borderlessButtonStyle"
+                    android:fontFamily="@font/roboto_font_family"/>
             </RelativeLayout>
         </RelativeLayout>
     </FrameLayout>

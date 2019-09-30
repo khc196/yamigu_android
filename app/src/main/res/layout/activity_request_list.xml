@@ -24,7 +24,9 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:text=""
                 android:textSize="14dp"
-                android:textColor="#20252C">
+                android:textColor="@color/colorNormal"
+                android:fontFamily="@font/nanumgothic_font_family"
+                android:textStyle="bold">
             </TextView>
         </android.support.v7.widget.Toolbar>
         <LinearLayout
@@ -40,6 +42,7 @@
                 android:text="받은 미팅"
                 android:textSize="15dp"
                 android:textColor="@color/colorNonselect"
+                android:fontFamily="@font/nanumgothic_font_family"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="5"
                 android:background="?android:selectableItemBackgroundBorderless"/>
@@ -50,6 +53,7 @@
                 android:text="보낸 미팅"
                 android:textSize="15dp"
                 android:textColor="@color/colorNonselect"
+                android:fontFamily="@font/nanumgothic_font_family"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="5"
                 android:background="?android:selectableItemBackgroundBorderless"/>

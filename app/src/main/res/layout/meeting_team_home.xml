@@ -20,22 +20,12 @@
             android:textColor="@color/colorPrimary"
             android:text="2:2 소개팅"
             android:textSize="12dp"
-            android:gravity="center_horizontal|center_vertical">
+            android:gravity="center_horizontal|center_vertical"
+            android:fontFamily="@font/roboto_font_family">
         </TextView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="102.6dp">
-            <!--TextView
-                android:id="@+id/description"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal|center_vertical"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:text="한명이 술을 잘 못마셔요!"
-                /-->
             <WebView
                 android:id="@+id/description"
                 android:layout_marginTop="5dp"
@@ -58,7 +48,8 @@
                 android:layout_height="wrap_content"
                 android:text="★★☆☆☆"
                 android:gravity="center_horizontal|center_vertical"
-                android:textColor="#FF8424"/>
+                android:textColor="#FF8424"
+                android:fontFamily="@font/roboto_font_family"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -90,9 +81,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="연세대학교 (24)"
-                    android:textStyle="bold"
                     android:textSize="14dp"
                     android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/roboto_font_family"
                     />
                 <TextView
                     android:id="@+id/profile2"
@@ -101,7 +92,8 @@
                     android:text="전기전자공학부"
                     android:textSize="12dp"
                     android:textColor="@color/colorPrimary"
-                    android:layout_marginTop="1dp"/>
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/roboto_font_family"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="127.5dp"
@@ -117,8 +109,8 @@
                     android:gravity="right"
                     android:text="5월28일"
                     android:textSize="12dp"
-                    android:textStyle="bold"
                     android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/roboto_font_family"
                     />
                 <TextView
                     android:id="@+id/place"
@@ -127,8 +119,8 @@
                     android:gravity="right"
                     android:text="신촌/홍대"
                     android:textSize="12dp"
-                    android:textStyle="bold"
                     android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/roboto_font_family"
                     android:layout_marginTop="1dp"/>
             </LinearLayout>
         </LinearLayout>

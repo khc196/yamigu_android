@@ -23,14 +23,16 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="35dp"
                 android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/nanumgothic_font_family"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="/"
                 android:textColor="@color/colorNonselect"
                 android:textSize="35dp"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/nanumgothic_font_family"/>
             <TextView
                 android:id="@+id/tv_total_of_recv"
                 android:layout_width="wrap_content"
@@ -39,7 +41,8 @@
                 android:textSize="35dp"
                 android:textColor="@color/colorNonselect"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/nanumgothic_font_family"/>
         </RelativeLayout>
         <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"
@@ -60,7 +63,8 @@
             android:textSize="24dp"
             android:textColor="@color/colorNonselect"
             android:text="받은 미팅이 없습니다"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/nanumgothic_font_family">
         </TextView>
     </LinearLayout>
     <LinearLayout
@@ -79,7 +83,8 @@
             android:text="미팅하기"
             android:textColor="@color/colorPrimary"
             android:gravity="center"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:fontFamily="@font/nanumgothic_font_family"/>
         <Button
             android:id="@+id/btn_right"
             android:layout_width="0dp"
@@ -89,6 +94,7 @@
             android:text="거절하기"
             android:textColor="@color/colorPoint"
             android:gravity="center"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:fontFamily="@font/nanumgothic_font_family"/>
     </LinearLayout>
 </FrameLayout>

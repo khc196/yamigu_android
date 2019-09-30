@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.AllianceListActivity"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,7 +24,9 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:text="프리미엄 제휴매장"
                 android:textSize="14dp"
-                android:textColor="#20252C">
+                android:textColor="@color/colorNormal"
+                android:textStyle="bold"
+                android:fontFamily="@font/nanumgothic_font_family">
             </TextView>
         </android.support.v7.widget.Toolbar>
     <LinearLayout
@@ -31,7 +34,8 @@
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:weightSum="9.99"
-        android:background="@drawable/rectangle_gray_solid">
+        android:background="@drawable/rectangle_gray_solid"
+        >
         <Button
             android:id="@+id/btn_date_1"
             android:layout_width="0dp"
@@ -41,7 +45,8 @@
             android:textSize="14sp"
             android:textColor="#FC7F2D"
             android:gravity="center_vertical|center_horizontal"
-            android:layout_weight="3.33"/>
+            android:layout_weight="3.33"
+            android:fontFamily="@font/binggrae_font_family"/>
         <Button
             android:id="@+id/btn_date_2"
             android:layout_width="0dp"
@@ -50,7 +55,8 @@
             android:background="?android:selectableItemBackgroundBorderless"
             android:textSize="14sp"
             android:gravity="center_vertical|center_horizontal"
-            android:layout_weight="3.33"/>
+            android:layout_weight="3.33"
+            android:fontFamily="@font/binggrae_font_family"/>
         <Button
             android:id="@+id/btn_date_3"
             android:layout_width="0dp"
@@ -59,7 +65,8 @@
             android:background="?android:selectableItemBackgroundBorderless"
             android:textSize="14sp"
             android:gravity="center_vertical|center_horizontal"
-            android:layout_weight="3.33"/>
+            android:layout_weight="3.33"
+            android:fontFamily="@font/binggrae_font_family"/>
         </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
@@ -80,6 +87,7 @@
                         android:text="*프리미엄 제휴매장에서 제휴쿠폰 받아가세요!"
                         android:textSize="13dp"
                         android:textColor="@color/colorBlack"
+                        android:fontFamily="@font/nanumgothic_font_family"
                         />
                     <TextView
                         android:layout_width="wrap_content"
@@ -88,6 +96,7 @@
                         android:textSize="13dp"
                         android:textColor="@color/colorBlack"
                         android:layout_marginTop="5dp"
+                        android:fontFamily="@font/nanumgothic_font_family"
                         />
                     <TextView
                         android:layout_width="wrap_content"
@@ -96,6 +105,7 @@
                         android:textSize="13dp"
                         android:textColor="@color/colorBlack"
                         android:layout_marginTop="5dp"
+                        android:fontFamily="@font/nanumgothic_font_family"
                         />
                 </LinearLayout>
                 <LinearLayout

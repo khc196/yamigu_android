@@ -34,6 +34,7 @@
                     android:textColor="@color/colorPrimary"
                     android:gravity="center_horizontal|center_vertical"
                     android:textSize="16dp"
+                    android:fontFamily="@font/roboto_font_family"
                     >
                 </TextView>
                 <LinearLayout
@@ -57,7 +58,9 @@
                         android:textSize="30dp"
                         android:text="건대/왕십리"
                         android:layout_marginTop="-5dp"
-                        android:textColor="@color/colorBlack"/>
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/binggrae_font_family"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -89,6 +92,7 @@
                         android:text="신청내역 수정하기"
                         android:textColor="@color/colorPoint"
                         android:gravity="center_vertical"
+                        android:fontFamily="@font/binggrae_font_family"
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -105,7 +109,9 @@
                         android:text="5월"
                         android:textColor="@color/colorPrimary"
                         android:gravity="center_horizontal|center_vertical"
-                        android:textSize="13dp"/>
+                        android:textSize="13dp"
+                        android:fontFamily="@font/binggrae_font_family"
+                        android:textStyle="bold"/>
                     <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
@@ -118,7 +124,9 @@
                             android:gravity="center_horizontal|center_vertical"
                             android:text="28일"
                             android:textColor="@color/colorBlack"
-                            android:textSize="30dp" />
+                            android:textSize="30dp"
+                            android:fontFamily="@font/binggrae_font_family"
+                            android:textStyle="bold"/>
                         <TextView
                             android:id="@+id/dday"
                             android:layout_width="wrap_content"
@@ -130,6 +138,7 @@
                             android:textSize="10dp"
                             android:gravity="center_horizontal|center_vertical"
                             android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/binggrae_font_family"
                             />
                     </FrameLayout>
                 </LinearLayout>
@@ -141,7 +150,8 @@
                     android:textColor="@color/colorPoint"
                     android:layout_marginTop="4dp"
                     android:textSize="16dp"
-                    android:layout_gravity="center_horizontal"/>
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/nanumgothic_font_family"/>
             </LinearLayout>
             <RelativeLayout
                 android:id="@+id/request_panel"
@@ -159,7 +169,8 @@
                         android:layout_marginTop="15dp"
                         android:textSize="16dp"
                         android:text="2팀 신청!"
-                        android:textColor="@color/colorBlack"/>
+                        android:textColor="@color/colorBlack"
+                        android:fontFamily="@font/binggrae_font_family"/>
                     <TextView
                         android:id="@+id/btn_view_applying"
                         android:layout_width="wrap_content"
@@ -167,7 +178,8 @@
                         android:text="신청팀 보기"
                         android:textColor="@color/colorPoint"
                         android:textSize="16dp"
-                        android:layout_alignParentBottom="true"/>
+                        android:layout_alignParentBottom="true"
+                        android:fontFamily="@font/nanumgothic_font_family"/>
                 </LinearLayout>
             </RelativeLayout>
             <RelativeLayout
@@ -188,7 +200,8 @@
                         android:layout_marginTop="15dp"
                         android:textSize="18dp"
                         android:text="김찬열 (24)"
-                        android:textColor="@color/colorBlack"/>
+                        android:textColor="@color/colorBlack"
+                        android:fontFamily="@font/nanumgothic_font_family"/>
                     <TextView
                         android:id="@+id/tv_belong_and_department"
                         android:layout_width="wrap_content"
@@ -196,7 +209,8 @@
                         android:text="연세대학교, 전기전자공학부"
                         android:textColor="@color/colorBlack"
                         android:textSize="18dp"
-                        android:layout_alignParentBottom="true"/>
+                        android:layout_alignParentBottom="true"
+                        android:fontFamily="@font/nanumgothic_font_family"/>
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>

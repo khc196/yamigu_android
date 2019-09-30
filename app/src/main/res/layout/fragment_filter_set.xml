@@ -19,7 +19,8 @@
             android:text="필터 설정하기"
             android:textColor="#000000"
             android:layout_marginLeft="19dp"
-            android:layout_marginTop="26dp">
+            android:layout_marginTop="26dp"
+            android:fontFamily="@font/roboto_font_family">
         </TextView>
         <TextView
             android:layout_width="wrap_content"
@@ -28,7 +29,8 @@
             android:layout_marginTop="28dp"
             android:text="인원"
             android:textColor="#000000"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:fontFamily="@font/roboto_font_family"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,6 +46,7 @@
                 android:textSize="12dp"
                 android:layout_weight="99"
                 android:textColor="@color/colorNonselect"
+                android:fontFamily="@font/roboto_font_family"
                 >
             </Button>
             <Button
@@ -54,9 +57,10 @@
                 android:text="3:3 미팅"
                 android:textSize="12dp"
                 android:layout_weight="99"
-                android:textColor="@color/colorNonselect"
+                android:textColor="@color/colorHint"
                 android:layout_marginLeft="23dp"
                 android:layout_marginRight="23dp"
+                android:fontFamily="@font/roboto_font_family"
                 >
             </Button>
             <Button
@@ -67,7 +71,8 @@
                 android:text="4:4 미팅"
                 android:textSize="12dp"
                 android:layout_weight="99"
-                android:textColor="@color/colorNonselect"
+                android:textColor="@color/colorHint"
+                android:fontFamily="@font/roboto_font_family"
                 >
             </Button>
         </LinearLayout>
@@ -78,7 +83,9 @@
             android:layout_marginTop="19dp"
             android:text="장소"
             android:textColor="#000000"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:fontFamily="@font/roboto_font_family"
+            />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,7 +100,9 @@
                 android:text="신촌/홍대"
                 android:textSize="12dp"
                 android:layout_weight="99"
-                android:textColor="@color/colorNonselect"
+                android:textColor="@color/colorHint"
+                android:fontFamily="@font/roboto_font_family"
+
                 >
             </Button>
             <Button
@@ -104,9 +113,10 @@
                 android:text="건대/왕십리"
                 android:textSize="12dp"
                 android:layout_weight="99"
-                android:textColor="@color/colorNonselect"
+                android:textColor="@color/colorHint"
                 android:layout_marginLeft="23dp"
                 android:layout_marginRight="23dp"
+                android:fontFamily="@font/roboto_font_family"
                 >
             </Button>
             <Button
@@ -117,7 +127,8 @@
                 android:text="강남"
                 android:textSize="12dp"
                 android:layout_weight="99"
-                android:textColor="@color/colorNonselect"
+                android:textColor="@color/colorHint"
+                android:fontFamily="@font/roboto_font_family"
                 >
             </Button>
         </LinearLayout>
@@ -128,35 +139,14 @@
             android:layout_marginTop="19dp"
             android:text="나이"
             android:textColor="#000000"
-            android:textSize="20dp"/>
-        <RelativeLayout
+            android:textSize="20dp"
+            android:fontFamily="@font/roboto_font_family"
+            />
+
+        <LinearLayout
             android:layout_width="345dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="7dp">
-            <TextView
-                android:id="@+id/tv_minimum_age"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="20살"
-                android:textColor="@color/colorNonselect"
-                android:textSize="12dp"
-                android:textStyle="bold"
-                android:layout_alignParentLeft="true"/>
-            <TextView
-                android:id="@+id/tv_maximum_age"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="30+살"
-                android:textColor="@color/colorNonselect"
-                android:textSize="12dp"
-                android:textStyle="bold"
-                android:layout_alignParentRight="true"/>
-        </RelativeLayout>
-        <LinearLayout
-            android:layout_width="340dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="7dp">
             <FrameLayout
@@ -214,6 +204,34 @@
                         android:layout_alignParentRight="true"/>
                 </RelativeLayout>
             </FrameLayout>
+            <RelativeLayout
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                >
+                <TextView
+                    android:id="@+id/tv_minimum_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20살"
+                    android:textColor="@color/colorNormal"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:layout_alignParentLeft="true"
+                    android:fontFamily="@font/roboto_font_family"
+                    />
+                <TextView
+                    android:id="@+id/tv_maximum_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30+살"
+                    android:textColor="@color/colorNormal"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:layout_alignParentRight="true"
+                    android:fontFamily="@font/roboto_font_family"
+                    />
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -235,7 +253,9 @@
                     android:background="@color/colorPoint"
                     android:text="32팀 보기"
                     android:gravity="center_horizontal|center_vertical"
-                    android:textColor="@color/colorPrimary"/>
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/roboto_font_family"
+                    />
                 <Button
                     android:id="@+id/btn_cancel_filter"
                     android:layout_width="0dp"
@@ -244,7 +264,9 @@
                     android:background="@drawable/rectangle_orange_solid"
                     android:text="해제하기"
                     android:gravity="center_horizontal|center_vertical"
-                    android:textColor="@color/colorPoint"/>
+                    android:textColor="@color/colorPoint"
+                    android:fontFamily="@font/roboto_font_family"
+                    />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

@@ -24,7 +24,9 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:text="인증하기"
                 android:textSize="14dp"
-                android:textColor="#20252C">
+                android:textColor="@color/colorNormal"
+                android:fontFamily="@font/nanumgothic_font_family"
+                android:textStyle="bold">
             </TextView>
         </android.support.v7.widget.Toolbar>
         <LinearLayout
@@ -38,8 +40,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="직업 입력"
-                android:textColor="#414141"
+                android:textColor="@color/colorNormal"
                 android:textSize="14dp"
+                android:fontFamily="@font/roboto_font_family"
                 />
             <EditText
                 android:id="@+id/et_job"
@@ -49,45 +52,49 @@
                 android:textSize="12dp"
                 android:background="@drawable/edittext_signup"
                 android:gravity="center_vertical"
-                android:textColorHint="#1E20252C"
+                android:textColorHint="@color/colorHint"
                 android:layout_marginTop="6.1dp"
                 android:paddingBottom="10.5dp"
                 android:paddingTop="10.5dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:inputType="text"
+                android:fontFamily="@font/roboto_font_family"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13.8dp"
                 android:text="회사 입력"
-                android:textColor="#414141"
+                android:textColor="@color/colorNormal"
                 android:textSize="14dp"
+                android:fontFamily="@font/roboto_font_family"
                 />
+
             <EditText
                 android:id="@+id/et_company"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:hint="ex) 삼성전자, 스타트업, 프리랜서"
-                android:textSize="12dp"
-                android:background="@drawable/edittext_signup"
-                android:gravity="center_vertical"
-                android:textColorHint="#1E20252C"
                 android:layout_marginTop="6.1dp"
-                android:paddingBottom="10.5dp"
-                android:paddingTop="10.5dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+                android:background="@drawable/edittext_signup"
+                android:fontFamily="@font/roboto_font_family"
+                android:gravity="center_vertical"
+                android:hint="ex) 삼성전자, 스타트업, 프리랜서"
                 android:inputType="text"
-                />
+                android:paddingLeft="16dp"
+                android:paddingTop="10.5dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="10.5dp"
+                android:textColorHint="@color/colorHint"
+                android:textSize="12dp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13.8dp"
                 android:text="직장 인증"
-                android:textColor="#414141"
+                android:textColor="@color/colorNormal"
                 android:textSize="14dp"
+                android:fontFamily="@font/roboto_font_family"
                 />
             <ImageButton
                 android:id="@+id/btn_attach_file"
@@ -95,51 +102,57 @@
                 android:layout_height="128.3dp"
                 android:layout_marginTop="6.1dp"
                 android:background="@drawable/state_pressed_orange2"
-                android:src="@drawable/icon_attach_file"/>
+                android:src="@drawable/icon_attach_file"
+                />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5.7dp"
                 android:text="* 사원증, 명함, 사업자등록증 등 첨부해주세요!"
-                android:textColor="#585858"
+                android:textColor="@color/colorHint"
                 android:textSize="10dp"
-                android:gravity="right">
+                android:gravity="right"
+                android:fontFamily="@font/roboto_font_family">
             </TextView>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="26dp"
                 android:text="*인증이 완료된 회원만이 야미구 미팅을 할 수 있어요"
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 android:textSize="12dp"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/roboto_font_family">
             </TextView>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5.7dp"
                 android:text="*인증은 최대 12시간까지 소요돼요."
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 android:textSize="12dp"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/roboto_font_family">
             </TextView>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5.7dp"
                 android:text="*사원증 개인정보는 인증 후 모두 파기됩니다."
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 android:textSize="12dp"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/roboto_font_family">
             </TextView>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5.7dp"
                 android:text="*사원증위조는 사문서부정행사죄가 적용돼요. "
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 android:textSize="12dp"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/roboto_font_family">
             </TextView>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -154,7 +167,8 @@
                     android:text="바로 미팅하러 가기"
                     android:textSize="14dp"
                     android:textColor="@color/colorPoint"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    style="?android:attr/borderlessButtonStyle"
+                    android:fontFamily="@font/roboto_font_family"/>
 
                 <TextView
                     android:id="@+id/btn_skip"
@@ -165,7 +179,8 @@
                     android:layout_marginBottom="7dp"
                     android:text="다음에 인증하기"
                     android:textSize="11dp"
-                    android:textColor="@color/colorBlack"></TextView>
+                    android:textColor="@color/colorBlack"
+                    android:fontFamily="@font/roboto_font_family"></TextView>
             </RelativeLayout>
 
         </LinearLayout>

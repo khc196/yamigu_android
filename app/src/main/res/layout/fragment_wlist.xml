@@ -14,11 +14,16 @@
             android:background="@color/colorPrimary"
             android:theme="@style/MyActionBar2"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-            <ImageView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="52dp"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:src="@drawable/title_wlist_fragment"
+                android:text="대기팀 리스트"
+                android:textColor="@color/colorNormal"
+                android:textSize="14dp"
+                android:fontFamily="@font/nanumgothic_font_family"
+                android:textStyle="bold"
+                android:gravity="center_vertical"
                 />
         </android.support.v7.widget.Toolbar>
         <LinearLayout

@@ -31,7 +31,8 @@
                 android:layout_gravity="right|center_vertical"
                 android:text="0"
                 android:textSize="14dp"
-                android:layout_marginRight="12.4dp"/>
+                android:layout_marginRight="12.4dp"
+                android:fontFamily="@font/roboto_font_family"/>
         </FrameLayout>
 
         <ScrollView
@@ -124,14 +125,16 @@
                     app:unread="2"
                     app:time="오후 2:22">
                 </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat>
-                <ImageView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/text_how_are_today_meetings"
                     android:layout_marginTop="28dp"
                     android:layout_marginLeft="34dp"
                     android:layout_marginBottom="4dp"
-                    android:scaleType="fitStart"
+                    android:text="야미구 추천 미팅"
+                    android:fontFamily="@font/nanumgothic_font_family"
+                    android:textSize="18dp"
+                    android:textColor="@color/colorNormal"
                     />
                 <!--ImageView
                     android:layout_width="wrap_content"
@@ -192,8 +195,9 @@
                     android:layout_marginLeft="34dp"
                     android:layout_marginBottom="4dp"
                     android:layout_marginTop="17dp"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="18dp"/>
+                    android:textColor="@color/colorNormal"
+                    android:textSize="18dp"
+                    android:fontFamily="@font/nanumgothic_font_family"/>
                 <!--ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

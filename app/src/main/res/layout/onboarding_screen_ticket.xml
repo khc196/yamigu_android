@@ -40,7 +40,8 @@
                         android:text="Title1"
                         android:textSize="31dp"
                         android:textColor="@color/colorPoint"
-                        android:gravity="center_horizontal"/>
+                        android:gravity="center_horizontal"
+                        android:fontFamily="@font/roboto_font_family"/>
                     <TextView
                         android:id="@+id/onboarding_title2"
                         android:layout_width="match_parent"
@@ -49,6 +50,7 @@
                         android:textSize="31dp"
                         android:textColor="@color/colorPoint"
                         android:gravity="center_horizontal"
+                        android:fontFamily="@font/roboto_font_family"
                         />
                 </LinearLayout>
 
@@ -72,7 +74,8 @@
                         android:text="Desc1"
                         android:textSize="18dp"
                         android:textColor="#433E3E"
-                        android:gravity="center_horizontal"/>
+                        android:gravity="center_horizontal"
+                        android:fontFamily="@font/roboto_font_family"/>
                     <TextView
                         android:id="@+id/onboarding_desc2"
                         android:layout_width="match_parent"
@@ -80,7 +83,8 @@
                         android:text="Desc2"
                         android:textSize="18dp"
                         android:textColor="#433E3E"
-                        android:gravity="center_horizontal"/>
+                        android:gravity="center_horizontal"
+                        android:fontFamily="@font/roboto_font_family"/>
                 </LinearLayout>
 
             </FrameLayout>

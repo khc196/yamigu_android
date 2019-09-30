@@ -23,7 +23,9 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:text="설정"
                 android:textSize="14dp"
-                android:textColor="#20252C">
+                android:textColor="@color/colorNormal"
+                android:fontFamily="@font/nanumgothic_font_family"
+                android:textStyle="bold">
             </TextView>
         </android.support.v7.widget.Toolbar>
         <LinearLayout
@@ -38,8 +40,10 @@
                 android:paddingLeft="39dp"
                 android:text="알림"
                 android:textSize="20dp"
-                android:textColor="#20252C"
-                android:gravity="center_vertical"/>
+                android:textColor="@color/colorNormal"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/nanumgothic_font_family"
+                android:textStyle="bold"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -53,7 +57,8 @@
                     android:paddingLeft="39dp"
                     android:text="푸시알림"
                     android:textSize="14dp"
-                    android:textColor="#20252C">
+                    android:textColor="@color/colorNormal"
+                    android:fontFamily="@font/nanumgothic_font_family">
                 </Switch>
             </LinearLayout>
             <LinearLayout
@@ -69,7 +74,8 @@
                     android:paddingLeft="39dp"
                     android:text="채팅알림"
                     android:textSize="14dp"
-                    android:textColor="#20252C">
+                    android:textColor="@color/colorNormal"
+                    android:fontFamily="@font/nanumgothic_font_family">
                 </Switch>
             </LinearLayout>
             <LinearLayout
@@ -86,9 +92,10 @@
                     android:text="공지사항"
                     android:gravity="left|center_vertical"
                     android:textSize="14dp"
-                    android:textColor="#20252C"
+                    android:textColor="@color/colorNormal"
                     android:background="?android:selectableItemBackground"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    style="?android:attr/borderlessButtonStyle"
+                    android:fontFamily="@font/nanumgothic_font_family"/>
             </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
@@ -98,8 +105,10 @@
                 android:paddingLeft="39dp"
                 android:text="정보"
                 android:textSize="20dp"
-                android:textColor="#20252C"
-                android:gravity="center_vertical"/>
+                android:textColor="@color/colorNormal"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/nanumgothic_font_family"
+                android:textStyle="bold"/>
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -114,9 +123,10 @@
                     android:text="앱 버전"
                     android:gravity="left|center_vertical"
                     android:textSize="14dp"
-                    android:textColor="#20252C"
+                    android:textColor="@color/colorNormal"
                     android:background="?android:selectableItemBackground"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    style="?android:attr/borderlessButtonStyle"
+                    android:fontFamily="@font/nanumgothic_font_family"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,6 +135,7 @@
                     android:textColor="@color/colorPoint"
                     android:layout_marginRight="39dp"
                     android:textSize="14dp"
+                    android:fontFamily="@font/nanumgothic_font_family"
                     />
             </FrameLayout>
             <LinearLayout
@@ -141,9 +152,10 @@
                     android:text="개인정보 취급방침"
                     android:gravity="left|center_vertical"
                     android:textSize="14dp"
-                    android:textColor="#20252C"
+                    android:textColor="@color/colorNormal"
                     android:background="?android:selectableItemBackground"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    style="?android:attr/borderlessButtonStyle"
+                    android:fontFamily="@font/nanumgothic_font_family"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -159,9 +171,10 @@
                     android:text="서비스 이용약관"
                     android:gravity="left|center_vertical"
                     android:textSize="14dp"
-                    android:textColor="#20252C"
+                    android:textColor="@color/colorNormal"
                     android:background="?android:selectableItemBackground"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    style="?android:attr/borderlessButtonStyle"
+                    android:fontFamily="@font/nanumgothic_font_family"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -177,9 +190,10 @@
                     android:text="로그아웃"
                     android:gravity="left|center_vertical"
                     android:textSize="14dp"
-                    android:textColor="#20252C"
+                    android:textColor="@color/colorNormal"
                     android:background="?android:selectableItemBackground"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    style="?android:attr/borderlessButtonStyle"
+                    android:fontFamily="@font/nanumgothic_font_family"/>
             </LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -193,7 +207,8 @@
                     android:text="야미구 탈퇴"
                     android:textSize="13dp"
                     android:textColor="#A6FC903B"
-                    android:layout_marginBottom="38dp"/>
+                    android:layout_marginBottom="38dp"
+                    android:fontFamily="@font/nanumgothic_font_family"/>
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

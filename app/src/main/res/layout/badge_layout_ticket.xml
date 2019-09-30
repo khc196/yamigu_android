@@ -10,5 +10,6 @@
             android:text="0"
             android:textSize="14dp"
             android:padding="0dp"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/roboto_font_family"/>
 </RelativeLayout>

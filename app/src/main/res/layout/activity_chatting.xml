@@ -23,7 +23,9 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:text="김찬열 (26)"
                 android:textSize="14dp"
-                android:textColor="#20252C">
+                android:textColor="@color/colorNormal"
+                android:fontFamily="@font/nanumgothic_font_family"
+                android:textStyle="bold">
             </TextView>
         </android.support.v7.widget.Toolbar>
     </LinearLayout>

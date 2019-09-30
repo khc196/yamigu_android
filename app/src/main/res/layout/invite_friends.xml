@@ -23,7 +23,8 @@
                     android:layout_marginLeft="19dp"
                     android:text="친구초대코드: "
                     android:textColor="@color/colorBlack"
-                    android:textSize="14dp"/>
+                    android:textSize="14dp"
+                    android:fontFamily="@font/nanumgothic_font_family"/>
                 <TextView
                     android:id="@+id/code"
                     android:layout_width="wrap_content"
@@ -31,7 +32,8 @@
                     android:text="q7tik3"
                     android:textColor="@color/colorBlack"
                     android:textSize="14dp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:fontFamily="@font/nanumgothic_font_family"/>
             </LinearLayout>
             <ImageView
                 android:layout_width="26dp"

@@ -23,14 +23,16 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="35dp"
                 android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/nanumgothic_font_family"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="/"
                 android:textColor="@color/colorNonselect"
                 android:textSize="35dp"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/nanumgothic_font_family"/>
             <TextView
                 android:id="@+id/tv_total_of_sent"
                 android:layout_width="wrap_content"
@@ -39,14 +41,16 @@
                 android:textSize="35dp"
                 android:textColor="@color/colorNonselect"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/nanumgothic_font_family"/>
         </RelativeLayout>
+
         <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="45dp">
-        </android.support.v4.view.ViewPager>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="45dp"></android.support.v4.view.ViewPager>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/empty_view"
@@ -60,7 +64,8 @@
             android:textSize="24dp"
             android:textColor="@color/colorNonselect"
             android:text="보낸 미팅이 없습니다"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/nanumgothic_font_family">
         </TextView>
     </LinearLayout>
     <LinearLayout
@@ -79,7 +84,8 @@
             android:text="수락 대기중"
             android:textColor="@color/colorPrimary"
             android:gravity="center"
-            android:textSize="14dp" />기
+            android:textSize="14dp"
+            android:fontFamily="@font/nanumgothic_font_family"/>
         <Button
             android:id="@+id/btn_right"
             android:layout_width="0dp"
@@ -89,6 +95,7 @@
             android:text="취소하기"
             android:textColor="@color/colorPoint"
             android:gravity="center"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:fontFamily="@font/nanumgothic_font_family"/>
     </LinearLayout>
 </FrameLayout>

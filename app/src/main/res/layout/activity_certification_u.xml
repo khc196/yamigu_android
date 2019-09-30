@@ -23,7 +23,9 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:text="인증하기"
                 android:textSize="14dp"
-                android:textColor="#20252C">
+                android:textColor="@color/colorNormal"
+                android:fontFamily="@font/nanumgothic_font_family"
+                android:textStyle="bold">
             </TextView>
         </android.support.v7.widget.Toolbar>
         <LinearLayout
@@ -37,8 +39,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="학교 입력"
-                android:textColor="#414141"
+                android:textColor="@color/colorNormal"
                 android:textSize="14dp"
+                android:fontFamily="@font/roboto_font_family"
                 />
             <EditText
                 android:id="@+id/et_university"
@@ -48,21 +51,23 @@
                 android:textSize="12dp"
                 android:background="@drawable/edittext_signup"
                 android:gravity="center_vertical"
-                android:textColorHint="#1E20252C"
+                android:textColorHint="@color/colorHint"
                 android:layout_marginTop="6.1dp"
                 android:paddingBottom="10.5dp"
                 android:paddingTop="10.5dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:inputType="text"
+                android:fontFamily="@font/roboto_font_family"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13.8dp"
                 android:text="전공 입력"
-                android:textColor="#414141"
+                android:textColor="@color/colorNormal"
                 android:textSize="14dp"
+                android:fontFamily="@font/roboto_font_family"
                 />
             <EditText
                 android:id="@+id/et_major"
@@ -72,20 +77,22 @@
                 android:textSize="12dp"
                 android:background="@drawable/edittext_signup"
                 android:gravity="center_vertical"
-                android:textColorHint="#1E20252C"
+                android:textColorHint="@color/colorHint"
                 android:layout_marginTop="6.1dp"
                 android:paddingBottom="10.5dp"
                 android:paddingTop="10.5dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:inputType="text" />
+                android:inputType="text"
+                android:fontFamily="@font/roboto_font_family"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13.8dp"
                 android:text="학생 인증"
-                android:textColor="#414141"
+                android:textColor="@color/colorNormal"
                 android:textSize="14dp"
+                android:fontFamily="@font/roboto_font_family"
                 />
             <ImageButton
                 android:id="@+id/btn_attach_file"
@@ -99,45 +106,50 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5.7dp"
                 android:text="* 전자 학생증도 가능해요 !"
-                android:textColor="#585858"
+                android:textColor="@color/colorHint"
                 android:textSize="10dp"
-                android:gravity="right">
+                android:gravity="right"
+                android:fontFamily="@font/roboto_font_family">
             </TextView>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="26dp"
                 android:text="*인증이 완료된 회원만이 야미구 미팅을 할 수 있어요"
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 android:textSize="12dp"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/roboto_font_family">
             </TextView>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5.7dp"
                 android:text="*인증은 최대 12시간까지 소요돼요."
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 android:textSize="12dp"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/roboto_font_family">
             </TextView>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5.7dp"
                 android:text="*학생증 개인정보는 인증 후 모두 파기됩니다."
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 android:textSize="12dp"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/roboto_font_family">
             </TextView>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5.7dp"
                 android:text="*학생증위조는 사문서부정행사죄가 적용돼요. "
-                android:textColor="#707070"
+                android:textColor="@color/colorNonselect"
                 android:textSize="12dp"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/roboto_font_family">
             </TextView>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -162,7 +174,8 @@
                     android:layout_marginBottom="7dp"
                     android:text="다음에 인증하기"
                     android:textSize="11dp"
-                    android:textColor="@color/colorBlack"></TextView>
+                    android:textColor="@color/colorBlack"
+                    android:fontFamily="@font/roboto_font_family"></TextView>
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
