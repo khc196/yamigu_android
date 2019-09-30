@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -452,15 +453,18 @@ public class WListFragment extends Fragment {
                         rl_applying.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
                                 try{
-                                    intent.putExtra("type", json_data.getInt("meeting_type"));
-                                    intent.putExtra("date_string", date_string_f);
-                                    intent.putExtra("place", json_data.getInt("place_type"));
-                                    intent.putExtra("place_string", place_string_f);
-                                    intent.putExtra("target_id", json_data.getInt("id"));
+                                    String url = "http://147.47.208.44:9999/api/meetings/send_request/";
+                                    ContentValues values = new ContentValues();
+                                    values.put("meeting_type", json_data.getInt("meeting_type"));
+                                    values.put("date", date_string_f);
+                                    values.put("place", json_data.getInt("place_type"));
+                                    values.put("place_string", place_string_f);
+                                    values.put("meeting_id", json_data.getInt("id"));
                                     rl_applying.setVisibility(View.INVISIBLE);
-                                    startActivity(intent);
+                                    NetworkTask4 networkTask4 = new NetworkTask4(url, values);
+                                    networkTask4.execute();
+
                                 }
                                 catch(JSONException e) {
                                     e.printStackTrace();
@@ -549,4 +553,55 @@ public class WListFragment extends Fragment {
             rootLayout.addView(view);
         }
     }
+    public class NetworkTask4 extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask4(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(context, url, values, "POST", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(s);
+                int code = jsonObject.getInt("code");
+                switch(code) {
+                    case 201:
+                        Intent intent_me = getActivity().getIntent();
+                        getActivity().finish();
+                        startActivity(intent_me);
+                        break;
+                    case 204:
+                        Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
+
+                        intent.putExtra("type", values.getAsInteger("meeting_type"));
+                        intent.putExtra("date_string", values.getAsString("date"));
+                        intent.putExtra("place", values.getAsInteger("place"));
+                        intent.putExtra("place_string", values.getAsString("place_string"));
+                        intent.putExtra("target_id", values.getAsInteger("meeting_id"));
+                        startActivity(intent);
+                        break;
+                }
+            } catch(JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

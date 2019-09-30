@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yamigu.yamigu_app.Activity.MainActivity;
+import com.yamigu.yamigu_app.CustomLayout.CustomDialog;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.PagerAdapter.FragmentAdapter;
 import com.yamigu.yamigu_app.R;
@@ -45,6 +47,8 @@ public class ReceivedMeetingFragment extends Fragment {
     int dpValue = 0;
     int meeting_id;
     private SharedPreferences preferences;
+    private CustomDialog customDialog;
+
     public ReceivedMeetingFragment() {
         // Required empty public constructor
     }
@@ -56,6 +60,14 @@ public class ReceivedMeetingFragment extends Fragment {
         return fragment;
     }
 
+    private void Dialog(String title, String content1, String content2, String content3) {
+        customDialog = new CustomDialog(getContext(), title, content1, content2, content3);
+        customDialog.setCancelable(true);
+        customDialog.setCanceledOnTouchOutside(true);
+
+        customDialog.getWindow().setGravity(Gravity.CENTER);
+        customDialog.show();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,10 +175,6 @@ public class ReceivedMeetingFragment extends Fragment {
                                 values.put("request_id", id);
                                 NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                                 networkTask2.execute();
-                                final Intent intent = new Intent(getContext(), MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                                startActivity(intent);
-                                getActivity().finish();
                             }
                         }).setNegativeButton("취소",
 
@@ -194,8 +202,8 @@ public class ReceivedMeetingFragment extends Fragment {
                                 int id = fragment.getRequest_id();
                                 ContentValues values = new ContentValues();
                                 values.put("request_id", id);
-                                NetworkTask2 networkTask2 = new NetworkTask2(url, values);
-                                networkTask2.execute();
+                                NetworkTask3 networkTask3 = new NetworkTask3(url, values);
+                                networkTask3.execute();
                                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                                 ft.detach(me).attach(me).commit();
                             }
@@ -324,8 +332,53 @@ public class ReceivedMeetingFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            JSONArray jsonArray = null;
+            JSONObject jsonObject = null;
+            String user_name = preferences.getString("nickname", "");
+            try {
+                jsonObject = new JSONObject(s);
+                int count_meeting = jsonObject.getJSONObject("data").getInt("count_meeting");
+                Dialog("매칭 완료!", user_name+"님,", "야미구에서", count_meeting+"번째 미팅도 재밌게 하세요!");
 
+                customDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        final Intent intent = new Intent(getContext(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                });
+            } catch(JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+    public class NetworkTask3 extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask3(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(getContext(), url, values, "POST", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            JSONArray jsonArray = null;
         }
     }
 }

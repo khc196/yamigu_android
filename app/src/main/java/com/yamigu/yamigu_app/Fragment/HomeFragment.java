@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class HomeFragment extends Fragment {
@@ -104,8 +105,8 @@ public class HomeFragment extends Fragment {
         return view;
     }
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         myMeetingCardFrame = new MyMeetingCardFrame(getView());
         String url = "http://147.47.208.44:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
@@ -178,11 +179,18 @@ public class HomeFragment extends Fragment {
 
                     Date translated_date;
                     Date today = new Date();
+                    Calendar cal_meeting_day = Calendar.getInstance();
+                    Calendar cal_today = Calendar.getInstance();
                     try {
                         translated_date = transFormat.parse(jsonArray.getJSONObject(i).getString("date"));
+                        cal_meeting_day.setTime(translated_date);
+                        cal_today.setTime(today);
+                        long l_mday = cal_meeting_day.getTimeInMillis() / (24 * 60 * 60 * 1000);
+                        long l_tday = cal_today.getTimeInMillis() / (24 * 60 * 60 * 1000);
+
                         myMeetingCardFrame.mmc_list[i].setMonth(translated_date.getMonth());
                         myMeetingCardFrame.mmc_list[i].setDate(translated_date.getDate());
-                        myMeetingCardFrame.mmc_list[i].setDday(translated_date.getDate() - today.getDate());
+                        myMeetingCardFrame.mmc_list[i].setDday((int)(l_mday - l_tday + 1));
                         if(jsonArray.getJSONObject(i).getBoolean("is_matched")) {
                             JSONObject matched_meeting = jsonArray.getJSONObject(i).getJSONObject("matched_meeting");
                             myMeetingCardFrame.mmc_c_list[i].setVisibility(View.VISIBLE);

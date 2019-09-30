@@ -18,4 +18,5 @@
     <color name="colorYellow">#FFC850</color>
     <color name="colorGreen">#00AB66</color>
     <color name="colorBlackTransparent">#4D000000</color>
+    <color name="colorTransparent">#00000000</color>
 </resources>
