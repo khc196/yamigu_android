@@ -1,5 +1,6 @@
 package com.yamigu.yamigu_app.CustomLayout;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +8,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -14,21 +16,30 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.Activity.RequestListActivity;
 import com.yamigu.yamigu_app.Activity.TicketOnboardingActivity;
+import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.w3c.dom.Text;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MyMeetingCard extends LinearLayout {
 
     LinearLayout bg, btn_edit_card;
+    RelativeLayout request_panel, profile_panel;
     ImageView point_line, icon_edit_card;
-    TextView place, num_of_applying, month, date, dday, label, btn_view_applying, btn_view_waiting, label_matching_completed, text_edit_card;
+    TextView place, num_of_applying, month, date, dday, label, btn_view_applying, btn_view_waiting, label_matching_completed, text_edit_card, tv_nickname_and_age, tv_belong_and_department;
     private int id, typeInt, placeInt;
     private String appeal;
     private String auth_token;
@@ -58,7 +69,10 @@ public class MyMeetingCard extends LinearLayout {
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         auth_token = preferences.getString("auth_token", "");
-
+        request_panel = (RelativeLayout) findViewById(R.id.request_panel);
+        profile_panel = (RelativeLayout) findViewById(R.id.profile_panel);
+        tv_nickname_and_age = (TextView) findViewById(R.id.tv_nickname_and_age);
+        tv_belong_and_department = (TextView) findViewById(R.id.tv_belong_and_department);
         bg = (LinearLayout) findViewById(R.id.bg);
         label = (TextView) findViewById(R.id.label);
         point_line = (ImageView) findViewById(R.id.point_line);
@@ -90,7 +104,7 @@ public class MyMeetingCard extends LinearLayout {
                 ((MainActivity)getContext()).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
         });
-        text_edit_card.setOnClickListener((new OnClickListener() {
+        btn_edit_card.setOnClickListener((new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), MeetingApplicationActivity.class);
@@ -223,19 +237,26 @@ public class MyMeetingCard extends LinearLayout {
     public void setNum_of_applying(int num_of_applying_integer) {
         num_of_applying.setText(Integer.toString(num_of_applying_integer) + "팀 신청!");
     }
+    public void setProfile1(String name, int age) {
+        tv_nickname_and_age.setText(name + " (" + age + ")");
+    }
+    public void setProfile2(String belong, String department) {
+        tv_belong_and_department.setText(belong + ", " + department);
+    }
     public void setMatched(boolean is_matched) {
         if(is_matched) {
             label_matching_completed.setVisibility(VISIBLE);
-            btn_view_applying.setVisibility(INVISIBLE);
             btn_view_waiting.setVisibility(INVISIBLE);
-            text_edit_card.setVisibility(INVISIBLE);
-            num_of_applying.setVisibility(INVISIBLE);
+            btn_edit_card.setVisibility(INVISIBLE);
+            profile_panel.setVisibility(VISIBLE);
+            request_panel.setVisibility(INVISIBLE);
         }
         else {
             label_matching_completed.setVisibility(INVISIBLE);
-            btn_view_applying.setVisibility(VISIBLE);
             btn_view_waiting.setVisibility(VISIBLE);
-            num_of_applying.setVisibility(VISIBLE);
+            btn_edit_card.setVisibility(VISIBLE);
+            profile_panel.setVisibility(INVISIBLE);
+            request_panel.setVisibility(VISIBLE);
         }
     }
 }

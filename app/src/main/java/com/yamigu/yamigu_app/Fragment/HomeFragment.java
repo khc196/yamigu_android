@@ -28,6 +28,7 @@ import com.yamigu.yamigu_app.Activity.TicketOnboardingActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -183,7 +184,10 @@ public class HomeFragment extends Fragment {
                         myMeetingCardFrame.mmc_list[i].setDate(translated_date.getDate());
                         myMeetingCardFrame.mmc_list[i].setDday(translated_date.getDate() - today.getDate());
                         if(jsonArray.getJSONObject(i).getBoolean("is_matched")) {
+                            JSONObject matched_meeting = jsonArray.getJSONObject(i).getJSONObject("matched_meeting");
                             myMeetingCardFrame.mmc_c_list[i].setVisibility(View.VISIBLE);
+                            myMeetingCardFrame.mmc_list[i].setProfile1(matched_meeting.getString("openby_nickname"), matched_meeting.getInt("openby_age"));
+                            myMeetingCardFrame.mmc_list[i].setProfile2(matched_meeting.getString("openby_belong"), matched_meeting.getString("openby_department"));
                             myMeetingCardFrame.mmc_list[i].setMatched(true);
                         }
                     } catch (ParseException e) {
