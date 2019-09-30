@@ -62,6 +62,29 @@
                         android:layout_marginTop="20dp"
                         />
                 </LinearLayout>
+                <RelativeLayout
+                    android:id="@+id/btn_go_yamigu"
+                    android:layout_width="335dp"
+                    android:layout_height="76dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rounded_orange_solid2"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal">
+                    <ImageView
+                        android:layout_width="249dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/text_yamigu"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"/>
+                    <Button
+                        android:layout_width="52dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/btn_go"
+                        />
+                </RelativeLayout>
                 <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard
                     android:id="@+id/mmc_1"
                     android:layout_width="match_parent"

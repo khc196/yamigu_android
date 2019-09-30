@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat;
 import com.yamigu.yamigu_app.R;
@@ -41,6 +42,7 @@ public class HomeFragment extends Fragment {
     private SharedPreferences preferences;
     private Context context;
     MyMeetingCardFrame myMeetingCardFrame;
+    private RelativeLayout btn_go_yamigu;
 
     private class MyMeetingCardFrame {
         private MyMeetingCard mmc_list[];
@@ -95,8 +97,15 @@ public class HomeFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
-
-
+        btn_go_yamigu = (RelativeLayout) view.findViewById(R.id.btn_go_yamigu);
+        btn_go_yamigu.setVisibility(View.GONE);
+        btn_go_yamigu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
+                startActivity(intent);
+            }
+        });
         String url = "http://147.47.208.44:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
@@ -167,6 +176,12 @@ public class HomeFragment extends Fragment {
             }
 
             myMeetingCardFrame.setActive_length(jsonArray.length());
+            if(myMeetingCardFrame.getActive_length() == 0) {
+                btn_go_yamigu.setVisibility(View.VISIBLE);
+            }
+            else {
+                btn_go_yamigu.setVisibility(View.GONE);
+            }
             for(int i = 0; i < myMeetingCardFrame.getActive_length(); i++) {
                 try {
                     myMeetingCardFrame.mmc_list[i].setId(jsonArray.getJSONObject(i).getInt("id"));

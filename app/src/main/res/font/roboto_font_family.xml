@@ -6,18 +6,18 @@
 
     <!-- normal -->
     <font
-        android:font="@font/RobotoRegular"
+        android:font="@font/robotoregular"
         android:fontStyle="normal"
         android:fontWeight="400"
-        app:font="@font/RobotoBold"
+        app:font="@font/robotobold"
         app:fontStyle="normal"
         app:fontWeight="400" />
     <!-- bold -->
     <font
-        android:font="@font/RobotoBold"
+        android:font="@font/robotobold"
         android:fontStyle="normal"
         android:fontWeight="700"
-        app:font="@font/RobotoBold"
+        app:font="@font/robotobold"
         app:fontStyle="normal"
         app:fontWeight="700" />
 

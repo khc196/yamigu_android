@@ -411,7 +411,24 @@ public class WListFragment extends Fragment {
                     before_date_string = json_data.getString("date");
                     //desc_string = desc_string.replaceAll("", "\u00A0");
                     description_w.setBackgroundColor(Color.TRANSPARENT);
-                    description_w.loadData("<div style=\"display:table; width:100%; height:100%; wbackground-color:rgba(255,255,255, 0);overflow-y:hidden;\"><div style=\"display: table-cell; vertical-align: middle; text-align:center; word-break: break-all; color: black; font-size:14px; padding:3px;overflow-y:hidden;overflow-x:hidden;\">"+desc_string+"</div></div>", "text/html;charset=UTF-8", "UTF-8");
+                    String html = "<html><style type='text/css'>" +
+                            "@font-face {\" +\n" +
+                            "font-family: binggrae;" +
+                            "src: url('font/binggrae.ttf');" +
+                            "}"+
+                            "body div {font-family: binggrae;}"+
+                            "</style>"+
+                            "<body>"+
+                            "<div style=" +
+                            "\"display:table; width:100%; height:100%; wbackground-color:rgba(255,255,255, 0);overflow-y:hidden;\">" +
+                            "<div style=\"display: table-cell; vertical-align: middle; text-align:center; word-break: break-all; color: black; font-size:14px; padding:3px;overflow-y:hidden;overflow-x:hidden;" +
+                            "\">"
+                            +desc_string+
+                            "</div>" +
+                            "</div>"+
+                            "</body>"
+                            +"</html>";
+                    description_w.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
 
                     try {
                         int label_type = json_data.getInt("meeting_type");

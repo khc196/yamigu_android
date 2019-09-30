@@ -6,18 +6,18 @@
 
     <!-- normal -->
     <font
-        android:font="@font/NanumGothic"
+        android:font="@font/nanumgothic"
         android:fontStyle="normal"
         android:fontWeight="400"
-        app:font="@font/Binggrae"
+        app:font="@font/binggrae"
         app:fontStyle="normal"
         app:fontWeight="400" />
     <!-- bold -->
     <font
-        android:font="@font/NanumGothicBold"
+        android:font="@font/nanumgothicbold"
         android:fontStyle="normal"
         android:fontWeight="700"
-        app:font="@font/NanumGothicBold"
+        app:font="@font/nanumgothicbold"
         app:fontStyle="normal"
         app:fontWeight="700" />
 
