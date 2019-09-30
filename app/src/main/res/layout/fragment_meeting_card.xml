@@ -18,31 +18,4 @@
         app:profile1="연세대학교 (24)"
         app:profile2="전기전자공학부"
         android:alpha="0.4"></com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard3>
-    <LinearLayout
-        android:id="@+id/btn_layout"
-        android:layout_width="276dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:visibility="invisible">
-        <Button
-            android:id="@+id/btn_left"
-            android:layout_width="138dp"
-            android:layout_height="48dp"
-            android:background="@drawable/state_pressed_orange3"
-            android:text="미팅 수락"
-            android:textColor="@color/colorPrimary"
-            android:gravity="center"
-            android:textSize="14dp" />
-        <Button
-            android:id="@+id/btn_right"
-            android:layout_width="138dp"
-            android:layout_height="48dp"
-            android:background="@drawable/state_pressed_orange4"
-            android:text="거절"
-            android:textColor="@color/colorPoint"
-            android:gravity="center"
-            android:textSize="14dp" />
-    </LinearLayout>
 </LinearLayout>

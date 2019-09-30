@@ -1,22 +1,28 @@
 package com.yamigu.yamigu_app.Fragment;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.PagerAdapter.FragmentAdapter;
 import com.yamigu.yamigu_app.R;
@@ -32,6 +38,8 @@ public class ReceivedMeetingFragment extends Fragment {
     private TextView tv_current, tv_total;
     private boolean is_initialized = false;
     private LinearLayout page_layout, empty_layout;
+    private LinearLayout ll_btn_layout;
+    private Button btn_left, btn_right;
     private String auth_token;
     private int total_num = 0;
     int dpValue = 0;
@@ -66,6 +74,9 @@ public class ReceivedMeetingFragment extends Fragment {
         // Inflate the layout for this fragment
         page_layout = view.findViewById(R.id.page_view);
         empty_layout = view.findViewById(R.id.empty_view);
+        ll_btn_layout = view.findViewById(R.id.btn_layout);
+        btn_left = view.findViewById(R.id.btn_left);
+        btn_right = view.findViewById(R.id.btn_right);
         tv_current = view.findViewById(R.id.tv_num_of_recv);
         tv_total = view.findViewById(R.id.tv_total_of_recv);
 
@@ -91,12 +102,10 @@ public class ReceivedMeetingFragment extends Fragment {
                     if(i - 1 == currentPage) {
                         mLayoutParams.topMargin = 0;
                         fragment.waitingTeamCard.setAlpha(1.0f);
-                        fragment.ll_btn_layout.setVisibility(View.VISIBLE);
                     }
                     else {
                         mLayoutParams.topMargin = Math.round(16 * d);
                         fragment.waitingTeamCard.setAlpha(0.4f);
-                        fragment.ll_btn_layout.setVisibility(View.INVISIBLE);
                     }
                     fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
                 }
@@ -124,7 +133,6 @@ public class ReceivedMeetingFragment extends Fragment {
                     mLayoutParams.topMargin = 0;
                     fragment.waitingTeamCard.setAlpha(1.0f);
                     fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
-                    fragment.ll_btn_layout.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -132,10 +140,77 @@ public class ReceivedMeetingFragment extends Fragment {
 
         viewPager.setClipToPadding(false);
 
-        String url = "http://192.168.0.10:9999/api/meetings/received_request/?meeting_id="+meeting_id;
+        String url = "http://147.47.208.44:9999/api/meetings/received_request/?meeting_id="+meeting_id;
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
+
+        final Fragment me = this;
+
+        btn_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alert_confirm = new AlertDialog.Builder(getContext());
+                alert_confirm.setMessage("미팅을 수락하시겠습니까?").setCancelable(false).setPositiveButton("확인",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String url = "http://147.47.208.44:9999/api/meetings/accept_request/";
+                                MeetingCardFragment fragment = fragmentAdapter.getItem(viewPager.getCurrentItem());
+
+                                int id = fragment.getRequest_id();
+                                ContentValues values = new ContentValues();
+                                values.put("request_id", id);
+                                NetworkTask2 networkTask2 = new NetworkTask2(url, values);
+                                networkTask2.execute();
+                                final Intent intent = new Intent(getContext(), MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                startActivity(intent);
+                                getActivity().finish();
+                            }
+                        }).setNegativeButton("취소",
+
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        });
+                AlertDialog alert = alert_confirm.create();
+                alert.show();
+            }
+        });
+        btn_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alert_confirm = new AlertDialog.Builder(getContext());
+                alert_confirm.setMessage("미팅을 거절하시겠습니까?").setCancelable(false).setPositiveButton("확인",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String url = "http://147.47.208.44:9999/api/meetings/decline_request/";
+                                MeetingCardFragment fragment = fragmentAdapter.getItem(viewPager.getCurrentItem());
+
+                                int id = fragment.getRequest_id();
+                                ContentValues values = new ContentValues();
+                                values.put("request_id", id);
+                                NetworkTask2 networkTask2 = new NetworkTask2(url, values);
+                                networkTask2.execute();
+                                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                ft.detach(me).attach(me).commit();
+                            }
+                        }).setNegativeButton("취소",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                return;
+                            }
+                        });
+                AlertDialog alert = alert_confirm.create();
+                alert.show();
+            }
+        });
+
         return view;
     }
 
@@ -212,14 +287,45 @@ public class ReceivedMeetingFragment extends Fragment {
                     is_initialized = true;
                     page_layout.setVisibility(View.VISIBLE);
                     empty_layout.setVisibility(View.INVISIBLE);
+                    ll_btn_layout.setVisibility(View.VISIBLE);
                 }
                 else {
                     page_layout.setVisibility(View.INVISIBLE);
                     empty_layout.setVisibility(View.VISIBLE);
+                    ll_btn_layout.setVisibility(View.INVISIBLE);
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    public class NetworkTask2 extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask2(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(getContext(), url, values, "POST", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            JSONArray jsonArray = null;
+
         }
     }
 }

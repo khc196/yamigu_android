@@ -228,6 +228,7 @@ public class MyMeetingCard extends LinearLayout {
             label_matching_completed.setVisibility(VISIBLE);
             btn_view_applying.setVisibility(INVISIBLE);
             btn_view_waiting.setVisibility(INVISIBLE);
+            text_edit_card.setVisibility(INVISIBLE);
             num_of_applying.setVisibility(INVISIBLE);
         }
         else {

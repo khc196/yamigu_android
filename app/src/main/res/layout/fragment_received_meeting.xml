@@ -61,4 +61,32 @@
             android:layout_gravity="center_horizontal">
         </TextView>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_gravity="bottom"
+        android:weightSum="100"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:background="@drawable/state_pressed_orange3"
+            android:text="미팅하기"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:textSize="14dp" />
+        <Button
+            android:id="@+id/btn_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:background="@drawable/state_pressed_orange4"
+            android:text="거절하기"
+            android:textColor="@color/colorPoint"
+            android:gravity="center"
+            android:textSize="14dp" />
+    </LinearLayout>
 </FrameLayout>

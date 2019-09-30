@@ -4,13 +4,16 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +31,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yamigu.yamigu_app.Fragment.MeetingCardFragment;
+import com.yamigu.yamigu_app.Fragment.SentMeetingFragment;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
 
@@ -207,7 +212,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 }
                 else {
                     if(form_code == NEW_MEETING) {
-                        String url = "http://192.168.0.10:9999/api/meetings/create/";
+                        String url = "http://147.47.208.44:9999/api/meetings/create/";
 
                         ContentValues values = new ContentValues();
                         String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
@@ -220,7 +225,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         networkTask.execute();
                     }
                     else if(form_code == SEND_REQUEST){
-                        String url = "http://192.168.0.10:9999/api/meetings/send_request/";
+                        String url = "http://147.47.208.44:9999/api/meetings/send_request/";
                         ContentValues values = new ContentValues();
                         String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
                         values.put("meeting_type", ma.getType());
@@ -239,27 +244,58 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             btn_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ma.setAppeal(et_appeal.getText().toString());
-                    String url = "http://192.168.0.10:9999/api/meetings/edit/";
-                    ContentValues values = new ContentValues();
-                    String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
-                    values.put("meeting_type", ma.getType());
-                    values.put("date", new_date.trim());
-                    values.put("place", ma.getPlace());
-                    values.put("appeal", ma.getAppeal());
-                    values.put("meeting_id", edit_id);
-                    NetworkTask networkTask = new NetworkTask(url, values);
-                    networkTask.execute();
+                    AlertDialog.Builder alert_confirm = new AlertDialog.Builder(view.getContext());
+                    alert_confirm.setMessage("수정 사항을 저장하시겠습니까?").setCancelable(false).setPositiveButton("확인",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ma.setAppeal(et_appeal.getText().toString());
+                                    String url = "http://147.47.208.44:9999/api/meetings/edit/";
+                                    ContentValues values = new ContentValues();
+                                    String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
+                                    values.put("meeting_type", ma.getType());
+                                    values.put("date", new_date.trim());
+                                    values.put("place", ma.getPlace());
+                                    values.put("appeal", ma.getAppeal());
+                                    values.put("meeting_id", edit_id);
+                                    NetworkTask networkTask = new NetworkTask(url, values);
+                                    networkTask.execute();
+                                }
+                            }).setNegativeButton("취소",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    return;
+                                }
+                            });
+                    AlertDialog alert = alert_confirm.create();
+                    alert.show();
                 }
             });
             btn_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String url = "http://192.168.0.10:9999/api/meetings/delete/";
-                    ContentValues values = new ContentValues();
-                    values.put("meeting_id", edit_id);
-                    NetworkTask networkTask = new NetworkTask(url, values);
-                    networkTask.execute();
+                    AlertDialog.Builder alert_confirm = new AlertDialog.Builder(view.getContext());
+                    alert_confirm.setMessage("미팅을 삭제하시겠습니까?").setCancelable(false).setPositiveButton("확인",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String url = "http://147.47.208.44:9999/api/meetings/delete/";
+                                    ContentValues values = new ContentValues();
+                                    values.put("meeting_id", edit_id);
+                                    NetworkTask networkTask = new NetworkTask(url, values);
+                                    networkTask.execute();
+                                }
+                            }).setNegativeButton("취소",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    return;
+                                }
+                            });
+                    AlertDialog alert = alert_confirm.create();
+                    alert.show();
+
                 }
             });
         }
