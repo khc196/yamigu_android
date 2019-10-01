@@ -356,7 +356,7 @@ public class HomeFragment extends Fragment {
                             }
                         };
                         Handler mHandler = new Handler();
-                        mHandler.postDelayed(mRunnable, 1000);
+                        mHandler.postDelayed(mRunnable, 3000);
                     }
                 });
             }
