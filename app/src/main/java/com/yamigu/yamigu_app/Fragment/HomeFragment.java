@@ -21,6 +21,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -212,8 +215,45 @@ public class HomeFragment extends Fragment {
             btn_go_review.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    first_pane.setVisibility(View.GONE);
-                    second_pane.setVisibility(View.VISIBLE);
+                    AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
+                    AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
+                    fadeIn.setDuration(1000);
+                    fadeOut.setDuration(1000);
+                    fadeIn.setFillAfter(true);
+                    fadeIn.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            first_pane.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            second_pane.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    first_pane.startAnimation(fadeOut);
+                    second_pane.startAnimation(fadeIn);
                 }
             });
             for (int i = 0; i < 5; i++) {
@@ -256,8 +296,45 @@ public class HomeFragment extends Fragment {
                                 }
                             }
                             if(flag1 && flag2) {
-                                second_pane.setVisibility(View.GONE);
-                                third_pane.setVisibility(View.VISIBLE);
+                                AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
+                                AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
+                                fadeIn.setDuration(1000);
+                                fadeOut.setDuration(1000);
+                                fadeIn.setFillAfter(true);
+                                fadeIn.setAnimationListener(new Animation.AnimationListener() {
+                                    @Override
+                                    public void onAnimationStart(Animation animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animation animation) {
+                                        second_pane.setVisibility(View.GONE);
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animation animation) {
+
+                                    }
+                                });
+                                fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                                    @Override
+                                    public void onAnimationStart(Animation animation) {
+                                        third_pane.setVisibility(View.VISIBLE);
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animation animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animation animation) {
+
+                                    }
+                                });
+                                third_pane.startAnimation(fadeIn);
+                                second_pane.startAnimation(fadeOut);
                             }
                         }
                     }
@@ -297,8 +374,45 @@ public class HomeFragment extends Fragment {
                                 }
                             }
                             if(flag1 && flag2) {
-                                second_pane.setVisibility(View.GONE);
-                                third_pane.setVisibility(View.VISIBLE);
+                                AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
+                                AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
+                                fadeIn.setDuration(1000);
+                                fadeOut.setDuration(1000);
+                                fadeIn.setFillAfter(true);
+                                fadeIn.setAnimationListener(new Animation.AnimationListener() {
+                                    @Override
+                                    public void onAnimationStart(Animation animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animation animation) {
+                                        second_pane.setVisibility(View.GONE);
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animation animation) {
+
+                                    }
+                                });
+                                fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                                    @Override
+                                    public void onAnimationStart(Animation animation) {
+                                        third_pane.setVisibility(View.VISIBLE);
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animation animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animation animation) {
+
+                                    }
+                                });
+                                third_pane.startAnimation(fadeIn);
+                                second_pane.startAnimation(fadeOut);
                             }
                         }
                     }
@@ -338,8 +452,45 @@ public class HomeFragment extends Fragment {
                                 }
                             }
                             if(flag1 && flag2) {
-                                second_pane.setVisibility(View.GONE);
-                                third_pane.setVisibility(View.VISIBLE);
+                                AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
+                                AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
+                                fadeIn.setDuration(1000);
+                                fadeOut.setDuration(1000);
+                                fadeIn.setFillAfter(true);
+                                fadeIn.setAnimationListener(new Animation.AnimationListener() {
+                                    @Override
+                                    public void onAnimationStart(Animation animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animation animation) {
+                                        second_pane.setVisibility(View.GONE);
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animation animation) {
+
+                                    }
+                                });
+                                fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                                    @Override
+                                    public void onAnimationStart(Animation animation) {
+                                        third_pane.setVisibility(View.VISIBLE);
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animation animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animation animation) {
+
+                                    }
+                                });
+                                third_pane.startAnimation(fadeIn);
+                                second_pane.startAnimation(fadeOut);
                             }
                         }
                     }
@@ -347,14 +498,63 @@ public class HomeFragment extends Fragment {
                 btn_send_feedback.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        third_pane.setVisibility(View.GONE);
-                        forth_pane.setVisibility(View.VISIBLE);
+                        AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
+                        AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
+                        fadeIn.setDuration(1000);
+                        fadeOut.setDuration(1000);
+                        fadeIn.setFillAfter(true);
+                        fadeIn.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                third_pane.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                forth_pane.setVisibility(View.VISIBLE);
+                                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                        forth_pane.startAnimation(fadeIn);
+                        third_pane.startAnimation(fadeOut);
+
                         Runnable mRunnable = new Runnable() {
                             @Override
                             public void run() {
-                                mmca.setVisibility(View.GONE);
+                                mmca.animate()
+                                        .translationY(-1000)
+                                        .alpha(0.0f)
+                                        .setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                super.onAnimationEnd(animation);
+                                                mmca.setVisibility(View.GONE);
+                                            }});
                             }
                         };
+
                         Handler mHandler = new Handler();
                         mHandler.postDelayed(mRunnable, 3000);
                     }
