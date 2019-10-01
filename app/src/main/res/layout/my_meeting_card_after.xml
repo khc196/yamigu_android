@@ -5,7 +5,8 @@
     android:layout_height="174dp"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/rectangle_peach_solid">
+    android:background="@drawable/rectangle_peach_solid"
+    android:layout_marginTop="18dp">
     <LinearLayout
         android:id="@+id/first_pane"
         android:layout_width="match_parent"
@@ -13,6 +14,7 @@
         android:orientation="vertical"
         >
     <TextView
+        android:id="@+id/tv_how_were"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:text="8월 5일 미팅 어떠셨나요?!"
@@ -22,6 +24,7 @@
         android:fontFamily="@font/nanumgothic_font_family">
     </TextView>
     <Button
+        android:id="@+id/btn_go_review"
         android:layout_width="142dp"
         android:layout_height="36dp"
         android:layout_gravity="center_horizontal"
@@ -117,6 +120,7 @@
                 android:orientation="horizontal"
                 >
                 <Button
+                    android:id="@+id/btn_star_1"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -126,6 +130,7 @@
                     android:background="@null"
                     android:padding="0dp"></Button>
                 <Button
+                    android:id="@+id/btn_star_2"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -135,6 +140,7 @@
                     android:background="@null"
                     android:padding="0dp"></Button>
                 <Button
+                    android:id="@+id/btn_star_3"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -144,6 +150,7 @@
                     android:background="@null"
                     android:padding="0dp"></Button>
                 <Button
+                    android:id="@+id/btn_star_4"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -153,6 +160,7 @@
                     android:background="@null"
                     android:padding="0dp"></Button>
                 <Button
+                    android:id="@+id/btn_star_5"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -169,6 +177,7 @@
                 android:orientation="horizontal"
                 >
                 <Button
+                    android:id="@+id/btn_star_6"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -178,6 +187,7 @@
                     android:background="@null"
                     android:padding="0dp"></Button>
                 <Button
+                    android:id="@+id/btn_star_7"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -187,6 +197,7 @@
                     android:background="@null"
                     android:padding="0dp"></Button>
                 <Button
+                    android:id="@+id/btn_star_8"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -196,6 +207,7 @@
                     android:background="@null"
                     android:padding="0dp"></Button>
                 <Button
+                    android:id="@+id/btn_star_9"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -205,6 +217,7 @@
                     android:background="@null"
                     android:padding="0dp"></Button>
                 <Button
+                    android:id="@+id/btn_star_10"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -221,6 +234,7 @@
                 android:orientation="horizontal"
                 >
                 <Button
+                    android:id="@+id/btn_star_11"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -230,6 +244,7 @@
                     android:background="@null"
                     android:padding="0dp"></Button>
                 <Button
+                    android:id="@+id/btn_star_12"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -239,6 +254,7 @@
                     android:background="@null"
                     android:padding="0dp"></Button>
                 <Button
+                    android:id="@+id/btn_star_13"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -248,6 +264,7 @@
                     android:background="@null"
                     android:padding="0dp"></Button>
                 <Button
+                    android:id="@+id/btn_star_14"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -257,6 +274,7 @@
                     android:background="@null"
                     android:padding="0dp"></Button>
                 <Button
+                    android:id="@+id/btn_star_15"
                     android:layout_width="27.6dp"
                     android:layout_height="wrap_content"
                     android:textSize="33dp"
@@ -274,6 +292,7 @@
         android:layout_height="match_parent"
         android:visibility="gone">
         <EditText
+            android:id="@+id/et_feedback"
             android:layout_width="234dp"
             android:layout_height="132dp"
             android:background="@drawable/rounded_gray_solid3"
@@ -288,6 +307,7 @@
             android:paddingTop="10dp">
         </EditText>
         <Button
+            android:id="@+id/btn_send_feedback"
             android:layout_width="116dp"
             android:layout_height="30dp"
             android:background="@drawable/ic_filter_state_kakao"
@@ -298,6 +318,7 @@
             android:layout_marginTop="138dp">
         </Button>
         <TextView
+            android:id="@+id/tv_skip_feedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
@@ -309,4 +330,42 @@
             android:layout_marginBottom="5.8dp"
             ></TextView>
     </FrameLayout>
+    <LinearLayout
+        android:id="@+id/forth_pane"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="19dp"
+            android:textColor="@color/colorNormal"
+            android:fontFamily="@font/nanumgothic_font_family"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="60dp"
+            android:text="다음에는 더 즐거운 야미구하세요!">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="19dp"
+            android:textColor="@color/colorNormal"
+            android:fontFamily="@font/nanumgothic_font_family"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:text="감사합니다!">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPoint"
+            android:fontFamily="@font/nanumgothic_font_family"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="22dp"
+            android:text="- 야미구 매니저 sub -">
+        </TextView>
+    </LinearLayout>
 </LinearLayout>

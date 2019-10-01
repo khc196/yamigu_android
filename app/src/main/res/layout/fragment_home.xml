@@ -85,6 +85,12 @@
                         android:background="@drawable/btn_go"
                         />
                 </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/past_meeting_root"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
                 <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard
                     android:id="@+id/mmc_1"
                     android:layout_width="match_parent"

@@ -1,11 +1,14 @@
 package com.yamigu.yamigu_app.Fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,7 +21,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard;
@@ -30,6 +38,7 @@ import com.yamigu.yamigu_app.Activity.TicketOnboardingActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -111,6 +120,10 @@ public class HomeFragment extends Fragment {
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
 
+        String url2 = "http://147.47.208.44:9999/api/meetings/my_past/";
+        ContentValues values2 = new ContentValues();
+        NetworkTask2 networkTask2 = new NetworkTask2(url2, values2);
+        networkTask2.execute();
         return view;
     }
     @Override
@@ -143,6 +156,213 @@ public class HomeFragment extends Fragment {
                 return true;
         }
         return true;
+    }
+    private void createPastMeetingCard(final JSONObject json_data) {
+        try {
+            LinearLayout mRootLinear = (LinearLayout) getView().findViewById(R.id.past_meeting_root);
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
+            final View mmca = inflater.inflate(R.layout.my_meeting_card_after, mRootLinear, false);
+            mRootLinear.addView(mmca);
+            final LinearLayout first_pane = mmca.findViewById(R.id.first_pane);
+            final RelativeLayout second_pane = mmca.findViewById(R.id.second_pane);
+            final FrameLayout third_pane = mmca.findViewById(R.id.third_pane);
+            final LinearLayout forth_pane = mmca.findViewById(R.id.forth_pane);
+            first_pane.setVisibility(View.VISIBLE);
+            second_pane.setVisibility(View.GONE);
+            third_pane.setVisibility(View.GONE);
+            forth_pane.setVisibility(View.GONE);
+
+            //first pane
+            TextView tv_how_were = mmca.findViewById(R.id.tv_how_were);
+            final Button btn_go_review = mmca.findViewById(R.id.btn_go_review);
+
+            //second pane
+            final Button btn_stars_visual[] = new Button[5];
+            final Button btn_stars_fun[] = new Button[5];
+            final Button btn_stars_manner[] = new Button[5];
+            btn_stars_visual[0] = mmca.findViewById(R.id.btn_star_1);
+            btn_stars_visual[1] = mmca.findViewById(R.id.btn_star_2);
+            btn_stars_visual[2] = mmca.findViewById(R.id.btn_star_3);
+            btn_stars_visual[3] = mmca.findViewById(R.id.btn_star_4);
+            btn_stars_visual[4] = mmca.findViewById(R.id.btn_star_5);
+            btn_stars_fun[0] = mmca.findViewById(R.id.btn_star_6);
+            btn_stars_fun[1] = mmca.findViewById(R.id.btn_star_7);
+            btn_stars_fun[2] = mmca.findViewById(R.id.btn_star_8);
+            btn_stars_fun[3] = mmca.findViewById(R.id.btn_star_9);
+            btn_stars_fun[4] = mmca.findViewById(R.id.btn_star_10);
+            btn_stars_manner[0] = mmca.findViewById(R.id.btn_star_11);
+            btn_stars_manner[1] = mmca.findViewById(R.id.btn_star_12);
+            btn_stars_manner[2] = mmca.findViewById(R.id.btn_star_13);
+            btn_stars_manner[3] = mmca.findViewById(R.id.btn_star_14);
+            btn_stars_manner[4] = mmca.findViewById(R.id.btn_star_15);
+
+
+            //third pane
+            EditText et_feedback = mmca.findViewById(R.id.et_feedback);
+            Button btn_send_feedback = mmca.findViewById(R.id.btn_send_feedback);
+            TextView tv_skip_feedback = mmca.findViewById(R.id.tv_skip_feedback);
+
+            try {
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(json_data.getString("date"));
+                tv_how_were.setText((date.getMonth()+1)+"월 "+ date.getDate() + "일 " + "미팅 어떠셨나요?!");
+            } catch(ParseException e) {
+                e.printStackTrace();
+            }
+
+            btn_go_review.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    first_pane.setVisibility(View.GONE);
+                    second_pane.setVisibility(View.VISIBLE);
+                }
+            });
+            for (int i = 0; i < 5; i++) {
+                final int position = i;
+                final Button button_visual = btn_stars_visual[i];
+                final Button button_fun = btn_stars_fun[i];
+                final Button button_manner = btn_stars_manner[i];
+                button_visual.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (button_visual.getText().toString().equals("★")) {
+                            boolean flag = false;
+                            for (int j = position + 1; j < 5; j++) {
+                                if (btn_stars_visual[j].getText().toString().equals("★")) {
+                                    btn_stars_visual[j].setText("☆");
+                                    flag = true;
+                                }
+                            }
+                            if (!flag) {
+                                for (int j = 0; j <= position; j++) {
+                                    btn_stars_visual[j].setText("☆");
+                                }
+                            }
+                        } else {
+                            boolean flag1 = false;
+                            boolean flag2 = false;
+                            for (int j = 0; j <= position; j++) {
+                                btn_stars_visual[j].setText("★");
+                            }
+                            for (int k = 0; k < 5; k++) {
+                                if (btn_stars_fun[k].getText().toString().equals("★")) {
+                                    flag1 = true;
+                                    break;
+                                }
+                            }
+                            for (int k = 0; k < 5; k++) {
+                                if (btn_stars_manner[k].getText().toString().equals("★")) {
+                                    flag2 = true;
+                                    break;
+                                }
+                            }
+                            if(flag1 && flag2) {
+                                second_pane.setVisibility(View.GONE);
+                                third_pane.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                });
+                button_fun.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (button_fun.getText().toString().equals("★")) {
+                            boolean flag = false;
+                            for (int j = position + 1; j < 5; j++) {
+                                if (btn_stars_fun[j].getText().toString().equals("★")) {
+                                    btn_stars_fun[j].setText("☆");
+                                    flag = true;
+                                }
+                            }
+                            if (!flag) {
+                                for (int j = 0; j <= position; j++) {
+                                    btn_stars_fun[j].setText("☆");
+                                }
+                            }
+                        } else {
+                            boolean flag1 = false;
+                            boolean flag2 = false;
+                            for (int j = 0; j <= position; j++) {
+                                btn_stars_fun[j].setText("★");
+                            }
+                            for (int k = 0; k < 5; k++) {
+                                if (btn_stars_visual[k].getText().toString().equals("★")) {
+                                    flag1 = true;
+                                    break;
+                                }
+                            }
+                            for (int k = 0; k < 5; k++) {
+                                if (btn_stars_manner[k].getText().toString().equals("★")) {
+                                    flag2 = true;
+                                    break;
+                                }
+                            }
+                            if(flag1 && flag2) {
+                                second_pane.setVisibility(View.GONE);
+                                third_pane.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                });
+                button_manner.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (button_manner.getText().toString().equals("★")) {
+                            boolean flag = false;
+                            for (int j = position + 1; j < 5; j++) {
+                                if (btn_stars_manner[j].getText().toString().equals("★")) {
+                                    btn_stars_manner[j].setText("☆");
+                                    flag = true;
+                                }
+                            }
+                            if (!flag) {
+                                for (int j = 0; j <= position; j++) {
+                                    btn_stars_manner[j].setText("☆");
+                                }
+                            }
+                        } else {
+                            boolean flag1 = false;
+                            boolean flag2 = false;
+                            for (int j = 0; j <= position; j++) {
+                                btn_stars_manner[j].setText("★");
+                            }
+                            for (int k = 0; k < 5; k++) {
+                                if (btn_stars_visual[k].getText().toString().equals("★")) {
+                                    flag1 = true;
+                                    break;
+                                }
+                            }
+                            for (int k = 0; k < 5; k++) {
+                                if (btn_stars_fun[k].getText().toString().equals("★")) {
+                                    flag2 = true;
+                                    break;
+                                }
+                            }
+                            if(flag1 && flag2) {
+                                second_pane.setVisibility(View.GONE);
+                                third_pane.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                });
+                btn_send_feedback.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        third_pane.setVisibility(View.GONE);
+                        forth_pane.setVisibility(View.VISIBLE);
+                        Runnable mRunnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                mmca.setVisibility(View.GONE);
+                            }
+                        };
+                        Handler mHandler = new Handler();
+                        mHandler.postDelayed(mRunnable, 1000);
+                    }
+                });
+            }
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
     }
     public class NetworkTask extends AsyncTask<Void, Void, String> {
 
@@ -220,6 +440,46 @@ public class HomeFragment extends Fragment {
                     e.printStackTrace();
                 }
                 myMeetingCardFrame.mmc_list[i].setVisibility(View.VISIBLE);
+            }
+        }
+    }
+    public class NetworkTask2 extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask2(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(context, url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = new JSONArray(s);
+                if(jsonArray.length() > 0) {
+                    for(int i = 0; i < jsonArray.length(); i++) {
+                        createPastMeetingCard(jsonArray.getJSONObject(i));
+                    }
+                }
+                else {
+                    return;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }
