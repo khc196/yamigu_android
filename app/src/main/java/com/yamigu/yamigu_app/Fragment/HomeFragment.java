@@ -217,8 +217,8 @@ public class HomeFragment extends Fragment {
                 public void onClick(View view) {
                     AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
                     AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
-                    fadeIn.setDuration(1000);
-                    fadeOut.setDuration(1000);
+                    fadeIn.setDuration(500);
+                    fadeOut.setDuration(500);
                     fadeIn.setFillAfter(true);
                     fadeIn.setAnimationListener(new Animation.AnimationListener() {
                         @Override
@@ -298,8 +298,8 @@ public class HomeFragment extends Fragment {
                             if(flag1 && flag2) {
                                 AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
                                 AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
-                                fadeIn.setDuration(1000);
-                                fadeOut.setDuration(1000);
+                                fadeIn.setDuration(500);
+                                fadeOut.setDuration(500);
                                 fadeIn.setFillAfter(true);
                                 fadeIn.setAnimationListener(new Animation.AnimationListener() {
                                     @Override
@@ -376,8 +376,8 @@ public class HomeFragment extends Fragment {
                             if(flag1 && flag2) {
                                 AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
                                 AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
-                                fadeIn.setDuration(1000);
-                                fadeOut.setDuration(1000);
+                                fadeIn.setDuration(500);
+                                fadeOut.setDuration(500);
                                 fadeIn.setFillAfter(true);
                                 fadeIn.setAnimationListener(new Animation.AnimationListener() {
                                     @Override
@@ -454,8 +454,8 @@ public class HomeFragment extends Fragment {
                             if(flag1 && flag2) {
                                 AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
                                 AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
-                                fadeIn.setDuration(1000);
-                                fadeOut.setDuration(1000);
+                                fadeIn.setDuration(500);
+                                fadeOut.setDuration(500);
                                 fadeIn.setFillAfter(true);
                                 fadeIn.setAnimationListener(new Animation.AnimationListener() {
                                     @Override
@@ -500,8 +500,8 @@ public class HomeFragment extends Fragment {
                     public void onClick(View view) {
                         AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
                         AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
-                        fadeIn.setDuration(1000);
-                        fadeOut.setDuration(1000);
+                        fadeIn.setDuration(500);
+                        fadeOut.setDuration(500);
                         fadeIn.setFillAfter(true);
                         fadeIn.setAnimationListener(new Animation.AnimationListener() {
                             @Override
@@ -556,7 +556,7 @@ public class HomeFragment extends Fragment {
                         };
 
                         Handler mHandler = new Handler();
-                        mHandler.postDelayed(mRunnable, 3000);
+                        mHandler.postDelayed(mRunnable, 2500);
                     }
                 });
             }
