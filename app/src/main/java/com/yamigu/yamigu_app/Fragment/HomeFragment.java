@@ -6,6 +6,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
+import android.net.Network;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -118,12 +120,12 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        String url = "http://147.47.208.44:9999/api/meetings/my/";
+        String url = "http://192.168.0.10:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
 
-        String url2 = "http://147.47.208.44:9999/api/meetings/my_past/";
+        String url2 = "http://192.168.0.10:9999/api/meetings/my_past/";
         ContentValues values2 = new ContentValues();
         NetworkTask2 networkTask2 = new NetworkTask2(url2, values2);
         networkTask2.execute();
@@ -133,7 +135,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         myMeetingCardFrame = new MyMeetingCardFrame(getView());
-        String url = "http://147.47.208.44:9999/api/meetings/my/";
+        String url = "http://192.168.0.10:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -201,9 +203,10 @@ public class HomeFragment extends Fragment {
 
 
             //third pane
-            EditText et_feedback = mmca.findViewById(R.id.et_feedback);
+            final EditText et_feedback = mmca.findViewById(R.id.et_feedback);
             Button btn_send_feedback = mmca.findViewById(R.id.btn_send_feedback);
             TextView tv_skip_feedback = mmca.findViewById(R.id.tv_skip_feedback);
+            tv_skip_feedback.setPaintFlags(tv_skip_feedback.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
             try {
                 Date date = new SimpleDateFormat("yyyy-MM-dd").parse(json_data.getString("date"));
@@ -280,18 +283,22 @@ public class HomeFragment extends Fragment {
                         } else {
                             boolean flag1 = false;
                             boolean flag2 = false;
+                            int rate_visual = 0, rate_fun = 0, rate_manner = 0;
                             for (int j = 0; j <= position; j++) {
                                 btn_stars_visual[j].setText("★");
+                                rate_visual = j+1;
                             }
                             for (int k = 0; k < 5; k++) {
                                 if (btn_stars_fun[k].getText().toString().equals("★")) {
                                     flag1 = true;
+                                    rate_fun = k+1;
                                     break;
                                 }
                             }
                             for (int k = 0; k < 5; k++) {
                                 if (btn_stars_manner[k].getText().toString().equals("★")) {
                                     flag2 = true;
+                                    rate_manner = k+1;
                                     break;
                                 }
                             }
@@ -301,6 +308,9 @@ public class HomeFragment extends Fragment {
                                 fadeIn.setDuration(500);
                                 fadeOut.setDuration(500);
                                 fadeIn.setFillAfter(true);
+                                final int visual = rate_visual;
+                                final int fun = rate_fun;
+                                final int manner = rate_manner;
                                 fadeIn.setAnimationListener(new Animation.AnimationListener() {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
@@ -321,6 +331,19 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
+
+                                        String url = "http://192.168.0.10:9999/api/meetings/rate/";
+                                        ContentValues values = new ContentValues();
+                                        try {
+                                            values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
+                                            values.put("visual", visual);
+                                            values.put("fun", fun);
+                                            values.put("manner", manner);
+                                            NetworkTask3 networkTask3 = new NetworkTask3(url, values);
+                                            networkTask3.execute();
+                                        } catch(JSONException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
 
                                     @Override
@@ -358,18 +381,22 @@ public class HomeFragment extends Fragment {
                         } else {
                             boolean flag1 = false;
                             boolean flag2 = false;
+                            int rate_visual = 0, rate_fun = 0, rate_manner = 0;
                             for (int j = 0; j <= position; j++) {
                                 btn_stars_fun[j].setText("★");
+                                rate_fun = j+1;
                             }
                             for (int k = 0; k < 5; k++) {
                                 if (btn_stars_visual[k].getText().toString().equals("★")) {
                                     flag1 = true;
+                                    rate_visual = k+1;
                                     break;
                                 }
                             }
                             for (int k = 0; k < 5; k++) {
                                 if (btn_stars_manner[k].getText().toString().equals("★")) {
                                     flag2 = true;
+                                    rate_manner = k+1;
                                     break;
                                 }
                             }
@@ -379,6 +406,9 @@ public class HomeFragment extends Fragment {
                                 fadeIn.setDuration(500);
                                 fadeOut.setDuration(500);
                                 fadeIn.setFillAfter(true);
+                                final int visual = rate_visual;
+                                final int fun = rate_fun;
+                                final int manner = rate_manner;
                                 fadeIn.setAnimationListener(new Animation.AnimationListener() {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
@@ -399,6 +429,18 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
+                                        String url = "http://192.168.0.10:9999/api/meetings/rate/";
+                                        ContentValues values = new ContentValues();
+                                        try {
+                                            values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
+                                            values.put("visual", visual);
+                                            values.put("fun", fun);
+                                            values.put("manner", manner);
+                                            NetworkTask3 networkTask3 = new NetworkTask3(url, values);
+                                            networkTask3.execute();
+                                        } catch(JSONException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
 
                                     @Override
@@ -436,18 +478,22 @@ public class HomeFragment extends Fragment {
                         } else {
                             boolean flag1 = false;
                             boolean flag2 = false;
+                            int rate_visual = 0, rate_fun = 0, rate_manner = 0;
                             for (int j = 0; j <= position; j++) {
                                 btn_stars_manner[j].setText("★");
+                                rate_manner = j+1;
                             }
                             for (int k = 0; k < 5; k++) {
                                 if (btn_stars_visual[k].getText().toString().equals("★")) {
                                     flag1 = true;
+                                    rate_visual = k+1;
                                     break;
                                 }
                             }
                             for (int k = 0; k < 5; k++) {
                                 if (btn_stars_fun[k].getText().toString().equals("★")) {
                                     flag2 = true;
+                                    rate_fun = k+1;
                                     break;
                                 }
                             }
@@ -457,6 +503,9 @@ public class HomeFragment extends Fragment {
                                 fadeIn.setDuration(500);
                                 fadeOut.setDuration(500);
                                 fadeIn.setFillAfter(true);
+                                final int visual = rate_visual;
+                                final int fun = rate_fun;
+                                final int manner = rate_manner;
                                 fadeIn.setAnimationListener(new Animation.AnimationListener() {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
@@ -477,6 +526,18 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
+                                        String url = "http://192.168.0.10:9999/api/meetings/rate/";
+                                        ContentValues values = new ContentValues();
+                                        try {
+                                            values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
+                                            values.put("visual", visual);
+                                            values.put("fun", fun);
+                                            values.put("manner", manner);
+                                            NetworkTask3 networkTask3 = new NetworkTask3(url, values);
+                                            networkTask3.execute();
+                                        } catch(JSONException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
 
                                     @Override
@@ -525,6 +586,16 @@ public class HomeFragment extends Fragment {
                                 forth_pane.setVisibility(View.VISIBLE);
                                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                                String url = "http://192.168.0.10:9999/api/meetings/feedback/";
+                                ContentValues values = new ContentValues();
+                                try {
+                                    values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
+                                    values.put("feedback", et_feedback.getText().toString());
+                                    NetworkTask3 networkTask3 = new NetworkTask3(url, values);
+                                    networkTask3.execute();
+                                } catch(JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
 
                             @Override
@@ -556,7 +627,7 @@ public class HomeFragment extends Fragment {
                         };
 
                         Handler mHandler = new Handler();
-                        mHandler.postDelayed(mRunnable, 2500);
+                        mHandler.postDelayed(mRunnable, 2000);
                     }
                 });
             }
@@ -649,6 +720,46 @@ public class HomeFragment extends Fragment {
         private ContentValues values;
         private RequestHttpURLConnection requestHttpURLConnection;
         public NetworkTask2(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(context, url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = new JSONArray(s);
+                if(jsonArray.length() > 0) {
+                    for(int i = 0; i < jsonArray.length(); i++) {
+                        createPastMeetingCard(jsonArray.getJSONObject(i));
+                    }
+                }
+                else {
+                    return;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public class NetworkTask3 extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask3(String url, ContentValues values) {
             this.url = url;
             this.values = values;
         }
