@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,8 +16,8 @@ import com.yamigu.yamigu_app.R;
 public class ProfileCard extends LinearLayout {
 
     FrameLayout bg;
-    TextView name_and_age, company, department;
-
+    TextView name, age, company, department;
+    public ImageButton btn_edit_nickname;
 
     public ProfileCard(Context context) {
         super(context);
@@ -41,7 +42,8 @@ public class ProfileCard extends LinearLayout {
         addView(v);
 
         bg = (FrameLayout) findViewById(R.id.bg);
-        name_and_age = (TextView) findViewById(R.id.name_and_age);
+        name = (TextView) findViewById(R.id.name);
+        age = (TextView) findViewById(R.id.age);
         company = (TextView) findViewById(R.id.company);
         department = (TextView) findViewById(R.id.department);
     }
@@ -55,8 +57,11 @@ public class ProfileCard extends LinearLayout {
     }
     private void setTypeArray(TypedArray typedArray) {
 
-        String profile_string = typedArray.getString(R.styleable.ProfileCard_name_and_age);
-        name_and_age.setText(profile_string);
+        String name_string = typedArray.getString(R.styleable.ProfileCard_nickname);
+        name.setText(name_string);
+
+        String age_string = typedArray.getString(R.styleable.ProfileCard_age);
+        age.setText(age_string);
 
         String company_string = typedArray.getString(R.styleable.ProfileCard_company);
         company.setText(company_string);
@@ -68,8 +73,6 @@ public class ProfileCard extends LinearLayout {
     }
 
 
-    public void setName_and_Age(int name_and_age_resID) { name_and_age.setText(name_and_age_resID);
-    }
     public void setCompany(int company_resID) {
         company.setText(company_resID);
     }

@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat;
@@ -705,6 +706,7 @@ public class HomeFragment extends Fragment {
                     e.printStackTrace();
                 }
                 myMeetingCardFrame.mmc_list[i].setVisibility(View.VISIBLE);
+                ((MainActivity)getActivity()).setMyMeetingCount(i+1);
             }
         }
     }

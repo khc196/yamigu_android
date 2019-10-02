@@ -20,7 +20,8 @@
     <attr name="woman" format="reference|string" />
 </declare-styleable>
 <declare-styleable name="ProfileCard">
-    <attr name="name_and_age" format="reference|string" />
+    <attr name="nickname" format="reference|string" />
+    <attr name="age" format="reference|string" />
     <attr name="company" format="reference|string" />
     <attr name="department" format="reference|string" />
 </declare-styleable>

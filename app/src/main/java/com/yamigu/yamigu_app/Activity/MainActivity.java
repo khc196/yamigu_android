@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton nav_home, nav_wlist, nav_yamigu, nav_mypage, nav_more;
     private String auth_token;
     private SharedPreferences preferences;
-
+    private int count_meeting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +52,10 @@ public class MainActivity extends AppCompatActivity {
         nav_yamigu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
-                startActivity(intent);
+                if(count_meeting < 3) {
+                    Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
+                    startActivity(intent);
+                }
             }
         });
         nav_home.setOnClickListener(new View.OnClickListener() {
@@ -117,8 +119,12 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
     }
+    public void setMyMeetingCount(int num) {
+        int resources[] = {R.drawable.nav_yamigu_0, R.drawable.nav_yamigu_1, R.drawable.nav_yamigu_2, R.drawable.nav_yamigu_3};
+        nav_yamigu.setImageResource(resources[num]);
+        count_meeting = num;
+    }
     @Nullable
-
     public static String getHashKey(Context context) {
 
         final String TAG = "KeyHash";

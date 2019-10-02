@@ -58,7 +58,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            app:name_and_age="김찬열 (24)"
+            app:nickname="김찬열"
+            app:age="24"
             app:company="연세대학교"
             app:department="전기전자공학부">
         </com.yamigu.yamigu_app.CustomLayout.ProfileCard>
