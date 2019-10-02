@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                 // 사용자정보 요청에 성공한 경우,
                 @Override
                 public void onSuccess(UserProfile userProfile) {
-                    String url = "http://192.168.0.10:9999/api/oauth/kakao/";
+                    String url = "http://147.47.208.44:9999/api/oauth/kakao/";
                     String access_token = Session.getCurrentSession().getTokenInfo().getAccessToken();
                     ContentValues values = new ContentValues();
                     values.put("access_token", access_token);
@@ -129,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     protected void redirectMainActivity() {
         final Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }
@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            String url = "http://192.168.0.10:9999/api/user/info/";
+            String url = "http://147.47.208.44:9999/api/user/info/";
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);
@@ -172,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
             ContentValues values = new ContentValues();
             try {
                 NetworkTask2 networkTask2 = new NetworkTask2(url, values, jsonObject.getString("key"));
-                Log.d("onPostExecute :: ", "jsonObject key: " + jsonObject.getString("key"));
+                //Log.d("onPostExecute :: ", "jsonObject key: " + jsonObject.getString("key"));
                 networkTask2.execute();
                 auth_token = jsonObject.getString("key");
                 editor.putString("auth_token", auth_token);

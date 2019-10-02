@@ -120,12 +120,12 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        String url = "http://192.168.0.10:9999/api/meetings/my/";
+        String url = "http://147.47.208.44:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
 
-        String url2 = "http://192.168.0.10:9999/api/meetings/my_past/";
+        String url2 = "http://147.47.208.44:9999/api/meetings/my_past/";
         ContentValues values2 = new ContentValues();
         NetworkTask2 networkTask2 = new NetworkTask2(url2, values2);
         networkTask2.execute();
@@ -135,7 +135,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         myMeetingCardFrame = new MyMeetingCardFrame(getView());
-        String url = "http://192.168.0.10:9999/api/meetings/my/";
+        String url = "http://147.47.208.44:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -292,14 +292,12 @@ public class HomeFragment extends Fragment {
                                 if (btn_stars_fun[k].getText().toString().equals("★")) {
                                     flag1 = true;
                                     rate_fun = k+1;
-                                    break;
                                 }
                             }
                             for (int k = 0; k < 5; k++) {
                                 if (btn_stars_manner[k].getText().toString().equals("★")) {
                                     flag2 = true;
                                     rate_manner = k+1;
-                                    break;
                                 }
                             }
                             if(flag1 && flag2) {
@@ -332,7 +330,7 @@ public class HomeFragment extends Fragment {
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
 
-                                        String url = "http://192.168.0.10:9999/api/meetings/rate/";
+                                        String url = "http://147.47.208.44:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -390,14 +388,12 @@ public class HomeFragment extends Fragment {
                                 if (btn_stars_visual[k].getText().toString().equals("★")) {
                                     flag1 = true;
                                     rate_visual = k+1;
-                                    break;
                                 }
                             }
                             for (int k = 0; k < 5; k++) {
                                 if (btn_stars_manner[k].getText().toString().equals("★")) {
                                     flag2 = true;
                                     rate_manner = k+1;
-                                    break;
                                 }
                             }
                             if(flag1 && flag2) {
@@ -429,7 +425,7 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
-                                        String url = "http://192.168.0.10:9999/api/meetings/rate/";
+                                        String url = "http://147.47.208.44:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -487,14 +483,12 @@ public class HomeFragment extends Fragment {
                                 if (btn_stars_visual[k].getText().toString().equals("★")) {
                                     flag1 = true;
                                     rate_visual = k+1;
-                                    break;
                                 }
                             }
                             for (int k = 0; k < 5; k++) {
                                 if (btn_stars_fun[k].getText().toString().equals("★")) {
                                     flag2 = true;
                                     rate_fun = k+1;
-                                    break;
                                 }
                             }
                             if(flag1 && flag2) {
@@ -526,7 +520,7 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
-                                        String url = "http://192.168.0.10:9999/api/meetings/rate/";
+                                        String url = "http://147.47.208.44:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -586,7 +580,7 @@ public class HomeFragment extends Fragment {
                                 forth_pane.setVisibility(View.VISIBLE);
                                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                                String url = "http://192.168.0.10:9999/api/meetings/feedback/";
+                                String url = "http://147.47.208.44:9999/api/meetings/feedback/";
                                 ContentValues values = new ContentValues();
                                 try {
                                     values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -770,7 +764,7 @@ public class HomeFragment extends Fragment {
             String result; // 요청 결과를 저장할 변수.
             requestHttpURLConnection = new RequestHttpURLConnection();
 
-            result = requestHttpURLConnection.request(context, url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+            result = requestHttpURLConnection.request(context, url, values, "POST", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
 
             return result;
         }
@@ -778,20 +772,6 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            JSONArray jsonArray = null;
-            try {
-                jsonArray = new JSONArray(s);
-                if(jsonArray.length() > 0) {
-                    for(int i = 0; i < jsonArray.length(); i++) {
-                        createPastMeetingCard(jsonArray.getJSONObject(i));
-                    }
-                }
-                else {
-                    return;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
     }
 }
