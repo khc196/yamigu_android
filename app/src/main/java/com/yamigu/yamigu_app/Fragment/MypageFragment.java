@@ -123,6 +123,7 @@ public class MypageFragment extends Fragment {
                 if(nickname_validated) {
                     String url = "http://147.47.208.44:9999/api/user/change/nickname/";
                     ContentValues values = new ContentValues();
+                    values.put("nickname", et_nickname.getText().toString());
                     NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                     networkTask2.execute();
                     tv_nickname.setVisibility(View.VISIBLE);
@@ -160,7 +161,7 @@ public class MypageFragment extends Fragment {
             String result; // 요청 결과를 저장할 변수.
             requestHttpURLConnection = new RequestHttpURLConnection();
 
-            result = requestHttpURLConnection.request(getContext(), url, values, "GET", ""); // 해당 URL로 부터 결과물을 얻어온다.
+            result = requestHttpURLConnection.request(getContext(), url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
             return result;
         }
 
@@ -223,6 +224,16 @@ public class MypageFragment extends Fragment {
         @Override
         protected void onPostExecute(String s){
             super.onPostExecute(s);
+            JSONObject jsonObject = null;
+            String after_nickname = "";
+            try {
+                jsonObject = new JSONObject(s);
+                after_nickname = jsonObject.getString("data");
+            } catch(JSONException e) {
+                e.printStackTrace();
+            }
+            tv_nickname.setText(after_nickname);
+            editor.putString("nickname", after_nickname);
 
         }
     }
