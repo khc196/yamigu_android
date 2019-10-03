@@ -74,9 +74,13 @@
                         android:textColor="@color/colorBlack"
                         android:fontFamily="@font/roboto_font_family"
                         android:paddingBottom="8dp"
+                        android:paddingRight="0dp"
+                        android:paddingLeft="0dp"
                         android:textSize="25dp"
                         android:gravity="bottom"
-                        android:visibility="gone">
+                        android:visibility="gone"
+
+                        >
                     </EditText>
                     <TextView
                         android:id="@+id/age"

@@ -212,7 +212,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 }
                 else {
                     if(form_code == NEW_MEETING) {
-                        String url = "http://147.47.208.44:9999/api/meetings/create/";
+                        String url = "http://192.168.43.223:9999/api/meetings/create/";
 
                         ContentValues values = new ContentValues();
                         String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
@@ -225,7 +225,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         networkTask.execute();
                     }
                     else if(form_code == SEND_REQUEST){
-                        String url = "http://147.47.208.44:9999/api/meetings/send_request_new/";
+                        String url = "http://192.168.43.223:9999/api/meetings/send_request_new/";
                         ContentValues values = new ContentValues();
                         String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
                         values.put("meeting_type", ma.getType());
@@ -250,7 +250,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     ma.setAppeal(et_appeal.getText().toString());
-                                    String url = "http://147.47.208.44:9999/api/meetings/edit/";
+                                    String url = "http://192.168.43.223:9999/api/meetings/edit/";
                                     ContentValues values = new ContentValues();
                                     String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
                                     values.put("meeting_type", ma.getType());
@@ -280,7 +280,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    String url = "http://147.47.208.44:9999/api/meetings/delete/";
+                                    String url = "http://192.168.43.223:9999/api/meetings/delete/";
                                     ContentValues values = new ContentValues();
                                     values.put("meeting_id", edit_id);
                                     NetworkTask networkTask = new NetworkTask(url, values);

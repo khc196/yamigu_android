@@ -28,7 +28,7 @@ import java.security.MessageDigest;
 public class MainActivity extends AppCompatActivity {
     private Fragment homeFragment;
     private LinearLayout nav_bar;
-    private ImageButton nav_home, nav_wlist, nav_yamigu, nav_mypage, nav_more;
+    public ImageButton nav_home, nav_wlist, nav_yamigu, nav_mypage, nav_more;
     private String auth_token;
     private SharedPreferences preferences;
     private int count_meeting;

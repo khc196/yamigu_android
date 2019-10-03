@@ -1,5 +1,6 @@
 package com.yamigu.yamigu_app.CustomLayout;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +10,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.Image;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -23,6 +27,7 @@ import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.Activity.RequestListActivity;
 import com.yamigu.yamigu_app.Activity.TicketOnboardingActivity;
+import com.yamigu.yamigu_app.Fragment.WListFragment;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
 
@@ -33,6 +38,10 @@ import org.w3c.dom.Text;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 public class MyMeetingCard extends LinearLayout {
 
@@ -41,6 +50,7 @@ public class MyMeetingCard extends LinearLayout {
     ImageView point_line, icon_edit_card;
     TextView place, num_of_applying, month, date, dday, label, btn_view_applying, btn_view_waiting, label_matching_completed, text_edit_card, tv_nickname_and_age, tv_belong_and_department;
     private int id, typeInt, placeInt;
+    private String date_string;
     private String appeal;
     private String auth_token;
     private SharedPreferences preferences;
@@ -102,6 +112,12 @@ public class MyMeetingCard extends LinearLayout {
 
                 getContext().startActivity(intent);
                 ((MainActivity)getContext()).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+            }
+        });
+        btn_view_waiting.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestFilteredData();
             }
         });
         btn_edit_card.setOnClickListener((new OnClickListener() {
@@ -218,6 +234,7 @@ public class MyMeetingCard extends LinearLayout {
     public void setLabel(int label_resID) {
         label.setBackgroundResource(label_resID);
     }
+    public void setDateString(String date_string) { this.date_string = date_string; }
     public void setMonth(int month_integer) { month.setText(Integer.toString(month_integer+1)+"월"); }
     public void setDate(int date_integer) { date.setText(Integer.toString(date_integer)+"일"); }
     public void setDday(int dday_integer) {
@@ -258,5 +275,66 @@ public class MyMeetingCard extends LinearLayout {
             profile_panel.setVisibility(INVISIBLE);
             request_panel.setVisibility(VISIBLE);
         }
+    }
+    private void requestFilteredData() {
+        String url = "http://192.168.43.223:9999/api/meetings/waiting/?";
+        ContentValues values = new ContentValues();
+        List<Integer> selected_types = new LinkedList<>();
+        List<Integer> selected_places = new LinkedList<>();
+        Set<Integer> active_place_set;
+        Set<Integer> active_type_set;
+        selected_types.add(typeInt);
+        selected_places.add(placeInt);
+
+        if(selected_types.size() != 0) {
+            for (int i = 0; i < selected_types.size(); i++) {
+                url += "type=" + selected_types.get(i) + "&";
+            }
+        }
+        else {
+            for (int i = 1; i <= 3; i++) {
+                url += "type=" + i + "&";
+            }
+        }
+        if(selected_places.size() != 0) {
+            for (int i = 0; i < selected_places.size(); i++) {
+                url += "place=" + selected_places.get(i) + "&";
+            }
+        }
+        else {
+            for (int i = 1; i <= 3; i++) {
+                url += "place=" + i + "&";
+            }
+        }
+        url+="minimum_age="+0+"&";
+        url+="maximum_age="+11+"&";
+        Set<String> active_date_set = new HashSet<String>();
+
+        active_date_set.add(date_string);
+
+        url += "date=" + date_string + "&";
+
+
+        active_type_set = new HashSet<Integer>(selected_types);
+        active_place_set = new HashSet<Integer>(selected_places);
+
+
+        Bundle args = new Bundle();
+
+        WListFragment wListFragment = new WListFragment();
+
+        wListFragment.active_type_set = active_type_set;
+        wListFragment.active_place_set = active_place_set;
+        wListFragment.active_date_set = active_date_set;
+        wListFragment.minimum_age = 0;
+        wListFragment.maximum_age = 11;
+
+        args.putString("url", url);
+        wListFragment.setArguments(args);
+        ((MainActivity)getContext()).loadFragment(wListFragment);
+        ((MainActivity)getContext()).nav_home.setImageResource(R.drawable.nav_home);
+        ((MainActivity)getContext()).nav_wlist.setImageResource(R.drawable.nav_wlist_selected);
+        ((MainActivity)getContext()).nav_mypage.setImageResource(R.drawable.nav_mypage);
+        ((MainActivity)getContext()).nav_more.setImageResource(R.drawable.nav_more);
     }
 }

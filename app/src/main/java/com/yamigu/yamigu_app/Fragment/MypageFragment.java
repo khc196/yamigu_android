@@ -100,10 +100,12 @@ public class MypageFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String url = "http://147.47.208.44:9999/api/validation/nickname/"+editable.toString();
-                ContentValues values = new ContentValues();
-                NetworkTask networkTask = new NetworkTask(url, values);
-                networkTask.execute();
+                if(!editable.toString().equals("")) {
+                    String url = "http://192.168.43.223:9999/api/validation/nickname/" + editable.toString();
+                    ContentValues values = new ContentValues();
+                    NetworkTask networkTask = new NetworkTask(url, values);
+                    networkTask.execute();
+                }
             }
         });
         return view;
@@ -121,7 +123,7 @@ public class MypageFragment extends Fragment {
         switch(item.getItemId()) {
             case R.id.menu_complete:
                 if(nickname_validated) {
-                    String url = "http://147.47.208.44:9999/api/user/change/nickname/";
+                    String url = "http://192.168.43.223:9999/api/user/change/nickname/";
                     ContentValues values = new ContentValues();
                     values.put("nickname", et_nickname.getText().toString());
                     NetworkTask2 networkTask2 = new NetworkTask2(url, values);
@@ -233,7 +235,11 @@ public class MypageFragment extends Fragment {
                 e.printStackTrace();
             }
             tv_nickname.setText(after_nickname);
+            et_nickname.setHint(after_nickname);
+            et_nickname.setText("");
+            tv_available_nickname.setVisibility(View.GONE);
             editor.putString("nickname", after_nickname);
+            editor.apply();
 
         }
     }

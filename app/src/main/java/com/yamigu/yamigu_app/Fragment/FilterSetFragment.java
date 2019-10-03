@@ -58,8 +58,10 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
     private ViewGroup.MarginLayoutParams params_l, params_r;
     private int l_unit;
     private int seekbar_length;
+    private int meeting_count;
     private String auth_token;
     private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     public static FilterSetFragment getInstance() {
         FilterSetFragment f = new FilterSetFragment();
@@ -71,7 +73,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.FullScreenDialogStyle);
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
+        editor = preferences.edit();
         auth_token = preferences.getString("auth_token", "");
     }
     @Nullable
@@ -122,7 +124,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
 
         filter = new Filter();
 
-        requestFilteredDataNumber();
+
 
         iv_minimum_age.setOnTouchListener(new View.OnTouchListener() {
 
@@ -383,6 +385,8 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         btn_apply_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                WListFragment.meeting_count = meeting_count;
+
                 requestFilteredData();
                 getDialog().dismiss();
             }
@@ -391,6 +395,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             @Override
             public void onClick(View view) {
                 initialize_ui();
+                WListFragment.filter_applied = false;
             }
         });
 
@@ -438,11 +443,12 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         params_r.setMargins(0, 0, 0, 0);
         iv_maximum_age.setLayoutParams(params_r);
         iv_maximum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT));
+        meeting_count = WListFragment.meeting_count;
+        btn_apply_filter.setText(meeting_count + "팀 보기");
         filter.setMaximum_age_current(11);
-        requestFilteredDataNumber();
     }
     private void requestFilteredDataNumber() {
-        String url = "http://147.47.208.44:9999/api/meetings/waiting/count/?";
+        String url = "http://192.168.43.223:9999/api/meetings/waiting/count/?";
         ContentValues values = new ContentValues();
         List<Integer> selected_types = new LinkedList<>();
         List<Integer> selected_places = new LinkedList<>();
@@ -495,12 +501,13 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         networkTask.execute();
     }
     private void requestFilteredData() {
-        String url = "http://147.47.208.44:9999/api/meetings/waiting/?";
+        String url = "http://192.168.43.223:9999/api/meetings/waiting/?";
         ContentValues values = new ContentValues();
         List<Integer> selected_types = new LinkedList<>();
         List<Integer> selected_places = new LinkedList<>();
         Set<Integer> active_place_set;
         Set<Integer> active_type_set;
+        WListFragment.filter_applied = false;
         if(filter.isSelected_type_2vs2())
             selected_types.add(1);
         if(filter.isSelected_type_3vs3())
@@ -517,6 +524,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             for (int i = 0; i < selected_types.size(); i++) {
                 url += "type=" + selected_types.get(i) + "&";
             }
+            WListFragment.filter_applied = true;
         }
         else {
             for (int i = 1; i <= 3; i++) {
@@ -527,6 +535,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             for (int i = 0; i < selected_places.size(); i++) {
                 url += "place=" + selected_places.get(i) + "&";
             }
+            WListFragment.filter_applied = true;
         }
         else {
             for (int i = 1; i <= 3; i++) {
@@ -553,7 +562,9 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         WListFragment.active_place_set = active_place_set;
         WListFragment.minimum_age = filter.getMinimum_age_current();
         WListFragment.maximum_age = filter.getMaximum_age_current();
+
         Intent intent = WListFragment.newIntent(url);
+
         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
 
     }
@@ -574,6 +585,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         }
         public void initialize() {
             if(is_initialized) return;
+            initialize_ui();
             if(WListFragment.active_type_set.contains(1)) {
                 selected_type_2vs2 = true;
                 btn_type_2vs2.setTextColor(getResources().getColor(R.color.colorPoint));
@@ -620,18 +632,17 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             params_r = (ViewGroup.MarginLayoutParams)iv_maximum_age.getLayoutParams();
             params_r.setMargins(0, 0, seekbar_length - maximum_age_current * l_unit, 0);
             iv_maximum_age.setLayoutParams(params_r);
-            RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(maximum_age_current * l_unit, ViewGroup.LayoutParams.MATCH_PARENT);
+            RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams((11-maximum_age_current) * l_unit, ViewGroup.LayoutParams.MATCH_PARENT);
             params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             iv_maximum_age_bg_deactivate.setLayoutParams(params2);
             if(maximum_age_current > 10)
                 tv_maximum_age.setText("30살+");
             else
-                tv_maximum_age.setText(Integer.toString(31 - maximum_age_current)+"살");
-            if(c_move >= seekbar_length)
-                iv_maximum_age.setPadding(0, iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingRight(), iv_maximum_age.getPaddingBottom());
-            else
-                iv_maximum_age.setPadding(iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingRight(), iv_maximum_age.getPaddingBottom());
-            initialize_ui();
+                tv_maximum_age.setText(Integer.toString(20 + maximum_age_current)+"살");
+
+            //iv_maximum_age.setPadding(0, iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingRight(), iv_maximum_age.getPaddingBottom());
+            //iv_maximum_age.setPadding(iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingRight(), iv_maximum_age.getPaddingBottom());
+
             is_initialized = true;
         }
         public void setSelected_type_2vs2(boolean onoff) {
@@ -716,7 +727,11 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);
-                btn_apply_filter.setText(jsonObject.getInt("count")+"팀 보기");
+
+                meeting_count = jsonObject.getInt("count");
+                Log.d("MEETING_COUNT", ""+meeting_count);
+                btn_apply_filter.setText(meeting_count+"팀 보기");
+                
             } catch (JSONException e){
                 e.printStackTrace();
             }
