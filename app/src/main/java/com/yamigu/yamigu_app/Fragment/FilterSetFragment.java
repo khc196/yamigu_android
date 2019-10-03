@@ -60,6 +60,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
     private int seekbar_length;
     private String auth_token;
     private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     public static FilterSetFragment getInstance() {
         FilterSetFragment f = new FilterSetFragment();
@@ -71,7 +72,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.FullScreenDialogStyle);
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
+        editor = preferences.edit();
         auth_token = preferences.getString("auth_token", "");
     }
     @Nullable
@@ -442,7 +443,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         requestFilteredDataNumber();
     }
     private void requestFilteredDataNumber() {
-        String url = "http://147.47.208.44:9999/api/meetings/waiting/count/?";
+        String url = "http://192.168.43.223:9999/api/meetings/waiting/count/?";
         ContentValues values = new ContentValues();
         List<Integer> selected_types = new LinkedList<>();
         List<Integer> selected_places = new LinkedList<>();
@@ -495,7 +496,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         networkTask.execute();
     }
     private void requestFilteredData() {
-        String url = "http://147.47.208.44:9999/api/meetings/waiting/?";
+        String url = "http://192.168.43.223:9999/api/meetings/waiting/?";
         ContentValues values = new ContentValues();
         List<Integer> selected_types = new LinkedList<>();
         List<Integer> selected_places = new LinkedList<>();
@@ -553,6 +554,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         WListFragment.active_place_set = active_place_set;
         WListFragment.minimum_age = filter.getMinimum_age_current();
         WListFragment.maximum_age = filter.getMaximum_age_current();
+
         Intent intent = WListFragment.newIntent(url);
         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
 
@@ -574,6 +576,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         }
         public void initialize() {
             if(is_initialized) return;
+            initialize_ui();
             if(WListFragment.active_type_set.contains(1)) {
                 selected_type_2vs2 = true;
                 btn_type_2vs2.setTextColor(getResources().getColor(R.color.colorPoint));
@@ -620,18 +623,17 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             params_r = (ViewGroup.MarginLayoutParams)iv_maximum_age.getLayoutParams();
             params_r.setMargins(0, 0, seekbar_length - maximum_age_current * l_unit, 0);
             iv_maximum_age.setLayoutParams(params_r);
-            RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(maximum_age_current * l_unit, ViewGroup.LayoutParams.MATCH_PARENT);
+            RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams((11-maximum_age_current) * l_unit, ViewGroup.LayoutParams.MATCH_PARENT);
             params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             iv_maximum_age_bg_deactivate.setLayoutParams(params2);
             if(maximum_age_current > 10)
                 tv_maximum_age.setText("30살+");
             else
-                tv_maximum_age.setText(Integer.toString(31 - maximum_age_current)+"살");
-            if(c_move >= seekbar_length)
-                iv_maximum_age.setPadding(0, iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingRight(), iv_maximum_age.getPaddingBottom());
-            else
-                iv_maximum_age.setPadding(iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingRight(), iv_maximum_age.getPaddingBottom());
-            initialize_ui();
+                tv_maximum_age.setText(Integer.toString(20 + maximum_age_current)+"살");
+
+            //iv_maximum_age.setPadding(0, iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingRight(), iv_maximum_age.getPaddingBottom());
+            //iv_maximum_age.setPadding(iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingTop(), iv_maximum_age.getPaddingRight(), iv_maximum_age.getPaddingBottom());
+
             is_initialized = true;
         }
         public void setSelected_type_2vs2(boolean onoff) {

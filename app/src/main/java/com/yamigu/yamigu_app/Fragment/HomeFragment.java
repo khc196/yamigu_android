@@ -121,12 +121,12 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        String url = "http://147.47.208.44:9999/api/meetings/my/";
+        String url = "http://192.168.43.223:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
 
-        String url2 = "http://147.47.208.44:9999/api/meetings/my_past/";
+        String url2 = "http://192.168.43.223:9999/api/meetings/my_past/";
         ContentValues values2 = new ContentValues();
         NetworkTask2 networkTask2 = new NetworkTask2(url2, values2);
         networkTask2.execute();
@@ -136,7 +136,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         myMeetingCardFrame = new MyMeetingCardFrame(getView());
-        String url = "http://147.47.208.44:9999/api/meetings/my/";
+        String url = "http://192.168.43.223:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -158,7 +158,7 @@ public class HomeFragment extends Fragment {
             case R.id.menu_ticket:
                 Intent intent = new Intent(context, TicketOnboardingActivity.class);
                 startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+                ((MainActivity)context).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                 return true;
         }
         return true;
@@ -166,7 +166,7 @@ public class HomeFragment extends Fragment {
     private void createPastMeetingCard(final JSONObject json_data) {
         try {
             LinearLayout mRootLinear = (LinearLayout) getView().findViewById(R.id.past_meeting_root);
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
             final View mmca = inflater.inflate(R.layout.my_meeting_card_after, mRootLinear, false);
             mRootLinear.addView(mmca);
             final LinearLayout first_pane = mmca.findViewById(R.id.first_pane);
@@ -331,7 +331,7 @@ public class HomeFragment extends Fragment {
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
 
-                                        String url = "http://147.47.208.44:9999/api/meetings/rate/";
+                                        String url = "http://192.168.43.223:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -426,7 +426,7 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
-                                        String url = "http://147.47.208.44:9999/api/meetings/rate/";
+                                        String url = "http://192.168.43.223:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -521,7 +521,7 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
-                                        String url = "http://147.47.208.44:9999/api/meetings/rate/";
+                                        String url = "http://192.168.43.223:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -579,9 +579,9 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void onAnimationStart(Animation animation) {
                                 forth_pane.setVisibility(View.VISIBLE);
-                                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                                String url = "http://147.47.208.44:9999/api/meetings/feedback/";
+                                String url = "http://192.168.43.223:9999/api/meetings/feedback/";
                                 ContentValues values = new ContentValues();
                                 try {
                                     values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -706,7 +706,7 @@ public class HomeFragment extends Fragment {
                     e.printStackTrace();
                 }
                 myMeetingCardFrame.mmc_list[i].setVisibility(View.VISIBLE);
-                ((MainActivity)getActivity()).setMyMeetingCount(i+1);
+                ((MainActivity)context).setMyMeetingCount(i+1);
             }
         }
     }

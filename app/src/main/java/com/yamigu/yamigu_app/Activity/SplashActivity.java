@@ -82,7 +82,6 @@ public class SplashActivity extends AppCompatActivity {
                             editor.putString("profile", jsonObject.getString("image"));
                             editor.putInt("gender", jsonObject.getInt("gender"));
                             editor.putInt("age", jsonObject.getInt("age"));
-
                             editor.apply();
                         } catch(JSONException e) {
                             e.printStackTrace();
@@ -102,8 +101,9 @@ public class SplashActivity extends AppCompatActivity {
         mHandler.postDelayed(mRunnable1, 1000);
         Session session = Session.getCurrentSession();
         session.addCallback(new SessionCallback());
-        session.checkAndImplicitOpen();
-        //session.open(AuthType.KAKAO_LOGIN_ALL, SplashActivity.this);
+        if(!session.checkAndImplicitOpen()) {
+            session.open(AuthType.KAKAO_LOGIN_ALL, SplashActivity.this);
+        }
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -171,7 +171,7 @@ public class SplashActivity extends AppCompatActivity {
                 // 사용자정보 요청에 성공한 경우,
                 @Override
                 public void onSuccess(UserProfile userProfile) {
-                    String url = "http://147.47.208.44:9999/api/oauth/kakao/";
+                    String url = "http://192.168.43.223:9999/api/oauth/kakao/";
                     String access_token = Session.getCurrentSession().getTokenInfo().getAccessToken();
                     ContentValues values = new ContentValues();
                     values.put("access_token", access_token);
@@ -212,7 +212,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            String url = "http://147.47.208.44:9999/api/user/info/";
+            String url = "http://192.168.43.223:9999/api/user/info/";
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);

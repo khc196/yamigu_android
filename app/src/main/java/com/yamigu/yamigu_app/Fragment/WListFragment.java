@@ -76,6 +76,7 @@ public class WListFragment extends Fragment {
     static int id = 1;
     private boolean is_initialized = false;
     private SharedPreferences preferences;
+    private Menu global_menu;
     public WListFragment() {
         this.active_type_set = new HashSet<>();
         this.active_place_set = new HashSet<>();
@@ -134,7 +135,7 @@ public class WListFragment extends Fragment {
 
 
 
-        String url = "http://147.47.208.44:9999/api/meetings/my/";
+        String url = "http://192.168.43.223:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -146,6 +147,7 @@ public class WListFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.actionbar_filter, menu);
+        global_menu = menu;
     }
 
     @Override
@@ -170,6 +172,7 @@ public class WListFragment extends Fragment {
             return;
         }
         if( requestCode == 1 ) {
+            global_menu.findItem(R.id.menu_filter).setIcon(R.drawable.icon_filter_applied);
             String url = data.getStringExtra("url");
             ContentValues values = new ContentValues();
             NetworkTask2 networkTask2 = new NetworkTask2(url, values);
@@ -184,7 +187,7 @@ public class WListFragment extends Fragment {
     }
     private void activateDates(Set<String> active_dates) {
         int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
-        String url = "http://147.47.208.44:9999/api/meetings/waiting/";
+        String url = "http://192.168.43.223:9999/api/meetings/waiting/";
         url += "?";
         ContentValues values = new ContentValues();
         SimpleDateFormat sdf = new SimpleDateFormat("M/d");
@@ -316,7 +319,6 @@ public class WListFragment extends Fragment {
             try {
                 try {
                     LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
-
 
                     //View v = mRootLinear.inflate(context, R.layout.meeting_team_wlist, mRootLinear);
                     final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -471,7 +473,7 @@ public class WListFragment extends Fragment {
                             @Override
                             public void onClick(View view) {
                                 try{
-                                    String url = "http://147.47.208.44:9999/api/meetings/send_request/";
+                                    String url = "http://192.168.43.223:9999/api/meetings/send_request/";
                                     ContentValues values = new ContentValues();
                                     values.put("meeting_type", json_data.getInt("meeting_type"));
                                     values.put("date", date_string_f);
