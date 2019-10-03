@@ -683,7 +683,9 @@ public class HomeFragment extends Fragment {
                     Calendar cal_meeting_day = Calendar.getInstance();
                     Calendar cal_today = Calendar.getInstance();
                     try {
-                        translated_date = transFormat.parse(jsonArray.getJSONObject(i).getString("date"));
+                        String date_string = jsonArray.getJSONObject(i).getString("date");
+                        translated_date = transFormat.parse(date_string);
+                        myMeetingCardFrame.mmc_list[i].setDateString(date_string);
                         cal_meeting_day.setTime(translated_date);
                         cal_today.setTime(today);
                         long l_mday = cal_meeting_day.getTimeInMillis() / (24 * 60 * 60 * 1000);

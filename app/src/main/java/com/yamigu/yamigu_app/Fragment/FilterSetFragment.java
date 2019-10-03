@@ -386,6 +386,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             @Override
             public void onClick(View view) {
                 WListFragment.meeting_count = meeting_count;
+
                 requestFilteredData();
                 getDialog().dismiss();
             }
@@ -394,6 +395,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             @Override
             public void onClick(View view) {
                 initialize_ui();
+                WListFragment.filter_applied = false;
             }
         });
 
@@ -505,6 +507,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         List<Integer> selected_places = new LinkedList<>();
         Set<Integer> active_place_set;
         Set<Integer> active_type_set;
+        WListFragment.filter_applied = false;
         if(filter.isSelected_type_2vs2())
             selected_types.add(1);
         if(filter.isSelected_type_3vs3())
@@ -521,6 +524,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             for (int i = 0; i < selected_types.size(); i++) {
                 url += "type=" + selected_types.get(i) + "&";
             }
+            WListFragment.filter_applied = true;
         }
         else {
             for (int i = 1; i <= 3; i++) {
@@ -531,6 +535,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             for (int i = 0; i < selected_places.size(); i++) {
                 url += "place=" + selected_places.get(i) + "&";
             }
+            WListFragment.filter_applied = true;
         }
         else {
             for (int i = 1; i <= 3; i++) {
@@ -559,6 +564,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         WListFragment.maximum_age = filter.getMaximum_age_current();
 
         Intent intent = WListFragment.newIntent(url);
+
         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
 
     }

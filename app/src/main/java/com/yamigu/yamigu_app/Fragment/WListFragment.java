@@ -71,6 +71,7 @@ public class WListFragment extends Fragment {
     public static int minimum_age = 0;
     public static int maximum_age = 11;
     public static int meeting_count = 0;
+    public static boolean filter_applied = false;
     private LayoutInflater mInflater;
     private View view;
     private Context context;
@@ -135,13 +136,18 @@ public class WListFragment extends Fragment {
         }
 
 
-
-        String url = "http://192.168.43.223:9999/api/meetings/my/";
-        ContentValues values = new ContentValues();
-        NetworkTask networkTask = new NetworkTask(url, values);
-        networkTask.execute();
-
-
+        if (getArguments() != null) {
+            Bundle args = getArguments();
+            filter_applied = true;
+            activateDates(active_date_set);
+            is_initialized = true;
+        }
+        else {
+            String url = "http://192.168.43.223:9999/api/meetings/my/";
+            ContentValues values = new ContentValues();
+            NetworkTask networkTask = new NetworkTask(url, values);
+            networkTask.execute();
+        }
         return view;
     }
     @Override
@@ -149,6 +155,11 @@ public class WListFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.actionbar_filter, menu);
         global_menu = menu;
+        if(filter_applied)
+            global_menu.findItem(R.id.menu_filter).setIcon(R.drawable.icon_filter_applied);
+        else {
+            global_menu.findItem(R.id.menu_filter).setIcon(R.drawable.icon_filter);
+        }
     }
 
     @Override
@@ -173,9 +184,13 @@ public class WListFragment extends Fragment {
             return;
         }
         if( requestCode == 1 ) {
-            global_menu.findItem(R.id.menu_filter).setIcon(R.drawable.icon_filter_applied);
+            if(filter_applied) {
+                global_menu.findItem(R.id.menu_filter).setIcon(R.drawable.icon_filter_applied);
+            }
+            else {
+                global_menu.findItem(R.id.menu_filter).setIcon(R.drawable.icon_filter);
+            }
             String url = data.getStringExtra("url");
-            Log.d("MEETINGCOUNT", ""+meeting_count);
             ContentValues values = new ContentValues();
             NetworkTask2 networkTask2 = new NetworkTask2(url, values);
             networkTask2.execute();
