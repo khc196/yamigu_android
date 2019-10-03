@@ -70,6 +70,7 @@ public class WListFragment extends Fragment {
     public static Set<Integer> active_type_set;
     public static int minimum_age = 0;
     public static int maximum_age = 11;
+    public static int meeting_count = 0;
     private LayoutInflater mInflater;
     private View view;
     private Context context;
@@ -174,6 +175,7 @@ public class WListFragment extends Fragment {
         if( requestCode == 1 ) {
             global_menu.findItem(R.id.menu_filter).setIcon(R.drawable.icon_filter_applied);
             String url = data.getStringExtra("url");
+            Log.d("MEETINGCOUNT", ""+meeting_count);
             ContentValues values = new ContentValues();
             NetworkTask2 networkTask2 = new NetworkTask2(url, values);
             networkTask2.execute();
@@ -347,6 +349,9 @@ public class WListFragment extends Fragment {
                         ContentValues values = new ContentValues();
                         NetworkTask3 networkTask3 = new NetworkTask3(url, values, profile_img, mRootLinear, mtw);
                         networkTask3.execute();
+                    }
+                    else {
+                        mRootLinear.addView(mtw);
                     }
                     mtw.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -524,6 +529,7 @@ public class WListFragment extends Fragment {
                                 Log.d("results:", json_results.getJSONObject(i).toString());
                                 createWaitingTeamCard(json_results.getJSONObject(i));
                             }
+                            meeting_count = json_results.length();
                             mRootLinear.setTranslationX(100);
                             mRootLinear.animate()
                                     .setDuration(150)

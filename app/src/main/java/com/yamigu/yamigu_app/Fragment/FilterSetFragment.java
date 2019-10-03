@@ -58,6 +58,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
     private ViewGroup.MarginLayoutParams params_l, params_r;
     private int l_unit;
     private int seekbar_length;
+    private int meeting_count;
     private String auth_token;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -123,7 +124,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
 
         filter = new Filter();
 
-        requestFilteredDataNumber();
+
 
         iv_minimum_age.setOnTouchListener(new View.OnTouchListener() {
 
@@ -384,6 +385,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         btn_apply_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                WListFragment.meeting_count = meeting_count;
                 requestFilteredData();
                 getDialog().dismiss();
             }
@@ -439,8 +441,9 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         params_r.setMargins(0, 0, 0, 0);
         iv_maximum_age.setLayoutParams(params_r);
         iv_maximum_age_bg_deactivate.setLayoutParams(new RelativeLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT));
+        meeting_count = WListFragment.meeting_count;
+        btn_apply_filter.setText(meeting_count + "팀 보기");
         filter.setMaximum_age_current(11);
-        requestFilteredDataNumber();
     }
     private void requestFilteredDataNumber() {
         String url = "http://192.168.43.223:9999/api/meetings/waiting/count/?";
@@ -718,7 +721,11 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);
-                btn_apply_filter.setText(jsonObject.getInt("count")+"팀 보기");
+
+                meeting_count = jsonObject.getInt("count");
+                Log.d("MEETING_COUNT", ""+meeting_count);
+                btn_apply_filter.setText(meeting_count+"팀 보기");
+                
             } catch (JSONException e){
                 e.printStackTrace();
             }
