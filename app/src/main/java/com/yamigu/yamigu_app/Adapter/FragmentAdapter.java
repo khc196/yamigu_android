@@ -1,8 +1,7 @@
-package com.yamigu.yamigu_app.PagerAdapter;
+package com.yamigu.yamigu_app.Adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.yamigu.yamigu_app.Fragment.MeetingCardFragment;
 

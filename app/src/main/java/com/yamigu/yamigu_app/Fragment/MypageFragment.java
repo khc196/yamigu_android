@@ -5,14 +5,12 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -101,7 +99,7 @@ public class MypageFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 if(!editable.toString().equals("")) {
-                    String url = "http://192.168.43.223:9999/api/validation/nickname/" + editable.toString();
+                    String url = "http://147.47.208.44:9999/api/validation/nickname/" + editable.toString();
                     ContentValues values = new ContentValues();
                     NetworkTask networkTask = new NetworkTask(url, values);
                     networkTask.execute();
@@ -123,7 +121,7 @@ public class MypageFragment extends Fragment {
         switch(item.getItemId()) {
             case R.id.menu_complete:
                 if(nickname_validated) {
-                    String url = "http://192.168.43.223:9999/api/user/change/nickname/";
+                    String url = "http://147.47.208.44:9999/api/user/change/nickname/";
                     ContentValues values = new ContentValues();
                     values.put("nickname", et_nickname.getText().toString());
                     NetworkTask2 networkTask2 = new NetworkTask2(url, values);

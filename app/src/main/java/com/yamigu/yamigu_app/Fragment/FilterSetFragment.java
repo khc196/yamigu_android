@@ -4,17 +4,12 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.Slide;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,7 +18,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -36,9 +30,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -448,7 +439,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         filter.setMaximum_age_current(11);
     }
     private void requestFilteredDataNumber() {
-        String url = "http://192.168.43.223:9999/api/meetings/waiting/count/?";
+        String url = "http://147.47.208.44:9999/api/meetings/waiting/count/?";
         ContentValues values = new ContentValues();
         List<Integer> selected_types = new LinkedList<>();
         List<Integer> selected_places = new LinkedList<>();
@@ -501,7 +492,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         networkTask.execute();
     }
     private void requestFilteredData() {
-        String url = "http://192.168.43.223:9999/api/meetings/waiting/?";
+        String url = "http://147.47.208.44:9999/api/meetings/waiting/?";
         ContentValues values = new ContentValues();
         List<Integer> selected_types = new LinkedList<>();
         List<Integer> selected_places = new LinkedList<>();

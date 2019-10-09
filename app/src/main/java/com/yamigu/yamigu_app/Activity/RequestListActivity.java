@@ -1,55 +1,25 @@
 package com.yamigu.yamigu_app.Activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
-import com.yamigu.yamigu_app.Fragment.MeetingCardFragment;
 import com.yamigu.yamigu_app.Fragment.ReceivedMeetingFragment;
 import com.yamigu.yamigu_app.Fragment.SentMeetingFragment;
-import com.yamigu.yamigu_app.Fragment.WListFragment;
-import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
-import com.yamigu.yamigu_app.PagerAdapter.FragmentAdapter;
 import com.yamigu.yamigu_app.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 
 public class RequestListActivity extends AppCompatActivity {
 

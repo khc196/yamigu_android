@@ -10,20 +10,16 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.SyncStateContract;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Base64;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,7 +34,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.R;
@@ -48,7 +43,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -143,7 +137,7 @@ public class WListFragment extends Fragment {
             is_initialized = true;
         }
         else {
-            String url = "http://192.168.43.223:9999/api/meetings/my/";
+            String url = "http://147.47.208.44:9999/api/meetings/my/";
             ContentValues values = new ContentValues();
             NetworkTask networkTask = new NetworkTask(url, values);
             networkTask.execute();
@@ -204,7 +198,7 @@ public class WListFragment extends Fragment {
     }
     private void activateDates(Set<String> active_dates) {
         int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
-        String url = "http://192.168.43.223:9999/api/meetings/waiting/";
+        String url = "http://147.47.208.44:9999/api/meetings/waiting/";
         url += "?";
         ContentValues values = new ContentValues();
         SimpleDateFormat sdf = new SimpleDateFormat("M/d");
@@ -493,7 +487,7 @@ public class WListFragment extends Fragment {
                             @Override
                             public void onClick(View view) {
                                 try{
-                                    String url = "http://192.168.43.223:9999/api/meetings/send_request/";
+                                    String url = "http://147.47.208.44:9999/api/meetings/send_request/";
                                     ContentValues values = new ContentValues();
                                     values.put("meeting_type", json_data.getInt("meeting_type"));
                                     values.put("date", date_string_f);

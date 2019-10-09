@@ -13,16 +13,14 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.core.content.res.ResourcesCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,8 +29,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yamigu.yamigu_app.Fragment.MeetingCardFragment;
-import com.yamigu.yamigu_app.Fragment.SentMeetingFragment;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
 
@@ -212,7 +208,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 }
                 else {
                     if(form_code == NEW_MEETING) {
-                        String url = "http://192.168.43.223:9999/api/meetings/create/";
+                        String url = "http://147.47.208.44:9999/api/meetings/create/";
 
                         ContentValues values = new ContentValues();
                         String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
@@ -225,7 +221,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         networkTask.execute();
                     }
                     else if(form_code == SEND_REQUEST){
-                        String url = "http://192.168.43.223:9999/api/meetings/send_request_new/";
+                        String url = "http://147.47.208.44:9999/api/meetings/send_request_new/";
                         ContentValues values = new ContentValues();
                         String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
                         values.put("meeting_type", ma.getType());
@@ -250,7 +246,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     ma.setAppeal(et_appeal.getText().toString());
-                                    String url = "http://192.168.43.223:9999/api/meetings/edit/";
+                                    String url = "http://147.47.208.44:9999/api/meetings/edit/";
                                     ContentValues values = new ContentValues();
                                     String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
                                     values.put("meeting_type", ma.getType());
@@ -280,7 +276,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    String url = "http://192.168.43.223:9999/api/meetings/delete/";
+                                    String url = "http://147.47.208.44:9999/api/meetings/delete/";
                                     ContentValues values = new ContentValues();
                                     values.put("meeting_id", edit_id);
                                     NetworkTask networkTask = new NetworkTask(url, values);

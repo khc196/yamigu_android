@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,7 +60,7 @@ public class CertificationUActivity extends AppCompatActivity {
             public void onClick(View view) {
                 university = et_university.getText().toString();
                 major = et_major.getText().toString();
-                String url = "http://192.168.43.223:9999/api/auth/signup/";
+                String url = "http://147.47.208.44:9999/api/auth/signup/";
                 ContentValues values = new ContentValues();
                 values.put("real_name", "홍길동");
                 values.put("age", 1);

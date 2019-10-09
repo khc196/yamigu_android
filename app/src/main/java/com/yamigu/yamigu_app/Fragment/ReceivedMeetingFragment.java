@@ -6,13 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,7 +25,7 @@ import android.widget.TextView;
 import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.CustomLayout.CustomDialog;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
-import com.yamigu.yamigu_app.PagerAdapter.FragmentAdapter;
+import com.yamigu.yamigu_app.Adapter.FragmentAdapter;
 import com.yamigu.yamigu_app.R;
 
 import org.json.JSONArray;
@@ -152,7 +151,7 @@ public class ReceivedMeetingFragment extends Fragment {
 
         viewPager.setClipToPadding(false);
 
-        String url = "http://192.168.43.223:9999/api/meetings/received_request/?meeting_id="+meeting_id;
+        String url = "http://147.47.208.44:9999/api/meetings/received_request/?meeting_id="+meeting_id;
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -167,7 +166,7 @@ public class ReceivedMeetingFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String url = "http://192.168.43.223:9999/api/meetings/accept_request/";
+                                String url = "http://147.47.208.44:9999/api/meetings/accept_request/";
                                 MeetingCardFragment fragment = fragmentAdapter.getItem(viewPager.getCurrentItem());
 
                                 int id = fragment.getRequest_id();
@@ -196,7 +195,7 @@ public class ReceivedMeetingFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String url = "http://192.168.43.223:9999/api/meetings/decline_request/";
+                                String url = "http://147.47.208.44:9999/api/meetings/decline_request/";
                                 MeetingCardFragment fragment = fragmentAdapter.getItem(viewPager.getCurrentItem());
 
                                 int id = fragment.getRequest_id();

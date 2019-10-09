@@ -7,16 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
-import android.net.Network;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,7 +43,6 @@ import com.yamigu.yamigu_app.Activity.TicketOnboardingActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -121,12 +119,12 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        String url = "http://192.168.43.223:9999/api/meetings/my/";
+        String url = "http://147.47.208.44:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
 
-        String url2 = "http://192.168.43.223:9999/api/meetings/my_past/";
+        String url2 = "http://147.47.208.44:9999/api/meetings/my_past/";
         ContentValues values2 = new ContentValues();
         NetworkTask2 networkTask2 = new NetworkTask2(url2, values2);
         networkTask2.execute();
@@ -136,7 +134,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         myMeetingCardFrame = new MyMeetingCardFrame(getView());
-        String url = "http://192.168.43.223:9999/api/meetings/my/";
+        String url = "http://147.47.208.44:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -331,7 +329,7 @@ public class HomeFragment extends Fragment {
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
 
-                                        String url = "http://192.168.43.223:9999/api/meetings/rate/";
+                                        String url = "http://147.47.208.44:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -426,7 +424,7 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
-                                        String url = "http://192.168.43.223:9999/api/meetings/rate/";
+                                        String url = "http://147.47.208.44:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -521,7 +519,7 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
-                                        String url = "http://192.168.43.223:9999/api/meetings/rate/";
+                                        String url = "http://147.47.208.44:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -581,7 +579,7 @@ public class HomeFragment extends Fragment {
                                 forth_pane.setVisibility(View.VISIBLE);
                                 InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                                String url = "http://192.168.43.223:9999/api/meetings/feedback/";
+                                String url = "http://147.47.208.44:9999/api/meetings/feedback/";
                                 ContentValues values = new ContentValues();
                                 try {
                                     values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));

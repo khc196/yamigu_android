@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +18,6 @@ import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
-import com.kakao.usermgmt.LoginButton;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
@@ -171,7 +170,7 @@ public class SplashActivity extends AppCompatActivity {
                 // 사용자정보 요청에 성공한 경우,
                 @Override
                 public void onSuccess(UserProfile userProfile) {
-                    String url = "http://192.168.43.223:9999/api/oauth/kakao/";
+                    String url = "http://147.47.208.44:9999/api/oauth/kakao/";
                     String access_token = Session.getCurrentSession().getTokenInfo().getAccessToken();
                     ContentValues values = new ContentValues();
                     values.put("access_token", access_token);
@@ -212,7 +211,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            String url = "http://192.168.43.223:9999/api/user/info/";
+            String url = "http://147.47.208.44:9999/api/user/info/";
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);

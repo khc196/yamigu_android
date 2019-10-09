@@ -1,15 +1,15 @@
 package com.yamigu.yamigu_app.Activity;
 
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.tabs.TabLayout;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
 import com.yamigu.yamigu_app.CustomLayout.MainOnboardingItem;
-import com.yamigu.yamigu_app.PagerAdapter.MainOnboardingPagerAdapter;
+import com.yamigu.yamigu_app.Adapter.MainOnboardingPagerAdapter;
 import com.yamigu.yamigu_app.R;
 
 import java.util.ArrayList;

@@ -1,23 +1,16 @@
 package com.yamigu.yamigu_app.CustomLayout;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,18 +19,9 @@ import android.widget.TextView;
 import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.Activity.RequestListActivity;
-import com.yamigu.yamigu_app.Activity.TicketOnboardingActivity;
 import com.yamigu.yamigu_app.Fragment.WListFragment;
-import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.w3c.dom.Text;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -277,7 +261,7 @@ public class MyMeetingCard extends LinearLayout {
         }
     }
     private void requestFilteredData() {
-        String url = "http://192.168.43.223:9999/api/meetings/waiting/?";
+        String url = "http://147.47.208.44:9999/api/meetings/waiting/?";
         ContentValues values = new ContentValues();
         List<Integer> selected_types = new LinkedList<>();
         List<Integer> selected_places = new LinkedList<>();

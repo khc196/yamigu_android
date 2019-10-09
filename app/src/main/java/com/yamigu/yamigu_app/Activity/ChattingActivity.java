@@ -1,10 +1,9 @@
 package com.yamigu.yamigu_app.Activity;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 
 import com.yamigu.yamigu_app.R;
@@ -29,7 +28,7 @@ public class ChattingActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.actionbar_menu, menu);
+        getMenuInflater().inflate(R.menu.actionbar_chat, menu);
         return true;
     }
     @Override

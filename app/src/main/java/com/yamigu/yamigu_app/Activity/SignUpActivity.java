@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -240,7 +240,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 boolean is_validate = false;
-                String url = "http://192.168.43.223:9999/api/validation/nickname/"+editable.toString();
+                String url = "http://147.47.208.44:9999/api/validation/nickname/"+editable.toString();
                 ContentValues values = new ContentValues();
                 NetworkTask networkTask = new NetworkTask(url, values);
                 String pattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]*$";

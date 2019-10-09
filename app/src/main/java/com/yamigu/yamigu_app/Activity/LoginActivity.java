@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,11 +25,6 @@ import com.yamigu.yamigu_app.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -104,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                 // 사용자정보 요청에 성공한 경우,
                 @Override
                 public void onSuccess(UserProfile userProfile) {
-                    String url = "http://192.168.43.223:9999/api/oauth/kakao/";
+                    String url = "http://147.47.208.44:9999/api/oauth/kakao/";
                     String access_token = Session.getCurrentSession().getTokenInfo().getAccessToken();
                     ContentValues values = new ContentValues();
                     values.put("access_token", access_token);
@@ -162,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            String url = "http://192.168.43.223:9999/api/user/info/";
+            String url = "http://147.47.208.44:9999/api/user/info/";
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);

@@ -12,7 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
-public class CircularImageView extends android.support.v7.widget.AppCompatImageView {
+public class CircularImageView extends androidx.appcompat.widget.AppCompatImageView {
 
     public CircularImageView(Context ctx, AttributeSet attrs) {
         super(ctx, attrs);

@@ -1,39 +1,30 @@
 package com.yamigu.yamigu_app.Fragment;
 
-import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard3;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 
 import com.yamigu.yamigu_app.R;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +33,6 @@ import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
 
 public class MeetingCardFragment extends Fragment {
 
