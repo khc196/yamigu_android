@@ -271,7 +271,6 @@ public class SplashActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
 
             if (!isFirstRun) {
                 is_signedup = !signup_flag;
