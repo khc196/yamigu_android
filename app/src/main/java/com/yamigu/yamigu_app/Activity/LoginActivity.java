@@ -5,12 +5,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -35,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private String auth_token;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -205,6 +213,7 @@ public class LoginActivity extends AppCompatActivity {
             super.onPostExecute(s);
             JSONObject jsonObject = null;
             boolean signup_flag = false;
+            String firebase_token = "";
             try {
                 jsonObject = new JSONObject(s);
             } catch (JSONException e) {
@@ -212,6 +221,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             try {
                 signup_flag = jsonObject.getString("nickname").isEmpty();
+                firebase_token = jsonObject.getString("firebase_token");
                 isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
             } catch(JSONException e) {
                 e.printStackTrace();
@@ -237,6 +247,25 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();
+            mAuth.signInWithCustomToken(firebase_token)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            String TAG = "SPLASH Firebase login";
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithCustomToken:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                //updateUI(user);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithCustomToken:failure", task.getException());
+                                //Toast.makeText(CustomAuthActivity.this, "Authentication failed.",
+                                //       Toast.LENGTH_SHORT).show();
+                                //updateUI(null);
+                            }
+                        }
+                    });
 
         }
     }
