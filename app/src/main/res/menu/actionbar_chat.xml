@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <item
-        android:id="@+id/menu_menu"
+        android:id="@+id/menu_quit"
         android:title="quit"
         android:icon="@drawable/btn_quit"
         app:showAsAction="always"

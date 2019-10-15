@@ -37,10 +37,11 @@
                 android:theme="@style/MyActionBar2"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
                 <TextView
+                    android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"
-                    android:text="김찬열 (26)"
+                    android:text="28일 || 신촌/홍대 || 2:2"
                     android:textSize="14dp"
                     android:textColor="@color/colorNormal"
                     android:fontFamily="@font/nanumgothic_font_family"
@@ -63,6 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <EditText
+                        android:id="@+id/et_message"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="메시지를 입력하세요"
@@ -74,6 +76,7 @@
                         android:paddingRight="6dp"
                         />
                     <ImageButton
+                        android:id="@+id/btn_send_message"
                         android:layout_width="68dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="right"

@@ -294,7 +294,7 @@ public class SplashActivity extends AppCompatActivity {
                 is_signedup = !signup_flag;
             }
             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();
-            //Log.d("FIREBASE", firebase_token);
+            Log.d("FIREBASE", firebase_token);
             mAuth.signInWithCustomToken(firebase_token)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override

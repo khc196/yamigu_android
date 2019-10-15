@@ -32,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yamigu.yamigu_app.Activity.ChattingActivity;
 import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard;
@@ -693,8 +694,31 @@ public class HomeFragment extends Fragment {
                         myMeetingCardFrame.mmc_list[i].setDate(translated_date.getDate());
                         myMeetingCardFrame.mmc_list[i].setDday((int)(l_mday - l_tday + 1));
                         if(jsonArray.getJSONObject(i).getBoolean("is_matched")) {
+
+
+                            String place_array[] = {"신촌/홍대", "건대/왕십리", "강남"};
+                            String type_array[] = {"2:2", "3:3", "4:4"};
                             JSONObject matched_meeting = jsonArray.getJSONObject(i).getJSONObject("matched_meeting");
+                            final int age = matched_meeting.getInt("openby_age");
+                            final String place = place_array[jsonArray.getJSONObject(i).getInt("place_type") - 1];
+                            final String type = type_array[jsonArray.getJSONObject(i).getInt("meeting_type") - 1];
+                            String before_date = jsonArray.getJSONObject(i).getString("date");
+                            Date date_obj = new SimpleDateFormat("yyyy-MM-dd").parse(before_date);
+                            final String date = date_obj.getDate() + "일";
+
                             myMeetingCardFrame.mmc_c_list[i].setVisibility(View.VISIBLE);
+                            myMeetingCardFrame.mmc_c_list[i].setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(getContext(), ChattingActivity.class);
+                                    intent.putExtra("age", age);
+                                    intent.putExtra("place", place);
+                                    intent.putExtra("date", date);
+                                    intent.putExtra("type", type);
+                                    startActivity(intent);
+                                    ((MainActivity)context).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+                                }
+                            });
                             myMeetingCardFrame.mmc_list[i].setProfile1(matched_meeting.getString("openby_nickname"), matched_meeting.getInt("openby_age"));
                             myMeetingCardFrame.mmc_list[i].setProfile2(matched_meeting.getString("openby_belong"), matched_meeting.getString("openby_department"));
                             myMeetingCardFrame.mmc_list[i].setMatched(true);
