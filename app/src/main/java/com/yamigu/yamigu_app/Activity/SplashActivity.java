@@ -8,12 +8,19 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -28,6 +35,8 @@ import com.yamigu.yamigu_app.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.Executor;
+
 public class SplashActivity extends AppCompatActivity {
     private Handler mHandler;
     private Runnable mRunnable1, mRunnable2;
@@ -40,6 +49,7 @@ public class SplashActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private JSONObject jsonObject;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +110,7 @@ public class SplashActivity extends AppCompatActivity {
         mHandler.postDelayed(mRunnable1, 1000);
         Session session = Session.getCurrentSession();
         session.addCallback(new SessionCallback());
+        mAuth = FirebaseAuth.getInstance();
         if(!session.checkAndImplicitOpen()) {
             session.open(AuthType.KAKAO_LOGIN_ALL, SplashActivity.this);
         }
@@ -112,13 +123,17 @@ public class SplashActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Session.getCurrentSession().removeCallback(callback);
     }
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+    }
     @Override
     public void onBackPressed() {
         finish();
@@ -174,6 +189,7 @@ public class SplashActivity extends AppCompatActivity {
                     String access_token = Session.getCurrentSession().getTokenInfo().getAccessToken();
                     ContentValues values = new ContentValues();
                     values.put("access_token", access_token);
+                    Log.d("Kakao", access_token);
                     //values.put("kakao_account", userProfile.toString());
                     is_loggedin = true;
                     NetworkTask networkTask = new NetworkTask(url, values);
@@ -220,10 +236,10 @@ public class SplashActivity extends AppCompatActivity {
             }
             ContentValues values = new ContentValues();
             try {
-                NetworkTask2 networkTask2 = new NetworkTask2(url, values, jsonObject.getString("key"));
-                networkTask2.execute();
-                Log.d("onPostExecute :: ", "jsonObject key: " + jsonObject.getString("key"));
                 auth_token = jsonObject.getString("key");
+                NetworkTask2 networkTask2 = new NetworkTask2(url, values, auth_token);
+                networkTask2.execute();
+                Log.d("onPostExecute :: ", "jsonObject key: " + auth_token);
                 editor.putString("auth_token", auth_token);
                 editor.apply();
             } catch (JSONException e) {
@@ -259,6 +275,7 @@ public class SplashActivity extends AppCompatActivity {
             super.onPostExecute(s);
             jsonObject = null;
             boolean signup_flag = false;
+            String firebase_token = "";
             try {
                 jsonObject = new JSONObject(s);
             } catch (JSONException e) {
@@ -266,6 +283,7 @@ public class SplashActivity extends AppCompatActivity {
             }
             try {
                 signup_flag = jsonObject.getString("nickname").isEmpty();
+                firebase_token = jsonObject.getString("firebase_token");
                 isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
             } catch(JSONException e) {
                 e.printStackTrace();
@@ -276,7 +294,28 @@ public class SplashActivity extends AppCompatActivity {
                 is_signedup = !signup_flag;
             }
             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();
-            mHandler.postDelayed(mRunnable2, 1000);
+            Log.d("FIREBASE", firebase_token);
+            mAuth.signInWithCustomToken(firebase_token)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            String TAG = "SPLASH Firebase login";
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithCustomToken:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                mHandler.postDelayed(mRunnable2, 1000);
+                                //updateUI(user);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithCustomToken:failure", task.getException());
+                                //Toast.makeText(CustomAuthActivity.this, "Authentication failed.",
+                                //       Toast.LENGTH_SHORT).show();
+                                //updateUI(null);
+                            }
+                        }
+                    });
+
 
         }
     }
