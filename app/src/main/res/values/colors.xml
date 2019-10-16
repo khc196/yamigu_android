@@ -23,6 +23,6 @@
     <color name="colorNormal">#20252C</color>
     <color name="colorStar">#FFBC4E</color>
     <color name="colorBlue">#3129FF</color>
-    <color name="colorMan">#298CFF</color>
-    <color name="colorWoman">#FE528E</color>
+    <color name="colorMan">#E7E6FF</color>
+    <color name="colorWoman">#FFE6F8</color>
 </resources>

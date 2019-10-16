@@ -2,6 +2,8 @@ package com.yamigu.yamigu_app.Fragment;
 
 import android.content.ContentValues;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.CustomLayout.InviteFriends;
 import com.yamigu.yamigu_app.CustomLayout.ProfileCard;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
@@ -29,6 +32,10 @@ import com.yamigu.yamigu_app.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.regex.Pattern;
 
 public class MypageFragment extends Fragment {
@@ -41,10 +48,12 @@ public class MypageFragment extends Fragment {
     private TextView tv_nickname, tv_age, tv_belong, tv_department, tv_available_nickname;
     private EditText et_nickname;
     private ImageButton btn_edit_nickname;
+    private CircularImageView profile_img;
     private String auth_token;
     private boolean validated_from_server;
     private boolean nickname_validated;
     private String nickname;
+    private String profile_url;
     private Menu globalMenu;
     @Nullable
     @Override
@@ -68,12 +77,21 @@ public class MypageFragment extends Fragment {
         tv_available_nickname = profileCard.findViewById(R.id.tv_available_nickname);
         et_nickname = profileCard.findViewById(R.id.et_nickname);
         btn_edit_nickname = profileCard.findViewById(R.id.btn_edit_nickname);
+        profile_img = profileCard.findViewById(R.id.iv_profile);
+        profile_url = preferences.getString("profile", "");
 
+
+        if(!profile_url.isEmpty()) {
+            ContentValues values = new ContentValues();
+            NetworkTask3 networkTask3 = new NetworkTask3(profile_url, values, profile_img);
+            networkTask3.execute();
+        }
         tv_nickname.setText(preferences.getString("nickname", ""));
         tv_age.setText(" (" + preferences.getInt("age", 0) + ")");
         tv_belong.setText(preferences.getString("belong", ""));
         tv_department.setText(preferences.getString("department", ""));
         auth_token = preferences.getString("auth_token", "");
+
         btn_edit_nickname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -241,4 +259,36 @@ public class MypageFragment extends Fragment {
 
         }
     }
+    public class NetworkTask3 extends AsyncTask<Void, Void, Bitmap> {
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        private CircularImageView civ;
+        private View view;
+        public NetworkTask3(String url, ContentValues values,  CircularImageView civ) {
+            this.url = url;
+            this.values = values;
+            this.civ = civ;
+        }
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            try {
+                URL urlO = new URL(url);
+
+                URLConnection conn = urlO.openConnection();
+                conn.connect();
+                InputStream urlInputStream = conn.getInputStream();
+                return BitmapFactory.decodeStream(urlInputStream);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Bitmap bm) {
+            civ.setImageBitmap(bm);
+        }
+    }
 }
+

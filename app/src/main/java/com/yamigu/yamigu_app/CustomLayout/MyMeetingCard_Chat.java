@@ -14,7 +14,8 @@ import android.widget.TextView;
 import com.yamigu.yamigu_app.R;
 
 public class MyMeetingCard_Chat extends LinearLayout {
-    TextView chat_content, time, unread_count;
+    public TextView chat_content, time, unread_count;
+    public String meeting_id, matching_id;
 
     public MyMeetingCard_Chat(Context context) {
         super(context);

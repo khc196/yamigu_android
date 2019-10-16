@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.yamigu.yamigu_app.Etc.ChatData;
+import com.yamigu.yamigu_app.Etc.Model.ChatData;
 import com.yamigu.yamigu_app.R;
 
 import java.text.SimpleDateFormat;

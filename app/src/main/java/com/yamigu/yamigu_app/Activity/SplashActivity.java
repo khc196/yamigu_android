@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -17,10 +19,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -35,6 +40,11 @@ import com.yamigu.yamigu_app.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.concurrent.Executor;
 
 public class SplashActivity extends AppCompatActivity {
@@ -50,6 +60,7 @@ public class SplashActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private JSONObject jsonObject;
     private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +69,7 @@ public class SplashActivity extends AppCompatActivity {
         logo = (ImageView) findViewById(R.id.logo);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
+
         mRunnable1 = new Runnable() {
             @Override
             public void run() {
@@ -91,6 +103,7 @@ public class SplashActivity extends AppCompatActivity {
                             editor.putString("profile", jsonObject.getString("image"));
                             editor.putInt("gender", jsonObject.getInt("gender"));
                             editor.putInt("age", jsonObject.getInt("age"));
+                            editor.putString("uid", jsonObject.getString("uid"));
                             editor.apply();
                         } catch(JSONException e) {
                             e.printStackTrace();
@@ -282,7 +295,7 @@ public class SplashActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             try {
-                signup_flag = jsonObject.getString("nickname").isEmpty();
+                signup_flag = jsonObject.getString("nickname").equals("null");
                 firebase_token = jsonObject.getString("firebase_token");
                 isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
             } catch(JSONException e) {
@@ -290,9 +303,7 @@ public class SplashActivity extends AppCompatActivity {
             }
 
 
-            if (!isFirstRun) {
-                is_signedup = !signup_flag;
-            }
+            is_signedup = !signup_flag;
             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();
             Log.d("FIREBASE", firebase_token);
             mAuth.signInWithCustomToken(firebase_token)
@@ -315,8 +326,6 @@ public class SplashActivity extends AppCompatActivity {
                             }
                         }
                     });
-
-
         }
     }
 }

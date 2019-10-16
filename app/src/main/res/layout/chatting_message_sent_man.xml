@@ -34,7 +34,7 @@
                 android:fontFamily="@font/binggrae_font_family"
                 android:textSize="9dp"
                 android:textStyle="bold"
-                android:textColor="@color/colorMan"
+                android:textColor="#298CFF"
                 android:layout_gravity="right"
                 />
             <LinearLayout
@@ -82,7 +82,7 @@
                             android:text="안녕하세요!"
                             android:fontFamily="@font/binggrae_font_family"
                             android:paddingRight="10dp"
-                            android:textSize="10dp" />
+                            android:textSize="14dp" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -58,6 +58,8 @@ public class HomeFragment extends Fragment {
     MyMeetingCardFrame myMeetingCardFrame;
     private RelativeLayout btn_go_yamigu;
 
+    public static int ACTION_START_CHAT = 1;
+
     private class MyMeetingCardFrame {
         private MyMeetingCard mmc_list[];
         private MyMeetingCard_Chat mmc_c_list[];

@@ -239,6 +239,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("profile", jsonObject.getString("image"));
                         editor.putInt("gender", jsonObject.getInt("gender"));
                         editor.putInt("age", jsonObject.getInt("age"));
+                        editor.putString("uid", jsonObject.getString("uid"));
                         editor.apply();
                         redirectMainActivity();
                     } catch(JSONException e) {

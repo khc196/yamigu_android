@@ -487,7 +487,7 @@ public class WListFragment extends Fragment {
                             @Override
                             public void onClick(View view) {
                                 try{
-                                    String url = "http://147.47.208.44:9999/api/meetings/send_request/";
+                                    String url = "http://147.47.208.44:9999/api/matching/send_request/";
                                     ContentValues values = new ContentValues();
                                     values.put("meeting_type", json_data.getInt("meeting_type"));
                                     values.put("date", date_string_f);
@@ -521,7 +521,7 @@ public class WListFragment extends Fragment {
             final String data = s;
             final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
             mRootLinear.animate()
-                .setDuration(150)
+                .setDuration(50)
                 .translationX(-100)
                 .alpha(0.0f)
                 .setListener(new AnimatorListenerAdapter() {
@@ -535,13 +535,13 @@ public class WListFragment extends Fragment {
                             jsonObject = new JSONObject(data);
                             JSONArray json_results = jsonObject.getJSONArray("results");
                             for(int i = 0; i < json_results.length(); i++) {
-                                Log.d("results:", json_results.getJSONObject(i).toString());
+                                //Log.d("results:", json_results.getJSONObject(i).toString());
                                 createWaitingTeamCard(json_results.getJSONObject(i));
                             }
                             meeting_count = json_results.length();
                             mRootLinear.setTranslationX(100);
                             mRootLinear.animate()
-                                    .setDuration(150)
+                                    .setDuration(50)
                                     .alpha(1.0f)
                                     .translationX(0)
                                     .setListener(null);

@@ -12,23 +12,27 @@
         android:orientation="vertical">
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <ScrollView
+            android:layout_height="match_parent">
+            <!--ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="52dp"
-                android:layout_marginBottom="48dp">
-                <LinearLayout
+                android:layout_marginBottom="48dp"-->
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="52dp"
+                android:layout_marginBottom="48dp"
+                android:fitsSystemWindows="true"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerChat"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-                    <ListView
-                        android:id="@+id/list_message"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"></ListView>
-                </LinearLayout>
-            </ScrollView>
+                    android:layout_height="match_parent">
+                </androidx.recyclerview.widget.RecyclerView>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+            <!--/ScrollView-->
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -52,7 +56,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_gravity="bottom"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/colorPrimary"
+                android:elevation="20dp">
                 <ImageButton
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
