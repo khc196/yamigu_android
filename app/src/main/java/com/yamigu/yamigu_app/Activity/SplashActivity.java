@@ -125,7 +125,7 @@ public class SplashActivity extends AppCompatActivity {
         session.addCallback(new SessionCallback());
         mAuth = FirebaseAuth.getInstance();
         if(!session.checkAndImplicitOpen()) {
-            session.open(AuthType.KAKAO_LOGIN_ALL, SplashActivity.this);
+            session.open(AuthType.KAKAO_TALK_ONLY, SplashActivity.this);
         }
     }
     @Override

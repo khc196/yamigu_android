@@ -1,5 +1,6 @@
 package com.yamigu.yamigu_app.Activity;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.yamigu.yamigu_app.R;
 
 public class SettingActivity extends AppCompatActivity {
@@ -42,10 +45,28 @@ public class SettingActivity extends AppCompatActivity {
         btn_withdrawal = (TextView) findViewById(R.id.btn_withdrawal);
 
         btn_withdrawal.setPaintFlags(btn_withdrawal.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                    @Override
+                    public void onCompleteLogout() {
+                        redirectLoginActivity();
+                    }
+                });
+            }
+        });
     }
     @Override
     public void onBackPressed() {
         finish();
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_slide_out_right);
+    }
+    private void redirectLoginActivity() {
+        final Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+        finish();
     }
 }

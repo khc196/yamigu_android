@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Session session = Session.getCurrentSession();
                 session.addCallback(new SessionCallback());
-                session.open(AuthType.KAKAO_LOGIN_ALL, LoginActivity.this);
+                session.open(AuthType.KAKAO_TALK_ONLY, LoginActivity.this);
             }
         });
         btn_kakao_login = (LoginButton) findViewById(R.id.btn_kakao_login);
