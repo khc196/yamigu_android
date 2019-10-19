@@ -25,7 +25,7 @@ public class ChatMessageAdapter extends ArrayAdapter<ChatData> {
         ViewHolder viewHolder;
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.chatting_message_recv_woman, null);
+            convertView = inflater.inflate(R.layout.chatting_message_recv_man, null);
 
             viewHolder = new ViewHolder();
             viewHolder.mTxtUserName = (TextView) convertView.findViewById(R.id.name);

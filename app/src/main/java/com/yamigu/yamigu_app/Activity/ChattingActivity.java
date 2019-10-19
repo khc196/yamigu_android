@@ -152,22 +152,25 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         } else {
             bitmapAvataUser = null;
         }
+        bitmapAvataPartner = new HashMap<>();
         mAdapter = new ListMessageAdapter(this, conversation, bitmapAvataPartner, bitmapAvataUser);
         //mListView.setAdapter(mAdapter);
         recyclerChat.setAdapter(mAdapter);
-        recyclerChat.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if ( bottom < oldBottom) {
-                    recyclerChat.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            recyclerChat.smoothScrollToPosition(recyclerChat.getAdapter().getItemCount() - 1);
-                        }
-                    }, 100);
+        if(recyclerChat.getAdapter().getItemCount() - 1 >= 0) {
+            recyclerChat.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                    if (bottom < oldBottom) {
+                        recyclerChat.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                recyclerChat.smoothScrollToPosition(recyclerChat.getAdapter().getItemCount() - 1);
+                            }
+                        }, 100);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void initFirebaseDatabase() {
@@ -243,7 +246,7 @@ class ListMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ChattingActivity.VIEW_TYPE_PARTNER_MESSAGE) {
-            View view = LayoutInflater.from(context).inflate(R.layout.chatting_message_recv_woman, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.chatting_message_recv_man, parent, false);
             return new ItemMessagePartnerHolder(view);
         } else if (viewType == ChattingActivity.VIEW_TYPE_USER_MESSAGE) {
             View view = LayoutInflater.from(context).inflate(R.layout.chatting_message_sent_man, parent, false);
@@ -259,33 +262,44 @@ class ListMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((ItemMessagePartnerHolder) holder).usrName.setText(conversation.getListMessageData().get(position).userName);
             ((ItemMessagePartnerHolder) holder).txtContent.setText(conversation.getListMessageData().get(position).message);
             ((ItemMessagePartnerHolder) holder).txtTime.setText(format.format(conversation.getListMessageData().get(position).time));
-            Bitmap currentAvata = bitmapAvata.get(conversation.getListMessageData().get(position).idSender);
+            Bitmap currentAvata;
+            try {
+                currentAvata = bitmapAvata.get(conversation.getListMessageData().get(position).idSender);
+            } catch(NullPointerException e){
+                e.printStackTrace();
+                currentAvata = null;
+            }
             if (currentAvata != null) {
                 ((ItemMessagePartnerHolder) holder).avata.setImageBitmap(currentAvata);
             } else {
                 final String id = conversation.getListMessageData().get(position).idSender;
                 if(bitmapAvataDB.get(id) == null){
-                    bitmapAvataDB.put(id, FirebaseDatabase.getInstance().getReference().child("user/" + id + "/avata"));
-                    bitmapAvataDB.get(id).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null) {
-                                String avataStr = (String) dataSnapshot.getValue();
-                                if(!avataStr.equals("default")) {
-                                    byte[] decodedString = Base64.decode(avataStr, Base64.DEFAULT);
-                                    ChattingActivity.bitmapAvataPartner.put(id, BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
-                                }else{
-                                    ChattingActivity.bitmapAvataPartner.put(id, BitmapFactory.decodeResource(context.getResources(), R.drawable.user_profile_no_img));
+                    try {
+                        bitmapAvataDB.put(id, FirebaseDatabase.getInstance().getReference().child("user/" + id + "/avata"));
+                        bitmapAvataDB.get(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.getValue() != null) {
+                                    String avataStr = (String) dataSnapshot.getValue();
+                                    if (!avataStr.equals("default")) {
+                                        byte[] decodedString = Base64.decode(avataStr, Base64.DEFAULT);
+                                        ChattingActivity.bitmapAvataPartner.put(id, BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+                                    } else {
+                                        ChattingActivity.bitmapAvataPartner.put(id, BitmapFactory.decodeResource(context.getResources(), R.drawable.user_profile_no_img));
+                                    }
+                                    notifyDataSetChanged();
                                 }
-                                notifyDataSetChanged();
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
+                    catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
                 }
             }
         } else if (holder instanceof ItemMessageUserHolder) {

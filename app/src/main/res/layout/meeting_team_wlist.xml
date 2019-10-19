@@ -33,7 +33,7 @@
                     android:background="@drawable/bottom_rounded_brown"
                     >
                     <LinearLayout
-                        android:layout_width="133.9dp"
+                        android:layout_width="173.9dp"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:layout_marginTop="4.5dp"
@@ -60,7 +60,7 @@
                             android:layout_marginTop="1dp"/>
                     </LinearLayout>
                     <LinearLayout
-                        android:layout_width="133.9dp"
+                        android:layout_width="93.9dp"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:layout_marginTop="4.5dp"

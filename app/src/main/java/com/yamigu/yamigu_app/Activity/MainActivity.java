@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getHashKey(getApplicationContext());
 
         Intent intent = getIntent();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -150,54 +149,6 @@ public class MainActivity extends AppCompatActivity {
         int resources[] = {R.drawable.nav_yamigu_0, R.drawable.nav_yamigu_1, R.drawable.nav_yamigu_2, R.drawable.nav_yamigu_3};
         nav_yamigu.setImageResource(resources[num]);
         count_meeting = num;
-    }
-    @Nullable
-    public static String getHashKey(Context context) {
-
-        final String TAG = "KeyHash";
-
-        String keyHash = null;
-
-        try {
-
-            PackageInfo info =
-
-                    context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
-
-
-
-            for (Signature signature : info.signatures) {
-
-                MessageDigest md;
-
-                md = MessageDigest.getInstance("SHA");
-
-                md.update(signature.toByteArray());
-
-                keyHash = new String(Base64.encode(md.digest(), 0));
-
-                Log.d(TAG, keyHash);
-
-            }
-
-        } catch (Exception e) {
-
-            Log.e("name not found", e.toString());
-
-        }
-
-
-
-        if (keyHash != null) {
-
-            return keyHash;
-
-        } else {
-
-            return null;
-
-        }
-
     }
     public class NetworkTask extends AsyncTask<Void, Void, Bitmap> {
         private String url;

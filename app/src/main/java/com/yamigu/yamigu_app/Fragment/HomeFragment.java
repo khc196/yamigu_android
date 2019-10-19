@@ -671,11 +671,15 @@ public class HomeFragment extends Fragment {
             }
             for(int i = 0; i < myMeetingCardFrame.getActive_length(); i++) {
                 try {
-                    myMeetingCardFrame.mmc_list[i].setId(jsonArray.getJSONObject(i).getInt("id"));
+                    final int meeting_id = jsonArray.getJSONObject(i).getInt("id");
+                    int matching_id = 0;
+                    JSONObject received_request = jsonArray.getJSONObject(i).getJSONObject("received_request");
+                    JSONObject sent_request = jsonArray.getJSONObject(i).getJSONObject("sent_request");
+                    myMeetingCardFrame.mmc_list[i].setId(meeting_id);
                     myMeetingCardFrame.mmc_list[i].setType(jsonArray.getJSONObject(i).getInt("meeting_type"));
                     myMeetingCardFrame.mmc_list[i].setPlace(jsonArray.getJSONObject(i).getInt("place_type"));
                     myMeetingCardFrame.mmc_list[i].setPlaceString(jsonArray.getJSONObject(i).getString("place_type_name"));
-                    myMeetingCardFrame.mmc_list[i].setNum_of_applying(jsonArray.getJSONObject(i).getInt("received_request"));
+                    myMeetingCardFrame.mmc_list[i].setNum_of_applying(received_request.getInt("count"));
                     myMeetingCardFrame.mmc_list[i].setAppeal(jsonArray.getJSONObject(i).getString("appeal"));
                     SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -696,23 +700,42 @@ public class HomeFragment extends Fragment {
                         myMeetingCardFrame.mmc_list[i].setDate(translated_date.getDate());
                         myMeetingCardFrame.mmc_list[i].setDday((int)(l_mday - l_tday + 1));
                         if(jsonArray.getJSONObject(i).getBoolean("is_matched")) {
-
-
                             String place_array[] = {"신촌/홍대", "건대/왕십리", "강남"};
                             String type_array[] = {"2:2", "3:3", "4:4"};
-                            JSONObject matched_meeting = jsonArray.getJSONObject(i).getJSONObject("matched_meeting");
+                            final JSONObject matched_meeting = jsonArray.getJSONObject(i).getJSONObject("matched_meeting");
                             final int age = matched_meeting.getInt("openby_age");
                             final String place = place_array[jsonArray.getJSONObject(i).getInt("place_type") - 1];
                             final String type = type_array[jsonArray.getJSONObject(i).getInt("meeting_type") - 1];
                             String before_date = jsonArray.getJSONObject(i).getString("date");
                             Date date_obj = new SimpleDateFormat("yyyy-MM-dd").parse(before_date);
                             final String date = date_obj.getDate() + "일";
+                            boolean flag = false;
+                            for(int j = 0 ; j < received_request.getInt("count"); j++) {
+                                JSONObject request_obj = received_request.getJSONArray("data").getJSONObject(j);
+                                if(request_obj.getBoolean("is_selected") && request_obj.getInt("receiver") == meeting_id) {
+                                    matching_id = request_obj.getInt("id");
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                            if(!flag) {
+                                for (int j = 0; j < sent_request.getInt("count"); j++) {
+                                    JSONObject request_obj = sent_request.getJSONArray("data").getJSONObject(j);
+                                    if(request_obj.getBoolean("is_selected") && request_obj.getInt("sender") == meeting_id) {
+                                        matching_id = request_obj.getInt("id");
+                                        break;
+                                    }
+                                }
+                            }
 
+                            final int matching_id_final = matching_id;
                             myMeetingCardFrame.mmc_c_list[i].setVisibility(View.VISIBLE);
                             myMeetingCardFrame.mmc_c_list[i].setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     Intent intent = new Intent(getContext(), ChattingActivity.class);
+                                    intent.putExtra("meeting_id", ""+meeting_id);
+                                    intent.putExtra("matching_id", ""+matching_id_final);
                                     intent.putExtra("age", age);
                                     intent.putExtra("place", place);
                                     intent.putExtra("date", date);

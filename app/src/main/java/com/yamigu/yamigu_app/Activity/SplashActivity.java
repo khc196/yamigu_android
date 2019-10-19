@@ -3,8 +3,12 @@ package com.yamigu.yamigu_app.Activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -12,8 +16,10 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -45,6 +51,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.MessageDigest;
 import java.util.concurrent.Executor;
 
 public class SplashActivity extends AppCompatActivity {
@@ -65,6 +72,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        getHashKey(getApplicationContext());
+
         before_logo = (ImageView) findViewById(R.id.before_logo);
         logo = (ImageView) findViewById(R.id.logo);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -125,7 +134,7 @@ public class SplashActivity extends AppCompatActivity {
         session.addCallback(new SessionCallback());
         mAuth = FirebaseAuth.getInstance();
         if(!session.checkAndImplicitOpen()) {
-            session.open(AuthType.KAKAO_TALK_ONLY, SplashActivity.this);
+            session.open(AuthType.KAKAO_ACCOUNT, SplashActivity.this);
         }
     }
     @Override
@@ -150,6 +159,54 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
+    }
+    @Nullable
+    public static String getHashKey(Context context) {
+
+        final String TAG = "KeyHash";
+
+        String keyHash = null;
+
+        try {
+
+            PackageInfo info =
+
+                    context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+
+
+
+            for (Signature signature : info.signatures) {
+
+                MessageDigest md;
+
+                md = MessageDigest.getInstance("SHA");
+
+                md.update(signature.toByteArray());
+
+                keyHash = new String(Base64.encode(md.digest(), 0));
+
+                Log.d(TAG, keyHash);
+
+            }
+
+        } catch (Exception e) {
+
+            Log.e("name not found", e.toString());
+
+        }
+
+
+
+        if (keyHash != null) {
+
+            return keyHash;
+
+        } else {
+
+            return null;
+
+        }
+
     }
     protected void redirectVerificationActivity() {
         final Intent intent = new Intent(this, VerificationActivity.class);
@@ -291,6 +348,7 @@ public class SplashActivity extends AppCompatActivity {
             String firebase_token = "";
             try {
                 jsonObject = new JSONObject(s);
+                Log.d("Login info", jsonObject.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -97,6 +97,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         tv_max_appeal_length = (TextView) findViewById(R.id.max_appeal_length);
         ll_for_edit.setVisibility(View.INVISIBLE);
         tv_max_appeal_length.setText("0 / "+Integer.toString(MAX_APPEAL_LENGTH));
+        tv_max_appeal_length.setVisibility(View.INVISIBLE);
         ma = new MeetingApplication();
         toast = Toast.makeText(getApplicationContext(), "뭐라도 써주세요!", Toast.LENGTH_SHORT);
         View toastView = toast.getView();
@@ -165,7 +166,9 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                     date_view.setVisibility(View.GONE);
                     place_view.setVisibility(View.GONE);
                     appeal_view.setVisibility(View.GONE);
+                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
                     btn_okay.setVisibility(View.INVISIBLE);
+                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
                 }
             });
             selected_date.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +181,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                     place_view.setVisibility(View.GONE);
                     appeal_view.setVisibility(View.GONE);
                     btn_okay.setVisibility(View.INVISIBLE);
+                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
                 }
             });
             selected_place.setOnClickListener(new View.OnClickListener() {
@@ -190,6 +194,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                     place_view.setVisibility(View.VISIBLE);
                     appeal_view.setVisibility(View.GONE);
                     btn_okay.setVisibility(View.INVISIBLE);
+                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
                 }
             });
         }
@@ -356,6 +361,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                     date_view.setVisibility(View.GONE);
                                     place_view.setVisibility(View.GONE);
                                     appeal_view.setVisibility(View.VISIBLE);
+                                    tv_max_appeal_length.setVisibility(View.VISIBLE);
                                     if(form_code == NEW_MEETING)
                                         btn_okay.setVisibility(View.VISIBLE);
                                 }
@@ -439,12 +445,14 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                     type_view.setVisibility(View.VISIBLE);
                                     date_view.setVisibility(View.GONE);
                                     place_view.setVisibility(View.GONE);
+                                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
                                 }
                                 else if(ma.getPlace() == -1) {
                                     ma.reselect(ma.RESELECT_PLACE);
                                     type_view.setVisibility(View.GONE);
                                     date_view.setVisibility(View.GONE);
                                     place_view.setVisibility(View.VISIBLE);
+                                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
                                 }
                                 else {
                                     ma.reselect(ma.RESELECT_APPEAL);
@@ -452,6 +460,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                     date_view.setVisibility(View.GONE);
                                     place_view.setVisibility(View.GONE);
                                     appeal_view.setVisibility(View.VISIBLE);
+                                    tv_max_appeal_length.setVisibility(View.VISIBLE);
+
                                     if(form_code == NEW_MEETING)
                                         btn_okay.setVisibility(View.VISIBLE);
                                 }
@@ -541,6 +551,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                     date_view.setVisibility(View.GONE);
                                     place_view.setVisibility(View.GONE);
                                     appeal_view.setVisibility(View.VISIBLE);
+                                    tv_max_appeal_length.setVisibility(View.VISIBLE);
                                     if(form_code == NEW_MEETING)
                                         btn_okay.setVisibility(View.VISIBLE);
                                 }
@@ -753,6 +764,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             date_view.setVisibility(View.GONE);
             place_view.setVisibility(View.GONE);
             appeal_view.setVisibility(View.VISIBLE);
+            tv_max_appeal_length.setVisibility(View.VISIBLE);
             btn_okay.setVisibility(View.INVISIBLE);
             ll_for_edit.setVisibility(View.VISIBLE);
             et_appeal.setText(ma.getAppeal());
@@ -763,6 +775,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             date_view.setVisibility(View.GONE);
             place_view.setVisibility(View.GONE);
             appeal_view.setVisibility(View.VISIBLE);
+            tv_max_appeal_length.setVisibility(View.VISIBLE);
             btn_okay.setVisibility(View.VISIBLE);
             return SEND_REQUEST;
         }
