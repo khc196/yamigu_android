@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,13 +80,20 @@ public class MypageFragment extends Fragment {
         btn_edit_nickname = profileCard.findViewById(R.id.btn_edit_nickname);
         profile_img = profileCard.findViewById(R.id.iv_profile);
         profile_url = preferences.getString("profile", "");
-
-
-        if(!profile_url.isEmpty()) {
-            ContentValues values = new ContentValues();
-            NetworkTask3 networkTask3 = new NetworkTask3(profile_url, values, profile_img);
-            networkTask3.execute();
+        String base64AvataUser = preferences.getString("avata", "");
+        Bitmap bitmapAvata;
+        if (!base64AvataUser.equals("default")) {
+            byte[] decodedString = Base64.decode(base64AvataUser, Base64.DEFAULT);
+            bitmapAvata = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        } else {
+            bitmapAvata = null;
         }
+        profile_img.setImageBitmap(bitmapAvata);
+//        if(!profile_url.isEmpty()) {`
+//            ContentValues values = new ContentValues();
+//            NetworkTask3 networkTask3 = new NetworkTask3(profile_url, values, profile_img);
+//            networkTask3.execute();
+//        }
         tv_nickname.setText(preferences.getString("nickname", ""));
         tv_age.setText(" (" + preferences.getInt("age", 0) + ")");
         tv_belong.setText(preferences.getString("belong", ""));
