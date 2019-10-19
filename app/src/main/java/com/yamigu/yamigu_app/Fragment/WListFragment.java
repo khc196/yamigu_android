@@ -291,7 +291,9 @@ public class WListFragment extends Fragment {
             try {
                 jsonArray = new JSONArray(s);
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    active_date_set.add(jsonArray.getJSONObject(i).getString("date"));
+                    if(!jsonArray.getJSONObject(i).getBoolean("is_matched")) {
+                        active_date_set.add(jsonArray.getJSONObject(i).getString("date"));
+                    }
                 }
                 activateDates(active_date_set);
                 is_initialized = true;
@@ -354,6 +356,7 @@ public class WListFragment extends Fragment {
                     CircularImageView profile_img = (CircularImageView) mtw.findViewById(R.id.iv_profile);
 
                     String url = json_data.getString("openby_profile");
+                    boolean is_matched = json_data.getBoolean("is_matched");
                     if(!url.isEmpty()) {
                         ContentValues values = new ContentValues();
                         NetworkTask3 networkTask3 = new NetworkTask3(url, values, profile_img, mRootLinear, mtw);
@@ -362,37 +365,10 @@ public class WListFragment extends Fragment {
                     else {
                         mRootLinear.addView(mtw);
                     }
-                    mtw.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if(rl_applying.getVisibility() == View.INVISIBLE) {
-
-                                rl_applying.setVisibility(View.VISIBLE);
-                                rl_applying.animate()
-                                        .translationY(rl_applying.getHeight())
-                                        .alpha(1.0f)
-                                        .setListener(new AnimatorListenerAdapter() {
-                                            @Override
-                                            public void onAnimationEnd(Animator animation) {
-                                                super.onAnimationEnd(animation);
-                                            }});
-                            }
-                            else
-                                rl_applying.animate()
-                                        .translationY(0)
-                                        .alpha(0.0f)
-                                        .setListener(new AnimatorListenerAdapter() {
-                                            @Override
-                                            public void onAnimationEnd(Animator animation) {
-                                                super.onAnimationEnd(animation);
-                                                rl_applying.setVisibility(View.INVISIBLE);
-                                            }});
-                        }
-                    });
-                    description_w.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View view, MotionEvent motionEvent) {
-                            if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if(!is_matched) {
+                        mtw.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
                                 if (rl_applying.getVisibility() == View.INVISIBLE) {
 
                                     rl_applying.setVisibility(View.VISIBLE);
@@ -417,9 +393,39 @@ public class WListFragment extends Fragment {
                                                 }
                                             });
                             }
-                            return true;
-                        }
-                    });
+                        });
+                        description_w.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View view, MotionEvent motionEvent) {
+                                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                                    if (rl_applying.getVisibility() == View.INVISIBLE) {
+
+                                        rl_applying.setVisibility(View.VISIBLE);
+                                        rl_applying.animate()
+                                                .translationY(rl_applying.getHeight())
+                                                .alpha(1.0f)
+                                                .setListener(new AnimatorListenerAdapter() {
+                                                    @Override
+                                                    public void onAnimationEnd(Animator animation) {
+                                                        super.onAnimationEnd(animation);
+                                                    }
+                                                });
+                                    } else
+                                        rl_applying.animate()
+                                                .translationY(0)
+                                                .alpha(0.0f)
+                                                .setListener(new AnimatorListenerAdapter() {
+                                                    @Override
+                                                    public void onAnimationEnd(Animator animation) {
+                                                        super.onAnimationEnd(animation);
+                                                        rl_applying.setVisibility(View.INVISIBLE);
+                                                    }
+                                                });
+                                }
+                                return true;
+                            }
+                        });
+                    }
                     String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
                     desc_string = json_data.getString("appeal");
                     profile1_string = json_data.getString("openby_nickname") + " (" +json_data.getString("openby_age") + ")";
@@ -445,67 +451,88 @@ public class WListFragment extends Fragment {
                             "</body>"
                             +"</html>";
                     description_w.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
-
-                    try {
-                        int label_type = json_data.getInt("meeting_type");
-                        switch(label_type){
-                            case 1:
-                                label.setBackgroundResource(R.drawable.label_2vs2_bg);
-                                label.setText("2:2 소개팅");
-                                point_line.setBackgroundColor(getResources().getColor(R.color.colorPoint));
-                                rating.setTextColor(getResources().getColor(R.color.colorPoint));
-                                rl_applying.setBackgroundResource(R.drawable.bottom_rounded_orange);
-                                break;
-                            case 2:
-                                label.setBackgroundResource(R.drawable.label_3vs3_bg);
-                                label.setText("3:3 미팅");
-                                point_line.setBackgroundColor(getResources().getColor(R.color.color3vs3));
-                                rating.setTextColor(getResources().getColor(R.color.color3vs3));
-                                rl_applying.setBackgroundResource(R.drawable.bottom_rounded_3vs3);
-                                break;
-                            case 3:
-                                label.setBackgroundResource(R.drawable.label_4vs4_bg);
-                                label.setText("4:4 미팅");
-                                point_line.setBackgroundColor(getResources().getColor(R.color.color4vs4));
-                                rating.setTextColor(getResources().getColor(R.color.color4vs4));
-                                rl_applying.setBackgroundResource(R.drawable.bottom_rounded_4vs4);
-                                break;
-                        }
-
-                        Date before_date = new SimpleDateFormat("yyyy-MM-dd").parse(before_date_string);
-                        SimpleDateFormat sdf = new SimpleDateFormat("M월d일");
-                        date_string = sdf.format(before_date);
-                        place_string = json_data.getString("place_type_name");
-                        //description.setText(desc_string);
-                        profile1.setText(profile1_string);
-                        profile2.setText(profile2_string);
-                        date.setText(date_string);
-                        place.setText(place_string);
-                        final String date_string_f = date_string;
-                        final String place_string_f = place_string;
-                        rl_applying.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                try{
-                                    String url = "http://147.47.208.44:9999/api/matching/send_request/";
-                                    ContentValues values = new ContentValues();
-                                    values.put("meeting_type", json_data.getInt("meeting_type"));
-                                    values.put("date", date_string_f);
-                                    values.put("place", json_data.getInt("place_type"));
-                                    values.put("place_string", place_string_f);
-                                    values.put("meeting_id", json_data.getInt("id"));
-                                    rl_applying.setVisibility(View.INVISIBLE);
-                                    NetworkTask4 networkTask4 = new NetworkTask4(url, values);
-                                    networkTask4.execute();
-
-                                }
-                                catch(JSONException e) {
-                                    e.printStackTrace();
-                                }
+                    if(!is_matched) {
+                        try {
+                            int label_type = json_data.getInt("meeting_type");
+                            switch (label_type) {
+                                case 1:
+                                    label.setBackgroundResource(R.drawable.label_2vs2_bg);
+                                    label.setText("2:2 소개팅");
+                                    point_line.setBackgroundColor(getResources().getColor(R.color.colorPoint));
+                                    rating.setTextColor(getResources().getColor(R.color.colorPoint));
+                                    rl_applying.setBackgroundResource(R.drawable.bottom_rounded_orange);
+                                    break;
+                                case 2:
+                                    label.setBackgroundResource(R.drawable.label_3vs3_bg);
+                                    label.setText("3:3 미팅");
+                                    point_line.setBackgroundColor(getResources().getColor(R.color.color3vs3));
+                                    rating.setTextColor(getResources().getColor(R.color.color3vs3));
+                                    rl_applying.setBackgroundResource(R.drawable.bottom_rounded_3vs3);
+                                    break;
+                                case 3:
+                                    label.setBackgroundResource(R.drawable.label_4vs4_bg);
+                                    label.setText("4:4 미팅");
+                                    point_line.setBackgroundColor(getResources().getColor(R.color.color4vs4));
+                                    rating.setTextColor(getResources().getColor(R.color.color4vs4));
+                                    rl_applying.setBackgroundResource(R.drawable.bottom_rounded_4vs4);
+                                    break;
                             }
-                        });
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+
+                            Date before_date = new SimpleDateFormat("yyyy-MM-dd").parse(before_date_string);
+                            SimpleDateFormat sdf = new SimpleDateFormat("M월d일");
+                            date_string = sdf.format(before_date);
+                            place_string = json_data.getString("place_type_name");
+                            //description.setText(desc_string);
+                            profile1.setText(profile1_string);
+                            profile2.setText(profile2_string);
+                            date.setText(date_string);
+                            place.setText(place_string);
+                            final String date_string_f = date_string;
+                            final String place_string_f = place_string;
+                            rl_applying.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    try {
+                                        String url = "http://147.47.208.44:9999/api/matching/send_request/";
+                                        ContentValues values = new ContentValues();
+                                        values.put("meeting_type", json_data.getInt("meeting_type"));
+                                        values.put("date", date_string_f);
+                                        values.put("place", json_data.getInt("place_type"));
+                                        values.put("place_string", place_string_f);
+                                        values.put("meeting_id", json_data.getInt("id"));
+                                        rl_applying.setVisibility(View.INVISIBLE);
+                                        NetworkTask4 networkTask4 = new NetworkTask4(url, values);
+                                        networkTask4.execute();
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
+                        try {
+                            label.setBackgroundResource(R.drawable.label_gray);
+                            label.setText("매칭완료");
+                            point_line.setBackgroundColor(getResources().getColor(R.color.colorNonselect));
+                            rating.setTextColor(getResources().getColor(R.color.colorNonselect));
+                            Date before_date = new SimpleDateFormat("yyyy-MM-dd").parse(before_date_string);
+                            SimpleDateFormat sdf = new SimpleDateFormat("M월d일");
+                            date_string = sdf.format(before_date);
+                            place_string = json_data.getString("place_type_name");
+                            //description.setText(desc_string);
+                            profile1.setText(profile1_string);
+                            profile2.setText(profile2_string);
+                            date.setText(date_string);
+                            place.setText(place_string);
+                            final String date_string_f = date_string;
+                            final String place_string_f = place_string;
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -534,11 +561,13 @@ public class WListFragment extends Fragment {
                             if(data == null) return;
                             jsonObject = new JSONObject(data);
                             JSONArray json_results = jsonObject.getJSONArray("results");
+                            meeting_count = 0;
                             for(int i = 0; i < json_results.length(); i++) {
                                 //Log.d("results:", json_results.getJSONObject(i).toString());
                                 createWaitingTeamCard(json_results.getJSONObject(i));
+                                if(!json_results.getJSONObject(i).getBoolean("is_matched")) meeting_count++;
                             }
-                            meeting_count = json_results.length();
+
                             mRootLinear.setTranslationX(100);
                             mRootLinear.animate()
                                     .setDuration(50)

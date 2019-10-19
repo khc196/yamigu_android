@@ -47,20 +47,39 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/banner"
                     android:orientation="vertical">
-                    <ImageView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="퇴근 후 가벼운 한잔을\n설렘과 함께"
+                        android:textSize="24dp"
+                        android:fontFamily="@font/binggrae_font_family"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="26dp"/>
+                    <!--ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/banner_title"
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="26dp"
-                        />
-                    <ImageView
+                        /-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="인원 - 날짜 - 장소\n3가지 선택으로 일주일만에 미팅!"
+                        android:textColor="@color/colorHint"
+                        android:textSize="14dp"
+                        android:fontFamily="@font/nanumgothic_font_family"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="20dp"/>
+                    <!--ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/banner_subtitle"
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="20dp"
-                        />
+                        /-->
                 </LinearLayout>
                 <RelativeLayout
                     android:id="@+id/btn_go_yamigu"
