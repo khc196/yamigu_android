@@ -6,16 +6,21 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,11 +37,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.yamigu.yamigu_app.Activity.ChattingActivity;
 import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat;
+import com.yamigu.yamigu_app.Etc.ImageUtils;
 import com.yamigu.yamigu_app.R;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.Activity.TicketOnboardingActivity;
@@ -45,6 +56,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -54,9 +69,12 @@ public class HomeFragment extends Fragment {
     private Toolbar tb;
     private String auth_token;
     private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+
     private Context context;
     MyMeetingCardFrame myMeetingCardFrame;
     private RelativeLayout btn_go_yamigu;
+    private DatabaseReference userDB;
 
     public static int ACTION_START_CHAT = 1;
 
@@ -104,7 +122,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-
+        editor = preferences.edit();
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         auth_token = preferences.getString("auth_token", "");
 
@@ -673,6 +691,10 @@ public class HomeFragment extends Fragment {
                 try {
                     final int meeting_id = jsonArray.getJSONObject(i).getInt("id");
                     int matching_id = 0;
+                    int partner_uid = 0;
+                    int manager_uid = 0;
+                    long accepted_at = 0;
+                    String manager_name = "";
                     JSONObject received_request = jsonArray.getJSONObject(i).getJSONObject("received_request");
                     JSONObject sent_request = jsonArray.getJSONObject(i).getJSONObject("sent_request");
                     myMeetingCardFrame.mmc_list[i].setId(meeting_id);
@@ -703,17 +725,27 @@ public class HomeFragment extends Fragment {
                             String place_array[] = {"신촌/홍대", "건대/왕십리", "강남"};
                             String type_array[] = {"2:2", "3:3", "4:4"};
                             final JSONObject matched_meeting = jsonArray.getJSONObject(i).getJSONObject("matched_meeting");
+                            partner_uid = matched_meeting.getInt("openby_uid");
                             final int age = matched_meeting.getInt("openby_age");
+                            final String partner_belong = matched_meeting.getString("openby_belong");
+                            final String partner_department = matched_meeting.getString("openby_department");
+                            final String partner_nickname = matched_meeting.getString("openby_nickname");
                             final String place = place_array[jsonArray.getJSONObject(i).getInt("place_type") - 1];
                             final String type = type_array[jsonArray.getJSONObject(i).getInt("meeting_type") - 1];
                             String before_date = jsonArray.getJSONObject(i).getString("date");
                             Date date_obj = new SimpleDateFormat("yyyy-MM-dd").parse(before_date);
                             final String date = date_obj.getDate() + "일";
+                            final String date_m = date_obj.getMonth() + "월" + " " + date_obj.getDate() + "일";
                             boolean flag = false;
+                            String manager_profile_url = "";
                             for(int j = 0 ; j < received_request.getInt("count"); j++) {
                                 JSONObject request_obj = received_request.getJSONArray("data").getJSONObject(j);
                                 if(request_obj.getBoolean("is_selected") && request_obj.getInt("receiver") == meeting_id) {
                                     matching_id = request_obj.getInt("id");
+                                    manager_uid = request_obj.getInt("manager_uid");
+                                    manager_name = request_obj.getString("manager_name");
+                                    accepted_at = request_obj.getLong("accepted_at");
+                                    manager_profile_url = request_obj.getString("manager_profile");
                                     flag = true;
                                     break;
                                 }
@@ -723,12 +755,26 @@ public class HomeFragment extends Fragment {
                                     JSONObject request_obj = sent_request.getJSONArray("data").getJSONObject(j);
                                     if(request_obj.getBoolean("is_selected") && request_obj.getInt("sender") == meeting_id) {
                                         matching_id = request_obj.getInt("id");
+                                        manager_uid = request_obj.getInt("manager_uid");
+                                        manager_name = request_obj.getString("manager_name");
+                                        accepted_at = request_obj.getLong("accepted_at");
+                                        manager_profile_url = request_obj.getString("manager_profile");
                                         break;
                                     }
                                 }
                             }
+                            userDB = FirebaseDatabase.getInstance().getReference().child("user").child(""+manager_uid);
 
+                            if(!manager_profile_url.isEmpty()) {
+                                ContentValues values = new ContentValues();
+                                NetworkTask4 networkTask4 = new NetworkTask4(manager_profile_url, values, ""+manager_uid);
+                                networkTask4.execute();
+                            }
                             final int matching_id_final = matching_id;
+                            final int partner_uid_final = partner_uid;
+                            final int manager_uid_final = manager_uid;
+                            final String manager_name_final = manager_name;
+                            final long accepted_at_final = accepted_at;
                             myMeetingCardFrame.mmc_c_list[i].setVisibility(View.VISIBLE);
                             myMeetingCardFrame.mmc_c_list[i].setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -736,9 +782,17 @@ public class HomeFragment extends Fragment {
                                     Intent intent = new Intent(getContext(), ChattingActivity.class);
                                     intent.putExtra("meeting_id", ""+meeting_id);
                                     intent.putExtra("matching_id", ""+matching_id_final);
-                                    intent.putExtra("age", age);
+                                    intent.putExtra("partner_uid", ""+partner_uid_final);
+                                    intent.putExtra("manager_uid", ""+manager_uid_final);
+                                    intent.putExtra("manager_name", manager_name_final);
+                                    intent.putExtra("accepted_at", accepted_at_final);
+                                    intent.putExtra("partner_age", age);
+                                    intent.putExtra("partner_belong", partner_belong);
+                                    intent.putExtra("partner_department", partner_department);
+                                    intent.putExtra("partner_nickname", partner_nickname);
                                     intent.putExtra("place", place);
                                     intent.putExtra("date", date);
+                                    intent.putExtra("date_m", date_m);
                                     intent.putExtra("type", type);
                                     startActivity(intent);
                                     ((MainActivity)context).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
@@ -823,6 +877,53 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+        }
+    }
+    public class NetworkTask4 extends AsyncTask<Void, Void, Bitmap> {
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        private String manager_uid;
+        public NetworkTask4(String url, ContentValues values, String manager_uid) {
+            this.url = url;
+            this.values = values;
+            this.manager_uid = manager_uid;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            try {
+                URL urlO = new URL(url);
+
+                URLConnection conn = urlO.openConnection();
+                conn.connect();
+                InputStream urlInputStream = conn.getInputStream();
+                return BitmapFactory.decodeStream(urlInputStream);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bm) {
+            final String imageBase64 = ImageUtils.encodeBase64(bm);
+            userDB.child("avata").setValue(imageBase64)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                return;
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("Update Avatar", "failed");
+                        }
+                    });
         }
     }
 }

@@ -59,6 +59,162 @@
                             android:layout_height="match_parent">
                         </LinearLayout>
                         <LinearLayout
+                            android:id="@+id/content_welcome"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingRight="10dp"
+                            android:visibility="gone">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:maxWidth="210dp"
+                                android:text="미팅이 주선되었습니다!"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textSize="19dp"
+                                android:textColor="@color/colorPoint"
+                                />
+                            <TextView
+                                android:id="@+id/chatting_content_name_and_age_man"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="7dp"
+                                android:layout_gravity="center_horizontal"
+                                android:maxWidth="210dp"
+                                android:text="김찬열(26)"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textSize="10dp"
+                                android:textColor="@color/colorManb"
+                                />
+                            <TextView
+                                android:id="@+id/chatting_content_belong_man"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:maxWidth="210dp"
+                                android:text="연세대학교 기계공학부"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textSize="10dp"
+                                android:textColor="@color/colorBlack"
+                                />
+                            <TextView
+                                android:id="@+id/chatting_content_name_and_age_woman"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="14dp"
+                                android:layout_gravity="center_horizontal"
+                                android:maxWidth="210dp"
+                                android:text="김찬열(26)"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textSize="10dp"
+                                android:textColor="@color/colorWomanb"
+                                />
+                            <TextView
+                                android:id="@+id/chatting_content_belong_woman"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:maxWidth="210dp"
+                                android:text="연세대학교 기계공학부"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textSize="10dp"
+                                android:textColor="@color/colorBlack"
+                                />
+                            <TextView
+                                android:id="@+id/chatting_content_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="14dp"
+                                android:layout_gravity="center_horizontal"
+                                android:maxWidth="210dp"
+                                android:text="5월 28일"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textSize="10dp"
+                                android:textColor="@color/colorBlack"
+                                />
+                            <TextView
+                                android:id="@+id/chatting_content_place"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:maxWidth="210dp"
+                                android:text="신촌/홍대"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textSize="10dp"
+                                android:textColor="@color/colorBlack"
+                                />
+                            <TextView
+                                android:id="@+id/chatting_content_type"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:maxWidth="210dp"
+                                android:text="2:2 소개팅"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textSize="10dp"
+                                android:textColor="@color/colorBlack"
+                                />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/content_place"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingRight="10dp"
+                            android:visibility="gone">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:maxWidth="210dp"
+                                android:text="장소를 정해주세요"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textSize="19dp"
+                                android:textColor="@color/colorPoint"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="7dp"
+                                android:maxWidth="210dp"
+                                android:text="지역별로 야미구에서 미팅하기 좋은 매장을 추천해주고 있어요!\n\n아래 추천 매장에서 미팅을 진행해보세요!"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textSize="10dp"
+                                android:textColor="@color/colorBlack"
+                                />
+                            <Button
+                                android:id="@+id/btn_view_recommendation"
+                                android:layout_width="180dp"
+                                android:layout_height="37dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="46dp"
+                                android:background="@drawable/ic_filter_state_orange2"
+                                android:text="추천 매장 보기"
+                                android:textSize="14dp"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textColor="@color/colorPoint" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/content_precautions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="10dp"
+                            android:visibility="gone">
+                            <TextView
+                                android:id="@+id/precaution_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxWidth="210dp"
+                                android:text="안녕하세요 :)\n미팅 진행을 도와줄 매칭 매니저 sub입니다.\n\n아래 내용을 꼭 참고해주세요\n*채팅내에서 자유롭게 약속을 수정하셔도 됩니다.
+    \n*개인 연락처 교환시 야미구 미팅에서 벗어나 모든 책임 및 환불제도에서 제외됩니다.
+    \n\n매니저가 필요하거나 궁금한점이 생기면 언제든 우측 상단 아이콘을 눌러주세요!"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="10dp" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/content_normal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingRight="10dp">
@@ -67,10 +223,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:maxWidth="210dp"
-                                android:text="안녕하세요 :)\n미팅 진행을 도와줄 매칭 매니저 sub입니다.\n\n아래 내용을 꼭 참고해주세요\n*채팅내에서 자유롭게 약속을 수정하셔도 됩니다.
-    \n*개인 연락처 교환시 야미구 미팅에서 벗어나 모든 책임 및 환불제도에서 제외됩니다.
-    \n\n매니저가 필요하거나 궁금한점이 생기면 언제든 우측 상단 아이콘을 눌러주세요!"
+                                android:text="네 안녕하세요, 어떤게 궁금하신가요?"
                                 android:fontFamily="@font/binggrae_font_family"
+                                android:textColor="@color/colorBlack"
                                 android:textSize="10dp" />
                         </LinearLayout>
                     </LinearLayout>

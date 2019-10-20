@@ -34,7 +34,7 @@
                 android:fontFamily="@font/binggrae_font_family"
                 android:textSize="9dp"
                 android:textStyle="bold"
-                android:textColor="@color/colorWomanB"
+                android:textColor="@color/colorWomanb"
                 android:layout_gravity="right"
                 />
             <LinearLayout
