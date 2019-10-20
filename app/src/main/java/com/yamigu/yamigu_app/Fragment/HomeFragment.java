@@ -122,10 +122,10 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        String url = "http://147.47.208.44:9999/api/meetings/my/";
-        ContentValues values = new ContentValues();
-        NetworkTask networkTask = new NetworkTask(url, values);
-        networkTask.execute();
+//        String url = "http://147.47.208.44:9999/api/meetings/my/";
+//        ContentValues values = new ContentValues();
+//        NetworkTask networkTask = new NetworkTask(url, values);
+//        networkTask.execute();
 
         String url2 = "http://147.47.208.44:9999/api/meetings/my_past/";
         ContentValues values2 = new ContentValues();

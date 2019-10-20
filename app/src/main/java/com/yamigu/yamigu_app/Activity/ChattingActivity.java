@@ -144,6 +144,8 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         recyclerChat = (RecyclerView) findViewById(R.id.recyclerChat);
         recyclerChat.setLayoutManager(linearLayoutManager);
         recyclerChat = (RecyclerView) findViewById(R.id.recyclerChat);
+
+
         //mAdapter = new ChatMessageAdapter(this, R.layout.chatting_message_recv_woman);
         String base64AvataUser = preferences.getString("avata", "");
         if (!base64AvataUser.equals("default")) {
@@ -156,10 +158,10 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         mAdapter = new ListMessageAdapter(this, conversation, bitmapAvataPartner, bitmapAvataUser);
         //mListView.setAdapter(mAdapter);
         recyclerChat.setAdapter(mAdapter);
-        if(recyclerChat.getAdapter().getItemCount() - 1 >= 0) {
-            recyclerChat.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                @Override
-                public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+        recyclerChat.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if(recyclerChat.getAdapter().getItemCount() - 1 >= 0) {
                     if (bottom < oldBottom) {
                         recyclerChat.postDelayed(new Runnable() {
                             @Override
@@ -169,8 +171,8 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                         }, 100);
                     }
                 }
-            });
-        }
+            }
+        });
     }
 
     private void initFirebaseDatabase() {

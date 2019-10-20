@@ -32,7 +32,7 @@
                 android:fontFamily="@font/binggrae_font_family"
                 android:textSize="9dp"
                 android:textStyle="bold"
-                android:textColor="#FE528E"/>
+                android:textColor="@color/colorWomanB"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -57,15 +57,19 @@
                             android:layout_width="10dp"
                             android:layout_height="match_parent">
                         </LinearLayout>
-                        <TextView
-                            android:id="@+id/chatting_content"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxWidth="230dp"
-                            android:text="안녕하세요!"
-                            android:fontFamily="@font/binggrae_font_family"
-                            android:paddingRight="10dp"
-                            android:textSize="10dp" />
+                            android:paddingRight="10dp">
+                            <TextView
+                                android:id="@+id/chatting_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxWidth="210dp"
+                                android:text="안녕하세요!"
+                                android:fontFamily="@font/nanumgothic_font_family"
+                                android:textSize="10dp" />
+                        </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"

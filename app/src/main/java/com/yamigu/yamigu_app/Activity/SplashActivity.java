@@ -261,9 +261,11 @@ public class SplashActivity extends AppCompatActivity {
                     values.put("access_token", access_token);
                     Log.d("Kakao", access_token);
                     //values.put("kakao_account", userProfile.toString());
-                    is_loggedin = true;
-                    NetworkTask networkTask = new NetworkTask(url, values);
-                    networkTask.execute();
+                    if(!is_loggedin) {
+                        is_loggedin = true;
+                        NetworkTask networkTask = new NetworkTask(url, values);
+                        networkTask.execute();
+                    }
                 }
                 // 사용자 정보 요청 실패
                 @Override

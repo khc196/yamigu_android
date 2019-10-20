@@ -4,8 +4,9 @@
     android:id="@+id/bg"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:layout_marginLeft="18dp"
     android:paddingBottom="13dp"
-    android:layout_marginRight="18dp"
+
     >
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,48 +18,31 @@
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:src="@drawable/user_profile_no_img"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentTop="true"/>
         <LinearLayout
             android:id="@+id/chatting_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_toLeftOf="@id/iv_profile"
-            android:layout_marginRight="10dp">
+            android:layout_marginLeft="51dp"
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="김찬열"
+                android:text="야미구 매니저 sub"
                 android:fontFamily="@font/binggrae_font_family"
                 android:textSize="9dp"
                 android:textStyle="bold"
-                android:textColor="@color/colorManB"
-                android:layout_gravity="right"
-                />
+                android:textColor="@color/colorPoint"/>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_gravity="right"
-                >
-                <TextView
-                    android:id="@+id/time"
-                    android:layout_width="51dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:text="오전 04:34"
-                    android:textSize="10dp"
-                    android:fontFamily="@font/roboto_font_family"
-                    android:textColor="@color/colorGray"
-                    android:layout_marginLeft="6dp"
-                    />
+                android:orientation="horizontal">
                 <LinearLayout
                     android:id="@+id/chatting_box"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/top_right_rounded_blue"
+                    android:background="@drawable/top_left_rounded_orange"
                     android:orientation="vertical"
                     android:layout_marginTop="3dp"
                     >
@@ -77,15 +61,40 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:orientation="vertical"
                             android:paddingRight="10dp">
                             <TextView
-                                android:id="@+id/chatting_content"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
                                 android:maxWidth="210dp"
-                                android:text="안녕하세요!"
-                                android:fontFamily="@font/nanumgothic_font_family"
-                                android:textSize="10dp" />
+                                android:text="장소를 정해주세요"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textSize="19dp"
+                                android:textColor="@color/colorPoint"
+                                />
+                            <TextView
+                                android:id="@+id/chatting_content_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="7dp"
+                                android:maxWidth="210dp"
+                                android:text="지역별로 야미구에서 미팅하기 좋은 매장을 추천해주고 있어요!\n\n아래 추천 매장에서 미팅을 진행해보세요!"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textSize="10dp"
+                                android:textColor="@color/colorBlack"
+                                />
+                            <Button
+                                android:id="@+id/btn_view_recommendation"
+                                android:layout_width="180dp"
+                                android:layout_height="37dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="46dp"
+                                android:background="@drawable/ic_filter_state_orange2"
+                                android:text="추천 매장 보기"
+                                android:textSize="14dp"
+                                android:fontFamily="@font/binggrae_font_family"
+                                android:textColor="@color/colorPoint" />
                         </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
@@ -93,7 +102,17 @@
                         android:layout_height="10dp">
                     </LinearLayout>
                 </LinearLayout>
-
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="51dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="오전 04:34"
+                    android:textSize="10dp"
+                    android:fontFamily="@font/roboto_font_family"
+                    android:textColor="@color/colorGray"
+                    android:layout_marginLeft="6dp"
+                    />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

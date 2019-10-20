@@ -24,6 +24,8 @@
     <color name="colorStar">#FFBC4E</color>
     <color name="colorBlue">#3129FF</color>
     <color name="colorMan">#E7E6FF</color>
+    <color name="colorManB">#298CFF</color>
     <color name="colorWoman">#FFE6F8</color>
+    <color name="colorWomanB">#FF538F</color>
     <color name="colorPointBG">#FFF2E6</color>
 </resources>
