@@ -64,9 +64,9 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     public static final int VIEW_TYPE_USER_MESSAGE = 0;
     public static final int VIEW_TYPE_PARTNER_MESSAGE = 1;
     public static final int VIEW_TYPE_MANAGER_MESSAGE = 2;
-    public static final String MANAGER_WELCOME_TAG = "manager-welcome-content";
-    public static final String MANAGER_PRECAUTIONS_TAG = "manager-precautions-content";
-    public static final String MANAGER_PLACE_TAG = "manager-place-content";
+    public static final String MANAGER_WELCOME_TAG = "###manager-welcome-content###";
+    public static final String MANAGER_PRECAUTIONS_TAG = "###manager-precautions-content###";
+    public static final String MANAGER_PLACE_TAG = "###manager-place-content###";
     private ListMessageAdapter mAdapter;
     private Toolbar tb;
     private FirebaseDatabase mFirebaseDatabase;
@@ -137,21 +137,14 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         ChatData auto_Chat3 = new ChatData();
         auto_Chat1.userName = manager_name;
         auto_Chat1.idSender = manager_uid;
-        auto_Chat1.idReceiver = matching_id;
         auto_Chat1.message = MANAGER_WELCOME_TAG;
         auto_Chat1.time = accepted_at;
 
         auto_Chat2.userName = manager_name;
         auto_Chat2.idSender = manager_uid;
-        auto_Chat2.idReceiver = matching_id;
         auto_Chat2.message = MANAGER_PRECAUTIONS_TAG;
         auto_Chat2.time = accepted_at;
 
-        auto_Chat3.userName = manager_name;
-        auto_Chat3.idSender = manager_uid;
-        auto_Chat3.idReceiver = matching_id;
-        auto_Chat3.message = MANAGER_PLACE_TAG;
-        auto_Chat3.time = accepted_at;
         conversation.getListMessageData().add(auto_Chat1);
         conversation.getListMessageData().add(auto_Chat2);
         mAdapter.notifyDataSetChanged();
@@ -229,9 +222,9 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                 if(dataSnapshot.getValue() != null) {
                     HashMap mapMessage = (HashMap) dataSnapshot.getValue();
                     ChatData chatData = new ChatData();
+                    chatData.id = (String) mapMessage.get("id");
                     chatData.userName = (String) mapMessage.get("userName");
                     chatData.idSender = (String) mapMessage.get("idSender");
-                    chatData.idReceiver = (String) mapMessage.get("idReceiver");
                     chatData.message = (String) mapMessage.get("message");
                     chatData.time = (long) mapMessage.get("time");
                     conversation.getListMessageData().add(chatData);
@@ -266,10 +259,12 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             ChatData chatData = new ChatData();
             chatData.userName = nickname;
             chatData.idSender = uid;
-            chatData.idReceiver = meeting_id;
             chatData.message = message;
             chatData.time = System.currentTimeMillis();
-            FirebaseDatabase.getInstance().getReference().child("message/" + matching_id).push().setValue(chatData);
+            DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference().child("message/" + matching_id);
+            String key = messageRef.push().getKey();
+            chatData.id = key;
+            messageRef.child(key).setValue(chatData);
             int count_me = 0;
             for(int i =0; i < conversation.getListMessageData().size(); i++) {
                 if(conversation.getListMessageData().get(i).idSender.equals(uid)) {
@@ -282,7 +277,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                         ChatData chatData_place = new ChatData();
                         chatData_place.userName = manager_name;
                         chatData_place.idSender = manager_uid;
-                        chatData_place.idReceiver = meeting_id;
                         chatData_place.message = MANAGER_PLACE_TAG;
                         chatData_place.time = System.currentTimeMillis();
                         FirebaseDatabase.getInstance().getReference().child("message/" + matching_id).push().setValue(chatData_place);
@@ -339,7 +333,7 @@ class ListMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        SimpleDateFormat format = new SimpleDateFormat( "a hh:mm");
+        SimpleDateFormat format = new SimpleDateFormat( "a h:mm");
         if (holder instanceof ItemMessagePartnerHolder) {
             ((ItemMessagePartnerHolder) holder).usrName.setText(conversation.getListMessageData().get(position).userName);
             ((ItemMessagePartnerHolder) holder).txtContent.setText(conversation.getListMessageData().get(position).message);

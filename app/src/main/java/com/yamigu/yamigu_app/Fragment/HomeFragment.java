@@ -775,7 +775,10 @@ public class HomeFragment extends Fragment {
                             final int manager_uid_final = manager_uid;
                             final String manager_name_final = manager_name;
                             final long accepted_at_final = accepted_at;
+                            SimpleDateFormat format = new SimpleDateFormat( "a hh:mm");
                             myMeetingCardFrame.mmc_c_list[i].setVisibility(View.VISIBLE);
+                            myMeetingCardFrame.mmc_c_list[i].time.setText(format.format(accepted_at));
+                            myMeetingCardFrame.mmc_c_list[i].chat_content.setText("매칭이 완료되었습니다. 채팅을 시작해보세요!");
                             myMeetingCardFrame.mmc_c_list[i].setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
