@@ -42,11 +42,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.yamigu.yamigu_app.Adapter.ChatMessageAdapter;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.Etc.Model.ChatData;
 import com.yamigu.yamigu_app.Etc.Model.Conversation;
+import com.yamigu.yamigu_app.Etc.Model.UnreadMessage;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
 
@@ -70,7 +72,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     private ListMessageAdapter mAdapter;
     private Toolbar tb;
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mDatabaseReference;
+    private DatabaseReference mDatabaseReference, unreadChatReference;
     private ChildEventListener mChildEventListener;
     //private ArrayAdapter<ChatData> mAdapter;
     private ListView mListView;
@@ -212,10 +214,25 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
+    private void deleteUnreadChatData(String message_id){
+        Query deleteQuery = unreadChatReference.equalTo(message_id);
+        deleteQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot delData: dataSnapshot.getChildren()){
+                    delData.getRef().removeValue();
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
     private void initFirebaseDatabase() {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference("message/" + matching_id);
+        unreadChatReference = mFirebaseDatabase.getReference("user/" + uid  + "/unreadMessages");
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -228,6 +245,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                     chatData.message = (String) mapMessage.get("message");
                     chatData.time = (long) mapMessage.get("time");
                     conversation.getListMessageData().add(chatData);
+                    deleteUnreadChatData(chatData.id);
                     mAdapter.notifyDataSetChanged();
                     linearLayoutManager.scrollToPosition(conversation.getListMessageData().size() - 1);
                 }
@@ -262,9 +280,15 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             chatData.message = message;
             chatData.time = System.currentTimeMillis();
             DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference().child("message/" + matching_id);
+            DatabaseReference partnerRef = FirebaseDatabase.getInstance().getReference().child("user/" + partner_uid + "/unreadMessages");
             String key = messageRef.push().getKey();
             chatData.id = key;
             messageRef.child(key).setValue(chatData);
+            UnreadMessage unreadMessage = new UnreadMessage();
+            unreadMessage.message_id = key;
+            String key2 = partnerRef.child(key).push().getKey();
+            unreadMessage.id = key2;
+            partnerRef.child(key2).setValue(unreadMessage);
             int count_me = 0;
             for(int i =0; i < conversation.getListMessageData().size(); i++) {
                 if(conversation.getListMessageData().get(i).idSender.equals(uid)) {
