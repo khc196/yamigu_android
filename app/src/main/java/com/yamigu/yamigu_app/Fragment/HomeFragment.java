@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,14 +41,19 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.yamigu.yamigu_app.Activity.ChattingActivity;
 import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat;
 import com.yamigu.yamigu_app.Etc.ImageUtils;
+import com.yamigu.yamigu_app.Etc.Model.ChatData;
 import com.yamigu.yamigu_app.R;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.Activity.TicketOnboardingActivity;
@@ -62,19 +68,23 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
     private Toolbar tb;
-    private String auth_token;
+    private String auth_token, uid;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
 
     private Context context;
     MyMeetingCardFrame myMeetingCardFrame;
     private RelativeLayout btn_go_yamigu;
-    private DatabaseReference userDB;
+    private DatabaseReference userDB, managerDB;
+
 
     public static int ACTION_START_CHAT = 1;
 
@@ -125,7 +135,8 @@ public class HomeFragment extends Fragment {
         editor = preferences.edit();
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         auth_token = preferences.getString("auth_token", "");
-
+        uid = preferences.getString("uid", "");
+        userDB = FirebaseDatabase.getInstance().getReference("user/" + uid);
         tb = (Toolbar) view.findViewById(R.id.toolbar) ;
         ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
@@ -181,6 +192,75 @@ public class HomeFragment extends Fragment {
                 return true;
         }
         return true;
+    }
+    private DatabaseReference loadMessages(int matching_id, ChildEventListener mChildEventListener) {
+        DatabaseReference receivedChatReference = userDB.child("receivedMessages").child(""+matching_id);
+
+        receivedChatReference.addChildEventListener(mChildEventListener);
+        return receivedChatReference;
+    }
+    private ChildEventListener makeChildEventLisener(final MyMeetingCard_Chat myMeetingCard_chat, int matching_id) {
+        final DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("message/" + matching_id);
+        ChildEventListener mChildEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if(dataSnapshot.getValue() != null) {
+                    HashMap mapMessage = (HashMap) dataSnapshot.getValue();
+                    boolean isUnread = (boolean) mapMessage.get("isUnread");
+                    String id = (String) mapMessage.get("id");
+                    if(isUnread) {
+                        try {
+                            myMeetingCard_chat.unread_count.setVisibility(View.VISIBLE);
+                            int unreadCount = Integer.parseInt(myMeetingCard_chat.unread_count.getText().toString()) + 1;
+                            myMeetingCard_chat.unread_count.setText("" + unreadCount);
+                        } catch(NullPointerException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    chatReference.child(id).addValueEventListener(makeValueEventListener(myMeetingCard_chat));
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        return mChildEventListener;
+    }
+    private ValueEventListener makeValueEventListener(final MyMeetingCard_Chat myMeetingCard_chat) {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null) {
+                    try {
+                        ChatData chatData = dataSnapshot.getValue(ChatData.class);
+                        myMeetingCard_chat.chat_content.setText(chatData.message);
+                        SimpleDateFormat format = new SimpleDateFormat("a h:mm");
+                        String time = format.format(chatData.time);
+                        myMeetingCard_chat.time.setText(time);
+                    } catch(NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        return valueEventListener;
     }
     private void createPastMeetingCard(final JSONObject json_data) {
         try {
@@ -763,7 +843,8 @@ public class HomeFragment extends Fragment {
                                     }
                                 }
                             }
-                            userDB = FirebaseDatabase.getInstance().getReference().child("user").child(""+manager_uid);
+
+                            managerDB = FirebaseDatabase.getInstance().getReference().child("user").child(""+manager_uid);
 
                             if(!manager_profile_url.isEmpty()) {
                                 ContentValues values = new ContentValues();
@@ -775,14 +856,21 @@ public class HomeFragment extends Fragment {
                             final int manager_uid_final = manager_uid;
                             final String manager_name_final = manager_name;
                             final long accepted_at_final = accepted_at;
-                            SimpleDateFormat format = new SimpleDateFormat( "a hh:mm");
+                            SimpleDateFormat format = new SimpleDateFormat( "a h:mm");
                             myMeetingCardFrame.mmc_c_list[i].setVisibility(View.VISIBLE);
                             myMeetingCardFrame.mmc_c_list[i].time.setText(format.format(accepted_at));
                             myMeetingCardFrame.mmc_c_list[i].chat_content.setText("매칭이 완료되었습니다. 채팅을 시작해보세요!");
+                            myMeetingCardFrame.mmc_c_list[i].unread_count.setText("0");
+                            myMeetingCardFrame.mmc_c_list[i].unread_count.setVisibility(View.INVISIBLE);
+
+                            final ChildEventListener mChildEventListener = makeChildEventLisener(myMeetingCardFrame.mmc_c_list[i], matching_id);
+
+                            final DatabaseReference mdatabaseReference =loadMessages(matching_id, mChildEventListener);
                             myMeetingCardFrame.mmc_c_list[i].setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     Intent intent = new Intent(getContext(), ChattingActivity.class);
+                                    ((MyMeetingCard_Chat)view).unread_count.setText("0");
                                     intent.putExtra("meeting_id", ""+meeting_id);
                                     intent.putExtra("matching_id", ""+matching_id_final);
                                     intent.putExtra("partner_uid", ""+partner_uid_final);
@@ -797,6 +885,7 @@ public class HomeFragment extends Fragment {
                                     intent.putExtra("date", date);
                                     intent.putExtra("date_m", date_m);
                                     intent.putExtra("type", type);
+                                    mdatabaseReference.removeEventListener(mChildEventListener);
                                     startActivity(intent);
                                     ((MainActivity)context).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                                 }
@@ -912,7 +1001,7 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(Bitmap bm) {
             final String imageBase64 = ImageUtils.encodeBase64(bm);
-            userDB.child("avata").setValue(imageBase64)
+            managerDB.child("avata").setValue(imageBase64)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -929,4 +1018,5 @@ public class HomeFragment extends Fragment {
                     });
         }
     }
+
 }

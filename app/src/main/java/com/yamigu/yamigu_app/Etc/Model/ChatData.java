@@ -7,5 +7,4 @@ public class ChatData
     public String idSender;
     public String message;
     public long time;
-    public boolean isRead;
 }

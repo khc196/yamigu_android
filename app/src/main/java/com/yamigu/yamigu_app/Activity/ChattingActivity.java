@@ -2,7 +2,6 @@ package com.yamigu.yamigu_app.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,13 +20,11 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -42,22 +38,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.yamigu.yamigu_app.Adapter.ChatMessageAdapter;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.Etc.Model.ChatData;
 import com.yamigu.yamigu_app.Etc.Model.Conversation;
-import com.yamigu.yamigu_app.Etc.Model.UnreadMessage;
-import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
+import com.yamigu.yamigu_app.Etc.Model.ReceivedMessage;
 import com.yamigu.yamigu_app.R;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
@@ -72,7 +59,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     private ListMessageAdapter mAdapter;
     private Toolbar tb;
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mDatabaseReference, unreadChatReference;
+    private DatabaseReference mDatabaseReference, receivedChatReference;
     private ChildEventListener mChildEventListener;
     //private ArrayAdapter<ChatData> mAdapter;
     private ListView mListView;
@@ -132,7 +119,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         btn_send_message.setOnClickListener(this);
         tv_title = findViewById(R.id.tv_title);
         tv_title.setText(date + " || " + place + " || " + type);
-
+        uid = preferences.getString("uid", "");
         initViews();
         ChatData auto_Chat1 = new ChatData();
         ChatData auto_Chat2 = new ChatData();
@@ -157,8 +144,8 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             // Name, email address, and profile photo Url
             String name = user.getDisplayName();
             photoUrl = user.getPhotoUrl();
-            uid = user.getUid();
         }
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -214,40 +201,39 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
-    private void deleteUnreadChatData(String message_id){
-        Query deleteQuery = unreadChatReference.equalTo(message_id);
-        deleteQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot delData: dataSnapshot.getChildren()){
-                    delData.getRef().removeValue();
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-    }
     private void initFirebaseDatabase() {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference("message/" + matching_id);
-        unreadChatReference = mFirebaseDatabase.getReference("user/" + uid  + "/unreadMessages");
+        receivedChatReference = mFirebaseDatabase.getReference("user/" + uid  + "/receivedMessages/" + matching_id);
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(dataSnapshot.getValue() != null) {
-                    HashMap mapMessage = (HashMap) dataSnapshot.getValue();
-                    ChatData chatData = new ChatData();
-                    chatData.id = (String) mapMessage.get("id");
-                    chatData.userName = (String) mapMessage.get("userName");
-                    chatData.idSender = (String) mapMessage.get("idSender");
-                    chatData.message = (String) mapMessage.get("message");
-                    chatData.time = (long) mapMessage.get("time");
-                    conversation.getListMessageData().add(chatData);
-                    deleteUnreadChatData(chatData.id);
-                    mAdapter.notifyDataSetChanged();
-                    linearLayoutManager.scrollToPosition(conversation.getListMessageData().size() - 1);
+                    try {
+                        HashMap mapMessage = (HashMap) dataSnapshot.getValue();
+                        ChatData chatData = new ChatData();
+                        chatData.id = (String) mapMessage.get("id");
+                        chatData.userName = (String) mapMessage.get("userName");
+                        chatData.idSender = (String) mapMessage.get("idSender");
+                        chatData.message = (String) mapMessage.get("message");
+                        chatData.time = (long) mapMessage.get("time");
+                        conversation.getListMessageData().add(chatData);
+                        if(!chatData.idSender.equals(uid)) {
+                            ReceivedMessage receivedMessage = new ReceivedMessage();
+                            receivedMessage.id = chatData.id;
+                            receivedMessage.isUnread = false;
+                            try {
+                                receivedChatReference.child(chatData.id).setValue(receivedMessage);
+                            } catch(NullPointerException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        linearLayoutManager.scrollToPosition(conversation.getListMessageData().size() - 1);
+                    } catch(ClassCastException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -280,15 +266,17 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             chatData.message = message;
             chatData.time = System.currentTimeMillis();
             DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference().child("message/" + matching_id);
-            DatabaseReference partnerRef = FirebaseDatabase.getInstance().getReference().child("user/" + partner_uid + "/unreadMessages");
+            DatabaseReference partnerRef = FirebaseDatabase.getInstance().getReference().child("user/" + partner_uid + "/receivedMessages");
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("user/" + uid + "/receivedMessages");
             String key = messageRef.push().getKey();
             chatData.id = key;
             messageRef.child(key).setValue(chatData);
-            UnreadMessage unreadMessage = new UnreadMessage();
-            unreadMessage.message_id = key;
-            String key2 = partnerRef.child(key).push().getKey();
-            unreadMessage.id = key2;
-            partnerRef.child(key2).setValue(unreadMessage);
+            ReceivedMessage receivedMessage = new ReceivedMessage();
+            receivedMessage.id = key;
+            receivedMessage.isUnread = true;
+            partnerRef.child(matching_id).child(key).setValue(receivedMessage);
+            receivedMessage.isUnread = false;
+            userRef.child(matching_id).child(key).setValue(receivedMessage);
             int count_me = 0;
             for(int i =0; i < conversation.getListMessageData().size(); i++) {
                 if(conversation.getListMessageData().get(i).idSender.equals(uid)) {
@@ -303,7 +291,10 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                         chatData_place.idSender = manager_uid;
                         chatData_place.message = MANAGER_PLACE_TAG;
                         chatData_place.time = System.currentTimeMillis();
-                        FirebaseDatabase.getInstance().getReference().child("message/" + matching_id).push().setValue(chatData_place);
+                        String key2 = messageRef.push().getKey();
+                        chatData_place.id = key2;
+                        messageRef.child(key2).setValue(chatData_place);
+
                         break;
                     }
                 }
