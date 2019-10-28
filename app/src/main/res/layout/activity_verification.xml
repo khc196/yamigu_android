@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.VerificationActivity"
+    android:background="@color/colorPrimary">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/colorPrimary"
+            android:theme="@style/MyActionBar2"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:text="본인인증"
+                android:textSize="14dp"
+                android:textColor="@color/colorNormal"
+                android:fontFamily="@font/nanumgothic_font_family"
+                android:textStyle="bold">
+            </TextView>
+        </androidx.appcompat.widget.Toolbar>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:orientation="vertical"
+            android:background="@drawable/warning_pane_bg"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_warning"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="9dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="휴대폰 본인 인증 + 학교/직장 인증"
+                android:textSize="11dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/colorNormal"
+                android:layout_marginTop="6.2dp"
+                android:fontFamily="@font/roboto_font_family"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="야미구는 이중 인증을 완료한 회원만이 이용 가능합니다."
+                android:textSize="15dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/colorNormal"
+                android:layout_marginTop="11.2dp"
+                android:fontFamily="@font/roboto_font_family"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="친구들과 안전한 미팅하세요! "
+                android:textSize="12dp"
+                android:textColor="@color/colorNonselect"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="6.6dp"
+                android:fontFamily="@font/roboto_font_family"/>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/fingerprint"
+                android:layout_marginBottom="113dp"
+                android:layout_centerHorizontal="true"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="113dp"
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true"
+                >
+                <Button
+                    android:id="@+id/btn_verify_phone"
+                    android:layout_width="298dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/state_pressed_blue"
+                    android:text="휴대폰으로 본인 인증하기"
+                    android:textColor="#32A4E0"
+                    android:textSize="14dp"
+                    android:layout_gravity="center_horizontal"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:fontFamily="@font/roboto_font_family"
+                    />
+                <TextView
+                    android:layout_width="298dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="- 핸드폰 인증은 허위중복가입을 막기 위한 인증입니다."
+                    android:textSize="12dp"
+                    android:textColor="@color/colorNormal"
+                    android:layout_marginTop="7.3dp"
+                    android:fontFamily="@font/roboto_font_family"
+                    />
+                <TextView
+                    android:layout_width="298dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="- 본인 명의의 휴대폰으로만 가입이 가능합니다."
+                    android:textSize="12dp"
+                    android:textColor="@color/colorNormal"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/roboto_font_family"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

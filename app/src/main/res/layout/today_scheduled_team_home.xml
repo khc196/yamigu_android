@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bg"
+    android:layout_height="116dp"
+    android:layout_width="394dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:orientation="vertical"
+    android:background="@drawable/card_with_shadow_2">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/label"
+                android:background="@drawable/label_2vs2_bg"
+                android:layout_width="99dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="7dp"
+                android:scaleType="fitStart"
+                android:textColor="@color/colorPrimary"
+                android:text="2:2 소개팅"
+                android:textSize="12dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:fontFamily="@font/nanumgothic_font_family">
+            </TextView>
+        <TextView
+            android:id="@+id/place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="신촌/홍대"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:fontFamily="@font/nanumgothic_font_family"
+            />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/man"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold"
+                android:text="연세대학교 24살"
+                android:textSize="16dp"
+                android:textColor="#6196FF"
+                android:fontFamily="@font/nanumgothic_font_family"
+                />
+            <TextView
+                android:id="@+id/woman"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold"
+                android:text="이화여자대학교 21살"
+                android:textSize="16dp"
+                android:textColor="#FF4141"
+                android:fontFamily="@font/nanumgothic_font_family"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

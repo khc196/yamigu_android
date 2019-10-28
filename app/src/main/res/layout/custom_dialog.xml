@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="295dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="@drawable/rounded_orange_solid2"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:textColor="@color/colorBlack"
+        android:text="매칭 완료!"
+        android:fontFamily="@font/nanumgothic_font_family"/>
+    <TextView
+        android:id="@+id/dialog_text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7.4dp"
+        android:gravity="center"
+        android:textSize="14dp"
+        android:textColor="@color/colorPoint"
+        android:text="윤용섭님,"
+        android:fontFamily="@font/nanumgothic_font_family"/>
+    <TextView
+        android:id="@+id/dialog_text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="14dp"
+        android:textColor="@color/colorPoint"
+        android:text="야미구에서"
+        android:fontFamily="@font/nanumgothic_font_family"/>
+    <TextView
+        android:id="@+id/dialog_text3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="14dp"
+        android:textColor="@color/colorPoint"
+        android:text="3번째 미팅도 재밌게 하세요!"
+        android:layout_marginBottom="34dp"
+        android:fontFamily="@font/nanumgothic_font_family"/>
+</LinearLayout>

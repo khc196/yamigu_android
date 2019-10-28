@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="610">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="48"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </RelativeLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="354">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/onboarding_title1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Title1"
+                        android:textSize="31dp"
+                        android:textColor="@color/colorPoint"
+                        android:gravity="center_horizontal"
+                        android:fontFamily="@font/roboto_font_family"/>
+                    <TextView
+                        android:id="@+id/onboarding_title2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Title2"
+                        android:textSize="31dp"
+                        android:textColor="@color/colorPoint"
+                        android:gravity="center_horizontal"
+                        android:fontFamily="@font/roboto_font_family"
+                        />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/onboarding_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/onboarding1"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="139dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="305dp">
+                    <TextView
+                        android:id="@+id/onboarding_desc1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Desc1"
+                        android:textSize="18dp"
+                        android:textColor="#433E3E"
+                        android:gravity="center_horizontal"
+                        android:fontFamily="@font/roboto_font_family"/>
+                    <TextView
+                        android:id="@+id/onboarding_desc2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Desc2"
+                        android:textSize="18dp"
+                        android:textColor="#433E3E"
+                        android:gravity="center_horizontal"
+                        android:fontFamily="@font/roboto_font_family"/>
+                </LinearLayout>
+
+            </FrameLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

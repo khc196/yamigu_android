@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="24dp"
+    android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/counter"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|left"
+            android:text="0"
+            android:textSize="14dp"
+            android:padding="0dp"
+            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/roboto_font_family"/>
+</RelativeLayout>

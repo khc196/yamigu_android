@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yamigu.yamigu_app">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more. -->
+    <!--meta-data
+        android:name="com.google.firebase.messaging.default_notification_icon"
+        android:resource="@drawable/ic_static_notification" /-->
+    <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+         notification message. See README(https://goo.gl/6BKBk7) for more. -->
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/colorAccent" />
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_channel_id"
+        android:value="@string/default_notification_channel_id" />
+    <application
+        android:name=".Activity.GlobalApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="야미구"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Activity.RequestListActivity"></activity>
+        <activity android:name=".Activity.ChattingActivity"
+            android:windowSoftInputMode="adjustResize" >
+            <intent-filter>
+                <action android:name=".ChattingActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
+
+        <activity android:name=".Activity.TicketActivity" />
+        <activity android:name=".Activity.TermsActivity" />
+        <activity android:name=".Activity.PrivacyActivity" />
+        <activity android:name=".Activity.SettingActivity" />
+        <activity android:name=".Activity.AllianceListActivity" />
+        <activity android:name=".Activity.FAQActivity" />
+        <activity android:name=".Activity.GuideActivity" />
+        <activity android:name=".Activity.WhatisYamiguActivity" />
+        <activity android:name=".Activity.CertificationWActivity" />
+        <activity android:name=".Activity.CertificationUActivity" />
+        <activity
+            android:name=".Activity.SignUpActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".Activity.VerificationActivity" />
+        <activity android:name=".Activity.LoginActivity" />
+        <activity android:name=".Activity.MainOnboardingActivity" />
+        <activity android:name=".Activity.TicketOnboardingActivity" />
+        <activity android:name=".Activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activity.MeetingApplicationActivity" />
+        <activity android:name=".Activity.MainActivity" />
+        <service
+            android:name=".Etc.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>
