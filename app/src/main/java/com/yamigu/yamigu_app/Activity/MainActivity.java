@@ -1,6 +1,7 @@
 package com.yamigu.yamigu_app.Activity;
 
 import android.app.Activity;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
-import android.view.KeyEvent;
+
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
         homeFragment = new HomeFragment();
         loadFragment(homeFragment);
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override

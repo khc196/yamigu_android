@@ -1,9 +1,13 @@
 package com.yamigu.yamigu_app.Activity;
 
+
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.view.KeyEvent;
+
+
+import android.app.Application;
+import android.content.Context;
 
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
@@ -13,6 +17,7 @@ import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
 public class GlobalApplication extends Application {
     private static GlobalApplication instance;
+
     private Activity mCurrentActivity = null;
 
     public static GlobalApplication getGlobalApplicationContext() {
@@ -40,7 +45,6 @@ public class GlobalApplication extends Application {
         mCurrentActivity = null;
         instance = null;
     }
-
     private static class KakaoSDKAdapter extends KakaoAdapter {
         /**
          * Session Config에 대해서는 default값들이 존재한다.

@@ -2,11 +2,14 @@ package com.yamigu.yamigu_app.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.app.Activity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.KeyEvent;
+import android.os.Bundle;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
 
 import com.yamigu.yamigu_app.R;
@@ -28,6 +31,7 @@ public class AllianceListActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override

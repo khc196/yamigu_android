@@ -4,7 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+
 import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -21,7 +23,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -581,6 +583,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 }
             });
         }
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override
@@ -593,6 +596,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         Activity currActivity = ((GlobalApplication)getApplicationContext()).getCurrentActivity();
         if (this.equals(currActivity))
             ((GlobalApplication)getApplicationContext()).setCurrentActivity(null);
+
     }
     @Override
     public void onBackPressed() {

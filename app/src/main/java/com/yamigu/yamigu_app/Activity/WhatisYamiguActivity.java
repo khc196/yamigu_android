@@ -1,7 +1,6 @@
 package com.yamigu.yamigu_app.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
@@ -49,7 +48,6 @@ public class WhatisYamiguActivity extends AppCompatActivity {
         if (this.equals(currActivity))
             ((GlobalApplication)getApplicationContext()).setCurrentActivity(null);
     }
-
     @Override
     public void onBackPressed() {
         finish();

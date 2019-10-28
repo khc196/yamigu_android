@@ -1,13 +1,14 @@
 package com.yamigu.yamigu_app.Activity;
 
+
 import android.app.Activity;
+
 import android.content.Intent;
 import android.graphics.Paint;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -48,6 +49,7 @@ public class CertificationWActivity extends AppCompatActivity {
         });
         btn_skip = (TextView) findViewById(R.id.btn_skip);
         btn_skip.setPaintFlags(btn_skip.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override

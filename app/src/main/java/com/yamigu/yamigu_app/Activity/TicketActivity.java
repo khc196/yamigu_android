@@ -49,6 +49,7 @@ public class TicketActivity extends AppCompatActivity {
                 ticket_2.setBackgroundResource(selector.isSecond() ? R.drawable.shadow_box_orange : R.drawable.shadow_box);
             }
         });
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override

@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.KeyEvent;
 import android.view.View;
 
 import com.yamigu.yamigu_app.R;
@@ -28,6 +27,7 @@ public class TermsActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override
@@ -40,6 +40,7 @@ public class TermsActivity extends AppCompatActivity {
         Activity currActivity = ((GlobalApplication)getApplicationContext()).getCurrentActivity();
         if (this.equals(currActivity))
             ((GlobalApplication)getApplicationContext()).setCurrentActivity(null);
+
     }
     @Override
     public void onBackPressed() {

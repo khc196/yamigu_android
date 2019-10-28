@@ -1,6 +1,8 @@
 package com.yamigu.yamigu_app.Activity;
 
+
 import android.app.Activity;
+
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -88,6 +89,7 @@ public class CertificationUActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
         });
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override
@@ -100,6 +102,7 @@ public class CertificationUActivity extends AppCompatActivity {
         Activity currActivity = ((GlobalApplication)getApplicationContext()).getCurrentActivity();
         if (this.equals(currActivity))
             ((GlobalApplication)getApplicationContext()).setCurrentActivity(null);
+
     }
     @Override
     public void onBackPressed() {

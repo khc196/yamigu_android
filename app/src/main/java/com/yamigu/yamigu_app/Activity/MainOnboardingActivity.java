@@ -1,12 +1,13 @@
 package com.yamigu.yamigu_app.Activity;
 
+
 import android.app.Activity;
 import android.content.Intent;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
+
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -112,6 +113,7 @@ public class MainOnboardingActivity extends AppCompatActivity {
                 }
             }
         });
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override
@@ -124,5 +126,6 @@ public class MainOnboardingActivity extends AppCompatActivity {
         Activity currActivity = ((GlobalApplication)getApplicationContext()).getCurrentActivity();
         if (this.equals(currActivity))
             ((GlobalApplication)getApplicationContext()).setCurrentActivity(null);
+
     }
 }

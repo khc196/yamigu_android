@@ -2,8 +2,10 @@ package com.yamigu.yamigu_app.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.app.Activity;
 import android.content.ContentValues;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +13,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+
 import android.os.AsyncTask;
+
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,8 +27,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
-import android.util.Log;
-import android.view.KeyEvent;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,11 +51,14 @@ import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.Etc.Model.ChatData;
 import com.yamigu.yamigu_app.Etc.Model.Conversation;
 import com.yamigu.yamigu_app.Etc.Model.ReceivedMessage;
+
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.yamigu.yamigu_app.R;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -77,7 +83,9 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     private TextView tv_title;
     private LinearLayoutManager linearLayoutManager;
     public static SharedPreferences preferences;
+
     public static String nickname, date, date_m, place, type, matching_id, meeting_id, partner_name, manager_name, manager_name_orig;
+
     private long accepted_at;
     public static String uid, partner_uid, manager_uid;
     private Uri photoUrl;
@@ -87,7 +95,9 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     public static int gender; // my gender
     public static int partner_age;
     public static String partner_belong, partner_department;
+
     private String auth_token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +105,9 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         tb = (Toolbar) findViewById(R.id.toolbar) ;
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         nickname = preferences.getString("nickname", "");
+
         auth_token = preferences.getString("auth_token", "");
+
         Intent intent = getIntent();
 
         partner_age = intent.getExtras().getInt("partner_age");
@@ -108,8 +120,11 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         type = intent.getExtras().getString("type");
         meeting_id = intent.getExtras().getString("meeting_id");
         matching_id = intent.getExtras().getString("matching_id");
+
         manager_name_orig = intent.getExtras().getString("manager_name");
         manager_name = "야미구 매니저 " + manager_name_orig;
+
+
         partner_uid = intent.getExtras().getString("partner_uid");
         manager_uid = intent.getExtras().getString("manager_uid");
         accepted_at = intent.getExtras().getLong("accepted_at");
@@ -156,6 +171,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             String name = user.getDisplayName();
             photoUrl = user.getPhotoUrl();
         }
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override
@@ -168,6 +184,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         Activity currActivity = ((GlobalApplication)getApplicationContext()).getCurrentActivity();
         if (this.equals(currActivity))
             ((GlobalApplication)getApplicationContext()).setCurrentActivity(null);
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -333,6 +350,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
             int count_me = 0;
             for(int i =0; i < conversation.getListMessageData().size(); i++) {
                 if(conversation.getListMessageData().get(i).idSender.equals(uid)) {

@@ -2,7 +2,9 @@ package com.yamigu.yamigu_app.Activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+
 import android.app.Activity;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.view.KeyEvent;
+
 import android.view.View;
 import android.widget.ImageView;
 
@@ -43,7 +45,6 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
-import com.yamigu.yamigu_app.Etc.MyFirebaseMessagingService;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
 
@@ -140,6 +141,7 @@ public class SplashActivity extends AppCompatActivity {
         if(!session.checkAndImplicitOpen()) {
             session.open(AuthType.KAKAO_ACCOUNT, SplashActivity.this);
         }
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
 

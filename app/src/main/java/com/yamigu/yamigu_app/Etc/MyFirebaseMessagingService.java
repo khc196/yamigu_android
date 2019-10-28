@@ -146,10 +146,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d("Content", message);
         Log.d("data", intent_args.toString());
         Intent intent;
-        Log.d("CURRENTACTIVITYNAME", ((GlobalApplication)getApplicationContext()).getCurrentActivity().getLocalClassName());
+        try {
+            Log.d("CURRENTACTIVITYNAME", ((GlobalApplication) getApplicationContext()).getCurrentActivity().getLocalClassName());
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+        }
         if(activityName.equals(".ChattingActivity")) {
-            if(((GlobalApplication)getApplicationContext()).getCurrentActivity().getLocalClassName().equals("Activity.ChattingActivity")) {
-                return;
+            try {
+                if (((GlobalApplication) getApplicationContext()).getCurrentActivity().getLocalClassName().equals("Activity.ChattingActivity")) {
+                    return;
+                }
+            } catch(NullPointerException e) {
+                e.printStackTrace();
             }
             intent = new Intent(this, ChattingActivity.class);
             try {
@@ -211,7 +219,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             builder.setSound(defaultSoundUri);
             builder.setVibrate(new long[]{500, 500});
         }
-
         mManager.notify(0, builder.build());
     }
     @Override
@@ -255,6 +262,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
         }
+
     }
 }
 

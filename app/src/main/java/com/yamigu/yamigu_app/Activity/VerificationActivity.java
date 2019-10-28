@@ -7,8 +7,6 @@ import android.preference.PreferenceManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
-
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 

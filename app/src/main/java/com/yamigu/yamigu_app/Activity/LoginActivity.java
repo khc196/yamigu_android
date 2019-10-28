@@ -1,6 +1,7 @@
 package com.yamigu.yamigu_app.Activity;
 
 import android.app.Activity;
+
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
+
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -67,8 +68,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         btn_kakao_login = (LoginButton) findViewById(R.id.btn_kakao_login);
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -85,8 +88,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
         Session.getCurrentSession().removeCallback(callback);
     }
-
-
     private void clearReferences(){
         Activity currActivity = ((GlobalApplication)getApplicationContext()).getCurrentActivity();
         if (this.equals(currActivity))

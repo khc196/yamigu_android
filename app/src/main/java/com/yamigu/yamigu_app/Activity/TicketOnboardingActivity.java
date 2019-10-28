@@ -7,8 +7,6 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -98,6 +96,7 @@ public class TicketOnboardingActivity extends AppCompatActivity {
                 }
             }
         });
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override
