@@ -2,6 +2,7 @@ package com.yamigu.yamigu_app.Activity;
 
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 
@@ -15,6 +16,9 @@ import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
+
+import java.util.List;
+
 public class GlobalApplication extends Application {
     private static GlobalApplication instance;
 
@@ -31,6 +35,20 @@ public class GlobalApplication extends Application {
     }
     public void setCurrentActivity(Activity mCurrentActivity){
         this.mCurrentActivity = mCurrentActivity;
+    }
+    public static boolean isAppOnForeground(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null) {
+            return false;
+        }
+        final String packageName = context.getPackageName();
+        for(ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if(appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName.equals(packageName)) {
+                return true;
+            }
+        }
+        return false;
     }
     @Override
     public void onCreate() {

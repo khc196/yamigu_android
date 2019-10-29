@@ -814,8 +814,8 @@ public class HomeFragment extends Fragment {
                             final String type = type_array[jsonArray.getJSONObject(i).getInt("meeting_type") - 1];
                             String before_date = jsonArray.getJSONObject(i).getString("date");
                             Date date_obj = new SimpleDateFormat("yyyy-MM-dd").parse(before_date);
-                            final String date = date_obj.getDate() + "일";
-                            final String date_m = date_obj.getMonth() + "월" + " " + date_obj.getDate() + "일";
+                            final String date_day = date_obj.getDate() + "일";
+                            final String date = date_obj.getMonth() + "월" + " " + date_obj.getDate() + "일";
                             boolean flag = false;
                             String manager_profile_url = "";
                             for(int j = 0 ; j < received_request.getInt("count"); j++) {
@@ -883,7 +883,6 @@ public class HomeFragment extends Fragment {
                                     intent.putExtra("partner_nickname", partner_nickname);
                                     intent.putExtra("place", place);
                                     intent.putExtra("date", date);
-                                    intent.putExtra("date_m", date_m);
                                     intent.putExtra("type", type);
                                     mdatabaseReference.removeEventListener(mChildEventListener);
                                     startActivity(intent);

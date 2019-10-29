@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,7 +85,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     private LinearLayoutManager linearLayoutManager;
     public static SharedPreferences preferences;
 
-    public static String nickname, date, date_m, place, type, matching_id, meeting_id, partner_name, manager_name, manager_name_orig;
+    public static String nickname, date, date_day, place, type, matching_id, meeting_id, partner_name, manager_name, manager_name_orig;
 
     private long accepted_at;
     public static String uid, partner_uid, manager_uid;
@@ -115,7 +116,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         partner_department = intent.getExtras().getString("partner_department");
         partner_name = intent.getExtras().getString("partner_nickname");
         date = intent.getExtras().getString("date");
-        date_m = intent.getExtras().getString("date_m");
+        date_day = date.split(" ")[1];
         place = intent.getExtras().getString("place");
         type = intent.getExtras().getString("type");
         meeting_id = intent.getExtras().getString("meeting_id");
@@ -322,14 +323,13 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("activity", "ChattingActivity");
-
+                JSONObject data = new JSONObject();
                 JSONObject intent_args = new JSONObject();
                 intent_args.put("partner_age", preferences.getInt("age", 0));
                 intent_args.put("partner_belong", preferences.getString("belong", ""));
                 intent_args.put("partner_department", preferences.getString("department", ""));
                 intent_args.put("partner_nickname", preferences.getString("nickname", ""));
                 intent_args.put("date", date);
-                intent_args.put("date_m", date_m);
                 intent_args.put("place", place);
                 intent_args.put("type", type);
                 intent_args.put("meeting_id", meeting_id);
@@ -338,13 +338,12 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                 intent_args.put("partner_uid", uid);
                 intent_args.put("manager_uid", manager_uid);
                 intent_args.put("accepted_at", accepted_at);
-
-                values.put("clickAction", jsonObject.toString());
-                values.put("click_action", ".ChattingActivity");
-                intent_args.put("title", nickname);
-                intent_args.put("content", message);
-                intent_args.put("clickAction", ".ChattingActivity");
-                values.put("data", intent_args.toString());
+                data.put("title", nickname);
+                data.put("content", message);
+                data.put("clickAction", ".ChattingActivity");
+                data.put("intentArgs", intent_args);
+                Log.d("SendData", data.toString());
+                values.put("data", data.toString());
                 NetworkTask networkTask = new NetworkTask(url, values);
                 networkTask.execute();
             } catch (JSONException e) {
@@ -642,7 +641,7 @@ class ItemMessageManagerHolder extends RecyclerView.ViewHolder {
                 chatting_content_name_and_age_man.setText(ChattingActivity.partner_name + "(" + ChattingActivity.partner_age + ")");
                 chatting_content_belong_man.setText(ChattingActivity.partner_belong + " " + ChattingActivity.partner_department);
             }
-            chatting_content_date.setText(ChattingActivity.date_m);
+            chatting_content_date.setText(ChattingActivity.date_day);
             chatting_content_place.setText(ChattingActivity.place);
             String type_name = "";
             if(ChattingActivity.type.equals("2:2")) {

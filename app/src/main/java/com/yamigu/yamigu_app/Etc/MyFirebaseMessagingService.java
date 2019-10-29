@@ -47,113 +47,35 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(), clickAction, data);
         sendNotification(data);
     }
-
-//    private void sendNotification(String title, String message, String clickAction, JSONObject data) {
-//        if(title == null)
-//            title = "yamigu notification";
-//        String activityName;
-//        JSONObject intent_args = new JSONObject();
-//        activityName = clickAction;
-//        intent_args = data;
-//        Class startActivity = MainActivity.class;
-//        Log.d("ACTIVITYNAME", activityName);
-//        Log.d("Content", message);
-//        Log.d("data", intent_args.toString());
-//        Intent intent;
-//        if(activityName.equals(".ChattingActivity")) {
-//            intent = new Intent(this, ChattingActivity.class);
-//            try {
-//                intent.putExtra("partner_age", intent_args.getInt("partner_age"));
-//                intent.putExtra("partner_belong", intent_args.getString("partner_belong"));
-//                intent.putExtra("partner_department", intent_args.getString("partner_department"));
-//                intent.putExtra("partner_nickname",  intent_args.getString("partner_nickname"));
-//                intent.putExtra("date", intent_args.getString("date"));
-//                intent.putExtra("date_m", intent_args.getString("date_m"));
-//                intent.putExtra("place", intent_args.getString("place"));
-//                intent.putExtra("type", intent_args.getString("type"));
-//                intent.putExtra("meeting_id", intent_args.getString("meeting_id"));
-//                intent.putExtra("matching_id", intent_args.getString("matching_id"));
-//                intent.putExtra("manager_name", intent_args.getString("manager_name"));
-//                intent.putExtra("partner_uid", intent_args.getString("partner_uid"));
-//                intent.putExtra("manager_uid", intent_args.getString("manager_uid"));
-//                intent.putExtra("accepted_at", intent_args.getLong("accepted_at"));
-//            } catch(JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        else {
-//            intent = new Intent(this, MainActivity.class);
-//        }
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-//        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//
-//        // 오레오(8.0) 이상일 경우 채널을 반드시 생성해야 한다.
-//        final String CHANNEL_ID = "yamigu_notification_channel_id";
-//        NotificationManager mManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            final String CHANNEL_NAME = "야미구";
-//            final String CHANNEL_DESCRIPTION = "Channel for yamigu app";
-//            final int importance = NotificationManager.IMPORTANCE_HIGH;
-//
-//            // add in API level 26
-//            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
-//            mChannel.setDescription(CHANNEL_DESCRIPTION);
-//            mChannel.enableLights(true);
-//            mChannel.enableVibration(true);
-//            mChannel.setVibrationPattern(new long[]{100, 200, 100, 200});
-//            mChannel.setSound(defaultSoundUri, null);
-//            mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-//            mManager.createNotificationChannel(mChannel);
-//        }
-//
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
-//        builder.setContentTitle(title);
-//        builder.setAutoCancel(true);
-//        builder.setDefaults(Notification.DEFAULT_ALL);
-//        builder.setWhen(System.currentTimeMillis());
-//        builder.setSmallIcon(R.mipmap.ic_launcher);
-//        builder.setContentText(message);
-//        builder.setContentIntent(pendingIntent);
-//        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-//            // 아래 설정은 오레오부터 deprecated 되면서 NotificationChannel에서 동일 기능을 하는 메소드를 사용.
-//            builder.setContentTitle(title);
-//            builder.setSound(defaultSoundUri);
-//            builder.setVibrate(new long[]{500, 500});
-//        }
-//
-//        mManager.notify(0, builder.build());
-//    }
     private void sendNotification(JSONObject data) {
         String title = "";
         String message = "";
         String clickAction = "";
+        JSONObject intent_args = new JSONObject();
         try {
             title = data.getString("title");
             message = data.getString("content");
             clickAction = data.getString("clickAction");
+            intent_args = new JSONObject(data.getString("intentArgs"));
         } catch(JSONException e) {
             e.printStackTrace();
         }
         if(title == null)
             title = "yamigu notification";
         String activityName;
-        JSONObject intent_args = new JSONObject();
+
         activityName = clickAction;
-        intent_args = data;
-        Class startActivity = MainActivity.class;
+
+
         Log.d("ACTIVITYNAME", activityName);
         Log.d("Content", message);
         Log.d("data", intent_args.toString());
+
         Intent intent;
-        try {
-            Log.d("CURRENTACTIVITYNAME", ((GlobalApplication) getApplicationContext()).getCurrentActivity().getLocalClassName());
-        } catch(NullPointerException e) {
-            e.printStackTrace();
-        }
+
         if(activityName.equals(".ChattingActivity")) {
             try {
-                if (((GlobalApplication) getApplicationContext()).getCurrentActivity().getLocalClassName().equals("Activity.ChattingActivity")) {
+                if (GlobalApplication.isAppOnForeground(getApplicationContext()) && ((GlobalApplication) getApplicationContext()).getCurrentActivity().getLocalClassName().equals("Activity.ChattingActivity")) {
                     return;
                 }
             } catch(NullPointerException e) {
@@ -161,12 +83,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
             intent = new Intent(this, ChattingActivity.class);
             try {
+                Log.d("PARTNER_AGE", ""+intent_args.getInt("partner_age"));
                 intent.putExtra("partner_age", intent_args.getInt("partner_age"));
                 intent.putExtra("partner_belong", intent_args.getString("partner_belong"));
                 intent.putExtra("partner_department", intent_args.getString("partner_department"));
                 intent.putExtra("partner_nickname",  intent_args.getString("partner_nickname"));
                 intent.putExtra("date", intent_args.getString("date"));
-                intent.putExtra("date_m", intent_args.getString("date_m"));
                 intent.putExtra("place", intent_args.getString("place"));
                 intent.putExtra("type", intent_args.getString("type"));
                 intent.putExtra("meeting_id", intent_args.getString("meeting_id"));
