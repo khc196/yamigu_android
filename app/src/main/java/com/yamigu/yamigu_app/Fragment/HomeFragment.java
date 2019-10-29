@@ -246,7 +246,12 @@ public class HomeFragment extends Fragment {
                 if(dataSnapshot != null) {
                     try {
                         ChatData chatData = dataSnapshot.getValue(ChatData.class);
-                        myMeetingCard_chat.chat_content.setText(chatData.message);
+                        if(chatData.message.equals(ChattingActivity.MANAGER_PLACE_TAG)) {
+                            myMeetingCard_chat.chat_content.setText("장소를 정해주세요");
+                        }
+                        else {
+                            myMeetingCard_chat.chat_content.setText(chatData.message);
+                        }
                         SimpleDateFormat format = new SimpleDateFormat("a h:mm");
                         String time = format.format(chatData.time);
                         myMeetingCard_chat.time.setText(time);

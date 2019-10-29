@@ -67,9 +67,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         activityName = clickAction;
 
 
-        Log.d("ACTIVITYNAME", activityName);
-        Log.d("Content", message);
-        Log.d("data", intent_args.toString());
+//        Log.d("ACTIVITYNAME", activityName);
+//        Log.d("Content", message);
+//        Log.d("data", intent_args.toString());
 
         Intent intent;
 
@@ -83,7 +83,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
             intent = new Intent(this, ChattingActivity.class);
             try {
-                Log.d("PARTNER_AGE", ""+intent_args.getInt("partner_age"));
                 intent.putExtra("partner_age", intent_args.getInt("partner_age"));
                 intent.putExtra("partner_belong", intent_args.getString("partner_belong"));
                 intent.putExtra("partner_department", intent_args.getString("partner_department"));
