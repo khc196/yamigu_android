@@ -100,9 +100,9 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 selector.toggleStudent();
                 if(selector.isStudent()) {
-                    btn_select_student.setTextColor(getResources().getColor(R.color.colorYellow));
+                    btn_select_student.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_select_student.setBackgroundResource(R.drawable.state_pressed_yellow);
-                    btn_select_worker.setTextColor(getResources().getColor(R.color.colorNonselect));
+                    btn_select_worker.setTextColor(getResources().getColor(R.color.colorHint));
                     btn_select_worker.setBackgroundResource(R.drawable.state_pressed_gray);
                     if(selectorR.isAgreed_all()) {
                         btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -124,7 +124,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 selector.toggleWorker();
                 if(selector.isWorker()) {
-                    btn_select_worker.setTextColor(getResources().getColor(R.color.colorYellow));
+                    btn_select_worker.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_select_worker.setBackgroundResource(R.drawable.state_pressed_yellow);
                     btn_select_student.setTextColor(getResources().getColor(R.color.colorHint));
                     btn_select_student.setBackgroundResource(R.drawable.state_pressed_gray);

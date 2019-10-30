@@ -38,7 +38,28 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/term"
+                    android:text="@string/term1"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorBlack">
+                </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/term2"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorBlack">
+                </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/term3"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorBlack">
+                </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/term4"
                     android:textSize="12dp"
                     android:textColor="@color/colorBlack">
                 </TextView>

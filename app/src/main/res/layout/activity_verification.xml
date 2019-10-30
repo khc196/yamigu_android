@@ -89,7 +89,7 @@
                     android:id="@+id/btn_verify_phone"
                     android:layout_width="298dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/state_pressed_blue"
+                    android:background="@drawable/ic_filter_state_blue"
                     android:text="휴대폰으로 본인 인증하기"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14dp"

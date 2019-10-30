@@ -88,7 +88,7 @@ public class CertificationWActivity extends AppCompatActivity {
                 values.put("phone", "010-0000-0000");
                 values.put("gender", 1);
                 values.put("nickname", nickname);
-                values.put("is_student", true);
+                values.put("is_student", false);
                 values.put("belong", belong);
                 values.put("department", department);
                 values.put("cert_image", image_bitmap.toString());

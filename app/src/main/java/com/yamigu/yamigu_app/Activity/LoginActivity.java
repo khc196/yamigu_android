@@ -279,7 +279,8 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.d(TAG, "signInWithCustomToken:success");
                                 if(!mauth_flag) {
                                     mauth_flag = true;
-                                    redirectMainActivity();
+                                    redirectVerificationActivity();
+                                    //redirectMainActivity();
                                 }
                                 //updateUI(user);
                             } else {

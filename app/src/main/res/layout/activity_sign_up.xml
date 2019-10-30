@@ -285,7 +285,7 @@
                 android:id="@+id/btn_certify"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
-                android:background="@drawable/state_pressed_orange"
+                android:background="@drawable/ic_filter_state_orange"
                 android:text="인증하기"
                 android:textSize="14dp"
                 android:textColor="@color/colorPrimary"

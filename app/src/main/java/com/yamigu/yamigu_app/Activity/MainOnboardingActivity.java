@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -97,19 +98,19 @@ public class MainOnboardingActivity extends AppCompatActivity {
 
                 }
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
                 int lastIdx = mainOnboardingPagerAdapter.getCount() - 1;
-
                 int curItem = screenPager.getCurrentItem();
                 if(curItem==lastIdx /*&& lastPos==lastIdx*/  && state==1) {
                     lastPageChange = true;
+                } else if(curItem!=lastIdx) {
+                    lastPageChange = false;
+                }
+                if(state == 0 && lastPageChange && curItem==lastIdx) {
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                     finish();
-                } else {
-                    lastPageChange = false;
                 }
             }
         });
