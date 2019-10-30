@@ -118,6 +118,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="26dp"
+                android:text="*인증 정보는 실명, 소속, 입력한 정보와 동일한지 확인해요."
+                android:textColor="@color/colorNonselect"
+                android:textSize="12dp"
+                android:gravity="center_horizontal"
+                android:fontFamily="@font/roboto_font_family">
+            </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5.7dp"
                 android:text="*인증이 완료된 회원만이 야미구 미팅을 할 수 있어요"
                 android:textColor="@color/colorNonselect"
                 android:textSize="12dp"
@@ -128,7 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5.7dp"
-                android:text="*인증은 최대 12시간까지 소요돼요."
+                android:text="*인증 정보 위조는 사문서부정행사죄가 적용돼요."
                 android:textColor="@color/colorNonselect"
                 android:textSize="12dp"
                 android:gravity="center_horizontal"
@@ -138,17 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5.7dp"
-                android:text="*사원증 개인정보는 인증 후 모두 파기됩니다."
-                android:textColor="@color/colorNonselect"
-                android:textSize="12dp"
-                android:gravity="center_horizontal"
-                android:fontFamily="@font/roboto_font_family">
-            </TextView>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5.7dp"
-                android:text="*사원증위조는 사문서부정행사죄가 적용돼요. "
+                android:text="*인증은 최대 24시간까지 소요돼요. "
                 android:textColor="@color/colorNonselect"
                 android:textSize="12dp"
                 android:gravity="center_horizontal"
@@ -166,7 +166,7 @@
                     android:background="@drawable/state_pressed_orange"
                     android:text="바로 미팅하러 가기"
                     android:textSize="14dp"
-                    android:textColor="@color/colorPoint"
+                    android:textColor="@color/colorPrimary"
                     style="?android:attr/borderlessButtonStyle"
                     android:fontFamily="@font/roboto_font_family"/>
 

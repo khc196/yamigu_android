@@ -105,7 +105,7 @@ public class MainOnboardingActivity extends AppCompatActivity {
                 int curItem = screenPager.getCurrentItem();
                 if(curItem==lastIdx /*&& lastPos==lastIdx*/  && state==1) {
                     lastPageChange = true;
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                     finish();
                 } else {

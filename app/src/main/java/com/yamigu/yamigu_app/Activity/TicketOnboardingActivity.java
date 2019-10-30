@@ -43,7 +43,7 @@ public class TicketOnboardingActivity extends AppCompatActivity {
         tabIndicator = findViewById(R.id.tab_indicator);
         List<TicketOnboardingItem> mList = new ArrayList<>();
         mList.add(new TicketOnboardingItem("새로운 이성과의", "설레는 야미구", "야미구는 채팅이 아닌", "만남을 제공해요.",  R.drawable.onboarding_t1));
-        mList.add(new TicketOnboardingItem("프리미엄 제휴매장에서", "기분좋은 야미구", "10000원 상당 제휴 쿠폰 제공", "(*사실상 야미구 티켓 공짜!)", R.drawable.onboarding_t2));
+        //mList.add(new TicketOnboardingItem("프리미엄 제휴매장에서", "기분좋은 야미구", "10000원 상당 제휴 쿠폰 제공", "(*사실상 야미구 티켓 공짜!)", R.drawable.onboarding_t2));
         mList.add(new TicketOnboardingItem("친구들과 부담없이", "즐기는 야미구", "함께 나가는 친구들과 나누세요.", "(*카카오 더치페이 추천)", R.drawable.onboarding_t3));
         mList.add(new TicketOnboardingItem("처음이어도", "괜찮은 야미구", "매니저가 친절하게 알려줄게요.", "(*꿀팁은 덤!)",  R.drawable.onboarding_t4));
         tabsize = mList.size();

@@ -93,7 +93,7 @@ public class SignUpActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
         });
-        btn_certify.setTextColor(getResources().getColor(R.color.colorNonselect));
+        btn_certify.setTextColor(getResources().getColor(R.color.colorHint));
         btn_certify.setBackgroundResource(R.drawable.state_pressed_gray);
         btn_select_student.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,19 +105,19 @@ public class SignUpActivity extends AppCompatActivity {
                     btn_select_worker.setTextColor(getResources().getColor(R.color.colorNonselect));
                     btn_select_worker.setBackgroundResource(R.drawable.state_pressed_gray);
                     if(selectorR.isAgreed_all()) {
-                        btn_certify.setTextColor(getResources().getColor(R.color.colorPoint));
+                        btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
                         btn_certify.setBackgroundResource(R.drawable.state_pressed_orange);
                     }
                 }
                 else {
-                    btn_select_student.setTextColor(getResources().getColor(R.color.colorNonselect));
+                    btn_select_student.setTextColor(getResources().getColor(R.color.colorHint));
                     btn_select_student.setBackgroundResource(R.drawable.state_pressed_gray);
-                    btn_certify.setTextColor(getResources().getColor(R.color.colorNonselect));
+                    btn_certify.setTextColor(getResources().getColor(R.color.colorHint));
                     btn_certify.setBackgroundResource(R.drawable.state_pressed_gray);
                 }
             }
         });
-        btn_select_worker.setTextColor(getResources().getColor(R.color.colorNonselect));
+        btn_select_worker.setTextColor(getResources().getColor(R.color.colorHint));
         btn_select_worker.setBackgroundResource(R.drawable.state_pressed_gray);
         btn_select_worker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,17 +126,17 @@ public class SignUpActivity extends AppCompatActivity {
                 if(selector.isWorker()) {
                     btn_select_worker.setTextColor(getResources().getColor(R.color.colorYellow));
                     btn_select_worker.setBackgroundResource(R.drawable.state_pressed_yellow);
-                    btn_select_student.setTextColor(getResources().getColor(R.color.colorNonselect));
+                    btn_select_student.setTextColor(getResources().getColor(R.color.colorHint));
                     btn_select_student.setBackgroundResource(R.drawable.state_pressed_gray);
                     if(selectorR.isAgreed_all()) {
-                        btn_certify.setTextColor(getResources().getColor(R.color.colorPoint));
+                        btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
                         btn_certify.setBackgroundResource(R.drawable.state_pressed_orange);
                     }
                 }
                 else {
-                    btn_select_worker.setTextColor(getResources().getColor(R.color.colorNonselect));
+                    btn_select_worker.setTextColor(getResources().getColor(R.color.colorHint));
                     btn_select_worker.setBackgroundResource(R.drawable.state_pressed_gray);
-                    btn_certify.setTextColor(getResources().getColor(R.color.colorNonselect));
+                    btn_certify.setTextColor(getResources().getColor(R.color.colorHint));
                     btn_certify.setBackgroundResource(R.drawable.state_pressed_gray);
                 }
             }
@@ -178,11 +178,11 @@ public class SignUpActivity extends AppCompatActivity {
                 radio_agree_private.setChecked(selectorR.isAgreed_privacy());
                 radio_agree_all.setChecked(selectorR.isAgreed_all());
                 if(selectorR.isAgreed_all() && (selector.isStudent() || selector.isWorker())) {
-                    btn_certify.setTextColor(getResources().getColor(R.color.colorPoint));
+                    btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_certify.setBackgroundResource(R.drawable.state_pressed_orange);
                 }
                 else {
-                    btn_certify.setTextColor(getResources().getColor(R.color.colorNonselect));
+                    btn_certify.setTextColor(getResources().getColor(R.color.colorHint));
                     btn_certify.setBackgroundResource(R.drawable.state_pressed_gray);
                 }
             }
@@ -199,11 +199,11 @@ public class SignUpActivity extends AppCompatActivity {
                 radio_agree_using.setChecked(selectorR.isAgreed_term());
                 radio_agree_all.setChecked(selectorR.isAgreed_all());
                 if(selectorR.isAgreed_all() && (selector.isStudent() || selector.isWorker())) {
-                    btn_certify.setTextColor(getResources().getColor(R.color.colorPoint));
+                    btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_certify.setBackgroundResource(R.drawable.state_pressed_orange);
                 }
                 else {
-                    btn_certify.setTextColor(getResources().getColor(R.color.colorNonselect));
+                    btn_certify.setTextColor(getResources().getColor(R.color.colorHint));
                     btn_certify.setBackgroundResource(R.drawable.state_pressed_gray);
                 }
             }
@@ -220,11 +220,11 @@ public class SignUpActivity extends AppCompatActivity {
                 radio_agree_private.setChecked(selectorR.isAgreed_privacy());
                 radio_agree_all.setChecked(selectorR.isAgreed_all());
                 if(selectorR.isAgreed_all() && (selector.isStudent() || selector.isWorker())) {
-                    btn_certify.setTextColor(getResources().getColor(R.color.colorPoint));
+                    btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_certify.setBackgroundResource(R.drawable.state_pressed_orange);
                 }
                 else {
-                    btn_certify.setTextColor(getResources().getColor(R.color.colorNonselect));
+                    btn_certify.setTextColor(getResources().getColor(R.color.colorHint));
                     btn_certify.setBackgroundResource(R.drawable.state_pressed_gray);
                 }
             }
@@ -253,12 +253,12 @@ public class SignUpActivity extends AppCompatActivity {
                     tv_nickname_available.setVisibility(View.VISIBLE);
                     if (!is_validate || networkTask.execute() == null) {
                         tv_nickname_available.setTextColor(getResources().getColor(R.color.colorRed));
-                        tv_nickname_available.setText("사용 불가능한 닉네입입니다.");
+                        tv_nickname_available.setText("사용 불가능합니다.");
                         nickname_validated = false;
                         nickname = "";
                     } else {
-                        tv_nickname_available.setTextColor(getResources().getColor(R.color.colorGreen));
-                        tv_nickname_available.setText("사용 가능한 닉네입입니다.");
+                        tv_nickname_available.setTextColor(getResources().getColor(R.color.colorBlue));
+                        tv_nickname_available.setText("사용 가능합니다.");
                         nickname_validated = true;
                         nickname = editable.toString();
                     }

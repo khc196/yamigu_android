@@ -61,10 +61,10 @@
                     android:id="@+id/btn_buy_ticket"
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
-                    android:background="@drawable/state_pressed_orange"
+                    android:background="@drawable/ic_filter_state_orange"
                     android:text="야미구 티켓 구매하기"
                     android:textSize="14dp"
-                    android:textColor="@color/colorPoint"
+                    android:textColor="@color/colorPrimary"
                     style="?android:attr/borderlessButtonStyle"
                     android:fontFamily="@font/roboto_font_family"/>
             </RelativeLayout>

@@ -27,6 +27,7 @@ import android.util.Log;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -62,7 +63,8 @@ import java.util.concurrent.Executor;
 public class SplashActivity extends AppCompatActivity {
     private Handler mHandler;
     private Runnable mRunnable1, mRunnable2;
-    private ImageView before_logo, logo;
+    private ImageView before_logo;
+    private LinearLayout after_logo;
     private SessionCallback callback;
     private boolean is_initialized = false;
     private boolean is_loggedin = false;
@@ -72,6 +74,7 @@ public class SplashActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private JSONObject jsonObject;
     private FirebaseAuth mAuth;
+    private Boolean isFirstRun;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +83,7 @@ public class SplashActivity extends AppCompatActivity {
         getHashKey(getApplicationContext());
 
         before_logo = (ImageView) findViewById(R.id.before_logo);
-        logo = (ImageView) findViewById(R.id.logo);
+        after_logo = (LinearLayout) findViewById(R.id.yamigu_logo);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
 
@@ -93,9 +96,9 @@ public class SplashActivity extends AppCompatActivity {
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
-                                logo.setVisibility(View.VISIBLE);
+                                after_logo.setVisibility(View.VISIBLE);
                             }});
-                logo.animate()
+                after_logo.animate()
                         .alpha(1.0f)
                         .setListener(new AnimatorListenerAdapter() {
                             @Override
@@ -108,7 +111,10 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(is_loggedin) {
-                    if(is_signedup) {
+                    if(isFirstRun) {
+                        redirectMainOnboardingActivity();
+                    }
+                    else if(is_signedup) {
                         try {
                             editor.putString("nickname", jsonObject.getString("nickname"));
                             editor.putString("phone", jsonObject.getString("phone"));
@@ -119,10 +125,10 @@ public class SplashActivity extends AppCompatActivity {
                             editor.putInt("age", jsonObject.getInt("age"));
                             editor.putString("uid", jsonObject.getString("uid"));
                             editor.apply();
+                            redirectMainActivity();
                         } catch(JSONException e) {
                             e.printStackTrace();
                         }
-                        redirectMainActivity();
                     }
                     else
                         redirectVerificationActivity();
@@ -139,7 +145,8 @@ public class SplashActivity extends AppCompatActivity {
         session.addCallback(new SessionCallback());
         mAuth = FirebaseAuth.getInstance();
         if(!session.checkAndImplicitOpen()) {
-            session.open(AuthType.KAKAO_ACCOUNT, SplashActivity.this);
+            //session.open(AuthType.KAKAO_ACCOUNT, SplashActivity.this);
+            session.open(AuthType.KAKAO_LOGIN_ALL, SplashActivity.this);
         }
 
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
@@ -229,6 +236,7 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
     protected void redirectMainActivity() {
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();
         final Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -340,7 +348,6 @@ public class SplashActivity extends AppCompatActivity {
         private ContentValues values;
         private RequestHttpURLConnection requestHttpURLConnection;
         private String token;
-        private Boolean isFirstRun;
         public NetworkTask2(String url, ContentValues values, String token) {
             this.url = url;
             this.values = values;
@@ -359,6 +366,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
             jsonObject = null;
             boolean signup_flag = false;
             String firebase_token = "";
@@ -371,14 +379,13 @@ public class SplashActivity extends AppCompatActivity {
             try {
                 signup_flag = jsonObject.getString("nickname").equals("null");
                 firebase_token = jsonObject.getString("firebase_token");
-                isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
             } catch(JSONException e) {
                 e.printStackTrace();
             }
 
 
             is_signedup = !signup_flag;
-            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();
+
             Log.d("FIREBASE", firebase_token);
             mAuth.signInWithCustomToken(firebase_token)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

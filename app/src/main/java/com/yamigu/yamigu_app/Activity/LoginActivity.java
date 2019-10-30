@@ -46,8 +46,11 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private FirebaseAuth mAuth;
+    private Boolean isFirstRun;
+    private Boolean mauth_flag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mauth_flag = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -55,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
 //        callback = new SessionCallback();
 //        Session.getCurrentSession().addCallback(callback);
 //        Session.getCurrentSession().checkAndImplicitOpen();
+        mAuth = FirebaseAuth.getInstance();
+
         btn_login_kakao = (ImageButton) findViewById(R.id.btn_login_kakao);
 
         btn_login_kakao.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +68,8 @@ public class LoginActivity extends AppCompatActivity {
                 Session session = Session.getCurrentSession();
                 session.addCallback(new SessionCallback());
                 if(!session.checkAndImplicitOpen()) {
-                    session.open(AuthType.KAKAO_ACCOUNT, LoginActivity.this);
+                    //session.open(AuthType.KAKAO_ACCOUNT, LoginActivity.this);
+                    session.open(AuthType.KAKAO_LOGIN_ALL, LoginActivity.this);
                 }
             }
         });
@@ -145,6 +151,7 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
     protected void redirectMainActivity() {
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();
         final Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -206,7 +213,7 @@ public class LoginActivity extends AppCompatActivity {
         private ContentValues values;
         private RequestHttpURLConnection requestHttpURLConnection;
         private String token;
-        private Boolean isFirstRun;
+
         public NetworkTask2(String url, ContentValues values, String token) {
             this.url = url;
             this.values = values;
@@ -228,6 +235,8 @@ public class LoginActivity extends AppCompatActivity {
             JSONObject jsonObject = null;
             boolean signup_flag = false;
             String firebase_token = "";
+            isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
+
             try {
                 jsonObject = new JSONObject(s);
             } catch (JSONException e) {
@@ -236,7 +245,6 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 signup_flag = jsonObject.getString("nickname").isEmpty();
                 firebase_token = jsonObject.getString("firebase_token");
-                isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
             } catch(JSONException e) {
                 e.printStackTrace();
             }
@@ -255,13 +263,12 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putInt("age", jsonObject.getInt("age"));
                         editor.putString("uid", jsonObject.getString("uid"));
                         editor.apply();
-                        redirectMainActivity();
                     } catch(JSONException e) {
                         e.printStackTrace();
                     }
                 }
             }
-            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();
+
             mAuth.signInWithCustomToken(firebase_token)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -270,7 +277,10 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithCustomToken:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
+                                if(!mauth_flag) {
+                                    mauth_flag = true;
+                                    redirectMainActivity();
+                                }
                                 //updateUI(user);
                             } else {
                                 // If sign in fails, display a message to the user.

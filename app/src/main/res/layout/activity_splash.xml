@@ -16,15 +16,31 @@
             android:src="@drawable/text_splash_1"
             android:layout_marginLeft="29dp"
             android:layout_marginTop="71dp"/>
-        <ImageView
-            android:id="@+id/logo"
+        <LinearLayout
+            android:id="@+id/yamigu_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="256dp"
-            android:src="@drawable/logo_splash"
+            android:orientation="vertical"
             android:visibility="invisible"
-            />
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/yamigu_logo_beta"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="29.3dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/colorPoint"
+                android:textSize="14dp"
+                android:text="학교와 직장이 인증된 이성과\n일주일안에 미팅하기"
+                />
+        </LinearLayout>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

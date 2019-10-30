@@ -4,16 +4,19 @@ package com.yamigu.yamigu_app.Activity;
 import android.app.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.kakao.auth.Session;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.yamigu.yamigu_app.R;
@@ -23,11 +26,12 @@ public class SettingActivity extends AppCompatActivity {
     private Switch switch_push, switch_chatting;
     private Button btn_view_notification, btn_app_version, btn_view_private, btn_view_using, btn_logout;
     private TextView btn_withdrawal;
+    private SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        tb = (Toolbar) findViewById(R.id.toolbar) ;
+        tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb) ;
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -38,7 +42,7 @@ public class SettingActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         switch_push = (Switch) findViewById(R.id.switch_push);
         switch_chatting = (Switch) findViewById(R.id.switch_chatting);
         btn_view_notification = (Button) findViewById(R.id.btn_view_notification);
@@ -56,6 +60,10 @@ public class SettingActivity extends AppCompatActivity {
                 UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
                     @Override
                     public void onCompleteLogout() {
+                        Session session = Session.getCurrentSession();
+                        preferences.edit().clear().commit();
+                        session.close();
+                        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().remove("isFirstRun").commit();
                         redirectLoginActivity();
                     }
                 });
@@ -83,8 +91,8 @@ public class SettingActivity extends AppCompatActivity {
     }
     private void redirectLoginActivity() {
         final Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        finish();
+        finishAffinity();
     }
 }
