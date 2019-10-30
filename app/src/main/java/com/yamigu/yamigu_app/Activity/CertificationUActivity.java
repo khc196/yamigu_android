@@ -6,21 +6,29 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class CertificationUActivity extends AppCompatActivity {
     private Toolbar tb;
@@ -31,7 +39,7 @@ public class CertificationUActivity extends AppCompatActivity {
     private String university, major, nickname, friend_code;
     private String auth_token;
     private SharedPreferences preferences;
-
+    private final int REQ_CODE_SELECT_IMAGE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +61,19 @@ public class CertificationUActivity extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         auth_token = preferences.getString("auth_token", "");
-
+        btn_attach_file = (ImageButton) findViewById(R.id.btn_attach_file);
         btn_go_home = (Button) findViewById(R.id.btn_gohome);
         btn_skip = (TextView) findViewById(R.id.btn_skip);
         et_university = (EditText) findViewById(R.id.et_university);
         et_major = (EditText) findViewById(R.id.et_major);
-
+        btn_attach_file.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){  // 클릭하면 ACTION_PICK 연결로 기본 갤러리를 불러옵니다.
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+            }
+        });
         btn_go_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,6 +106,35 @@ public class CertificationUActivity extends AppCompatActivity {
         });
 
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQ_CODE_SELECT_IMAGE)
+        {
+            if(resultCode==Activity.RESULT_OK)
+            {
+                try {
+                    //Uri에서 이미지 이름을 얻어온다.
+                    //String name_Str = getImageNameToUri(data.getData());
+                    //이미지 데이터를 비트맵으로 받아온다.
+                    Bitmap image_bitmap 	= MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                    ImageView image = (ImageView)findViewById(R.id.selected_img);
+                    image.setVisibility(View.VISIBLE);
+                    //배치해놓은 ImageView에 set
+                    image.setImageBitmap(image_bitmap);
+                    //Toast.makeText(getBaseContext(), "name_Str : "+name_Str , Toast.LENGTH_SHORT).show();
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
     @Override
     protected void onDestroy() {

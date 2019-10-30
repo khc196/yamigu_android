@@ -94,13 +94,25 @@
                 android:textSize="14dp"
                 android:fontFamily="@font/roboto_font_family"
                 />
-            <ImageButton
-                android:id="@+id/btn_attach_file"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="128.3dp"
-                android:layout_marginTop="6.1dp"
-                android:background="@drawable/state_pressed_orange2"
-                android:src="@drawable/icon_attach_file"/>
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/btn_attach_file"
+                    android:layout_width="match_parent"
+                    android:layout_height="128.3dp"
+                    android:layout_marginTop="6.1dp"
+                    android:background="@drawable/state_pressed_orange2"
+                    android:src="@drawable/icon_attach_file"/>
+                <ImageView
+                    android:id="@+id/selected_img"
+                    android:layout_width="126.4dp"
+                    android:layout_height="80dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:src="@drawable/default_cert_card"/>
+            </FrameLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
