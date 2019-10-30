@@ -40,6 +40,7 @@ public class CertificationUActivity extends AppCompatActivity {
     private String auth_token;
     private SharedPreferences preferences;
     private final int REQ_CODE_SELECT_IMAGE = 100;
+    Bitmap image_bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +78,7 @@ public class CertificationUActivity extends AppCompatActivity {
         btn_go_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(et_university.getText().toString().isEmpty() || et_major.getText().toString().isEmpty() || image_bitmap == null) return;
                 university = et_university.getText().toString();
                 major = et_major.getText().toString();
                 String url = "http://147.47.208.44:9999/api/auth/signup/";
@@ -89,6 +91,7 @@ public class CertificationUActivity extends AppCompatActivity {
                 values.put("is_student", true);
                 values.put("belong", university);
                 values.put("department", major);
+                values.put("cert_image", image_bitmap.toString());
 
                 NetworkTask networkTask = new NetworkTask(url, values);
                 networkTask.execute();
@@ -117,7 +120,7 @@ public class CertificationUActivity extends AppCompatActivity {
                     //Uri에서 이미지 이름을 얻어온다.
                     //String name_Str = getImageNameToUri(data.getData());
                     //이미지 데이터를 비트맵으로 받아온다.
-                    Bitmap image_bitmap 	= MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                    image_bitmap 	= MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
                     ImageView image = (ImageView)findViewById(R.id.selected_img);
                     image.setVisibility(View.VISIBLE);
                     //배치해놓은 ImageView에 set
