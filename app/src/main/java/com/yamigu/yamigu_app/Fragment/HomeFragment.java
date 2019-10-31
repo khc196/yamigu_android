@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.renderscript.Sampler;
 import android.util.Log;
@@ -84,7 +85,7 @@ public class HomeFragment extends Fragment {
     MyMeetingCardFrame myMeetingCardFrame;
     private RelativeLayout btn_go_yamigu;
     private DatabaseReference userDB, managerDB;
-
+    private Fragment me;
 
     public static int ACTION_START_CHAT = 1;
 
@@ -131,6 +132,7 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        me = this;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = preferences.edit();
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -214,7 +216,7 @@ public class HomeFragment extends Fragment {
                             int unreadCount = Integer.parseInt(myMeetingCard_chat.unread_count.getText().toString()) + 1;
                             myMeetingCard_chat.unread_count.setText("" + unreadCount);
                         } catch(NullPointerException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
                         }
                     }
                     chatReference.child(id).addValueEventListener(makeValueEventListener(myMeetingCard_chat));
@@ -897,6 +899,9 @@ public class HomeFragment extends Fragment {
                             myMeetingCardFrame.mmc_list[i].setProfile1(matched_meeting.getString("openby_nickname"), matched_meeting.getInt("openby_age"));
                             myMeetingCardFrame.mmc_list[i].setProfile2(matched_meeting.getString("openby_belong"), matched_meeting.getString("openby_department"));
                             myMeetingCardFrame.mmc_list[i].setMatched(true);
+                        }
+                        else {
+                            myMeetingCardFrame.mmc_list[i].setMatched(false);
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();

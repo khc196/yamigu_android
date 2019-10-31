@@ -93,7 +93,7 @@ public class TicketOnboardingActivity extends AppCompatActivity {
                     lastPageChange = false;
                 }
                 if(state == 0 && lastPageChange && curItem==lastIdx) {
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    startActivity(new Intent(getApplicationContext(), TicketActivity.class));
                     overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                     finish();
                 }

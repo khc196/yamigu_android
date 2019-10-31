@@ -282,13 +282,11 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             public void onClick(View view) {
                 if(!filter.isSelected_type_2vs2()){
                     filter.setSelected_type_2vs2(true);
-                    btn_type_2vs2.setTextColor(getResources().getColor(R.color.colorPoint));
-                    btn_type_2vs2.setBackgroundResource(R.drawable.rounded_orange_solid);
+                    btn_type_2vs2.setBackgroundResource(R.drawable.rounded_orange_full);
                 }
                 else {
                     filter.setSelected_type_2vs2(false);
-                    btn_type_2vs2.setTextColor(getResources().getColor(R.color.colorNonselect));
-                    btn_type_2vs2.setBackgroundResource(R.drawable.rounded_gray_solid);
+                    btn_type_2vs2.setBackgroundResource(R.drawable.rounded_gray_full);
                 }
                 requestFilteredDataNumber();
             }
@@ -298,13 +296,11 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             public void onClick(View view) {
                 if(!filter.isSelected_type_3vs3()){
                     filter.setSelected_type_3vs3(true);
-                    btn_type_3vs3.setTextColor(getResources().getColor(R.color.colorPoint));
-                    btn_type_3vs3.setBackgroundResource(R.drawable.rounded_orange_solid);
+                    btn_type_3vs3.setBackgroundResource(R.drawable.rounded_orange_full);
                 }
                 else {
                     filter.setSelected_type_3vs3(false);
-                    btn_type_3vs3.setTextColor(getResources().getColor(R.color.colorGray));
-                    btn_type_3vs3.setBackgroundResource(R.drawable.rounded_gray_solid);
+                    btn_type_3vs3.setBackgroundResource(R.drawable.rounded_gray_full);
                 }
                 requestFilteredDataNumber();
             }
@@ -314,13 +310,11 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             public void onClick(View view) {
                 if(!filter.isSelected_type_4vs4()){
                     filter.setSelected_type_4vs4(true);
-                    btn_type_4vs4.setTextColor(getResources().getColor(R.color.colorPoint));
-                    btn_type_4vs4.setBackgroundResource(R.drawable.rounded_orange_solid);
+                    btn_type_4vs4.setBackgroundResource(R.drawable.rounded_orange_full);
                 }
                 else {
                     filter.setSelected_type_4vs4(false);
-                    btn_type_4vs4.setTextColor(getResources().getColor(R.color.colorNonselect));
-                    btn_type_4vs4.setBackgroundResource(R.drawable.rounded_gray_solid);
+                    btn_type_4vs4.setBackgroundResource(R.drawable.rounded_gray_full);
                 }
                 requestFilteredDataNumber();
             }
@@ -330,13 +324,11 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             public void onClick(View view) {
                 if(!filter.isSelected_place_1()){
                     filter.setSelected_place_1(true);
-                    btn_place_1.setTextColor(getResources().getColor(R.color.colorPoint));
-                    btn_place_1.setBackgroundResource(R.drawable.rounded_orange_solid);
+                    btn_place_1.setBackgroundResource(R.drawable.rounded_orange_full);
                 }
                 else {
                     filter.setSelected_place_1(false);
-                    btn_place_1.setTextColor(getResources().getColor(R.color.colorNonselect));
-                    btn_place_1.setBackgroundResource(R.drawable.rounded_gray_solid);
+                    btn_place_1.setBackgroundResource(R.drawable.rounded_gray_full);
                 }
                 requestFilteredDataNumber();
             }
@@ -346,13 +338,11 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             public void onClick(View view) {
                 if(!filter.isSelected_place_2()){
                     filter.setSelected_place_2(true);
-                    btn_place_2.setTextColor(getResources().getColor(R.color.colorPoint));
-                    btn_place_2.setBackgroundResource(R.drawable.rounded_orange_solid);
+                    btn_place_2.setBackgroundResource(R.drawable.rounded_orange_full);
                 }
                 else {
                     filter.setSelected_place_2(false);
-                    btn_place_2.setTextColor(getResources().getColor(R.color.colorNonselect));
-                    btn_place_2.setBackgroundResource(R.drawable.rounded_gray_solid);
+                    btn_place_2.setBackgroundResource(R.drawable.rounded_gray_full);
                 }
                 requestFilteredDataNumber();
             }
@@ -362,13 +352,11 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             public void onClick(View view) {
                 if(!filter.isSelected_place_3()){
                     filter.setSelected_place_3(true);
-                    btn_place_3.setTextColor(getResources().getColor(R.color.colorPoint));
-                    btn_place_3.setBackgroundResource(R.drawable.rounded_orange_solid);
+                    btn_place_3.setBackgroundResource(R.drawable.rounded_orange_full);
                 }
                 else {
                     filter.setSelected_place_3(false);
-                    btn_place_3.setTextColor(getResources().getColor(R.color.colorNonselect));
-                    btn_place_3.setBackgroundResource(R.drawable.rounded_gray_solid);
+                    btn_place_3.setBackgroundResource(R.drawable.rounded_gray_full);
                 }
                 requestFilteredDataNumber();
             }
@@ -405,18 +393,12 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
 
     }
     private void initialize_ui() {
-        btn_type_2vs2.setBackgroundResource(R.drawable.rounded_gray_solid);
-        btn_type_2vs2.setTextColor(getResources().getColor(R.color.colorNonselect));
-        btn_type_3vs3.setBackgroundResource(R.drawable.rounded_gray_solid);
-        btn_type_3vs3.setTextColor(getResources().getColor(R.color.colorNonselect));
-        btn_type_4vs4.setBackgroundResource(R.drawable.rounded_gray_solid);
-        btn_type_4vs4.setTextColor(getResources().getColor(R.color.colorNonselect));
-        btn_place_1.setBackgroundResource(R.drawable.rounded_gray_solid);
-        btn_place_1.setTextColor(getResources().getColor(R.color.colorNonselect));
-        btn_place_2.setBackgroundResource(R.drawable.rounded_gray_solid);
-        btn_place_2.setTextColor(getResources().getColor(R.color.colorNonselect));
-        btn_place_3.setBackgroundResource(R.drawable.rounded_gray_solid);
-        btn_place_3.setTextColor(getResources().getColor(R.color.colorNonselect));
+        btn_type_2vs2.setBackgroundResource(R.drawable.rounded_gray_full);
+        btn_type_3vs3.setBackgroundResource(R.drawable.rounded_gray_full);
+        btn_type_4vs4.setBackgroundResource(R.drawable.rounded_gray_full);
+        btn_place_1.setBackgroundResource(R.drawable.rounded_gray_full);
+        btn_place_2.setBackgroundResource(R.drawable.rounded_gray_full);
+        btn_place_3.setBackgroundResource(R.drawable.rounded_gray_full);
         filter.setSelected_type_2vs2(false);
         filter.setSelected_type_3vs3(false);
         filter.setSelected_type_4vs4(false);
@@ -579,33 +561,27 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             initialize_ui();
             if(WListFragment.active_type_set.contains(1)) {
                 selected_type_2vs2 = true;
-                btn_type_2vs2.setTextColor(getResources().getColor(R.color.colorPoint));
-                btn_type_2vs2.setBackgroundResource(R.drawable.rounded_orange_solid);
+                btn_type_2vs2.setBackgroundResource(R.drawable.rounded_orange_full);
             }
             if(WListFragment.active_type_set.contains(2)) {
                 selected_type_3vs3 = true;
-                btn_type_3vs3.setTextColor(getResources().getColor(R.color.colorPoint));
-                btn_type_3vs3.setBackgroundResource(R.drawable.rounded_orange_solid);
+                btn_type_3vs3.setBackgroundResource(R.drawable.rounded_orange_full);
             }
             if(WListFragment.active_type_set.contains(3)) {
                 selected_type_4vs4 = true;
-                btn_type_4vs4.setTextColor(getResources().getColor(R.color.colorPoint));
-                btn_type_4vs4.setBackgroundResource(R.drawable.rounded_orange_solid);
+                btn_type_4vs4.setBackgroundResource(R.drawable.rounded_orange_full);
             }
             if(WListFragment.active_place_set.contains(1)) {
                 selected_place_1 = true;
-                btn_place_1.setTextColor(getResources().getColor(R.color.colorPoint));
-                btn_place_1.setBackgroundResource(R.drawable.rounded_orange_solid);
+                btn_place_1.setBackgroundResource(R.drawable.rounded_orange_full);
             }
             if(WListFragment.active_place_set.contains(2)) {
                 selected_place_2 = true;
-                btn_place_2.setTextColor(getResources().getColor(R.color.colorPoint));
-                btn_place_2.setBackgroundResource(R.drawable.rounded_orange_solid);
+                btn_place_2.setBackgroundResource(R.drawable.rounded_orange_full);
             }
             if(WListFragment.active_place_set.contains(3)) {
                 selected_place_3 = true;
-                btn_place_3.setTextColor(getResources().getColor(R.color.colorPoint));
-                btn_place_3.setBackgroundResource(R.drawable.rounded_orange_solid);
+                btn_place_3.setBackgroundResource(R.drawable.rounded_orange_full);
             }
             minimum_age_current = WListFragment.minimum_age;
             maximum_age_current = WListFragment.maximum_age;

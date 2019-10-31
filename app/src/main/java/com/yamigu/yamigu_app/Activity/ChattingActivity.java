@@ -29,11 +29,13 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -49,6 +51,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
+import com.yamigu.yamigu_app.CustomLayout.MeetingCancelDialog;
 import com.yamigu.yamigu_app.Etc.Model.ChatData;
 import com.yamigu.yamigu_app.Etc.Model.Conversation;
 import com.yamigu.yamigu_app.Etc.Model.ReceivedMessage;
@@ -63,6 +66,8 @@ import com.yamigu.yamigu_app.R;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+
+import static java.security.AccessController.getContext;
 
 public class ChattingActivity extends AppCompatActivity implements View.OnClickListener{
     public static RecyclerView recyclerChat;
@@ -98,7 +103,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     public static String partner_belong, partner_department;
 
     private String auth_token;
-
+    private MeetingCancelDialog meetingCancelDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,6 +145,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                 onBackPressed();
             }
         });
+
         conversation = new Conversation();
         et_message = findViewById(R.id.et_message);
         btn_send_message = findViewById(R.id.btn_send_message);
@@ -196,7 +202,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.menu_quit:
-                // TODO: implement
+                Dialog();
         }
         return true;
     }
@@ -204,6 +210,28 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     public void onBackPressed() {
         finish();
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_slide_out_right);
+    }
+    private void Dialog() {
+        meetingCancelDialog = new MeetingCancelDialog(ChattingActivity.this);
+        meetingCancelDialog.setCancelable(true);
+        meetingCancelDialog.setCanceledOnTouchOutside(true);
+
+
+        meetingCancelDialog.getWindow().setGravity(Gravity.CENTER);
+        meetingCancelDialog.show();
+
+        meetingCancelDialog.btn_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        meetingCancelDialog.btn_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
     private void initViews() {
         //mListView = (ListView) findViewById(R.id.list_message);

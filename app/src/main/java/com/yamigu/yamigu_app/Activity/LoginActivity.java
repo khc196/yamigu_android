@@ -247,6 +247,8 @@ public class LoginActivity extends AppCompatActivity {
                 firebase_token = jsonObject.getString("firebase_token");
             } catch(JSONException e) {
                 e.printStackTrace();
+                redirectVerificationActivity();
+                return;
             }
             if (!isFirstRun) {
                 if(signup_flag) {
@@ -279,8 +281,8 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.d(TAG, "signInWithCustomToken:success");
                                 if(!mauth_flag) {
                                     mauth_flag = true;
-                                    redirectVerificationActivity();
-                                    //redirectMainActivity();
+                                    //redirectVerificationActivity();
+                                    redirectMainActivity();
                                 }
                                 //updateUI(user);
                             } else {

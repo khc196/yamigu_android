@@ -321,7 +321,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                     for (int j = 0; j < btn_select_type_array.length; j++){
                         obutton = btn_select_type_array[j];
                         if(me != j+1) {
-                            obutton.setBackgroundResource(R.drawable.button_background_non_select);
+                            obutton.setBackgroundResource(0);
                             obutton.setTextColor(Color.BLACK);
                         }
                     }
@@ -329,7 +329,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         ma.setType(me);
                         ma.setType_string(button.getText().toString());
 
-                        int colorFrom = getResources().getColor(R.color.colorPrimary);
+                        int colorFrom = getResources().getColor(R.color.colorBackground);
                         int colorTo = getResources().getColor(R.color.colorPoint);
                         int colorFrom2 = getResources().getColor(R.color.colorBlack);
                         int colorTo2 = getResources().getColor(R.color.colorPrimary);
@@ -385,7 +385,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                     else {
                         ma.setType(-1);
                         ma.setType_string("");
-                        button.setBackgroundResource(R.drawable.button_background_non_select);
+                        button.setBackgroundResource(0);
                         button.setTextColor(Color.BLACK);
                         selected_type_text.setText("인원");
                     }
@@ -417,14 +417,14 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                     for (int j = 0; j < btn_select_date_array.length; j++) {
                         obutton = btn_select_date_array[j];
                         if(me != j+1) {
-                            obutton.setBackgroundResource(R.drawable.button_background_non_select);
+                            obutton.setBackgroundResource(0);
                             obutton.setTextColor(Color.BLACK);
                         }
                     }
                     if(me != ma.getDate()) {
                         ma.setDate(me);
                         ma.setDate_string(button.getText().toString());
-                        int colorFrom = getResources().getColor(R.color.colorPrimary);
+                        int colorFrom = getResources().getColor(R.color.colorBackground);
                         int colorTo = getResources().getColor(R.color.colorPoint);
                         int colorFrom2 = getResources().getColor(R.color.colorBlack);
                         int colorTo2 = getResources().getColor(R.color.colorPrimary);
@@ -486,7 +486,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                     else {
                         ma.setDate(-1);
                         ma.setDate_string("");
-                        button.setBackgroundResource(R.drawable.button_background_non_select);
+                        button.setBackgroundResource(0);
                         button.setTextColor(Color.BLACK);
                         selected_date_text.setText("날짜");
                     }
@@ -510,14 +510,14 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                     for(int j = 0; j < btn_select_place_array.length; j++) {
                         obutton = btn_select_place_array[j];
                         if(me != j+1) {
-                            obutton.setBackgroundResource(R.drawable.button_background_non_select);
+                            obutton.setBackgroundResource(0);
                             obutton.setTextColor(Color.BLACK);
                         }
                     }
                     if(me != ma.getPlace()) {
                         ma.setPlace(me);
                         ma.setPlace_string(button.getText().toString());
-                        int colorFrom = getResources().getColor(R.color.colorPrimary);
+                        int colorFrom = getResources().getColor(R.color.colorBackground);
                         int colorTo = getResources().getColor(R.color.colorPoint);
                         int colorFrom2 = getResources().getColor(R.color.colorBlack);
                         int colorTo2 = getResources().getColor(R.color.colorPrimary);
@@ -576,7 +576,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                     else {
                         ma.setPlace(-1);
                         ma.setPlace_string("");
-                        button.setBackgroundResource(R.drawable.button_background_non_select);
+                        button.setBackgroundResource(0);
                         button.setTextColor(Color.BLACK);
                         selected_place_text.setText("장소");
                     }

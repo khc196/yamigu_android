@@ -1,5 +1,7 @@
 package com.yamigu.yamigu_app.Fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -330,14 +333,25 @@ public class ReceivedMeetingFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
+            Runnable mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    final Intent intent = new Intent(getContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
+            };
+            Handler mHandler = new Handler();
+
             super.onPostExecute(s);
             JSONObject jsonObject = null;
             String user_name = preferences.getString("nickname", "");
             try {
                 jsonObject = new JSONObject(s);
                 int count_meeting = jsonObject.getJSONObject("data").getInt("count_meeting");
-                Dialog("매칭 완료!", user_name+"님,", "야미구에서", count_meeting+"번째 미팅도 재밌게 하세요!");
-
+                Dialog("매칭 완료!", user_name+" 님,", "야미구에서의 "+ count_meeting+"번째 만남이", "좋은 인연으로 이어지길 바랍니다!");
+                mHandler.postDelayed(mRunnable, 2000);
                 customDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {

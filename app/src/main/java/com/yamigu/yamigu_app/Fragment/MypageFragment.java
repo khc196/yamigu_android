@@ -20,8 +20,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
@@ -50,12 +53,17 @@ public class MypageFragment extends Fragment {
     private EditText et_nickname;
     private ImageButton btn_edit_nickname;
     private CircularImageView profile_img;
+    private RelativeLayout label_certificated;
+    private FrameLayout fl_meeting_card;
+    private Button btn_certificating;
     private String auth_token;
     private boolean validated_from_server;
     private boolean nickname_validated;
     private String nickname;
     private String profile_url;
     private Menu globalMenu;
+    private int user_certified;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,7 +87,35 @@ public class MypageFragment extends Fragment {
         et_nickname = profileCard.findViewById(R.id.et_nickname);
         btn_edit_nickname = profileCard.findViewById(R.id.btn_edit_nickname);
         profile_img = profileCard.findViewById(R.id.iv_profile);
+        label_certificated = profileCard.findViewById(R.id.label_certificated);
+        btn_certificating = profileCard.findViewById(R.id.btn_certify);
+        fl_meeting_card = profileCard.findViewById(R.id.fl_meeting_card);
+        label_certificated.setVisibility(View.INVISIBLE);
+        btn_certificating.setVisibility(View.INVISIBLE);
         profile_url = preferences.getString("profile", "");
+        user_certified = preferences.getInt("user_certified", 0);
+        if(user_certified == 0) {
+            btn_certificating.setVisibility(View.VISIBLE);
+            label_certificated.setVisibility(View.INVISIBLE);
+            btn_certificating.setText("소속 인증하기");
+            fl_meeting_card.setAlpha(0.2f);
+            btn_certificating.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        }
+        else if(user_certified == 1) {
+            btn_certificating.setVisibility(View.VISIBLE);
+            label_certificated.setVisibility(View.INVISIBLE);
+            btn_certificating.setText("인증 진행중입니다");
+            fl_meeting_card.setAlpha(0.2f);
+        }
+        else {
+            btn_certificating.setVisibility(View.INVISIBLE);
+            label_certificated.setVisibility(View.VISIBLE);
+        }
         String base64AvataUser = preferences.getString("avata", "");
         Bitmap bitmapAvata;
         if (!base64AvataUser.equals("default")) {

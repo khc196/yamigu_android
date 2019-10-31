@@ -9,7 +9,7 @@
         android:font="@font/nanumgothic"
         android:fontStyle="normal"
         android:fontWeight="400"
-        app:font="@font/binggrae"
+        app:font="@font/nanumgothic"
         app:fontStyle="normal"
         app:fontWeight="400" />
     <!-- bold -->
