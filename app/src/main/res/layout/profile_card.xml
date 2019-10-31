@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <FrameLayout
+            android:id="@+id/fl_meeting_card"
             android:layout_width="match_parent"
             android:layout_height="209.35dp"
             android:layout_marginTop="12.15dp"
@@ -205,6 +206,7 @@
         </LinearLayout>
         </FrameLayout>
         <RelativeLayout
+            android:id="@+id/label_certificated"
             android:layout_width="82dp"
             android:layout_height="25.3dp"
             android:background="@drawable/label_certificated_ok_bg"
@@ -220,5 +222,18 @@
                 android:fontFamily="@font/roboto_font_family"/>
         </RelativeLayout>
     </FrameLayout>
-
+    <Button
+        android:id="@+id/btn_certify"
+        android:layout_width="142dp"
+        android:layout_height="36dp"
+        android:background="@drawable/label_certificating"
+        android:text="인증 진행중입니다"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14dp"
+        android:fontFamily="@font/nanumgothic_font_family"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="72.5dp"
+        >
+    </Button>
 </FrameLayout>
