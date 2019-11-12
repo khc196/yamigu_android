@@ -510,6 +510,8 @@ public class MypageFragment extends Fragment {
                         public void run() {
                             Toast.makeText(getContext(), "File Upload Complete.",
                                     Toast.LENGTH_SHORT).show();
+                            editor.putInt("user_certified", 1);
+                            editor.apply();
                         }
                     });
                 }

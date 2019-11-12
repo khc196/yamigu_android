@@ -91,7 +91,7 @@ public class CertificationUActivity extends AppCompatActivity {
                 values.put("is_student", true);
                 values.put("belong", university);
                 values.put("department", major);
-                values.put("cert_image", image_bitmap.toString());
+                values.put("uploaded_image", image_bitmap.toString());
 
                 NetworkTask networkTask = new NetworkTask(url, values);
                 networkTask.execute();
