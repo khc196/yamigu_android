@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 
 import com.yamigu.yamigu_app.R;
@@ -17,7 +18,8 @@ public class VerificationActivity extends AppCompatActivity {
     private Button btn_verify_phone;
     private String auth_token;
     private SharedPreferences preferences;
-
+    private WebView mWebView;
+    private static final String URL_INFO = "http://106.10.39.154:5000/checkplus_main"; //휴대폰본인인증 호출하는 URL 입력;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,12 +40,15 @@ public class VerificationActivity extends AppCompatActivity {
         btn_verify_phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Intent intent = new Intent(getApplicationContext(), NICEActivity.class);
                 Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
 
             }
         });
+
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override

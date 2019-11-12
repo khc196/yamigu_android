@@ -139,7 +139,7 @@ public class SentMeetingFragment extends Fragment {
         });
         viewPager.setClipToPadding(false);
 
-        String url = "http://147.47.208.44:9999/api/matching/sent_request/?meeting_id="+meeting_id;
+        String url = "http://106.10.39.154:9999/api/matching/sent_request/?meeting_id="+meeting_id;
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -153,7 +153,7 @@ public class SentMeetingFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String url = "http://147.47.208.44:9999/api/matching/cancel_request/";
+                                String url = "http://106.10.39.154:9999/api/matching/cancel_request/";
                                 MeetingCardFragment fragment = fragmentAdapter.getItem(viewPager.getCurrentItem());
 
                                 int id = fragment.getRequest_id();

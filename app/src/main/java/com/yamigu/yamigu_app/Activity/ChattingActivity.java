@@ -223,13 +223,17 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         meetingCancelDialog.btn_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                meetingCancelDialog.dismiss();
             }
         });
-        meetingCancelDialog.btn_no.setOnClickListener(new View.OnClickListener() {
+        meetingCancelDialog.btn_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String url = "http://106.10.39.154:9999/api/matching/cancel_matching/";
+                ContentValues values = new ContentValues();
+                values.put("match_id", matching_id);
+                NetworkTask2 networkTask2 = new NetworkTask2(url, values);
+                networkTask2.execute();
             }
         });
     }
@@ -344,7 +348,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             partnerRef.child(matching_id).child(key).setValue(receivedMessage);
             receivedMessage.isUnread = false;
             userRef.child(matching_id).child(key).setValue(receivedMessage);
-            String url = "http://147.47.208.44:9999/api/fcm/send_push/";
+            String url = "http://106.10.39.154:9999/api/fcm/send_push/";
             ContentValues values = new ContentValues();
             values.put("receiverId", partner_uid);
             values.put("message", message);
@@ -420,6 +424,33 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
 
             result = requestHttpURLConnection.request(getApplicationContext(), url, values, "POST", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
 
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+    }
+    public class NetworkTask2 extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask2(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(getApplicationContext(), url, values, "POST", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+
+            finish();
             return result;
         }
 

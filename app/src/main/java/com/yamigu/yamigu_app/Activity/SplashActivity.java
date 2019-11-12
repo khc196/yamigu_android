@@ -145,8 +145,8 @@ public class SplashActivity extends AppCompatActivity {
         session.addCallback(new SessionCallback());
         mAuth = FirebaseAuth.getInstance();
         if(!session.checkAndImplicitOpen()) {
-            //session.open(AuthType.KAKAO_ACCOUNT, SplashActivity.this);
-            session.open(AuthType.KAKAO_LOGIN_ALL, SplashActivity.this);
+            session.open(AuthType.KAKAO_ACCOUNT, SplashActivity.this);
+            //session.open(AuthType.KAKAO_LOGIN_ALL, SplashActivity.this);
         }
 
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
@@ -277,7 +277,7 @@ public class SplashActivity extends AppCompatActivity {
                 // 사용자정보 요청에 성공한 경우,
                 @Override
                 public void onSuccess(UserProfile userProfile) {
-                    String url = "http://147.47.208.44:9999/api/oauth/kakao/";
+                    String url = "http://106.10.39.154:9999/api/oauth/kakao/";
                     String access_token = Session.getCurrentSession().getTokenInfo().getAccessToken();
                     ContentValues values = new ContentValues();
                     values.put("access_token", access_token);
@@ -321,12 +321,13 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            String url = "http://147.47.208.44:9999/api/user/info/";
+            String url = "http://106.10.39.154:9999/api/user/info/";
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);
             } catch (JSONException e) {
                 e.printStackTrace();
+                return;
             }
             ContentValues values = new ContentValues();
             try {
@@ -395,7 +396,7 @@ public class SplashActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithCustomToken:success");
-                                String url = "http://147.47.208.44:9999/api/fcm/register_device/";
+                                String url = "http://106.10.39.154:9999/api/fcm/register_device/";
                                 String fcm_token = FirebaseInstanceId.getInstance().getToken();
                                 ContentValues values = new ContentValues();
                                 values.put("registration_id", fcm_token);

@@ -1,19 +1,29 @@
 package com.yamigu.yamigu_app.Fragment;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,23 +34,35 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.CustomLayout.InviteFriends;
 import com.yamigu.yamigu_app.CustomLayout.ProfileCard;
+import com.yamigu.yamigu_app.Etc.ImageFilePath;
+import com.yamigu.yamigu_app.Etc.ImageUtils;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.regex.Pattern;
+
+import static android.content.Intent.ACTION_PICK;
 
 public class MypageFragment extends Fragment {
     private Toolbar tb;
@@ -63,7 +85,15 @@ public class MypageFragment extends Fragment {
     private String profile_url;
     private Menu globalMenu;
     private int user_certified;
+    private final int REQ_CODE_SELECT_IMAGE = 100;
+    int serverResponseCode = 0;
+    ProgressDialog dialog = null;
 
+    String upLoadServerUri = "http://106.10.39.154:9999/api/user/certificate/";
+
+    /**********  File Path *************/
+    String uploadFilePath = "";
+    String uploadFileName = "";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -102,7 +132,19 @@ public class MypageFragment extends Fragment {
             btn_certificating.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    if(ActivityCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                    {
+                        requestPermissions(
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                2000);
+                    }
+                    else {
+                        Intent intent = new Intent(ACTION_PICK);
+                        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                        intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+                    }
                 }
             });
         }
@@ -116,7 +158,8 @@ public class MypageFragment extends Fragment {
             btn_certificating.setVisibility(View.INVISIBLE);
             label_certificated.setVisibility(View.VISIBLE);
         }
-        String base64AvataUser = preferences.getString("avata", "");
+        String base64AvataUser = preferences.getString("avata", "default");
+        Log.d("avata", base64AvataUser);
         Bitmap bitmapAvata;
         if (!base64AvataUser.equals("default")) {
             byte[] decodedString = Base64.decode(base64AvataUser, Base64.DEFAULT);
@@ -124,7 +167,9 @@ public class MypageFragment extends Fragment {
         } else {
             bitmapAvata = null;
         }
-        profile_img.setImageBitmap(bitmapAvata);
+        if(bitmapAvata != null)
+            profile_img.setImageBitmap(bitmapAvata);
+
 //        if(!profile_url.isEmpty()) {`
 //            ContentValues values = new ContentValues();
 //            NetworkTask3 networkTask3 = new NetworkTask3(profile_url, values, profile_img);
@@ -161,7 +206,7 @@ public class MypageFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 if(!editable.toString().equals("")) {
-                    String url = "http://147.47.208.44:9999/api/validation/nickname/" + editable.toString();
+                    String url = "http://106.10.39.154:9999/api/validation/nickname/" + editable.toString();
                     ContentValues values = new ContentValues();
                     NetworkTask networkTask = new NetworkTask(url, values);
                     networkTask.execute();
@@ -183,7 +228,7 @@ public class MypageFragment extends Fragment {
         switch(item.getItemId()) {
             case R.id.menu_complete:
                 if(nickname_validated) {
-                    String url = "http://147.47.208.44:9999/api/user/change/nickname/";
+                    String url = "http://106.10.39.154:9999/api/user/change/nickname/";
                     ContentValues values = new ContentValues();
                     values.put("nickname", et_nickname.getText().toString());
                     NetworkTask2 networkTask2 = new NetworkTask2(url, values);
@@ -206,6 +251,57 @@ public class MypageFragment extends Fragment {
                 return true;
         }
         return true;
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQ_CODE_SELECT_IMAGE)
+        {
+            if(resultCode== Activity.RESULT_OK)
+            {
+                try {
+                    //Uri에서 이미지 이름을 얻어온다.
+                    //String name_Str = getImageNameToUri(data.getData());
+                    //이미지 데이터를 비트맵으로 받아온다.
+
+                    Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
+                    final String filePath = ImageFilePath.getPath(getContext(), data.getData());
+                    Log.d("filePath", filePath);
+//
+//                    String url = "http://106.10.39.154:9999/api/user/certificate/";
+//                    ContentValues values = new ContentValues();
+//                    final String imageBase64 = ImageUtils.encodeBase64(image_bitmap);
+//                    values.put("file_name", filePath);
+//                    values.put("image", imageBase64);
+//                    NetworkTask3 networkTask = new NetworkTask3(url, values);
+//                    networkTask.execute();
+                    dialog = ProgressDialog.show(getContext(), "", "Uploading file...", true);
+
+                    new Thread(new Runnable() {
+                        public void run() {
+                            getActivity().runOnUiThread(new Runnable() {
+                                public void run() {
+                                }
+                            });
+                            uploadFile(filePath);
+
+                        }
+                    }).start();
+                    //Toast.makeText(getBaseContext(), "name_Str : "+name_Str , Toast.LENGTH_SHORT).show();
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                Log.d("OnAcitivityResult", "Fail");
+            }
+        }
     }
     public class NetworkTask extends AsyncTask<Void, Void, String> {
 
@@ -303,36 +399,157 @@ public class MypageFragment extends Fragment {
 
         }
     }
-    public class NetworkTask3 extends AsyncTask<Void, Void, Bitmap> {
+    public class NetworkTask3 extends AsyncTask<Void, Void, String> {
         private String url;
         private ContentValues values;
         private RequestHttpURLConnection requestHttpURLConnection;
         private CircularImageView civ;
         private View view;
-        public NetworkTask3(String url, ContentValues values,  CircularImageView civ) {
+        public NetworkTask3(String url, ContentValues values) {
             this.url = url;
             this.values = values;
-            this.civ = civ;
         }
         @Override
-        protected Bitmap doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
+            String result;
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(getContext(), url, values, "POST", auth_token);
+            return result;
+        }
+        @Override
+        protected void onPostExecute(String s) {
+
+        }
+    }
+    public int uploadFile(String sourceFileUri) {
+
+
+        String fileName = sourceFileUri;
+
+        HttpURLConnection conn = null;
+        DataOutputStream dos = null;
+        String lineEnd = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "*****";
+        int bytesRead, bytesAvailable, bufferSize;
+        byte[] buffer;
+        int maxBufferSize = 1 * 1024 * 1024;
+        File sourceFile = new File(sourceFileUri);
+
+        if (!sourceFile.isFile()) {
+
+            dialog.dismiss();
+
+            Log.e("uploadFile", "Source File not exist :"
+                    +uploadFilePath + "" + uploadFileName);
+
+            return 0;
+
+        }
+        else
+        {
             try {
-                URL urlO = new URL(url);
 
-                URLConnection conn = urlO.openConnection();
-                conn.connect();
-                InputStream urlInputStream = conn.getInputStream();
-                return BitmapFactory.decodeStream(urlInputStream);
+                // open a URL connection to the Servlet
+                FileInputStream fileInputStream = new FileInputStream(sourceFile);
+                URL url = new URL(upLoadServerUri);
 
-            } catch (IOException e) {
+                // Open a HTTP  connection to  the URL
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setDoInput(true); // Allow Inputs
+                conn.setDoOutput(true); // Allow Outputs
+                conn.setUseCaches(false); // Don't use a Cached Copy
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Connection", "Keep-Alive");
+                conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+                conn.setRequestProperty("Authorization", "Token " + auth_token);
+                conn.setRequestProperty("uploaded_file", fileName);
+
+                dos = new DataOutputStream(conn.getOutputStream());
+
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
+                                + fileName + "\"" + lineEnd);
+
+                        dos.writeBytes(lineEnd);
+
+                // create a buffer of  maximum size
+                bytesAvailable = fileInputStream.available();
+
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                buffer = new byte[bufferSize];
+
+                // read file and write it into form...
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                while (bytesRead > 0) {
+
+                    dos.write(buffer, 0, bufferSize);
+                    bytesAvailable = fileInputStream.available();
+                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                }
+
+                // send multipart form data necesssary after file data...
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+                // Responses from the server (code and message)
+                serverResponseCode = conn.getResponseCode();
+                String serverResponseMessage = conn.getResponseMessage();
+
+                Log.i("uploadFile", "HTTP Response is : "
+                        + serverResponseMessage + ": " + serverResponseCode);
+
+                if(serverResponseCode == 200){
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), "File Upload Complete.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                //close the streams //
+                fileInputStream.close();
+                dos.flush();
+                dos.close();
+
+            } catch (MalformedURLException ex) {
+
+                dialog.dismiss();
+                ex.printStackTrace();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getContext(), "MalformedURLException",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
+            } catch (Exception e) {
+
+                dialog.dismiss();
                 e.printStackTrace();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getContext(), "Got Exception : see logcat ",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+                Log.e("Upload file Exception", "Exception : "
+                        + e.getMessage(), e);
             }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Bitmap bm) {
-            civ.setImageBitmap(bm);
-        }
+            dialog.dismiss();
+            return serverResponseCode;
+
+        } // End else block
     }
 }
 

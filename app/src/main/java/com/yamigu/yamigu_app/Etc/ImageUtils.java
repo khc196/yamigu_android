@@ -73,9 +73,9 @@ public class ImageUtils {
      */
     public static String encodeBase64(Bitmap imgBitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        imgBitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP);
     }
 
     /**

@@ -151,7 +151,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendRegistrationToServer(String token) {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         auth_token = preferences.getString("auth_token", "");
-        String url = "http://147.47.208.44:9999/api/fcm/register_device/";
+        String url = "http://106.10.39.154:9999/api/fcm/register_device/";
         ContentValues values = new ContentValues();
         values.put("registration_id", token);
         values.put("type", "android");

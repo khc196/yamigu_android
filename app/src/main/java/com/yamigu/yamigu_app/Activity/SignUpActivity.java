@@ -243,7 +243,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 boolean is_validate = false;
-                String url = "http://147.47.208.44:9999/api/validation/nickname/"+editable.toString();
+                String url = "http://106.10.39.154:9999/api/validation/nickname/"+editable.toString();
                 ContentValues values = new ContentValues();
                 NetworkTask networkTask = new NetworkTask(url, values);
                 String pattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]*$";
