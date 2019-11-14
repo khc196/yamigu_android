@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
                 // 사용자정보 요청에 성공한 경우,
                 @Override
                 public void onSuccess(UserProfile userProfile) {
-                    String url = "http://106.10.39.154:9999/api/oauth/kakao/";
+                    String url = "http://192.168.43.10:9999/api/oauth/kakao/";
                     String access_token = Session.getCurrentSession().getTokenInfo().getAccessToken();
                     ContentValues values = new ContentValues();
                     values.put("access_token", access_token);
@@ -186,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            String url = "http://106.10.39.154:9999/api/user/info/";
+            String url = "http://192.168.43.10:9999/api/user/info/";
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);
@@ -251,28 +251,26 @@ public class LoginActivity extends AppCompatActivity {
                 redirectVerificationActivity();
                 return;
             }
+            if(signup_flag) {
+                redirectVerificationActivity();
+            }
             if (!isFirstRun) {
-                if(signup_flag) {
-                    redirectVerificationActivity();
-                }
-                else {
-                    try {
-                        editor.putString("nickname", jsonObject.getString("nickname"));
-                        editor.putString("phone", jsonObject.getString("phone"));
-                        editor.putString("belong", jsonObject.getString("belong"));
-                        editor.putString("department", jsonObject.getString("department"));
-                        editor.putString("profile", jsonObject.getString("image"));
-                        editor.putInt("gender", jsonObject.getInt("gender"));
-                        editor.putInt("age", jsonObject.getInt("age"));
-                        editor.putString("uid", jsonObject.getString("uid"));
-                        editor.putInt("user_certified", jsonObject.getInt("user_certified"));
-                        editor.apply();
-                    } catch(JSONException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    editor.putString("nickname", jsonObject.getString("nickname"));
+                    editor.putString("phone", jsonObject.getString("phone"));
+                    editor.putString("belong", jsonObject.getString("belong"));
+                    editor.putString("department", jsonObject.getString("department"));
+                    editor.putString("profile", jsonObject.getString("image"));
+                    editor.putInt("gender", jsonObject.getInt("gender"));
+                    editor.putInt("age", jsonObject.getInt("age"));
+                    editor.putString("uid", jsonObject.getString("uid"));
+                    editor.putInt("user_certified", jsonObject.getInt("user_certified"));
+                    editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
+                    editor.apply();
+                } catch(JSONException e) {
+                    e.printStackTrace();
                 }
             }
-
             mAuth.signInWithCustomToken(firebase_token)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override

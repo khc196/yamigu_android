@@ -153,6 +153,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         tv_title = findViewById(R.id.tv_title);
         tv_title.setText(date + " || " + place + " || " + type);
         uid = preferences.getString("uid", "");
+        Log.d("manager_uid", manager_uid);
         initViews();
         ChatData auto_Chat1 = new ChatData();
         ChatData auto_Chat2 = new ChatData();
@@ -229,7 +230,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         meetingCancelDialog.btn_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://106.10.39.154:9999/api/matching/cancel_matching/";
+                String url = "http://192.168.43.10:9999/api/matching/cancel_matching/";
                 ContentValues values = new ContentValues();
                 values.put("match_id", matching_id);
                 NetworkTask2 networkTask2 = new NetworkTask2(url, values);
@@ -348,7 +349,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             partnerRef.child(matching_id).child(key).setValue(receivedMessage);
             receivedMessage.isUnread = false;
             userRef.child(matching_id).child(key).setValue(receivedMessage);
-            String url = "http://106.10.39.154:9999/api/fcm/send_push/";
+            String url = "http://192.168.43.10:9999/api/fcm/send_push/";
             ContentValues values = new ContentValues();
             values.put("receiverId", partner_uid);
             values.put("message", message);
@@ -612,11 +613,11 @@ class ListMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if(conversation.getListMessageData().get(position).idSender.equals(ChattingActivity.uid)) {
             view_type = ChattingActivity.VIEW_TYPE_USER_MESSAGE;
         }
-        else if(conversation.getListMessageData().get(position).idSender.equals(ChattingActivity.partner_uid)) {
-            view_type = ChattingActivity.VIEW_TYPE_PARTNER_MESSAGE;
-        }
         else if(conversation.getListMessageData().get(position).idSender.equals(ChattingActivity.manager_uid)) {
             view_type = ChattingActivity.VIEW_TYPE_MANAGER_MESSAGE;
+        }
+        else if(conversation.getListMessageData().get(position).idSender.equals(ChattingActivity.partner_uid)) {
+            view_type = ChattingActivity.VIEW_TYPE_PARTNER_MESSAGE;
         }
         return view_type;
     }
@@ -674,11 +675,13 @@ class ItemMessageManagerHolder extends RecyclerView.ViewHolder {
         avata = (CircularImageView) itemView.findViewById(R.id.iv_profile);
     }
     public void setType(String Type) {
+        Log.d("setType", Type);
         if(Type.equals(ChattingActivity.MANAGER_WELCOME_TAG)) {
             content_precautions.setVisibility(View.GONE);
             content_place.setVisibility(View.GONE);
             content_normal.setVisibility(View.GONE);
             content_welcome.setVisibility(View.VISIBLE);
+            Log.d("WELCOME_TAG", ChattingActivity.MANAGER_WELCOME_TAG);
             TextView chatting_content_name_and_age_man, chatting_content_name_and_age_woman, chatting_content_belong_man, chatting_content_belong_woman, chatting_content_date, chatting_content_place, chatting_content_type;
             chatting_content_name_and_age_man = content_welcome.findViewById(R.id.chatting_content_name_and_age_man);
             chatting_content_belong_man = content_welcome.findViewById(R.id.chatting_content_belong_man);

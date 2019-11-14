@@ -39,6 +39,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yamigu.yamigu_app.Activity.CertificationUActivity;
+import com.yamigu.yamigu_app.Activity.CertificationWActivity;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.CustomLayout.InviteFriends;
 import com.yamigu.yamigu_app.CustomLayout.ProfileCard;
@@ -89,7 +91,7 @@ public class MypageFragment extends Fragment {
     int serverResponseCode = 0;
     ProgressDialog dialog = null;
 
-    String upLoadServerUri = "http://106.10.39.154:9999/api/user/certificate/";
+    String upLoadServerUri = "http://192.168.43.10:9999/api/user/change/avata/";
 
     /**********  File Path *************/
     String uploadFilePath = "";
@@ -132,6 +134,18 @@ public class MypageFragment extends Fragment {
             btn_certificating.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    boolean is_student = preferences.getBoolean("is_student", false);
+                    Intent intent;
+                    if(is_student) {
+                        intent = new Intent(getContext(), CertificationUActivity.class);
+                    }
+                    else {
+                        intent = new Intent(getContext(), CertificationWActivity.class);
+                    }
+                    intent.putExtra("nickname", preferences.getString("nickname", ""));
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+                    /*
                     if(ActivityCompat.checkSelfPermission(getActivity(),
                             Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
                     {
@@ -145,6 +159,7 @@ public class MypageFragment extends Fragment {
                         intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
                     }
+                    */
                 }
             });
         }
@@ -192,6 +207,15 @@ public class MypageFragment extends Fragment {
                 globalMenu.findItem(R.id.menu_complete).setVisible(true);
             }
         });
+        profile_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ACTION_PICK);
+                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+            }
+        });
         et_nickname.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -206,7 +230,7 @@ public class MypageFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 if(!editable.toString().equals("")) {
-                    String url = "http://106.10.39.154:9999/api/validation/nickname/" + editable.toString();
+                    String url = "http://192.168.43.10:9999/api/validation/nickname/" + editable.toString();
                     ContentValues values = new ContentValues();
                     NetworkTask networkTask = new NetworkTask(url, values);
                     networkTask.execute();
@@ -228,7 +252,7 @@ public class MypageFragment extends Fragment {
         switch(item.getItemId()) {
             case R.id.menu_complete:
                 if(nickname_validated) {
-                    String url = "http://106.10.39.154:9999/api/user/change/nickname/";
+                    String url = "http://192.168.43.10:9999/api/user/change/nickname/";
                     ContentValues values = new ContentValues();
                     values.put("nickname", et_nickname.getText().toString());
                     NetworkTask2 networkTask2 = new NetworkTask2(url, values);
@@ -267,7 +291,7 @@ public class MypageFragment extends Fragment {
                     final String filePath = ImageFilePath.getPath(getContext(), data.getData());
                     Log.d("filePath", filePath);
 //
-//                    String url = "http://106.10.39.154:9999/api/user/certificate/";
+//                    String url = "http://192.168.43.10:9999/api/user/certificate/";
 //                    ContentValues values = new ContentValues();
 //                    final String imageBase64 = ImageUtils.encodeBase64(image_bitmap);
 //                    values.put("file_name", filePath);

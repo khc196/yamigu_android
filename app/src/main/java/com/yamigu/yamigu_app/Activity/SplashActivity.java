@@ -125,6 +125,7 @@ public class SplashActivity extends AppCompatActivity {
                             editor.putInt("age", jsonObject.getInt("age"));
                             editor.putString("uid", jsonObject.getString("uid"));
                             editor.putInt("user_certified", jsonObject.getInt("user_certified"));
+                            editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
                             editor.apply();
                             redirectMainActivity();
                         } catch(JSONException e) {
@@ -278,7 +279,7 @@ public class SplashActivity extends AppCompatActivity {
                 // 사용자정보 요청에 성공한 경우,
                 @Override
                 public void onSuccess(UserProfile userProfile) {
-                    String url = "http://106.10.39.154:9999/api/oauth/kakao/";
+                    String url = "http://192.168.43.10:9999/api/oauth/kakao/";
                     String access_token = Session.getCurrentSession().getTokenInfo().getAccessToken();
                     ContentValues values = new ContentValues();
                     values.put("access_token", access_token);
@@ -322,7 +323,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            String url = "http://106.10.39.154:9999/api/user/info/";
+            String url = "http://192.168.43.10:9999/api/user/info/";
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);
@@ -397,7 +398,7 @@ public class SplashActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithCustomToken:success");
-                                String url = "http://106.10.39.154:9999/api/fcm/register_device/";
+                                String url = "http://192.168.43.10:9999/api/fcm/register_device/";
                                 String fcm_token = FirebaseInstanceId.getInstance().getToken();
                                 ContentValues values = new ContentValues();
                                 values.put("registration_id", fcm_token);
