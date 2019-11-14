@@ -49,12 +49,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.yamigu.yamigu_app.Activity.ChattingActivity;
+import com.yamigu.yamigu_app.Activity.GlobalApplication;
 import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
+import com.yamigu.yamigu_app.Activity.NotificationActivity;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat;
 import com.yamigu.yamigu_app.Etc.ImageUtils;
 import com.yamigu.yamigu_app.Etc.Model.ChatData;
+import com.yamigu.yamigu_app.Etc.Model.NotificationData;
 import com.yamigu.yamigu_app.R;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.Activity.TicketOnboardingActivity;
@@ -84,9 +87,9 @@ public class HomeFragment extends Fragment {
     private Context context;
     MyMeetingCardFrame myMeetingCardFrame;
     private RelativeLayout btn_go_yamigu;
-    private DatabaseReference userDB, managerDB;
+    private DatabaseReference userDB, managerDB, notiDB;
     private Fragment me;
-
+    private TextView tv_unread_noti_count;
     public static int ACTION_START_CHAT = 1;
 
     private class MyMeetingCardFrame {
@@ -139,6 +142,7 @@ public class HomeFragment extends Fragment {
         auth_token = preferences.getString("auth_token", "");
         uid = preferences.getString("uid", "");
         userDB = FirebaseDatabase.getInstance().getReference("user/" + uid);
+
         tb = (Toolbar) view.findViewById(R.id.toolbar) ;
         ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
@@ -153,12 +157,15 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-//        String url = "http://192.168.43.10:9999/api/meetings/my/";
+        tv_unread_noti_count = view.findViewById(R.id.unread_noti_count);
+        tv_unread_noti_count.setVisibility(View.INVISIBLE);
+        tv_unread_noti_count.setText("0");
+//        String url = "http://106.10.39.154:9999/api/meetings/my/";
 //        ContentValues values = new ContentValues();
 //        NetworkTask networkTask = new NetworkTask(url, values);
 //        networkTask.execute();
 
-        String url2 = "http://192.168.43.10:9999/api/meetings/my_past/";
+        String url2 = "http://106.10.39.154:9999/api/meetings/my_past/";
         ContentValues values2 = new ContentValues();
         NetworkTask2 networkTask2 = new NetworkTask2(url2, values2);
         networkTask2.execute();
@@ -167,8 +174,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        ChildEventListener notiChildEventListenerForNotification = makeNChildEventListenerForNotification();
+        notiDB = loadNotifications(notiChildEventListenerForNotification);
         myMeetingCardFrame = new MyMeetingCardFrame(getView());
-        String url = "http://192.168.43.10:9999/api/meetings/my/";
+        String url = "http://106.10.39.154:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -186,12 +195,18 @@ public class HomeFragment extends Fragment {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch(item.getItemId()) {
             case R.id.menu_ticket:
-                Intent intent = new Intent(context, TicketOnboardingActivity.class);
+                intent = new Intent(context, TicketOnboardingActivity.class);
                 startActivity(intent);
                 ((MainActivity)context).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
-                return true;
+                break;
+            case R.id.menu_notification:
+                intent = new Intent(context, NotificationActivity.class);
+                startActivity(intent);
+                ((MainActivity)context).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+                break;
         }
         return true;
     }
@@ -200,6 +215,12 @@ public class HomeFragment extends Fragment {
 
         receivedChatReference.addChildEventListener(mChildEventListener);
         return receivedChatReference;
+    }
+    private DatabaseReference loadNotifications(ChildEventListener mChildEventListener) {
+        DatabaseReference receivedNotificationReference = userDB.child("notifications");
+
+        receivedNotificationReference.addChildEventListener(mChildEventListener);
+        return receivedNotificationReference;
     }
     private ChildEventListener makeChildEventListener(final MyMeetingCard_Chat myMeetingCard_chat, int matching_id) {
         final DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("message/" + matching_id);
@@ -220,6 +241,52 @@ public class HomeFragment extends Fragment {
                         }
                     }
                     chatReference.child(id).addValueEventListener(makeValueEventListener(myMeetingCard_chat));
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        return mChildEventListener;
+    }
+    private ChildEventListener makeNChildEventListenerForNotification() {
+        ChildEventListener mChildEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if(dataSnapshot.getValue() != null) {
+                    HashMap mapNotification = (HashMap) dataSnapshot.getValue();
+                    boolean isUnread = (boolean) mapNotification.get("isUnread");
+                    String id = (String) mapNotification.get("id");
+                    long timestamp = (long) mapNotification.get("time");
+                    int type = (int) mapNotification.get("type");
+                    NotificationData notificationData = new NotificationData();
+                    notificationData.id = id;
+                    notificationData.isUread = isUnread;
+                    notificationData.time = timestamp;
+                    notificationData.type = type;
+                    GlobalApplication.notification_map.put(""+id, notificationData);
+                    if(isUnread) {
+                        try {
+                            tv_unread_noti_count.setVisibility(View.VISIBLE);
+                            ++GlobalApplication.unread_noti_count;
+                            tv_unread_noti_count.setText("" + GlobalApplication.unread_noti_count);
+                        } catch(NullPointerException e) {
+                            //e.printStackTrace();
+                        }
+                    }
                 }
             }
 
@@ -437,7 +504,7 @@ public class HomeFragment extends Fragment {
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
 
-                                        String url = "http://192.168.43.10:9999/api/meetings/rate/";
+                                        String url = "http://106.10.39.154:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -532,7 +599,7 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
-                                        String url = "http://192.168.43.10:9999/api/meetings/rate/";
+                                        String url = "http://106.10.39.154:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -627,7 +694,7 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
-                                        String url = "http://192.168.43.10:9999/api/meetings/rate/";
+                                        String url = "http://106.10.39.154:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -687,7 +754,7 @@ public class HomeFragment extends Fragment {
                                 forth_pane.setVisibility(View.VISIBLE);
                                 InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                                String url = "http://192.168.43.10:9999/api/meetings/feedback/";
+                                String url = "http://106.10.39.154:9999/api/meetings/feedback/";
                                 ContentValues values = new ContentValues();
                                 try {
                                     values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));

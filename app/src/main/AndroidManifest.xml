@@ -34,7 +34,9 @@ meta-data
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.NICEActivity"></activity>
+        <activity android:name=".Activity.NoticeActivity"></activity>
+        <activity android:name=".Activity.NotificationActivity" />
+        <activity android:name=".Activity.NICEActivity" />
         <activity android:name=".Activity.RequestListActivity" />
         <activity
             android:name=".Activity.ChattingActivity"

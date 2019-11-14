@@ -33,6 +33,20 @@
                 android:textSize="14dp"
                 android:layout_marginRight="12.4dp"
                 android:fontFamily="@font/roboto_font_family"/>
+            <TextView
+                android:id="@+id/unread_noti_count"
+                android:layout_width="20.06dp"
+                android:layout_height="20.06dp"
+                android:background="@drawable/chat_count_bg"
+                android:layout_gravity="right"
+                android:textColor="@color/colorPrimary"
+                android:text="2"
+                android:textStyle="bold"
+                android:gravity="center_horizontal|center_vertical"
+                android:textSize="10dp"
+                android:fontFamily="@font/nanumgothic_font_family"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="60dp"/>
         </FrameLayout>
 
         <ScrollView

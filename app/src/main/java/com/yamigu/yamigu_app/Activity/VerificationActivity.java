@@ -19,7 +19,7 @@ public class VerificationActivity extends AppCompatActivity {
     private String auth_token;
     private SharedPreferences preferences;
     private WebView mWebView;
-    private static final String URL_INFO = "http://192.168.43.10:5000/checkplus_main"; //휴대폰본인인증 호출하는 URL 입력;
+    private static final String URL_INFO = "http://106.10.39.154:5000/checkplus_main"; //휴대폰본인인증 호출하는 URL 입력;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

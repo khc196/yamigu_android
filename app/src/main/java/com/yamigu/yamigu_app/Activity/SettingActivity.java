@@ -53,7 +53,14 @@ public class SettingActivity extends AppCompatActivity {
         btn_withdrawal = (TextView) findViewById(R.id.btn_withdrawal);
 
         btn_withdrawal.setPaintFlags(btn_withdrawal.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
+        btn_view_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), NoticeActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+            }
+        });
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

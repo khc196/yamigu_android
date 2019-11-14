@@ -10,20 +10,26 @@ import android.content.Context;
 import android.app.Application;
 import android.content.Context;
 
+import androidx.collection.ArraySet;
+
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
+import com.yamigu.yamigu_app.Etc.Model.NotificationData;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GlobalApplication extends Application {
     private static GlobalApplication instance;
 
     private Activity mCurrentActivity = null;
-
+    public static int unread_noti_count = 0;
+    public static HashMap<String, NotificationData> notification_map;
     public static GlobalApplication getGlobalApplicationContext() {
         if (instance == null) {
             throw new IllegalStateException("This Application does not inherit com.kakao.GlobalApplication");
@@ -54,6 +60,7 @@ public class GlobalApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        notification_map = new HashMap<>();
         // Kakao Sdk 초기화
         KakaoSDK.init(new KakaoSDKAdapter());
     }

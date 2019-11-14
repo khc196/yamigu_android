@@ -54,12 +54,12 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private int count_meeting;
     private DatabaseReference userDB;
-
+    public static MainActivity me;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        me = this;
         Intent intent = getIntent();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
@@ -67,11 +67,11 @@ public class MainActivity extends AppCompatActivity {
         auth_token = preferences.getString("auth_token", "");
 
         String url = preferences.getString("profile", "");
-        if(!url.isEmpty()) {
-            ContentValues values = new ContentValues();
-            NetworkTask networkTask = new NetworkTask(url, values);
-            networkTask.execute();
-        }
+//        if(!url.isEmpty()) {
+//            ContentValues values = new ContentValues();
+//            NetworkTask networkTask = new NetworkTask(url, values);
+//            networkTask.execute();
+//        }
         nav_bar = (LinearLayout) findViewById(R.id.nav_bar);
         nav_home = (ImageButton) findViewById(R.id.nav_home);
         nav_wlist = (ImageButton) findViewById(R.id.nav_wlist);
@@ -90,20 +90,14 @@ public class MainActivity extends AppCompatActivity {
         nav_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nav_home.setImageResource(R.drawable.nav_home_selected);
-                nav_wlist.setImageResource(R.drawable.nav_wlist);
-                nav_mypage.setImageResource(R.drawable.nav_mypage);
-                nav_more.setImageResource(R.drawable.nav_more);
+                selectTab(1);
                 loadFragment(homeFragment);
             }
         });
         nav_wlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nav_home.setImageResource(R.drawable.nav_home);
-                nav_wlist.setImageResource(R.drawable.nav_wlist_selected);
-                nav_mypage.setImageResource(R.drawable.nav_mypage);
-                nav_more.setImageResource(R.drawable.nav_more);
+                selectTab(2);
                 Fragment fragment = new WListFragment();
                 loadFragment(fragment);
             }
@@ -111,10 +105,7 @@ public class MainActivity extends AppCompatActivity {
         nav_mypage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nav_home.setImageResource(R.drawable.nav_home);
-                nav_wlist.setImageResource(R.drawable.nav_wlist);
-                nav_mypage.setImageResource(R.drawable.nav_mypage_selected);
-                nav_more.setImageResource(R.drawable.nav_more);
+                selectTab(3);
                 Fragment fragment = new MypageFragment();
                 loadFragment(fragment);
             }
@@ -122,10 +113,7 @@ public class MainActivity extends AppCompatActivity {
         nav_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nav_home.setImageResource(R.drawable.nav_home);
-                nav_wlist.setImageResource(R.drawable.nav_wlist);
-                nav_mypage.setImageResource(R.drawable.nav_mypage);
-                nav_more.setImageResource(R.drawable.nav_more_selected);
+                selectTab(4);
                 Fragment fragment = new MoreFragment();
                 loadFragment(fragment);
             }
@@ -156,6 +144,36 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+    public void selectTab(int index) {
+        switch(index) {
+            case 1:
+                nav_home.setImageResource(R.drawable.nav_home_selected);
+                nav_wlist.setImageResource(R.drawable.nav_wlist);
+                nav_mypage.setImageResource(R.drawable.nav_mypage);
+                nav_more.setImageResource(R.drawable.nav_more);
+                break;
+            case 2:
+                nav_home.setImageResource(R.drawable.nav_home);
+                nav_wlist.setImageResource(R.drawable.nav_wlist_selected);
+                nav_mypage.setImageResource(R.drawable.nav_mypage);
+                nav_more.setImageResource(R.drawable.nav_more);
+                break;
+            case 3:
+                nav_home.setImageResource(R.drawable.nav_home);
+                nav_wlist.setImageResource(R.drawable.nav_wlist);
+                nav_mypage.setImageResource(R.drawable.nav_mypage_selected);
+                nav_more.setImageResource(R.drawable.nav_more);
+                break;
+            case 4:
+                nav_home.setImageResource(R.drawable.nav_home);
+                nav_wlist.setImageResource(R.drawable.nav_wlist);
+                nav_mypage.setImageResource(R.drawable.nav_mypage);
+                nav_more.setImageResource(R.drawable.nav_more_selected);
+                break;
+            default:
+                break;
+        }
     }
     @Override
     public void onResume() {

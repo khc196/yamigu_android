@@ -91,7 +91,7 @@ public class MypageFragment extends Fragment {
     int serverResponseCode = 0;
     ProgressDialog dialog = null;
 
-    String upLoadServerUri = "http://192.168.43.10:9999/api/user/change/avata/";
+    String upLoadServerUri = "http://106.10.39.154:9999/api/user/change/avata/";
 
     /**********  File Path *************/
     String uploadFilePath = "";
@@ -230,7 +230,7 @@ public class MypageFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 if(!editable.toString().equals("")) {
-                    String url = "http://192.168.43.10:9999/api/validation/nickname/" + editable.toString();
+                    String url = "http://106.10.39.154:9999/api/validation/nickname/" + editable.toString();
                     ContentValues values = new ContentValues();
                     NetworkTask networkTask = new NetworkTask(url, values);
                     networkTask.execute();
@@ -252,7 +252,7 @@ public class MypageFragment extends Fragment {
         switch(item.getItemId()) {
             case R.id.menu_complete:
                 if(nickname_validated) {
-                    String url = "http://192.168.43.10:9999/api/user/change/nickname/";
+                    String url = "http://106.10.39.154:9999/api/user/change/nickname/";
                     ContentValues values = new ContentValues();
                     values.put("nickname", et_nickname.getText().toString());
                     NetworkTask2 networkTask2 = new NetworkTask2(url, values);
@@ -291,7 +291,7 @@ public class MypageFragment extends Fragment {
                     final String filePath = ImageFilePath.getPath(getContext(), data.getData());
                     Log.d("filePath", filePath);
 //
-//                    String url = "http://192.168.43.10:9999/api/user/certificate/";
+//                    String url = "http://106.10.39.154:9999/api/user/certificate/";
 //                    ContentValues values = new ContentValues();
 //                    final String imageBase64 = ImageUtils.encodeBase64(image_bitmap);
 //                    values.put("file_name", filePath);
