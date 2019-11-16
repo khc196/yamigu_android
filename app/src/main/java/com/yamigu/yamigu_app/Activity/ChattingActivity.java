@@ -151,7 +151,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         btn_send_message = findViewById(R.id.btn_send_message);
         btn_send_message.setOnClickListener(this);
         tv_title = findViewById(R.id.tv_title);
-        tv_title.setText(date + " || " + place + " || " + type);
+        tv_title.setText(date_day + " || " + place + " || " + type);
         uid = preferences.getString("uid", "");
         Log.d("manager_uid", manager_uid);
         initViews();
@@ -230,7 +230,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         meetingCancelDialog.btn_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://106.10.39.154:9999/api/matching/cancel_matching/";
+                String url = "http://192.168.43.10:9999/api/matching/cancel_matching/";
                 ContentValues values = new ContentValues();
                 values.put("match_id", matching_id);
                 NetworkTask2 networkTask2 = new NetworkTask2(url, values);
@@ -349,7 +349,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             partnerRef.child(matching_id).child(key).setValue(receivedMessage);
             receivedMessage.isUnread = false;
             userRef.child(matching_id).child(key).setValue(receivedMessage);
-            String url = "http://106.10.39.154:9999/api/fcm/send_push/";
+            String url = "http://192.168.43.10:9999/api/fcm/send_push/";
             ContentValues values = new ContentValues();
             values.put("receiverId", partner_uid);
             values.put("message", message);
@@ -703,7 +703,7 @@ class ItemMessageManagerHolder extends RecyclerView.ViewHolder {
                 chatting_content_name_and_age_man.setText(ChattingActivity.partner_name + "(" + ChattingActivity.partner_age + ")");
                 chatting_content_belong_man.setText(ChattingActivity.partner_belong + " " + ChattingActivity.partner_department);
             }
-            chatting_content_date.setText(ChattingActivity.date_day);
+            chatting_content_date.setText(ChattingActivity.date);
             chatting_content_place.setText(ChattingActivity.place);
             String type_name = "";
             if(ChattingActivity.type.equals("2:2")) {

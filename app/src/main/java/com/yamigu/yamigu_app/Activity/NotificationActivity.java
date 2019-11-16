@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -21,6 +22,8 @@ import com.yamigu.yamigu_app.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 public class NotificationActivity extends AppCompatActivity {
@@ -66,20 +69,21 @@ public class NotificationActivity extends AppCompatActivity {
         LinearLayout mRootLinear = (LinearLayout) findViewById(R.id.notification_bg);
 
         final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.notice, mRootLinear, true);
+        View v = inflater.inflate(R.layout.notification, mRootLinear, true);
         TextView tv_notification_type = v.findViewById(R.id.tv_notification_type);
         TextView tv_notification_content = v.findViewById(R.id.tv_notification_content);
         TextView tv_notification_time = v.findViewById(R.id.tv_notification_time);
-        final int type =  notificationData.type;
+        final long type =  notificationData.type;
         String type_string_array[] = {"", "신청!", "매칭!", "거절!", "대기!", "완료!", "취소!"};
-        tv_notification_type.setText(type_string_array[type]);
+        tv_notification_type.setText(type_string_array[(int)type]);
         tv_notification_content.setText(notificationData.content);
-        final long diff = System.currentTimeMillis() - notificationData.time;
-        int minute = (int)(diff / 1000 * 60);
+
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(notificationData.data);
         } catch(JSONException e) {
+            e.printStackTrace();
+        } catch(NullPointerException e) {
             e.printStackTrace();
         }
         final JSONObject intentData = jsonObject;
@@ -89,7 +93,7 @@ public class NotificationActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = null;
-                    switch(type) {
+                    switch((int)type) {
                         case 1:
                         case 3:
                             try {
@@ -105,6 +109,8 @@ public class NotificationActivity extends AppCompatActivity {
                                 intent.putExtra("type", type);
                             } catch(JSONException e) {
                                 e.printStackTrace();
+                            } catch(NullPointerException e) {
+                                return;
                             }
                             break;
                         case 2:
@@ -134,6 +140,14 @@ public class NotificationActivity extends AppCompatActivity {
         else {
             mRootLinear.setBackgroundColor(getResources().getColor(R.color.colorPointBG));
         }
+        final long diff = System.currentTimeMillis() - notificationData.time;
+        SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String str = dayTime.format(new Date(System.currentTimeMillis()));
+        String str2 = dayTime.format(new Date(notificationData.time));
+        Log.d("now", str);
+        Log.d("noti", str2);
+        Log.d("diff", ""+diff);
+        int minute = (int)(diff / 1000 / 60);
 
         tv_notification_time.setText("지금");
         int hour = 0;

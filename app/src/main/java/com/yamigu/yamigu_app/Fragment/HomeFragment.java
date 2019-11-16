@@ -160,12 +160,12 @@ public class HomeFragment extends Fragment {
         tv_unread_noti_count = view.findViewById(R.id.unread_noti_count);
         tv_unread_noti_count.setVisibility(View.INVISIBLE);
         tv_unread_noti_count.setText("0");
-//        String url = "http://106.10.39.154:9999/api/meetings/my/";
+//        String url = "http://192.168.43.10:9999/api/meetings/my/";
 //        ContentValues values = new ContentValues();
 //        NetworkTask networkTask = new NetworkTask(url, values);
 //        networkTask.execute();
 
-        String url2 = "http://106.10.39.154:9999/api/meetings/my_past/";
+        String url2 = "http://192.168.43.10:9999/api/meetings/my_past/";
         ContentValues values2 = new ContentValues();
         NetworkTask2 networkTask2 = new NetworkTask2(url2, values2);
         networkTask2.execute();
@@ -174,10 +174,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ChildEventListener notiChildEventListenerForNotification = makeNChildEventListenerForNotification();
+        ChildEventListener notiChildEventListenerForNotification = makeChildEventListenerForNotification();
         notiDB = loadNotifications(notiChildEventListenerForNotification);
         myMeetingCardFrame = new MyMeetingCardFrame(getView());
-        String url = "http://106.10.39.154:9999/api/meetings/my/";
+        String url = "http://192.168.43.10:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -262,7 +262,7 @@ public class HomeFragment extends Fragment {
         };
         return mChildEventListener;
     }
-    private ChildEventListener makeNChildEventListenerForNotification() {
+    private ChildEventListener makeChildEventListenerForNotification() {
         ChildEventListener mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -271,17 +271,19 @@ public class HomeFragment extends Fragment {
                     boolean isUnread = (boolean) mapNotification.get("isUnread");
                     String id = (String) mapNotification.get("id");
                     long timestamp = (long) mapNotification.get("time");
-                    int type = (int) mapNotification.get("type");
+                    long type = (long) mapNotification.get("type");
+                    String content = (String) mapNotification.get("content");
                     NotificationData notificationData = new NotificationData();
                     notificationData.id = id;
                     notificationData.isUread = isUnread;
                     notificationData.time = timestamp;
                     notificationData.type = type;
+                    notificationData.content = content;
                     GlobalApplication.notification_map.put(""+id, notificationData);
                     if(isUnread) {
                         try {
                             tv_unread_noti_count.setVisibility(View.VISIBLE);
-                            ++GlobalApplication.unread_noti_count;
+                            GlobalApplication.unread_noti_count = GlobalApplication.notification_map.size();
                             tv_unread_noti_count.setText("" + GlobalApplication.unread_noti_count);
                         } catch(NullPointerException e) {
                             //e.printStackTrace();
@@ -504,7 +506,7 @@ public class HomeFragment extends Fragment {
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
 
-                                        String url = "http://106.10.39.154:9999/api/meetings/rate/";
+                                        String url = "http://192.168.43.10:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -599,7 +601,7 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
-                                        String url = "http://106.10.39.154:9999/api/meetings/rate/";
+                                        String url = "http://192.168.43.10:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -694,7 +696,7 @@ public class HomeFragment extends Fragment {
                                     @Override
                                     public void onAnimationStart(Animation animation) {
                                         third_pane.setVisibility(View.VISIBLE);
-                                        String url = "http://106.10.39.154:9999/api/meetings/rate/";
+                                        String url = "http://192.168.43.10:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
                                             values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -754,7 +756,7 @@ public class HomeFragment extends Fragment {
                                 forth_pane.setVisibility(View.VISIBLE);
                                 InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                                String url = "http://106.10.39.154:9999/api/meetings/feedback/";
+                                String url = "http://192.168.43.10:9999/api/meetings/feedback/";
                                 ContentValues values = new ContentValues();
                                 try {
                                     values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
@@ -889,7 +891,7 @@ public class HomeFragment extends Fragment {
                             String before_date = jsonArray.getJSONObject(i).getString("date");
                             Date date_obj = new SimpleDateFormat("yyyy-MM-dd").parse(before_date);
                             final String date_day = date_obj.getDate() + "일";
-                            final String date = date_obj.getMonth() + "월" + " " + date_obj.getDate() + "일";
+                            final String date = date_obj.getMonth() + 1 + "월" + " " + date_obj.getDate() + "일";
                             boolean flag = false;
                             String manager_profile_url = "";
                             for(int j = 0 ; j < received_request.getInt("count"); j++) {

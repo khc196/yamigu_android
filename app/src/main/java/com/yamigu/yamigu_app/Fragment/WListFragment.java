@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
@@ -137,7 +138,7 @@ public class WListFragment extends Fragment {
             is_initialized = true;
         }
         else {
-            String url = "http://106.10.39.154:9999/api/meetings/my/";
+            String url = "http://192.168.43.10:9999/api/meetings/my/";
             ContentValues values = new ContentValues();
             NetworkTask networkTask = new NetworkTask(url, values);
             networkTask.execute();
@@ -198,7 +199,7 @@ public class WListFragment extends Fragment {
     }
     private void activateDates(Set<String> active_dates) {
         int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
-        String url = "http://106.10.39.154:9999/api/meetings/waiting/";
+        String url = "http://192.168.43.10:9999/api/meetings/waiting/";
         url += "?";
         ContentValues values = new ContentValues();
         SimpleDateFormat sdf = new SimpleDateFormat("M/d");
@@ -493,7 +494,7 @@ public class WListFragment extends Fragment {
                                 @Override
                                 public void onClick(View view) {
                                     try {
-                                        String url = "http://106.10.39.154:9999/api/matching/send_request/";
+                                        String url = "http://192.168.43.10:9999/api/matching/send_request/";
                                         ContentValues values = new ContentValues();
                                         values.put("meeting_type", json_data.getInt("meeting_type"));
                                         values.put("date", date_string_f);
@@ -643,23 +644,30 @@ public class WListFragment extends Fragment {
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);
-                int code = jsonObject.getInt("code");
-                switch(code) {
-                    case 201:
-                        Intent intent_me = getActivity().getIntent();
-                        getActivity().finish();
-                        startActivity(intent_me);
-                        break;
-                    case 204:
-                        Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
+                String message = jsonObject.getString("message");
+                Log.d("message", message);
 
-                        intent.putExtra("type", values.getAsInteger("meeting_type"));
-                        intent.putExtra("date_string", values.getAsString("date"));
-                        intent.putExtra("place", values.getAsInteger("place"));
-                        intent.putExtra("place_string", values.getAsString("place_string"));
-                        intent.putExtra("target_id", values.getAsInteger("meeting_id"));
-                        startActivity(intent);
-                        break;
+                if(message.equals("created")) {
+                    Intent intent_me = getActivity().getIntent();
+                    getActivity().finish();
+                    startActivity(intent_me);
+                    Toast.makeText(getContext(), "미팅이 신청되었어요!", Toast.LENGTH_SHORT).show();
+                }
+                else if(message.equals("differnt type")) {
+                    Toast.makeText(getContext(), "해당 날짜에 신청한 미팅과 인원이 달라요!", Toast.LENGTH_SHORT).show();
+                }
+                else if(message.equals("aleady exists")) {
+                    Toast.makeText(getContext(), "이미 신청한 미팅이에요!", Toast.LENGTH_SHORT).show();
+                }
+                else if(message.equals("You should create new meeting for matching")) {
+                    Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
+
+                    intent.putExtra("type", values.getAsInteger("meeting_type"));
+                    intent.putExtra("date_string", values.getAsString("date"));
+                    intent.putExtra("place", values.getAsInteger("place"));
+                    intent.putExtra("place_string", values.getAsString("place_string"));
+                    intent.putExtra("target_id", values.getAsInteger("meeting_id"));
+                    startActivity(intent);
                 }
             } catch(JSONException e) {
                 e.printStackTrace();

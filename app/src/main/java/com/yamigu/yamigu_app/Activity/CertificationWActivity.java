@@ -101,7 +101,7 @@ public class CertificationWActivity extends AppCompatActivity {
                 if(et_job.getText().toString().isEmpty() || et_company.getText().toString().isEmpty() || image_bitmap == null) return;
                 department = et_job.getText().toString();
                 belong = et_company.getText().toString();
-                String url = "http://106.10.39.154:9999/api/auth/signup/";
+                String url = "http://192.168.43.10:9999/api/auth/signup/";
                 ContentValues values = new ContentValues();
                 values.put("real_name", "홍길동");
                 values.put("age", 25);
@@ -200,7 +200,7 @@ public class CertificationWActivity extends AppCompatActivity {
 
                 // open a URL connection to the Servlet
                 FileInputStream fileInputStream = new FileInputStream(sourceFile);
-                String upLoadServerUri = "http://106.10.39.154:9999/api/user/certificate/";
+                String upLoadServerUri = "http://192.168.43.10:9999/api/user/certificate/";
                 URL url = new URL(upLoadServerUri);
 
                 // Open a HTTP  connection to  the URL
