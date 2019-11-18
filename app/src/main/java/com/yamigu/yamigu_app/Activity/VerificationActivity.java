@@ -19,7 +19,6 @@ public class VerificationActivity extends AppCompatActivity {
     private String auth_token;
     private SharedPreferences preferences;
     private WebView mWebView;
-    private static final String URL_INFO = "http://192.168.43.10:5000/checkplus_main"; //휴대폰본인인증 호출하는 URL 입력;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +39,8 @@ public class VerificationActivity extends AppCompatActivity {
         btn_verify_phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(getApplicationContext(), NICEActivity.class);
-                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                Intent intent = new Intent(getApplicationContext(), NICEActivity.class);
+                //Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
 

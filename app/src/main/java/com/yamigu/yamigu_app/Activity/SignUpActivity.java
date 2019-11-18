@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -39,7 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
     private String friend_code;
     private String auth_token;
     private SharedPreferences preferences;
-
+    private String real_name, birthdate, gender, phonenumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +60,12 @@ public class SignUpActivity extends AppCompatActivity {
         Intent intent = getIntent();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        real_name = intent.getExtras().getString("name");
+        phonenumber = intent.getExtras().getString("phonenumber");
+        gender = intent.getExtras().getString("gender");
+        birthdate = intent.getExtras().getString("birthdate");
+
+        //Log.d("INFO", real_name + " " + phonenumber + " " + gender + " " + birthdate);
         auth_token = preferences.getString("auth_token", "");
 
         radio_agree_all = (RadioButton) findViewById(R.id.radio_agree_all);
@@ -159,6 +166,10 @@ public class SignUpActivity extends AppCompatActivity {
                 }
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("friend_code", friend_code);
+                intent.putExtra("realname", real_name);
+                intent.putExtra("phonenumber", phonenumber);
+                intent.putExtra("gender", gender);
+                intent.putExtra("birthdate", birthdate);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
@@ -243,7 +254,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 boolean is_validate = false;
-                String url = "http://192.168.43.10:9999/api/validation/nickname/"+editable.toString();
+                String url = "http://106.10.39.154:9999/api/validation/nickname/"+editable.toString();
                 ContentValues values = new ContentValues();
                 NetworkTask networkTask = new NetworkTask(url, values);
                 String pattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]*$";

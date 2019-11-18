@@ -230,7 +230,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         meetingCancelDialog.btn_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://192.168.43.10:9999/api/matching/cancel_matching/";
+                String url = "http://106.10.39.154:9999/api/matching/cancel_matching/";
                 ContentValues values = new ContentValues();
                 values.put("match_id", matching_id);
                 NetworkTask2 networkTask2 = new NetworkTask2(url, values);
@@ -349,7 +349,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             partnerRef.child(matching_id).child(key).setValue(receivedMessage);
             receivedMessage.isUnread = false;
             userRef.child(matching_id).child(key).setValue(receivedMessage);
-            String url = "http://192.168.43.10:9999/api/fcm/send_push/";
+            String url = "http://106.10.39.154:9999/api/fcm/send_push/";
             ContentValues values = new ContentValues();
             values.put("receiverId", partner_uid);
             values.put("message", message);

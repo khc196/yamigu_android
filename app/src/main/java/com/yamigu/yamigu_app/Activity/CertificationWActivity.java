@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Calendar;
 
 import static android.content.Intent.ACTION_PICK;
 
@@ -61,6 +62,8 @@ public class CertificationWActivity extends AppCompatActivity {
     String uploadFileName = "";
 
     Bitmap image_bitmap;
+    String real_name, phonenumber, gender_string, birthdate;
+    int age, gender;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +82,12 @@ public class CertificationWActivity extends AppCompatActivity {
         Intent intent = getIntent();
         nickname = intent.getExtras().getString("nickname");
         friend_code = intent.getExtras().getString("friend_code");
+        real_name = intent.getExtras().getString("realname");
+        phonenumber = intent.getExtras().getString("phonenumber");
+        gender_string = intent.getExtras().getString("gender");
+        birthdate = intent.getExtras().getString("birthdate");
+        age = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(birthdate.substring(0, 4)) + 1;
+        gender = Integer.parseInt(gender_string);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         auth_token = preferences.getString("auth_token", "");
@@ -98,20 +107,20 @@ public class CertificationWActivity extends AppCompatActivity {
         btn_go_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(et_job.getText().toString().isEmpty() || et_company.getText().toString().isEmpty() || image_bitmap == null) return;
+                if(et_job.getText().toString().isEmpty() || et_company.getText().toString().isEmpty()) return;
                 department = et_job.getText().toString();
                 belong = et_company.getText().toString();
-                String url = "http://192.168.43.10:9999/api/auth/signup/";
+                String url = "http://106.10.39.154:9999/api/auth/signup/";
                 ContentValues values = new ContentValues();
-                values.put("real_name", "홍길동");
-                values.put("age", 25);
-                values.put("phone", "010-0000-0000");
-                values.put("gender", 1);
+                values.put("real_name", real_name);
+                values.put("age", age);
+                values.put("phone", phonenumber);
+                values.put("gender", gender);
                 values.put("nickname", nickname);
                 values.put("is_student", false);
                 values.put("belong", belong);
                 values.put("department", department);
-
+                dialog = new ProgressDialog(CertificationWActivity.this);
                 NetworkTask networkTask = new NetworkTask(url, values);
                 networkTask.execute();
             }
@@ -120,10 +129,17 @@ public class CertificationWActivity extends AppCompatActivity {
         btn_skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+                String url = "http://106.10.39.154:9999/api/auth/signup/";
+                ContentValues values = new ContentValues();
+                values.put("real_name", real_name);
+                values.put("age", age);
+                values.put("phone", phonenumber);
+                values.put("gender", gender);
+                values.put("nickname", nickname);
+                values.put("is_student", false);
+                dialog = new ProgressDialog(CertificationWActivity.this);
+                NetworkTask networkTask = new NetworkTask(url, values);
+                networkTask.execute();
             }
         });
 
@@ -200,7 +216,7 @@ public class CertificationWActivity extends AppCompatActivity {
 
                 // open a URL connection to the Servlet
                 FileInputStream fileInputStream = new FileInputStream(sourceFile);
-                String upLoadServerUri = "http://192.168.43.10:9999/api/user/certificate/";
+                String upLoadServerUri = "http://106.10.39.154:9999/api/user/certificate/";
                 URL url = new URL(upLoadServerUri);
 
                 // Open a HTTP  connection to  the URL
@@ -327,7 +343,12 @@ public class CertificationWActivity extends AppCompatActivity {
             this.url = url;
             this.values = values;
         }
-
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage("회원가입 진행중입니다...");
+        }
         @Override
         protected String doInBackground(Void... params) {
 
@@ -335,13 +356,18 @@ public class CertificationWActivity extends AppCompatActivity {
             requestHttpURLConnection = new RequestHttpURLConnection();
 
             result = requestHttpURLConnection.request(getApplicationContext(), url, values, "POST", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
-
             return result;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            dialog.dismiss();
+            editor.putInt("age", age);
+            editor.putString("belong", belong);
+            editor.putString("department", department);
+            editor.putBoolean("is_student", false);
+            editor.commit();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);

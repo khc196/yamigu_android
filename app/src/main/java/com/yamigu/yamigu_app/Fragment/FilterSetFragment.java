@@ -421,7 +421,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         filter.setMaximum_age_current(11);
     }
     private void requestFilteredDataNumber() {
-        String url = "http://192.168.43.10:9999/api/meetings/waiting/count/?";
+        String url = "http://106.10.39.154:9999/api/meetings/waiting/count/?";
         ContentValues values = new ContentValues();
         List<Integer> selected_types = new LinkedList<>();
         List<Integer> selected_places = new LinkedList<>();
@@ -474,7 +474,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
         networkTask.execute();
     }
     private void requestFilteredData() {
-        String url = "http://192.168.43.10:9999/api/meetings/waiting/?";
+        String url = "http://106.10.39.154:9999/api/meetings/waiting/?";
         ContentValues values = new ContentValues();
         List<Integer> selected_types = new LinkedList<>();
         List<Integer> selected_places = new LinkedList<>();
