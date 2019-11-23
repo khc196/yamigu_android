@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -61,9 +62,23 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
         paint.setDither(true);
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(Color.parseColor("#BAB399"));
-        canvas.drawCircle(finalBitmap.getWidth() / 2 + 0.7f,
-                finalBitmap.getHeight() / 2 + 0.7f,
-                finalBitmap.getWidth() / 2 + 0.1f, paint);
+//        canvas.drawCircle(finalBitmap.getWidth() / 2 + 0.7f,
+//                finalBitmap.getHeight() / 2 + 0.7f,
+//                finalBitmap.getWidth() / 2 + 0.1f, paint);
+        int offset = 0;
+        RectF rectF = new RectF(
+                offset, // left
+                offset, // top
+                finalBitmap.getWidth() - offset, // right
+                finalBitmap.getHeight() - offset // bottom
+        );
+        int radiusCorner = 50;
+        canvas.drawRoundRect(
+                rectF,
+                radiusCorner,
+                radiusCorner,
+                paint
+        );
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(finalBitmap, rect, rect, paint);
 

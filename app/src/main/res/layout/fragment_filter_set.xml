@@ -42,7 +42,7 @@
                 android:layout_width="99dp"
                 android:layout_height="30dp"
                 android:background="@drawable/rounded_gray_full"
-                android:text="2:2 소개팅"
+                android:text="2:2 미팅"
                 android:textSize="12dp"
                 android:textColor="@color/colorPrimary"
                 android:fontFamily="@font/roboto_font_family"

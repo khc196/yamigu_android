@@ -139,7 +139,7 @@
                         android:layout_width="379dp"
                         android:layout_height="62dp"
                         android:background="@null"
-                        android:text="2:2 소개팅"
+                        android:text="2:2 미팅"
                         android:gravity="center"
                         android:fontFamily="@font/nanumgothic_font_family"
                         />

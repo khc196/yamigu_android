@@ -17,7 +17,7 @@ public class WaitingTeamCard extends LinearLayout {
 
     LinearLayout bg;
     ImageView point_line;
-    TextView description, profile1, profile2, date, place, rating, label;
+    TextView description, profile1, profile2, date, place, label;
     WebView description_w;
     public WaitingTeamCard(Context context) {
         super(context);
@@ -50,7 +50,6 @@ public class WaitingTeamCard extends LinearLayout {
         profile2 = (TextView) findViewById(R.id.profile2);
         date = (TextView) findViewById(R.id.date);
         place = (TextView) findViewById(R.id.place);
-        rating = (TextView) findViewById(R.id.rating);
     }
     private void getAttrs(AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MeetingTeamHome);
@@ -65,21 +64,18 @@ public class WaitingTeamCard extends LinearLayout {
         switch(label_img){
             case 1:
                 label.setBackgroundResource(R.drawable.label_2vs2_bg);
-                label.setText("2:2 소개팅");
+                label.setText("2:2 미팅");
                 point_line.setBackgroundColor(getResources().getColor(R.color.colorPoint));
-                rating.setTextColor(getResources().getColor(R.color.colorPoint));
                 break;
             case 2:
                 label.setBackgroundResource(R.drawable.label_3vs3_bg);
                 label.setText("3:3 미팅");
                 point_line.setBackgroundColor(getResources().getColor(R.color.color3vs3));
-                rating.setTextColor(getResources().getColor(R.color.color3vs3));
                 break;
             case 3:
                 label.setBackgroundResource(R.drawable.label_4vs4_bg);
                 label.setText("4:4 미팅");
                 point_line.setBackgroundColor(getResources().getColor(R.color.color4vs4));
-                rating.setTextColor(getResources().getColor(R.color.color4vs4));
                 break;
         }
 

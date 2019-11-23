@@ -67,7 +67,6 @@ public class MeetingCardFragment extends Fragment {
             profile2 = (TextView) waitingTeamCard.findViewById(R.id.profile2);
             date = (TextView) waitingTeamCard.findViewById(R.id.date);
             place = (TextView) waitingTeamCard.findViewById(R.id.place);
-            rating = (TextView) waitingTeamCard.findViewById(R.id.rating);
             CircularImageView profile_img = (CircularImageView) waitingTeamCard.findViewById(R.id.iv_profile);
 
 
@@ -81,23 +80,20 @@ public class MeetingCardFragment extends Fragment {
                 switch (label_type) {
                     case 1:
                         label.setBackgroundResource(R.drawable.label_2vs2_bg);
-                        label.setText("2:2 소개팅");
+                        label.setText("2:2 미팅");
                         point_line.setBackgroundColor(getResources().getColor(R.color.colorPoint));
-                        rating.setTextColor(getResources().getColor(R.color.colorPoint));
                         rl_applying.setBackgroundResource(R.drawable.bottom_rounded_orange);
                         break;
                     case 2:
                         label.setBackgroundResource(R.drawable.label_3vs3_bg);
                         label.setText("3:3 미팅");
                         point_line.setBackgroundColor(getResources().getColor(R.color.color3vs3));
-                        rating.setTextColor(getResources().getColor(R.color.color3vs3));
                         rl_applying.setBackgroundResource(R.drawable.bottom_rounded_3vs3);
                         break;
                     case 3:
                         label.setBackgroundResource(R.drawable.label_4vs4_bg);
                         label.setText("4:4 미팅");
                         point_line.setBackgroundColor(getResources().getColor(R.color.color4vs4));
-                        rating.setTextColor(getResources().getColor(R.color.color4vs4));
                         rl_applying.setBackgroundResource(R.drawable.bottom_rounded_4vs4);
                         break;
                 }

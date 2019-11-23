@@ -27,7 +27,7 @@
                 android:layout_marginTop="7dp"
                 android:scaleType="fitStart"
                 android:textColor="@color/colorPrimary"
-                android:text="2:2 소개팅"
+                android:text="2:2 미팅"
                 android:textSize="12dp"
                 android:gravity="center_vertical|center_horizontal"
                 android:fontFamily="@font/nanumgothic_font_family">

@@ -37,7 +37,7 @@ public class SentMeetingFragment extends Fragment {
     private LinearLayout page_layout, empty_layout;
     private LinearLayout ll_btn_layout;
     private Button btn_left, btn_right;
-
+    private static int position;
     private String auth_token;
     private int total_num = 0;
     int dpValue = 0;
@@ -94,6 +94,7 @@ public class SentMeetingFragment extends Fragment {
             public void onPageSelected(int position) {
                 MeetingCardFragment fragment;
                 int currentPage = viewPager.getCurrentItem();
+                SentMeetingFragment.position = position;
                 tv_current.setText(Integer.toString(currentPage + 1));
                 for(int i = 1; i <= total_num; i++) {
                     float d = getResources().getDisplayMetrics().density;
@@ -131,15 +132,17 @@ public class SentMeetingFragment extends Fragment {
                     MeetingCardFragment fragment = fragmentAdapter.getItem(0);
                     LinearLayout.LayoutParams mLayoutParams = (LinearLayout.LayoutParams) fragment.waitingTeamCard.getLayoutParams();
                     mLayoutParams.topMargin = 0;
-                    fragment.waitingTeamCard.setAlpha(1.0f);
-                    fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
+                    if(SentMeetingFragment.position == 0) {
+                        fragment.waitingTeamCard.setAlpha(1.0f);
+                        fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
+                    }
 
                 }
             }
         });
         viewPager.setClipToPadding(false);
 
-        String url = "http://192.168.43.10:9999/api/matching/sent_request/?meeting_id="+meeting_id;
+        String url = "http://106.10.39.154:9999/api/matching/sent_request/?meeting_id="+meeting_id;
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
@@ -153,7 +156,7 @@ public class SentMeetingFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String url = "http://192.168.43.10:9999/api/matching/cancel_request/";
+                                String url = "http://106.10.39.154:9999/api/matching/cancel_request/";
                                 MeetingCardFragment fragment = fragmentAdapter.getItem(viewPager.getCurrentItem());
 
                                 int id = fragment.getRequest_id();

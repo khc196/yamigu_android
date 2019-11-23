@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,6 +75,8 @@ public class WListFragment extends Fragment {
     private boolean is_initialized = false;
     private SharedPreferences preferences;
     private Menu global_menu;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private String refresh_url = "";
     public WListFragment() {
         this.active_type_set = new HashSet<>();
         this.active_place_set = new HashSet<>();
@@ -87,6 +90,17 @@ public class WListFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_wlist, container, false);
         auth_token = preferences.getString("auth_token", "");
         tb = (Toolbar) view.findViewById(R.id.toolbar) ;
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefreshlayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+                String url = refresh_url;
+                ContentValues values = new ContentValues();
+                NetworkTask2 networkTask2 = new NetworkTask2(url, values);
+                networkTask2.execute();
+            }
+        });
         ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -138,7 +152,7 @@ public class WListFragment extends Fragment {
             is_initialized = true;
         }
         else {
-            String url = "http://192.168.43.10:9999/api/meetings/my/";
+            String url = "http://106.10.39.154:9999/api/meetings/my/";
             ContentValues values = new ContentValues();
             NetworkTask networkTask = new NetworkTask(url, values);
             networkTask.execute();
@@ -186,6 +200,7 @@ public class WListFragment extends Fragment {
                 global_menu.findItem(R.id.menu_filter).setIcon(R.drawable.icon_filter);
             }
             String url = data.getStringExtra("url");
+            refresh_url = url;
             ContentValues values = new ContentValues();
             NetworkTask2 networkTask2 = new NetworkTask2(url, values);
             networkTask2.execute();
@@ -199,7 +214,7 @@ public class WListFragment extends Fragment {
     }
     private void activateDates(Set<String> active_dates) {
         int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
-        String url = "http://192.168.43.10:9999/api/meetings/waiting/";
+        String url = "http://106.10.39.154:9999/api/meetings/waiting/";
         url += "?";
         ContentValues values = new ContentValues();
         SimpleDateFormat sdf = new SimpleDateFormat("M/d");
@@ -260,9 +275,11 @@ public class WListFragment extends Fragment {
                 url += "place=" + i + "&";
             }
         }
+        refresh_url = url;
         NetworkTask2 networkTask2 = new NetworkTask2(url, values);
         networkTask2.execute();
     }
+
     public class NetworkTask extends AsyncTask<Void, Void, String> {
 
         private String url;
@@ -341,7 +358,7 @@ public class WListFragment extends Fragment {
                     LinearLayout top_bg;
                     final RelativeLayout rl_applying;
                     ImageView point_line;
-                    TextView description, profile1, profile2, date, place, rating, label;
+                    TextView description, profile1, profile2, date, place, label;
                     WebView description_w;
                     top_bg = (LinearLayout) mtw.findViewById(R.id.top_bg);
                     rl_applying = (RelativeLayout) mtw.findViewById(R.id.rl_applying);
@@ -353,18 +370,16 @@ public class WListFragment extends Fragment {
                     profile2 = (TextView) mtw.findViewById(R.id.profile2);
                     date = (TextView) mtw.findViewById(R.id.date);
                     place = (TextView) mtw.findViewById(R.id.place);
-                    rating = (TextView) mtw.findViewById(R.id.rating);
                     CircularImageView profile_img = (CircularImageView) mtw.findViewById(R.id.iv_profile);
 
                     String url = json_data.getString("openby_profile");
                     boolean is_matched = json_data.getBoolean("is_matched");
+                    mRootLinear.addView(mtw);
                     if(!url.isEmpty()) {
+                        mtw.setVisibility(View.INVISIBLE);
                         ContentValues values = new ContentValues();
                         NetworkTask3 networkTask3 = new NetworkTask3(url, values, profile_img, mRootLinear, mtw);
                         networkTask3.execute();
-                    }
-                    else {
-                        mRootLinear.addView(mtw);
                     }
                     if(!is_matched) {
                         mtw.setOnClickListener(new View.OnClickListener() {
@@ -427,7 +442,7 @@ public class WListFragment extends Fragment {
                             }
                         });
                     }
-                    String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
+                    final String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
                     desc_string = json_data.getString("appeal");
                     profile1_string = json_data.getString("openby_nickname") + " (" +json_data.getString("openby_age") + ")";
                     profile2_string = json_data.getString("openby_belong") + ", "+ json_data.getString("openby_department");
@@ -457,30 +472,37 @@ public class WListFragment extends Fragment {
                             int label_type = json_data.getInt("meeting_type");
                             switch (label_type) {
                                 case 1:
+                                    top_bg.setBackgroundResource(R.drawable.top_rounded_with_orange_line);
                                     label.setBackgroundResource(R.drawable.label_2vs2_bg);
-                                    label.setText("2:2 소개팅");
+                                    place.setBackgroundResource(R.drawable.label_2vs2_bg);
+                                    date.setBackgroundResource(R.drawable.label_2vs2_bg);
+                                    label.setText("2:2 미팅");
                                     point_line.setBackgroundColor(getResources().getColor(R.color.colorPoint));
-                                    rating.setTextColor(getResources().getColor(R.color.colorPoint));
                                     rl_applying.setBackgroundResource(R.drawable.bottom_rounded_orange);
                                     break;
                                 case 2:
+                                    top_bg.setBackgroundResource(R.drawable.top_rounded_3vs3);
                                     label.setBackgroundResource(R.drawable.label_3vs3_bg);
+                                    place.setBackgroundResource(R.drawable.label_3vs3_bg);
+                                    date.setBackgroundResource(R.drawable.label_3vs3_bg);
                                     label.setText("3:3 미팅");
                                     point_line.setBackgroundColor(getResources().getColor(R.color.color3vs3));
-                                    rating.setTextColor(getResources().getColor(R.color.color3vs3));
                                     rl_applying.setBackgroundResource(R.drawable.bottom_rounded_3vs3);
                                     break;
                                 case 3:
+                                    top_bg.setBackgroundResource(R.drawable.top_rounded_4vs4);
                                     label.setBackgroundResource(R.drawable.label_4vs4_bg);
+                                    place.setBackgroundResource(R.drawable.label_4vs4_bg);
+                                    date.setBackgroundResource(R.drawable.label_4vs4_bg);
                                     label.setText("4:4 미팅");
                                     point_line.setBackgroundColor(getResources().getColor(R.color.color4vs4));
-                                    rating.setTextColor(getResources().getColor(R.color.color4vs4));
                                     rl_applying.setBackgroundResource(R.drawable.bottom_rounded_4vs4);
                                     break;
                             }
 
                             Date before_date = new SimpleDateFormat("yyyy-MM-dd").parse(before_date_string);
-                            SimpleDateFormat sdf = new SimpleDateFormat("M월d일");
+                            SimpleDateFormat sdf = new SimpleDateFormat("MM월 dd일 (E)");
+                            SimpleDateFormat sdf2 = new SimpleDateFormat("MM월 dd일");
                             date_string = sdf.format(before_date);
                             place_string = json_data.getString("place_type_name");
                             //description.setText(desc_string);
@@ -488,13 +510,13 @@ public class WListFragment extends Fragment {
                             profile2.setText(profile2_string);
                             date.setText(date_string);
                             place.setText(place_string);
-                            final String date_string_f = date_string;
+                            final String date_string_f = sdf2.format(before_date);
                             final String place_string_f = place_string;
                             rl_applying.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     try {
-                                        String url = "http://192.168.43.10:9999/api/matching/send_request/";
+                                        String url = "http://106.10.39.154:9999/api/matching/send_request/";
                                         ContentValues values = new ContentValues();
                                         values.put("meeting_type", json_data.getInt("meeting_type"));
                                         values.put("date", date_string_f);
@@ -516,19 +538,23 @@ public class WListFragment extends Fragment {
                     }
                     else {
                         try {
+                            top_bg.setBackgroundResource(R.drawable.top_rounded_matched);
                             label.setBackgroundResource(R.drawable.label_gray);
-                            label.setText("매칭완료");
+                            label.setTextColor(getResources().getColor(R.color.colorNonselect));
+                            place.setBackgroundResource(R.drawable.label_gray);
+                            place.setTextColor(getResources().getColor(R.color.colorNonselect));
+                            date.setBackgroundResource(R.drawable.label_gray);
+                            date.setTextColor(getResources().getColor(R.color.colorNonselect));
                             point_line.setBackgroundColor(getResources().getColor(R.color.colorNonselect));
-                            rating.setTextColor(getResources().getColor(R.color.colorNonselect));
                             Date before_date = new SimpleDateFormat("yyyy-MM-dd").parse(before_date_string);
-                            SimpleDateFormat sdf = new SimpleDateFormat("M월d일");
+                            SimpleDateFormat sdf = new SimpleDateFormat("MM월 dd일 (E)");
                             date_string = sdf.format(before_date);
                             place_string = json_data.getString("place_type_name");
                             //description.setText(desc_string);
                             profile1.setText(profile1_string);
                             profile2.setText(profile2_string);
                             date.setText(date_string);
-                            place.setText(place_string);
+                            place.setText("매칭완료");
                             final String date_string_f = date_string;
                             final String place_string_f = place_string;
                         } catch (ParseException e) {
@@ -541,7 +567,6 @@ public class WListFragment extends Fragment {
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-
         }
         @Override
         protected void onPostExecute(String s) {
@@ -600,7 +625,6 @@ public class WListFragment extends Fragment {
         protected Bitmap doInBackground(Void... params) {
             try {
                 URL urlO = new URL(url);
-
                 URLConnection conn = urlO.openConnection();
                 conn.connect();
                 InputStream urlInputStream = conn.getInputStream();
@@ -614,7 +638,7 @@ public class WListFragment extends Fragment {
         @Override
         protected void onPostExecute(Bitmap bm) {
             civ.setImageBitmap(bm);
-            rootLayout.addView(view);
+            view.setVisibility(View.VISIBLE);
         }
     }
     public class NetworkTask4 extends AsyncTask<Void, Void, String> {
@@ -648,9 +672,13 @@ public class WListFragment extends Fragment {
                 Log.d("message", message);
 
                 if(message.equals("created")) {
-                    Intent intent_me = getActivity().getIntent();
-                    getActivity().finish();
-                    startActivity(intent_me);
+                    try {
+                        Intent intent_me = getActivity().getIntent();
+                        getActivity().finish();
+                        startActivity(intent_me);
+                    } catch(NullPointerException e) {
+                        e.printStackTrace();
+                    }
                     Toast.makeText(getContext(), "미팅이 신청되었어요!", Toast.LENGTH_SHORT).show();
                 }
                 else if(message.equals("differnt type")) {

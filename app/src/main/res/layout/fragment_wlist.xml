@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -115,65 +116,73 @@
 
 
         </LinearLayout>
-        <ScrollView
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefreshlayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="21dp"
-            android:paddingBottom="21dp">
-            <LinearLayout
-                android:id="@+id/wating_card_root"
+            android:layout_height="match_parent">
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
+                android:background="#F1F1F1"
 
-                android:background="#FFFFFF">
-                <!--com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="21dp"
-                    app:label="1"
-                    app:date="5월28일"
-                    app:description="한명이 술을 잘 못마셔요!"
-                    app:place="신촌/홍대"
-                    app:profile1="연세대학교 (24)"
-                    app:profile2="전기전자공학부">
-                </com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2>
-                <com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="21dp"
-                    app:label="2"
-                    app:date="5월28일"
-                    app:description="저희랑 재밌게 노실 분~"
-                    app:place="건대/왕십리"
-                    app:profile1="고려대학교 (21)"
-                    app:profile2="기계공학부">
-                </com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2>
-                <com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="21dp"
-                    app:label="3"
-                    app:date="5월28일"
-                    app:description="서강대 새내기랑 미팅하실 분!"
-                    app:place="강남"
-                    app:profile1="서강대학교 (20)"
-                    app:profile2="경제학부">
-                </com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2>
-                <com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:date="5월28일"
-                    app:description="한명이 술을 잘 못마셔요!"
-                    app:place="신촌/홍대"
-                    app:profile1="연세대학교 (24)"
-                    app:profile2="전기전자공학부">
-                </com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2-->
-            </LinearLayout>
-        </ScrollView>
+                >
+                <LinearLayout
+                    android:id="@+id/wating_card_root"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+
+                    android:paddingTop="21dp"
+                    android:paddingBottom="21dp">
+                    <!--com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="21dp"
+                        app:label="1"
+                        app:date="5월28일"
+                        app:description="한명이 술을 잘 못마셔요!"
+                        app:place="신촌/홍대"
+                        app:profile1="연세대학교 (24)"
+                        app:profile2="전기전자공학부">
+                    </com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2>
+                    <com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="21dp"
+                        app:label="2"
+                        app:date="5월28일"
+                        app:description="저희랑 재밌게 노실 분~"
+                        app:place="건대/왕십리"
+                        app:profile1="고려대학교 (21)"
+                        app:profile2="기계공학부">
+                    </com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2>
+                    <com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="21dp"
+                        app:label="3"
+                        app:date="5월28일"
+                        app:description="서강대 새내기랑 미팅하실 분!"
+                        app:place="강남"
+                        app:profile1="서강대학교 (20)"
+                        app:profile2="경제학부">
+                    </com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2>
+                    <com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:date="5월28일"
+                        app:description="한명이 술을 잘 못마셔요!"
+                        app:place="신촌/홍대"
+                        app:profile1="연세대학교 (24)"
+                        app:profile2="전기전자공학부">
+                    </com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard2-->
+                </LinearLayout>
+            </ScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

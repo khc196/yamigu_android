@@ -24,6 +24,9 @@ import android.widget.TextView;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -31,7 +34,7 @@ public class SignUpActivity extends AppCompatActivity {
     private RadioButton radio_agree_all, radio_agree_using, radio_agree_private;
     private EditText et_nickname, et_friendcode;
     private Button btn_select_student, btn_select_worker, btn_certify;
-    private TextView btn_view_using, btn_view_private, tv_nickname_available;
+    private TextView btn_view_using, btn_view_private, tv_available_nickname;
     private Selector selector;
     private SelectorR selectorR;
     private boolean nickname_validated;
@@ -39,7 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
     private String friend_code;
     private String auth_token;
     private SharedPreferences preferences;
-
+    private boolean validated_from_server;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
         btn_certify = (Button) findViewById(R.id.btn_certify);
         btn_view_using = (TextView) findViewById(R.id.btn_view_using);
         btn_view_private = (TextView) findViewById(R.id.btn_view_private);
-        tv_nickname_available = (TextView) findViewById(R.id.tv_available_nickname);
+        tv_available_nickname = (TextView) findViewById(R.id.tv_available_nickname);
 
         selector = new Selector();
         selectorR = new SelectorR();
@@ -242,29 +245,11 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                boolean is_validate = false;
-                String url = "http://192.168.43.10:9999/api/validation/nickname/"+editable.toString();
-                ContentValues values = new ContentValues();
-                NetworkTask networkTask = new NetworkTask(url, values);
-                String pattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]*$";
-                nickname_validated = false;
-                is_validate = editable.length() <= 6 && Pattern.matches(pattern, editable.toString());
-                if(!editable.toString().isEmpty()) {
-                    tv_nickname_available.setVisibility(View.VISIBLE);
-                    if (!is_validate || networkTask.execute() == null) {
-                        tv_nickname_available.setTextColor(getResources().getColor(R.color.colorRed));
-                        tv_nickname_available.setText("사용 불가능합니다.");
-                        nickname_validated = false;
-                        nickname = "";
-                    } else {
-                        tv_nickname_available.setTextColor(getResources().getColor(R.color.colorBlue));
-                        tv_nickname_available.setText("사용 가능합니다.");
-                        nickname_validated = true;
-                        nickname = editable.toString();
-                    }
-                }
-                else {
-                    tv_nickname_available.setVisibility(View.INVISIBLE);
+                if(!editable.toString().equals("")) {
+                    String url = "http://106.10.39.154:9999/api/user/validation/nickname/"+editable.toString();
+                    ContentValues values = new ContentValues();
+                    NetworkTask networkTask = new NetworkTask(url, values);
+                    networkTask.execute();
                 }
             }
         });
@@ -352,14 +337,45 @@ public class SignUpActivity extends AppCompatActivity {
             String result; // 요청 결과를 저장할 변수.
             requestHttpURLConnection = new RequestHttpURLConnection();
 
-            result = requestHttpURLConnection.request(getApplicationContext(), url, values, "GET", ""); // 해당 URL로 부터 결과물을 얻어온다.
-
+            result = requestHttpURLConnection.request(getApplicationContext(), url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
             return result;
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            validated_from_server = false;
+
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(s);
+                validated_from_server = jsonObject.getBoolean("is_available");
+            } catch(JSONException e) {
+                validated_from_server = false;
+            } catch(NullPointerException e) {
+                validated_from_server = false;
+            }
+
+            String pattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]*$";
+            Editable editable = et_nickname.getText();
+            boolean is_validate = editable.length() <= 6 && Pattern.matches(pattern, editable.toString());
+            if(!editable.toString().isEmpty()) {
+                tv_available_nickname.setVisibility(View.VISIBLE);
+                if (!is_validate || !validated_from_server) {
+                    tv_available_nickname.setTextColor(getResources().getColor(R.color.colorRed));
+                    tv_available_nickname.setText("사용 불가능합니다.");
+                    nickname_validated = false;
+                    nickname = "";
+                } else {
+                    tv_available_nickname.setTextColor(getResources().getColor(R.color.colorBlue));
+                    tv_available_nickname.setText("사용 가능합니다.");
+                    nickname_validated = true;
+                    nickname = editable.toString();
+                }
+            }
+            else {
+                tv_available_nickname.setVisibility(View.GONE);
+            }
         }
     }
 }
