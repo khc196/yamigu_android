@@ -51,7 +51,7 @@ public class MeetingCardFragment extends Fragment {
         waitingTeamCard = view.findViewById(R.id.waiting_team_card);
         RelativeLayout rl_applying;
         ImageView point_line;
-        TextView profile1, profile2, date, place, rating, label;
+        TextView profile1, profile2, date, place, label;
         WebView description;
         String TAG;
         if (getArguments() != null) {

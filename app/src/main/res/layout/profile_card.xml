@@ -205,21 +205,23 @@
             </LinearLayout>
         </LinearLayout>
         </FrameLayout>
+
         <RelativeLayout
             android:id="@+id/label_certificated"
-            android:layout_width="82dp"
+            android:layout_width="wrap_content"
             android:layout_height="25.3dp"
-            android:background="@drawable/label_certificated_ok_bg"
             android:layout_gravity="right"
-            android:layout_marginRight="8dp">
+            android:layout_marginRight="8dp"
+            android:background="@drawable/label_certificated_ok_bg">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:fontFamily="@font/roboto_font_family"
                 android:text="인증 완료"
                 android:textColor="@color/colorPoint"
-                android:textSize="12dp"
-                android:fontFamily="@font/roboto_font_family"/>
+                android:textSize="12dp" />
         </RelativeLayout>
     </FrameLayout>
     <Button

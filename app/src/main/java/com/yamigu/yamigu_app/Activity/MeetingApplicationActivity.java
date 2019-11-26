@@ -47,7 +47,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private TextView selected_type_text, selected_date_text, selected_place_text;
     private Button btn_okay, btn_edit, btn_delete;
     private Button[] btn_select_type_array, btn_select_date_array, btn_select_place_array;
-    private ImageView iv_question_type, iv_question_when, iv_question_where, iv_question_appeal;
+    private ImageView iv_question_type, iv_question_when, iv_question_where, iv_question_appeal, type_triangle, date_triangle, place_triangle;
     private EditText et_appeal;
     private LinearLayout type_view, date_view, place_view, appeal_view, ll_for_edit;
     private MeetingApplication ma;
@@ -90,6 +90,12 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         selected_type_text = (TextView) findViewById(R.id.selected_type_text);
         selected_date_text = (TextView) findViewById(R.id.selected_date_text);
         selected_place_text = (TextView) findViewById(R.id.selected_place_text);
+        type_triangle = findViewById(R.id.type_triangle);
+        date_triangle = findViewById(R.id.date_triangle);
+        place_triangle = findViewById(R.id.place_triangle);
+        type_triangle.setBackgroundResource(R.drawable.triangle_gray);
+        date_triangle.setBackgroundResource(R.drawable.triangle_gray);
+        place_triangle.setBackgroundResource(R.drawable.triangle_gray);
         ll_for_edit = (LinearLayout) findViewById(R.id.ll_for_edit);
         btn_edit = (Button) findViewById(R.id.btn_edit);
         btn_delete = (Button) findViewById(R.id.btn_delete);
@@ -160,7 +166,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         appeal_view.setVisibility(View.GONE);
         btn_okay.setVisibility(View.INVISIBLE);
         form_code = initialize_with_prefilled_data(intent);
-        if(form_code == NEW_MEETING || form_code == EDIT_MEETING) {
+        if(form_code == NEW_MEETING) {
             selected_type.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -188,6 +194,21 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                     tv_max_appeal_length.setVisibility(View.INVISIBLE);
                 }
             });
+            selected_place.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ma.reselect(ma.RESELECT_PLACE);
+
+                    type_view.setVisibility(View.GONE);
+                    date_view.setVisibility(View.GONE);
+                    place_view.setVisibility(View.VISIBLE);
+                    appeal_view.setVisibility(View.GONE);
+                    btn_okay.setVisibility(View.INVISIBLE);
+                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
+                }
+            });
+        }
+        if(form_code == EDIT_MEETING) {
             selected_place.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -375,7 +396,10 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                             @Override
                             public void onAnimationUpdate(ValueAnimator animator) {
                                 button.setTextColor((int) animator.getAnimatedValue());
-                                selected_type_text.setText(ma.getType_string());
+                                selected_type_text.setText(button.getText().toString());
+                                selected_type_text.setTextColor(getResources().getColor(R.color.colorPoint));
+                                selected_type.setBackgroundResource(R.drawable.bottom_border_orange);
+                                type_triangle.setBackgroundResource(R.drawable.triangle_orange);
                             }
                         });
                         is_changing = true;
@@ -388,6 +412,9 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         button.setBackgroundResource(0);
                         button.setTextColor(Color.BLACK);
                         selected_type_text.setText("인원");
+                        selected_type_text.setTextColor(getResources().getColor(R.color.colorNonselect));
+                        selected_type.setBackgroundResource(R.drawable.bottom_border_gray2);
+                        type_triangle.setBackgroundResource(R.drawable.triangle_gray);
                     }
 
                 }
@@ -476,6 +503,9 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                             public void onAnimationUpdate(ValueAnimator animator) {
                                 button.setTextColor((int) animator.getAnimatedValue());
                                 selected_date_text.setText(ma.getDate_string());
+                                selected_date_text.setTextColor(getResources().getColor(R.color.colorPoint));
+                                selected_date.setBackgroundResource(R.drawable.bottom_border_orange);
+                                date_triangle.setBackgroundResource(R.drawable.triangle_orange);
 
                             }
                         });
@@ -489,6 +519,9 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         button.setBackgroundResource(0);
                         button.setTextColor(Color.BLACK);
                         selected_date_text.setText("날짜");
+                        selected_date_text.setTextColor(getResources().getColor(R.color.colorNonselect));
+                        selected_date.setBackgroundResource(R.drawable.bottom_border_gray2);
+                        date_triangle.setBackgroundResource(R.drawable.triangle_gray);
                     }
 
                 }
@@ -566,6 +599,9 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                             public void onAnimationUpdate(ValueAnimator animator) {
                                 button.setTextColor((int) animator.getAnimatedValue());
                                 selected_place_text.setText(ma.getPlace_string());
+                                selected_place_text.setTextColor(getResources().getColor(R.color.colorPoint));
+                                selected_place.setBackgroundResource(R.drawable.bottom_border_orange);
+                                place_triangle.setBackgroundResource(R.drawable.triangle_orange);
 
                             }
                         });
@@ -579,6 +615,9 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         button.setBackgroundResource(0);
                         button.setTextColor(Color.BLACK);
                         selected_place_text.setText("장소");
+                        selected_place_text.setTextColor(getResources().getColor(R.color.colorNonselect));
+                        selected_place.setBackgroundResource(R.drawable.bottom_border_gray2);
+                        place_triangle.setBackgroundResource(R.drawable.triangle_gray);
                     }
                 }
             });
@@ -754,7 +793,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         } catch (ParseException e){
             e.printStackTrace();
         }
-        String placeString = intent.getExtras().getString("place_string");
+        String placeStringList[] = {"신촌/홍대", "건대/왕십리", "강남"};
+        String placeString = placeStringList[placeInt-1];
 
         switch(typeInt) {
             case 1:
@@ -773,8 +813,13 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         ma.setPlace_string(placeString);
         ma.setAppeal(appealString);
         selected_type_text.setText(ma.getType_string());
+        selected_type.setAlpha(0.5f);
         selected_date_text.setText(ma.getDate_string());
+        selected_date.setAlpha(0.5f);
         selected_place_text.setText(ma.getPlace_string());
+        selected_place_text.setTextColor(getResources().getColor(R.color.colorPoint));
+        selected_place.setBackgroundResource(R.drawable.bottom_border_orange);
+        place_triangle.setBackgroundResource(R.drawable.triangle_orange);
 
         if(target_id == 0) {
             ma.reselect(ma.RESELECT_TYPE);

@@ -60,34 +60,6 @@ public class WaitingTeamCard3 extends LinearLayout {
         date = (TextView) findViewById(R.id.date);
         place = (TextView) findViewById(R.id.place);
         civ = (CircularImageView) findViewById(R.id.iv_profile);
-
-        top_bg.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(rl_applying.getVisibility() == View.INVISIBLE) {
-
-                    rl_applying.setVisibility(View.VISIBLE);
-                    rl_applying.animate()
-                            .translationY(rl_applying.getHeight())
-                            .alpha(1.0f)
-                            .setListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    super.onAnimationEnd(animation);
-                                }});
-                }
-                else
-                    rl_applying.animate()
-                            .translationY(0)
-                            .alpha(0.0f)
-                            .setListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    super.onAnimationEnd(animation);
-                                    rl_applying.setVisibility(View.INVISIBLE);
-                                }});
-            }
-        });
     }
     private void getAttrs(AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MeetingTeamHome);

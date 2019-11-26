@@ -36,7 +36,14 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
 
         int w = getWidth(), h = getHeight();
 
-        Bitmap roundBitmap = getRoundedCroppedBitmap(bitmap, w);
+        Bitmap dst;
+        if(bitmap.getWidth() < bitmap.getHeight()) {
+            dst = Bitmap.createBitmap(bitmap, 0, (bitmap.getHeight()/2) - (bitmap.getWidth()/2), bitmap.getWidth(), bitmap.getWidth());
+        }
+        else {
+            dst = Bitmap.createBitmap(bitmap, (bitmap.getWidth()/2) - (bitmap.getHeight()/2), 0, bitmap.getHeight(), bitmap.getHeight());
+        }
+        Bitmap roundBitmap = getRoundedCroppedBitmap(dst, w);
         canvas.drawBitmap(roundBitmap, 0, 0, null);
 
     }
@@ -54,8 +61,15 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
         Canvas canvas = new Canvas(output);
 
         final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, finalBitmap.getWidth(),
-                finalBitmap.getHeight());
+        Rect rect;
+        if(finalBitmap.getHeight() > finalBitmap.getWidth()) {
+            rect = new Rect(0, 0, finalBitmap.getWidth(),
+                    finalBitmap.getWidth());
+        }
+        else {
+            rect = new Rect(0, 0, finalBitmap.getHeight(),
+                    finalBitmap.getHeight());
+        }
 
         paint.setAntiAlias(true);
         paint.setFilterBitmap(true);
@@ -81,7 +95,6 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
         );
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(finalBitmap, rect, rect, paint);
-
         return output;
     }
 

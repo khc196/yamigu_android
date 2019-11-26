@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.renderscript.Sampler;
 import android.util.Log;
@@ -27,14 +30,18 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,6 +49,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,6 +61,8 @@ import com.yamigu.yamigu_app.Activity.GlobalApplication;
 import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.Activity.NotificationActivity;
+import com.yamigu.yamigu_app.Adapter.FragmentAdapter;
+import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat;
 import com.yamigu.yamigu_app.Etc.ImageUtils;
@@ -85,11 +95,16 @@ public class HomeFragment extends Fragment {
     private SharedPreferences.Editor editor;
 
     private Context context;
-    MyMeetingCardFrame myMeetingCardFrame;
+    private MyMeetingCardFrame myMeetingCardFrame;
     private RelativeLayout btn_go_yamigu;
     private DatabaseReference userDB, managerDB, notiDB;
     private Fragment me;
     private TextView tv_unread_noti_count, tv_recommendation;
+    private ViewPager pager;
+    private FragmentAdapter fragmentAdapter;
+    private TabLayout tabIndicator;
+
+    private int total_num;
     public static int ACTION_START_CHAT = 1;
     View view;
     private class MyMeetingCardFrame {
@@ -172,6 +187,32 @@ public class HomeFragment extends Fragment {
         ContentValues values2 = new ContentValues();
         NetworkTask2 networkTask2 = new NetworkTask2(url2, values2);
         networkTask2.execute();
+
+        pager = view.findViewById(R.id.pager);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                refresh();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        pager.setAdapter(fragmentAdapter);
+        tabIndicator = view.findViewById(R.id.tab_indicator);
+        tabIndicator.setupWithViewPager(pager);
+
+        String url5 = "http://106.10.39.154:9999/api/meetings/recommendation/";
+        ContentValues values5 = new ContentValues();
+        NetworkTask5 networkTask5 = new NetworkTask5(url5, values5);
+        networkTask5.execute();
         return view;
     }
     @Override
@@ -188,7 +229,13 @@ public class HomeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        fragmentAdapter = new FragmentAdapter(getChildFragmentManager());
         this.context = context;
+    }
+    public void refresh() {
+        if(fragmentAdapter != null) {
+            fragmentAdapter.notifyDataSetChanged();
+        }
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -810,6 +857,7 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
     public class NetworkTask extends AsyncTask<Void, Void, String> {
 
         private String url;
@@ -1097,5 +1145,54 @@ public class HomeFragment extends Fragment {
                     });
         }
     }
+    public class NetworkTask5 extends AsyncTask<Void, Void, String> {
 
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask5(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+        @Override
+        protected String doInBackground(Void... params) {
+
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(context, url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = new JSONArray(s);
+                total_num = jsonArray.length();
+                Log.d("total_Num", ""+total_num);
+                for(int i = 0; i < jsonArray.length(); i++) {
+                    MeetingCardFragment meetingCardFragment = new MeetingCardFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("TAG", "recommendation");
+                    bundle.putInt("type", jsonArray.getJSONObject(i).getInt("meeting_type"));
+                    bundle.putString("nickname", jsonArray.getJSONObject(i).getString("openby_nickname"));
+                    bundle.putInt("age", jsonArray.getJSONObject(i).getInt("openby_age"));
+                    bundle.putString("belong", jsonArray.getJSONObject(i).getString("openby_belong"));
+                    bundle.putString("department", jsonArray.getJSONObject(i).getString("openby_department"));
+                    bundle.putString("date", jsonArray.getJSONObject(i).getString("date"));
+                    bundle.putString("appeal", jsonArray.getJSONObject(i).getString("appeal"));
+                    bundle.putString("place_type_name", jsonArray.getJSONObject(i).getString("place_type_name"));
+                    bundle.putString("profile_img_url", jsonArray.getJSONObject(i).getString("openby_profile"));
+                    meetingCardFragment.setArguments(bundle);
+                    fragmentAdapter.addItem(meetingCardFragment);
+                }
+                refresh();
+            } catch(JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

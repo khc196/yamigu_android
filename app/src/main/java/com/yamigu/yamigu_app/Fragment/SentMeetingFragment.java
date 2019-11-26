@@ -35,8 +35,8 @@ public class SentMeetingFragment extends Fragment {
     private TextView tv_current, tv_total;
     private boolean is_initialized = false;
     private LinearLayout page_layout, empty_layout;
-    private LinearLayout ll_btn_layout;
-    private Button btn_left, btn_right;
+    //private LinearLayout ll_btn_layout;
+    //private Button btn_left, btn_right;
     private static int position;
     private String auth_token;
     private int total_num = 0;
@@ -72,9 +72,9 @@ public class SentMeetingFragment extends Fragment {
 
         page_layout = view.findViewById(R.id.page_view);
         empty_layout = view.findViewById(R.id.empty_view);
-        ll_btn_layout = view.findViewById(R.id.btn_layout);
-        btn_left = view.findViewById(R.id.btn_left);
-        btn_right = view.findViewById(R.id.btn_right);
+        //ll_btn_layout = view.findViewById(R.id.btn_layout);
+        //btn_left = view.findViewById(R.id.btn_left);
+        //btn_right = view.findViewById(R.id.btn_right);
 
         tv_current = view.findViewById(R.id.tv_num_of_sent);
         tv_total = view.findViewById(R.id.tv_total_of_sent);
@@ -99,16 +99,16 @@ public class SentMeetingFragment extends Fragment {
                 for(int i = 1; i <= total_num; i++) {
                     float d = getResources().getDisplayMetrics().density;
                     fragment = fragmentAdapter.getItem(i - 1);
-                    LinearLayout.LayoutParams mLayoutParams = (LinearLayout.LayoutParams) fragment.waitingTeamCard.getLayoutParams();
+                    //LinearLayout.LayoutParams mLayoutParams = (LinearLayout.LayoutParams) fragment.waitingTeamCard.getLayoutParams();
                     if(i - 1 == currentPage) {
-                        mLayoutParams.topMargin = 0;
+                        //mLayoutParams.topMargin = 0;
                         fragment.waitingTeamCard.setAlpha(1.0f);
                     }
                     else {
-                        mLayoutParams.topMargin = Math.round(16 * d);
+                        //mLayoutParams.topMargin = Math.round(16 * d);
                         fragment.waitingTeamCard.setAlpha(0.4f);
                     }
-                    fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
+                    //fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
                 }
                 refresh();
             }
@@ -120,21 +120,22 @@ public class SentMeetingFragment extends Fragment {
         //fragmentAdapter = new FragmentAdapter(getFragmentManager());
         viewPager.setAdapter(fragmentAdapter);
         ViewTreeObserver vto = viewPager.getViewTreeObserver();
+
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 if(is_initialized) {
-                    int width = viewPager.getWidth();
-                    float d = getResources().getDisplayMetrics().density;
-                    dpValue = (int) (width / d);
-                    int margin = (int) (45 * dpValue / 411 * d);
-                    viewPager.setPadding(margin, 0, margin, 0);
+                    //int width = viewPager.getWidth();
+                    //float d = getResources().getDisplayMetrics().density;
+                    //dpValue = (int) (width / d);
+                    //int margin = (int) (45 * dpValue / 411 * d);
+                    //viewPager.setPadding(margin, 0, margin, 0);
                     MeetingCardFragment fragment = fragmentAdapter.getItem(0);
-                    LinearLayout.LayoutParams mLayoutParams = (LinearLayout.LayoutParams) fragment.waitingTeamCard.getLayoutParams();
-                    mLayoutParams.topMargin = 0;
+                    //LinearLayout.LayoutParams mLayoutParams = (LinearLayout.LayoutParams) fragment.waitingTeamCard.getLayoutParams();
+                    //mLayoutParams.topMargin = 0;
                     if(SentMeetingFragment.position == 0) {
                         fragment.waitingTeamCard.setAlpha(1.0f);
-                        fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
+                        //fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
                     }
 
                 }
@@ -142,11 +143,14 @@ public class SentMeetingFragment extends Fragment {
         });
         viewPager.setClipToPadding(false);
 
+
+
         String url = "http://106.10.39.154:9999/api/matching/sent_request/?meeting_id="+meeting_id;
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
         final Fragment me = this;
+        /*
         btn_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,6 +182,8 @@ public class SentMeetingFragment extends Fragment {
                 alert.show();
             }
         });
+
+         */
         return view;
     }
 
@@ -254,12 +260,12 @@ public class SentMeetingFragment extends Fragment {
                     is_initialized = true;
                     page_layout.setVisibility(View.VISIBLE);
                     empty_layout.setVisibility(View.INVISIBLE);
-                    ll_btn_layout.setVisibility(View.VISIBLE);
+                    //ll_btn_layout.setVisibility(View.VISIBLE);
                 }
                 else {
                     page_layout.setVisibility(View.INVISIBLE);
                     empty_layout.setVisibility(View.VISIBLE);
-                    ll_btn_layout.setVisibility(View.INVISIBLE);
+                    //ll_btn_layout.setVisibility(View.INVISIBLE);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

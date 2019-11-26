@@ -86,7 +86,13 @@ public class SplashActivity extends AppCompatActivity {
         after_logo = (LinearLayout) findViewById(R.id.yamigu_logo);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
-
+        final Session session = Session.getCurrentSession();
+        session.addCallback(new SessionCallback());
+        mAuth = FirebaseAuth.getInstance();
+        if(!session.checkAndImplicitOpen()) {
+            //session.open(AuthType.KAKAO_ACCOUNT, SplashActivity.this);
+            session.open(AuthType.KAKAO_LOGIN_ALL, SplashActivity.this);
+        }
         mRunnable1 = new Runnable() {
             @Override
             public void run() {
@@ -143,13 +149,7 @@ public class SplashActivity extends AppCompatActivity {
         };
         mHandler = new Handler();
         mHandler.postDelayed(mRunnable1, 1000);
-        Session session = Session.getCurrentSession();
-        session.addCallback(new SessionCallback());
-        mAuth = FirebaseAuth.getInstance();
-        if(!session.checkAndImplicitOpen()) {
-            session.open(AuthType.KAKAO_ACCOUNT, SplashActivity.this);
-            //session.open(AuthType.KAKAO_LOGIN_ALL, SplashActivity.this);
-        }
+
 
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }

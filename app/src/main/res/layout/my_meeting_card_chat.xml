@@ -1,60 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/bg"
+    android:layout_width="match_parent"
     android:layout_height="44dp"
-    android:layout_width="350dp"
-    android:background="@drawable/meeting_card_chat_bg"
+    android:orientation="horizontal"
+    android:weightSum="25"
     >
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-        <ImageView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"></LinearLayout>
+    <RelativeLayout
+        android:id="@+id/bg"
+        android:layout_height="44dp"
+        android:layout_width="0dp"
+        android:background="@drawable/meeting_card_chat_bg"
+        android:layout_weight="23">
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="9dp"
-            android:src="@drawable/icon_chat"
-            android:layout_gravity="center_vertical"/>
-        <TextView
-            android:id="@+id/chat_content"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="9dp"
+                android:src="@drawable/icon_chat"
+                android:layout_gravity="center_vertical"/>
+            <TextView
+                android:id="@+id/chat_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="12sp"
+                android:text="매칭이 완료되었습니다. 채팅을 시작해보세요."
+                android:gravity="center_vertical"
+                android:textColor="#5E5E5E"
+                android:layout_marginLeft="7dp"
+                android:fontFamily="@font/nanumgothic_font_family"
+                />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textSize="12sp"
-            android:text="매칭이 완료되었습니다. 채팅을 시작해보세요."
-            android:gravity="center_vertical"
-            android:textColor="#5E5E5E"
-            android:layout_marginLeft="7dp"
-            android:fontFamily="@font/nanumgothic_font_family"
-            />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="9dp"
+            android:layout_marginTop="4dp">
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="오후 2:22"
+                android:textColor="#929191"
+                android:gravity="center_horizontal"
+                android:textSize="10dp"
+                android:fontFamily="@font/nanumgothic_font_family"/>
+            <TextView
+                android:id="@+id/unread_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/chat_count_bg"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/colorPrimary"
+                android:text="2"
+                android:textStyle="bold"
+                android:gravity="center_horizontal|center_vertical"
+                android:textSize="10dp"
+                android:fontFamily="@font/nanumgothic_font_family"/>
+        </LinearLayout>
+    </RelativeLayout>
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="9dp"
-        android:layout_marginTop="4dp">
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="오후 2:22"
-            android:textColor="#929191"
-            android:gravity="center_horizontal"
-            android:textSize="10dp"
-            android:fontFamily="@font/nanumgothic_font_family"/>
-        <TextView
-            android:id="@+id/unread_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/chat_count_bg"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/colorPrimary"
-            android:text="2"
-            android:textStyle="bold"
-            android:gravity="center_horizontal|center_vertical"
-            android:textSize="10dp"
-            android:fontFamily="@font/nanumgothic_font_family"/>
-    </LinearLayout>
-</RelativeLayout>
+        android:layout_weight="1"></LinearLayout>
+</LinearLayout>

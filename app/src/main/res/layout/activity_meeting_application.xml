@@ -33,81 +33,97 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
-            <RelativeLayout
-                android:id="@+id/selected_type"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#32A4E0"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
-                    <TextView
-                        android:id="@+id/selected_type_text"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="9"
+                android:layout_marginBottom="63dp"
+                >
+                <RelativeLayout
+                    android:id="@+id/selected_type"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="3"
+                    android:background="@drawable/bottom_border_gray2">
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="14dp"
-                        android:fontFamily="@font/nanumgothic_font_family"/>
-                    <ImageView
+                        android:layout_centerInParent="true">
+                        <TextView
+                            android:id="@+id/selected_type_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14dp"
+                            android:text="인원"
+                            android:textColor="@color/colorNonselect"
+                            android:fontFamily="@font/nanumgothic_font_family"/>
+                        <ImageView
+                            android:id="@+id/type_triangle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="6dp"
+                            android:background="@drawable/triangle_gray"/>
+                    </LinearLayout>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/selected_date"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="3"
+                    android:background="@drawable/bottom_border_gray2">
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="6dp"
-                        android:src="@drawable/triangle"/>
-                </LinearLayout>
-            </RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/selected_date"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#CC32A4E0"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
-                    <TextView
-                        android:id="@+id/selected_date_text"
+                        android:layout_centerInParent="true">
+                        <TextView
+                            android:id="@+id/selected_date_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14dp"
+                            android:text="날짜"
+                            android:textColor="@color/colorNonselect"
+                            android:fontFamily="@font/nanumgothic_font_family"/>
+                        <ImageView
+                            android:id="@+id/date_triangle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="6dp"
+                            android:background="@drawable/triangle_gray"/>
+                    </LinearLayout>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/selected_place"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="3"
+                    android:background="@drawable/bottom_border_gray2">
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="14dp"
-                        android:fontFamily="@font/nanumgothic_font_family"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="6dp"
-                        android:src="@drawable/triangle"/>
-                </LinearLayout>
-            </RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/selected_place"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#8032A4E0">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/selected_place_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="14dp"
-                        android:fontFamily="@font/nanumgothic_font_family"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="6dp"
-                        android:src="@drawable/triangle"/>
-                </LinearLayout>
-            </RelativeLayout>
+                        android:layout_centerInParent="true"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/selected_place_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorNonselect"
+                            android:textSize="14dp"
+                            android:text="선호 장소"
+                            android:fontFamily="@font/nanumgothic_font_family"/>
+
+                        <ImageView
+                            android:id="@+id/place_triangle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="6dp"
+                            android:background="@drawable/triangle_gray" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/type_view"
                 android:layout_width="match_parent"
@@ -126,7 +142,7 @@
                     android:id="@+id/select_pane_type"
                     android:layout_width="387dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="16.7dp"
                     android:layout_gravity="center_horizontal"
                     android:orientation="vertical"
                     android:background="@drawable/shadow_box">
@@ -174,16 +190,6 @@
                         android:gravity="center"
                         />
                 </LinearLayout>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="친구와 함께 하는 야미구"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/nanumgothic_font_family"
-                    android:textSize="14dp"
-                    android:textColor="@color/colorNonselect">
-                </TextView>
             </LinearLayout>
 
             <LinearLayout
@@ -197,14 +203,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="16.7dp"
                     android:src="@drawable/question_when"
                     />
                 <LinearLayout
                     android:id="@+id/select_pane_when"
                     android:layout_width="387dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="16.7dp"
                     android:layout_gravity="center_horizontal"
                     android:orientation="vertical"
                     android:background="@drawable/shadow_box">
@@ -309,16 +315,6 @@
                         android:gravity="center"
                         />
                 </LinearLayout>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="일주일 이내의 날짜만 선택 가능"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/nanumgothic_font_family"
-                    android:textSize="14dp"
-                    android:textColor="@color/colorNonselect">
-                </TextView>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/place_view"
@@ -384,16 +380,6 @@
                         android:gravity="center"
                         />
                 </LinearLayout>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="타 지역은 추후 업데이트 예정"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/nanumgothic_font_family"
-                    android:textSize="14dp"
-                    android:textColor="@color/colorNonselect">
-                </TextView>
             </LinearLayout>
             <FrameLayout
                 android:layout_width="match_parent"
@@ -450,18 +436,6 @@
 
                                 />
                         </FrameLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:text="개인 연락처(전화번호, 카톡, 이메일 등) 입력 불가"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="15dp"
-                            android:fontFamily="@font/nanumgothic_font_family"
-                            android:textSize="14dp"
-                            android:textColor="@color/colorNonselect">
-                        </TextView>
                     </LinearLayout>
                 </LinearLayout>
             </FrameLayout>
@@ -487,8 +461,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:weightSum="375"
-                android:orientation="horizontal"
-                android:background="@drawable/rectangle_black_solid">
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_delete"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="139"
+                    android:text="삭제하기"
+                    android:textColor="@color/color4vs4"
+                    android:background="@drawable/ic_filter_state_gray"
+                    android:fontFamily="@font/nanumgothic_font_family"/>
+                />
                 <Button
                     android:id="@+id/btn_edit"
                     android:layout_width="0dp"
@@ -499,16 +482,7 @@
                     android:textColor="@color/colorPrimary"
                     android:fontFamily="@font/nanumgothic_font_family"
                     />
-                <Button
-                    android:id="@+id/btn_delete"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="139"
-                    android:text="카드 삭제"
-                    android:textColor="@color/colorRed"
-                    android:background="?attr/selectableItemBackground"
-                    android:fontFamily="@font/nanumgothic_font_family"/>
-                    />
+
             </LinearLayout>
         </FrameLayout>
         

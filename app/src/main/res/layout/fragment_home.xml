@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="#F1F1F1">
-
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,9 +60,9 @@
                     android:background="@drawable/banner"
                     android:orientation="vertical">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="퇴근 후 가벼운 한잔을\n설렘과 함께"
+                        android:text="모든 청춘들에게\n설레는 매일을"
                         android:textSize="24dp"
                         android:fontFamily="@font/binggrae_font_family"
                         android:textStyle="bold"
@@ -81,6 +76,15 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="26dp"
                         /-->
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="8.5dp"
+                        android:background="@color/colorPrimary">
+
+                    </ImageView>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -88,8 +92,10 @@
                         android:textColor="@color/colorHint"
                         android:textSize="14dp"
                         android:fontFamily="@font/nanumgothic_font_family"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="20dp"/>
+                        android:gravity="right"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="9.5dp"/>
                     <!--ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -98,29 +104,53 @@
                         android:layout_marginTop="20dp"
                         /-->
                 </LinearLayout>
-                <RelativeLayout
-                    android:id="@+id/btn_go_yamigu"
-                    android:layout_width="335dp"
-                    android:layout_height="76dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/rounded_orange_solid2"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_gravity="center_horizontal">
-                    <ImageView
-                        android:layout_width="249dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/text_yamigu"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"/>
-                    <Button
-                        android:layout_width="52dp"
-                        android:layout_height="24dp"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/btn_go"
-                        />
-                </RelativeLayout>
+                    android:weightSum="25"
+                    android:layout_marginTop="16dp"
+                    >
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:id="@+id/btn_go_yamigu"
+                        android:layout_width="0dp"
+                        android:layout_height="76dp"
+                        android:layout_weight="23"
+                        android:background="@drawable/rounded_orange_solid2"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center_horizontal">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="249dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/text_yamigu" />
+                            <Button
+                                android:layout_width="52dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="15dp"
+                                android:background="@drawable/btn_go"
+                                />
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/past_meeting_root"
                     android:layout_width="match_parent"
@@ -209,6 +239,24 @@
                     android:textSize="18dp"
                     android:textColor="@color/colorNormal"
                     />
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="225dp"
+                    android:layout_gravity="center_horizontal"
+                    >
+                </androidx.viewpager.widget.ViewPager>
+                <com.google.android.material.tabs.TabLayout
+                    app:tabBackground="@drawable/page_indicator_selector2"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabRippleColor="@null"
+                    android:id="@+id/tab_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    app:tabPaddingStart="8dp"
+                    app:tabPaddingEnd="8dp">
+                </com.google.android.material.tabs.TabLayout>
                 <!--ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -217,7 +265,7 @@
                     android:layout_marginTop="6dp"
                     android:scaleType="fitStart"
                     /-->
-                <FrameLayout
+                <!--FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="1dp">
@@ -260,14 +308,8 @@
                                 app:profile2="전기전자공학부"></com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard>
                         </LinearLayout>
                     </HorizontalScrollView>
-                </FrameLayout>
+                </FrameLayout-->
             </LinearLayout>
     </ScrollView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </RelativeLayout>
-</FrameLayout>

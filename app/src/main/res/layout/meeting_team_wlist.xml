@@ -3,10 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bg"
     android:layout_height="209dp"
-    android:layout_width="351.8dp"
+    android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_gravity="center_horizontal"
     android:layout_marginBottom="21dp"
+    android:paddingLeft="12.6dp"
+    android:paddingRight="12.6dp"
     >
     <FrameLayout
         android:layout_width="match_parent"
@@ -87,72 +89,92 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
+                android:orientation="horizontal"
+                android:weightSum="28">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                </LinearLayout>
                 <TextView
                     android:id="@+id/label"
-                    android:layout_width="99dp"
+                    android:layout_width="0dp"
                     android:layout_height="24dp"
                     android:background="@drawable/label_2vs2_bg"
-                    android:fontFamily="@font/roboto_font_family"
+                    android:fontFamily="@font/nanumgothic_font_family_extrabold"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="2:2 미팅"
                     android:textColor="@color/colorPoint"
-                    android:textSize="12dp"></TextView>
-
+                    android:textSize="13dp"
+                    android:layout_weight="8"></TextView>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                </LinearLayout>
                 <TextView
                     android:id="@+id/place"
-                    android:layout_width="99dp"
+                    android:layout_width="0dp"
                     android:layout_height="24dp"
-                    android:layout_marginLeft="13dp"
                     android:background="@drawable/label_2vs2_bg"
-                    android:fontFamily="@font/roboto_font_family"
+                    android:fontFamily="@font/nanumgothic_font_family_extrabold"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="신촌/홍대"
                     android:textColor="@color/colorPoint"
-                    android:textSize="12dp"></TextView>
-
+                    android:textSize="13dp"
+                    android:layout_weight="8"></TextView>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                </LinearLayout>
                 <TextView
                     android:id="@+id/date"
-                    android:layout_width="99dp"
+                    android:layout_width="0dp"
                     android:layout_height="24dp"
-                    android:layout_marginLeft="13dp"
                     android:background="@drawable/label_2vs2_bg"
-                    android:fontFamily="@font/roboto_font_family"
+                    android:fontFamily="@font/nanumgothic_font_family_extrabold"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="11월 30일 (토)"
                     android:textColor="@color/colorPoint"
-                    android:textSize="12dp"></TextView>
+                    android:textSize="13dp"
+                    android:layout_weight="8"></TextView>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="95dp"
                 android:layout_marginTop="22dp"
-                android:weightSum="10">
-
+                android:weightSum="28">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                </LinearLayout>
+                <com.yamigu.yamigu_app.CustomLayout.CircularImageView
+                    android:id="@+id/iv_profile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/user_profile_no_img"
+                    android:layout_weight="7"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                </LinearLayout>
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3">
-
-                    <com.yamigu.yamigu_app.CustomLayout.CircularImageView
-                        android:id="@+id/iv_profile"
-                        android:layout_width="92dp"
-                        android:layout_height="92dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="9dp"
-                        android:src="@drawable/user_profile_no_img" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="7">
+                    android:layout_weight="18">
 
                     <WebView
                         android:id="@+id/description"
@@ -160,11 +182,15 @@
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
                         android:layout_marginTop="5dp"
-                        android:layout_marginRight="18dp"
                         android:layout_marginBottom="5dp"
                         android:gravity="left|center_vertical"
                         android:scrollbars="none"></WebView>
                 </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

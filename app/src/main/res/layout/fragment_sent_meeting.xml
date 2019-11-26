@@ -68,7 +68,7 @@
             android:fontFamily="@font/nanumgothic_font_family">
         </TextView>
     </LinearLayout>
-    <LinearLayout
+    <!--LinearLayout
         android:id="@+id/btn_layout"
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -97,5 +97,5 @@
             android:gravity="center"
             android:textSize="14dp"
             android:fontFamily="@font/nanumgothic_font_family"/>
-    </LinearLayout>
+    </LinearLayout-->
 </FrameLayout>
