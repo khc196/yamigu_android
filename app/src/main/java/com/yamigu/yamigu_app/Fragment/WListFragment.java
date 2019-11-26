@@ -145,18 +145,21 @@ public class WListFragment extends Fragment {
         }
 
 
-        if (getArguments() != null) {
-            Bundle args = getArguments();
-            filter_applied = true;
-            activateDates(active_date_set);
-            is_initialized = true;
-        }
-        else {
-            String url = "http://106.10.39.154:9999/api/meetings/my/";
-            ContentValues values = new ContentValues();
-            NetworkTask networkTask = new NetworkTask(url, values);
-            networkTask.execute();
-        }
+//        if (getArguments() != null) {
+//            Bundle args = getArguments();
+//            filter_applied = true;
+//            //activateDates(active_date_set);
+//            is_initialized = true;
+//        }
+//        else {
+//            String url = "http://106.10.39.154:9999/api/meetings/my/";
+//            ContentValues values = new ContentValues();
+//            NetworkTask networkTask = new NetworkTask(url, values);
+//            networkTask.execute();
+//        }
+        active_date_set = new HashSet<>();
+        activateDates(active_date_set);
+        is_initialized = true;
         return view;
     }
     @Override
