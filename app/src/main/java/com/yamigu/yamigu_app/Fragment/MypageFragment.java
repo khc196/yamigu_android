@@ -10,11 +10,14 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -460,7 +463,16 @@ public class MypageFragment extends Fragment {
         byte[] buffer;
         int maxBufferSize = 1 * 1024 * 1024;
         File sourceFile = new File(sourceFileUri);
-
+        Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", sourceFile);
+        Bitmap resized = ImageUtils.resize(getContext(), uri, 200);
+        try {
+            ExifInterface exif = new ExifInterface(sourceFileUri);
+            int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            int exifDegree = ImageUtils.exifOrientationToDegrees(exifOrientation);
+            resized = ImageUtils.rotateBitmap(resized, exifDegree);
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
         if (!sourceFile.isFile()) {
 
             dialog.dismiss();
@@ -474,9 +486,9 @@ public class MypageFragment extends Fragment {
         else
         {
             try {
-
                 // open a URL connection to the Servlet
-                FileInputStream fileInputStream = new FileInputStream(sourceFile);
+                InputStream fileInputStream = ImageUtils.convertBitmapToInputStream(resized);
+                //FileInputStream fileInputStream = new FileInputStream(resizedInputStream);
                 URL url = new URL(upLoadServerUri);
 
                 // Open a HTTP  connection to  the URL

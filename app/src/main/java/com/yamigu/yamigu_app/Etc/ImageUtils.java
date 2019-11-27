@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.util.Base64;
 
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
@@ -11,6 +14,10 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 
@@ -113,10 +120,92 @@ public class ImageUtils {
 
     public static InputStream convertBitmapToInputStream(Bitmap bitmap){
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+        if (bitmap != scaled) {
+            bitmap.recycle();
+        }
         bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+
         byte[] bitmapdata = bos.toByteArray();
         ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
         return bs;
     }
+    public static Bitmap resize(Context context, Uri uri, int resize){
+        Bitmap resizeBitmap=null;
 
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        try {
+            BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options); // 1번
+
+            int width = options.outWidth;
+            int height = options.outHeight;
+            int samplesize = 1;
+
+            while (true) {//2번
+                if (width / 2 < resize || height / 2 < resize)
+                    break;
+                width /= 2;
+                height /= 2;
+                samplesize *= 2;
+            }
+
+            options.inSampleSize = samplesize;
+            Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options); //3번
+            resizeBitmap=bitmap;
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return resizeBitmap;
+    }
+
+    public static String saveBitmapToJpeg(Context context, Bitmap bitmap){
+
+        File storage = context.getCacheDir(); // 이 부분이 임시파일 저장 경로
+
+        String fileName = "yamigu_temp.jpg"; // 파일이름은 마음대로!
+
+        File tempFile = new File(storage,fileName);
+
+        try{
+            tempFile.createNewFile(); // 파일을 생성해주고
+
+            FileOutputStream out = new FileOutputStream(tempFile);
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90 , out); // 넘거 받은 bitmap을 jpeg(손실압축)으로 저장해줌
+
+            out.close(); // 마무리로 닫아줍니다.
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return tempFile.getAbsolutePath(); // 임시파일 저장경로를 리턴해주면 끝!
+    }
+    public static int exifOrientationToDegrees(int exifOrientation)
+    {
+        if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        } else {
+            return 0;
+        }
+    }
+    public static Bitmap rotateBitmap(Bitmap bmp, int degree){
+        int width = bmp.getWidth();
+        int height = bmp.getHeight();
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+
+        Bitmap resizedBitmap = Bitmap.createBitmap(bmp, 0, 0, width, height, matrix, true);
+        bmp.recycle();
+
+        return resizedBitmap;
+    }
 }

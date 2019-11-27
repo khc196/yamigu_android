@@ -3,6 +3,7 @@ package com.yamigu.yamigu_app.Fragment;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -77,6 +78,7 @@ public class WListFragment extends Fragment {
     private Menu global_menu;
     private SwipeRefreshLayout swipeRefreshLayout;
     private String refresh_url = "";
+    ProgressDialog dialog = null;
     public WListFragment() {
         this.active_type_set = new HashSet<>();
         this.active_place_set = new HashSet<>();
@@ -96,6 +98,7 @@ public class WListFragment extends Fragment {
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
                 String url = refresh_url;
+                dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
                 ContentValues values = new ContentValues();
                 NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                 networkTask2.execute();
@@ -278,6 +281,7 @@ public class WListFragment extends Fragment {
                 url += "place=" + i + "&";
             }
         }
+        dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
         refresh_url = url;
         NetworkTask2 networkTask2 = new NetworkTask2(url, values);
         networkTask2.execute();
@@ -336,7 +340,6 @@ public class WListFragment extends Fragment {
         @Override
         protected String doInBackground(Void... params) {
 
-
             String result; // 요청 결과를 저장할 변수.
             requestHttpURLConnection = new RequestHttpURLConnection();
 
@@ -381,6 +384,7 @@ public class WListFragment extends Fragment {
                     if(!url.isEmpty()) {
                         mtw.setVisibility(View.INVISIBLE);
                         ContentValues values = new ContentValues();
+                        mtw.setTranslationX(100);
                         NetworkTask3 networkTask3 = new NetworkTask3(url, values, profile_img, mRootLinear, mtw);
                         networkTask3.execute();
                     }
@@ -596,13 +600,14 @@ public class WListFragment extends Fragment {
                                 createWaitingTeamCard(json_results.getJSONObject(i));
                                 if(!json_results.getJSONObject(i).getBoolean("is_matched")) meeting_count++;
                             }
-
-                            mRootLinear.setTranslationX(100);
-                            mRootLinear.animate()
-                                    .setDuration(50)
-                                    .alpha(1.0f)
-                                    .translationX(0)
-                                    .setListener(null);
+                            mRootLinear.setAlpha(1.0f);
+                            mRootLinear.setTranslationX(0);
+//                            mRootLinear.setTranslationX(100);
+//                            mRootLinear.animate()
+//                                    .setDuration(50)
+//                                    .alpha(1.0f)
+//                                    .translationX(0)
+//                                    .setListener(null);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -640,8 +645,21 @@ public class WListFragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Bitmap bm) {
+            if(bm.getWidth() < bm.getHeight()) {
+
+            }
             civ.setImageBitmap(bm);
+
+
             view.setVisibility(View.VISIBLE);
+            view.animate()
+                    .setDuration(50)
+                    .alpha(1.0f)
+                    .translationX(0)
+                    .setListener(null);
+            if(dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
     }
     public class NetworkTask4 extends AsyncTask<Void, Void, String> {

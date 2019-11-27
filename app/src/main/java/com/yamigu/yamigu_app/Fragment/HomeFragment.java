@@ -2,6 +2,7 @@ package com.yamigu.yamigu_app.Fragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -103,7 +104,7 @@ public class HomeFragment extends Fragment {
     private ViewPager pager;
     private FragmentAdapter fragmentAdapter;
     private TabLayout tabIndicator;
-
+    ProgressDialog dialog = null;
     private int total_num;
     public static int ACTION_START_CHAT = 1;
     View view;
@@ -150,6 +151,7 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
         me = this;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = preferences.edit();
@@ -1193,6 +1195,7 @@ public class HomeFragment extends Fragment {
             } catch(JSONException e) {
                 e.printStackTrace();
             }
+            dialog.dismiss();
         }
     }
 }

@@ -62,7 +62,7 @@ import java.util.concurrent.Executor;
 
 public class SplashActivity extends AppCompatActivity {
     private Handler mHandler;
-    private Runnable mRunnable1, mRunnable2;
+    private Runnable mRunnable1, mRunnable2, mRunnable3, mRunnable4;
     private ImageView before_logo;
     private LinearLayout after_logo;
     private SessionCallback callback;
@@ -86,13 +86,9 @@ public class SplashActivity extends AppCompatActivity {
         after_logo = (LinearLayout) findViewById(R.id.yamigu_logo);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
-        final Session session = Session.getCurrentSession();
-        session.addCallback(new SessionCallback());
+        isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
         mAuth = FirebaseAuth.getInstance();
-        if(!session.checkAndImplicitOpen()) {
-            //session.open(AuthType.KAKAO_ACCOUNT, SplashActivity.this);
-            session.open(AuthType.KAKAO_LOGIN_ALL, SplashActivity.this);
-        }
+        mHandler = new Handler();
         mRunnable1 = new Runnable() {
             @Override
             public void run() {
@@ -116,40 +112,57 @@ public class SplashActivity extends AppCompatActivity {
         mRunnable2 = new Runnable() {
             @Override
             public void run() {
-                if(is_loggedin) {
-                    if(isFirstRun) {
-                        redirectMainOnboardingActivity();
-                    }
-                    else if(is_signedup) {
-                        try {
-                            editor.putString("nickname", jsonObject.getString("nickname"));
-                            editor.putString("phone", jsonObject.getString("phone"));
-                            editor.putString("belong", jsonObject.getString("belong"));
-                            editor.putString("department", jsonObject.getString("department"));
-                            editor.putString("profile", jsonObject.getString("image"));
-                            editor.putInt("gender", jsonObject.getInt("gender"));
-                            editor.putInt("age", jsonObject.getInt("age"));
-                            editor.putString("uid", jsonObject.getString("uid"));
-                            editor.putInt("user_certified", jsonObject.getInt("user_certified"));
-                            editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
-                            editor.apply();
-                            redirectMainActivity();
-                        } catch(JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    else
-                        redirectVerificationActivity();
+                if(isFirstRun) {
+                    mHandler.postDelayed(mRunnable3, 2000);
                 }
                 else {
-                    redirectMainOnboardingActivity();
+                    final Session session = Session.getCurrentSession();
+                    session.addCallback(new SessionCallback());
+                    if(!session.checkAndImplicitOpen()) {
+                        //session.open(AuthType.KAKAO_ACCOUNT, SplashActivity.this);
+                        session.open(AuthType.KAKAO_LOGIN_ALL, SplashActivity.this);
+                    }
                 }
-
             }
         };
-        mHandler = new Handler();
-        mHandler.postDelayed(mRunnable1, 1000);
+        mRunnable3 = new Runnable() {
+            @Override
+            public void run() {
+                redirectMainOnboardingActivity();
+            }
+        };
+        mRunnable4 = new Runnable() {
+            @Override
+            public void run() {
+                if(is_signedup) {
+                    redirectMainActivity();
+                }
+                else {
+                    redirectVerificationActivity();
+                }
+            }
+        };
+        /*
+        try {
+            editor.putString("nickname", jsonObject.getString("nickname"));
+            editor.putString("phone", jsonObject.getString("phone"));
+            editor.putString("belong", jsonObject.getString("belong"));
+            editor.putString("department", jsonObject.getString("department"));
+            editor.putString("profile", jsonObject.getString("image"));
+            editor.putInt("gender", jsonObject.getInt("gender"));
+            editor.putInt("age", jsonObject.getInt("age"));
+            editor.putString("uid", jsonObject.getString("uid"));
+            editor.putInt("user_certified", jsonObject.getInt("user_certified"));
+            editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
+            editor.apply();
+            redirectMainActivity();
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
+         */
 
+        mHandler.postDelayed(mRunnable1, 1000);
+        mHandler.postDelayed(mRunnable2, 1000);
 
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
@@ -185,51 +198,32 @@ public class SplashActivity extends AppCompatActivity {
     }
     @Nullable
     public static String getHashKey(Context context) {
-
         final String TAG = "KeyHash";
-
         String keyHash = null;
-
         try {
-
             PackageInfo info =
-
                     context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
-
-
-
             for (Signature signature : info.signatures) {
-
                 MessageDigest md;
-
                 md = MessageDigest.getInstance("SHA");
-
                 md.update(signature.toByteArray());
-
                 keyHash = new String(Base64.encode(md.digest(), 0));
-
                 Log.d(TAG, keyHash);
-
             }
-
         } catch (Exception e) {
-
             Log.e("name not found", e.toString());
-
         }
-
-
-
         if (keyHash != null) {
-
             return keyHash;
-
         } else {
-
             return null;
-
         }
-
+    }
+    protected  void redirectLoginActivity() {
+        final Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
     protected void redirectVerificationActivity() {
         final Intent intent = new Intent(this, VerificationActivity.class);
@@ -275,6 +269,7 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void onNotSignedUp() {
                     Log.e("SessionCallback :: ", "onNotSignedUp");
+                    redirectLoginActivity();
                 }
                 // 사용자정보 요청에 성공한 경우,
                 @Override
@@ -286,8 +281,8 @@ public class SplashActivity extends AppCompatActivity {
                     Log.d("Kakao", access_token);
                     //values.put("kakao_account", userProfile.toString());
                     if(!is_loggedin) {
-                        is_loggedin = true;
                         NetworkTask networkTask = new NetworkTask(url, values);
+                        is_loggedin = true;
                         networkTask.execute();
                     }
                 }
@@ -336,7 +331,7 @@ public class SplashActivity extends AppCompatActivity {
                 auth_token = jsonObject.getString("key");
                 NetworkTask2 networkTask2 = new NetworkTask2(url, values, auth_token);
                 networkTask2.execute();
-                Log.d("onPostExecute :: ", "jsonObject key: " + auth_token);
+                //Log.d("onPostExecute :: ", "jsonObject key: " + auth_token);
                 editor.putString("auth_token", auth_token);
                 editor.apply();
             } catch (JSONException e) {
@@ -369,7 +364,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
+
             jsonObject = null;
             boolean signup_flag = false;
             String firebase_token = "";
@@ -382,6 +377,7 @@ public class SplashActivity extends AppCompatActivity {
             try {
                 signup_flag = jsonObject.getString("nickname").equals("null");
                 firebase_token = jsonObject.getString("firebase_token");
+                Log.d("NICKNAME", jsonObject.getString("nickname"));
             } catch(JSONException e) {
                 e.printStackTrace();
             }
@@ -403,10 +399,26 @@ public class SplashActivity extends AppCompatActivity {
                                 ContentValues values = new ContentValues();
                                 values.put("registration_id", fcm_token);
                                 values.put("type", "android");
+                                if (is_signedup) {
+                                    try {
+                                        editor.putString("nickname", jsonObject.getString("nickname"));
+                                        editor.putString("phone", jsonObject.getString("phone"));
+                                        editor.putString("belong", jsonObject.getString("belong"));
+                                        editor.putString("department", jsonObject.getString("department"));
+                                        editor.putString("profile", jsonObject.getString("image"));
+                                        editor.putInt("gender", jsonObject.getInt("gender"));
+                                        editor.putInt("age", jsonObject.getInt("age"));
+                                        editor.putString("uid", jsonObject.getString("uid"));
+                                        editor.putInt("user_certified", jsonObject.getInt("user_certified"));
+                                        editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
+                                        editor.apply();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                                 NetworkTask3 networkTask3 = new NetworkTask3(url, values);
                                 networkTask3.execute();
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                mHandler.postDelayed(mRunnable2, 1000);
                                 //updateUI(user);
                             } else {
                                 // If sign in fails, display a message to the user.
@@ -443,6 +455,7 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            mHandler.postDelayed(mRunnable4, 300);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.yamigu.yamigu_app.Activity;
 
 import android.app.Activity;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Boolean isFirstRun;
     private Boolean mauth_flag;
+    ProgressDialog dialog = null;
+    Activity me;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mauth_flag = false;
@@ -61,15 +64,16 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         btn_login_kakao = (ImageButton) findViewById(R.id.btn_login_kakao);
-
+        me = this;
         btn_login_kakao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog = ProgressDialog.show(me, "", "로그인 중입니다...", true);
                 Session session = Session.getCurrentSession();
                 session.addCallback(new SessionCallback());
                 if(!session.checkAndImplicitOpen()) {
-                    session.open(AuthType.KAKAO_ACCOUNT, LoginActivity.this);
-                    //session.open(AuthType.KAKAO_LOGIN_ALL, LoginActivity.this);
+                    //session.open(AuthType.KAKAO_ACCOUNT, LoginActivity.this);
+                    session.open(AuthType.KAKAO_LOGIN_ALL, LoginActivity.this);
                 }
             }
         });
@@ -108,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
         // 로그인에 실패한 상태
         @Override
         public void onSessionOpenFailed(KakaoException exception) {
+            dialog.dismiss();
             Log.e("SessionCallback :: ", "onSessionOpenFailed : " + exception.getMessage());
         }
         // 사용자 정보 요청
@@ -192,6 +197,7 @@ public class LoginActivity extends AppCompatActivity {
                 jsonObject = new JSONObject(s);
             } catch (JSONException e) {
                 e.printStackTrace();
+                dialog.dismiss();
                 return;
             }
             ContentValues values = new ContentValues();
@@ -203,6 +209,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("auth_token", auth_token);
                 editor.apply();
             } catch (JSONException e) {
+                dialog.dismiss();
                 e.printStackTrace();
             }
 
@@ -244,7 +251,7 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             try {
-                signup_flag = jsonObject.getString("nickname").isEmpty();
+                signup_flag = jsonObject.getString("nickname").equals("null");
                 firebase_token = jsonObject.getString("firebase_token");
             } catch(JSONException e) {
                 e.printStackTrace();
@@ -253,6 +260,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             if(signup_flag) {
                 redirectVerificationActivity();
+                return;
             }
             if (!isFirstRun) {
                 try {
@@ -282,6 +290,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if(!mauth_flag) {
                                     mauth_flag = true;
                                     //redirectVerificationActivity();
+                                    dialog.dismiss();
                                     redirectMainActivity();
                                 }
                                 //updateUI(user);
