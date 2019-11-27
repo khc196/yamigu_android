@@ -233,7 +233,11 @@ public class MypageFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 if(!editable.toString().equals("")) {
+<<<<<<< HEAD
                     String url = "http://106.10.39.154:9999/api/user/validation/nickname/"+editable.toString();
+=======
+                    String url = "http://106.10.39.154:9999/api/validation/nickname/" + editable.toString();
+>>>>>>> 6b6e35763bb14a3fc927a9f6c15e7951cde26833
                     ContentValues values = new ContentValues();
                     NetworkTask networkTask = new NetworkTask(url, values);
                     networkTask.execute();

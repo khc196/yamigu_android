@@ -3,17 +3,26 @@ package com.yamigu.yamigu_app.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.URISyntaxException;
+import java.net.URL;
 
 public class NICEActivity extends AppCompatActivity {
 
@@ -48,6 +57,7 @@ public class NICEActivity extends AppCompatActivity {
          웹뷰 내 앱링크를 사용하려면 WebViewClient를 반드시 설정하여 주시기바랍니다. (하단 DemoWebViewClient 참고)
          **/
         mWebView.setWebViewClient(new DemoWebViewClient());
+        mWebView.addJavascriptInterface(new MyJavascriptInterface(), "Android");
 
         mWebView.loadUrl(URL_INFO);
     }
@@ -59,6 +69,9 @@ public class NICEActivity extends AppCompatActivity {
 
             //웹뷰 내 표준창에서 외부앱(통신사 인증앱)을 호출하려면 intent:// URI를 별도로 처리해줘야 합니다.
             //다음 소스를 적용 해주세요.
+
+
+
             if (url.startsWith("intent://")) {
                 Intent intent = null;
                 try {
@@ -104,7 +117,59 @@ public class NICEActivity extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            if(url.equals("http://106.10.39.154:5000/checkplus_success"))
+                view.loadUrl("javascript:window.Android.getHtml(document.getElementsByTagName('pre')[0].innerHTML);"); //<html></html> 사이에 있는 모든 html을 넘겨준다.
         }
 
+    }
+    public class NetworkTask extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            String auth_token = "";
+            result = requestHttpURLConnection.request(getApplicationContext(), url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.d("checkplus", s);
+            Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+        }
+    }
+    public class MyJavascriptInterface {
+
+        @JavascriptInterface
+        public void getHtml(String html) { //위 자바스크립트가 호출되면 여기로 html이 반환됨
+            try {
+                JSONObject jsonObject = new JSONObject(html);
+                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                intent.putExtra("birthdate", jsonObject.getString("birthdate"));
+                intent.putExtra("gender", jsonObject.getString("gender"));
+                intent.putExtra("phonenumber", jsonObject.getString("mobileno"));
+                intent.putExtra("name", jsonObject.getString("name"));
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+                finish();
+            } catch(JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

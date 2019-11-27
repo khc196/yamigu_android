@@ -148,6 +148,7 @@ public class WListFragment extends Fragment {
         }
 
 
+
 //        if (getArguments() != null) {
 //            Bundle args = getArguments();
 //            filter_applied = true;
@@ -163,6 +164,7 @@ public class WListFragment extends Fragment {
         active_date_set = new HashSet<>();
         activateDates(active_date_set);
         is_initialized = true;
+
         return view;
     }
     @Override

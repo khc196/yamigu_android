@@ -178,8 +178,11 @@ public class HomeFragment extends Fragment {
         tv_unread_noti_count = view.findViewById(R.id.unread_noti_count);
         tv_unread_noti_count.setVisibility(View.INVISIBLE);
         tv_unread_noti_count.setText("0");
+<<<<<<< HEAD
         tv_recommendation = view.findViewById(R.id.tv_recommendation);
         tv_recommendation.setText(nickname+"님을 위한 추천 미팅");
+=======
+>>>>>>> 6b6e35763bb14a3fc927a9f6c15e7951cde26833
 //        String url = "http://106.10.39.154:9999/api/meetings/my/";
 //        ContentValues values = new ContentValues();
 //        NetworkTask networkTask = new NetworkTask(url, values);
@@ -222,7 +225,11 @@ public class HomeFragment extends Fragment {
         super.onResume();
         ChildEventListener notiChildEventListenerForNotification = makeChildEventListenerForNotification();
         notiDB = loadNotifications(notiChildEventListenerForNotification);
+<<<<<<< HEAD
         myMeetingCardFrame = new MyMeetingCardFrame(view);
+=======
+        myMeetingCardFrame = new MyMeetingCardFrame(getView());
+>>>>>>> 6b6e35763bb14a3fc927a9f6c15e7951cde26833
         String url = "http://106.10.39.154:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
