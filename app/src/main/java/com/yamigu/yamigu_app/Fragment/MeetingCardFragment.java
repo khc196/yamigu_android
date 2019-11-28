@@ -10,18 +10,23 @@ import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
+import com.yamigu.yamigu_app.CustomLayout.CustomViewPager;
 import com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard3;
+import com.yamigu.yamigu_app.Etc.ImageUtils;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 
 import com.yamigu.yamigu_app.R;
@@ -40,6 +45,7 @@ public class MeetingCardFragment extends Fragment {
 
     private String auth_token;
     private SharedPreferences preferences;
+    public CircularImageView profile_img;
     private int request_id;
     @Nullable
     @Override
@@ -67,7 +73,7 @@ public class MeetingCardFragment extends Fragment {
             profile2 = (TextView) waitingTeamCard.findViewById(R.id.profile2);
             date = (TextView) waitingTeamCard.findViewById(R.id.date);
             place = (TextView) waitingTeamCard.findViewById(R.id.place);
-            CircularImageView profile_img = (CircularImageView) waitingTeamCard.findViewById(R.id.iv_profile);
+            profile_img = (CircularImageView) waitingTeamCard.findViewById(R.id.iv_profile);
 
 
             String desc_string, profile1_string, profile2_string, date_string, place_string, before_date_string;
@@ -150,11 +156,30 @@ public class MeetingCardFragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Bitmap bm) {
-            while(bm.getWidth() < civ.getWidth()) {
-                bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
-            }
-            while(bm.getHeight() < civ.getHeight()) {
-                bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
+            try {
+                while (bm.getWidth() < civ.getWidth()) {
+                    bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
+                }
+                while (bm.getHeight() < civ.getHeight()) {
+                    bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
+                }
+
+                if (bm.getWidth() <= bm.getHeight() && bm.getWidth() > civ.getWidth()) {
+                    bm = Bitmap.createScaledBitmap(bm, civ.getWidth(), (bm.getHeight() * civ.getWidth()) / bm.getWidth(), false);
+                }
+                else if (bm.getWidth() >= bm.getHeight() && bm.getHeight() > civ.getHeight()) {
+                    bm = Bitmap.createScaledBitmap(bm, (bm.getWidth() * civ.getHeight()) / bm.getHeight(), civ.getHeight(), false);
+                }
+                Log.d("SIZE1", bm.getWidth() + "X" + bm.getHeight() + "    " + civ.getWidth() + "X" + civ.getHeight());
+                if(bm.getWidth() > bm.getHeight()) {
+                    bm = ImageUtils.cropCenterBitmap(bm, bm.getHeight(), bm.getHeight());
+                }
+                else if(bm.getWidth() < bm.getHeight()){
+                    bm = ImageUtils.cropCenterBitmap(bm, bm.getWidth(), bm.getWidth());
+                }
+                Log.d("SIZE2", bm.getWidth() + "X" + bm.getHeight() + "    " + civ.getWidth() + "X" + civ.getHeight());
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
             }
             civ.setImageBitmap(bm);
         }

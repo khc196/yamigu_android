@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/bg"
-    android:layout_height="209dp"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginBottom="21dp"
-    android:paddingLeft="12.6dp"
-    android:paddingRight="12.6dp"
+    android:weightSum="25"
+    android:orientation="horizontal"
     >
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+    </LinearLayout>
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="23">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -80,116 +82,132 @@
                 android:textSize="14dp"
                 android:layout_marginBottom="5dp"/>
         </RelativeLayout>
-
         <LinearLayout
-            android:id="@+id/top_bg"
+            android:id="@+id/bg"
             android:layout_width="match_parent"
-            android:layout_height="165dp"
-            android:background="@drawable/top_rounded_with_orange_line"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <LinearLayout
+                android:id="@+id/top_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:weightSum="28">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/label"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/label_2vs2_bg"
-                    android:fontFamily="@font/nanumgothic_font_family_extrabold"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="2:2 미팅"
-                    android:textColor="@color/colorPoint"
-                    android:textSize="13dp"
-                    android:layout_weight="8"></TextView>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/place"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/label_2vs2_bg"
-                    android:fontFamily="@font/nanumgothic_font_family_extrabold"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="신촌/홍대"
-                    android:textColor="@color/colorPoint"
-                    android:textSize="13dp"
-                    android:layout_weight="8"></TextView>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/date"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/label_2vs2_bg"
-                    android:fontFamily="@font/nanumgothic_font_family_extrabold"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="11월 30일 (토)"
-                    android:textColor="@color/colorPoint"
-                    android:textSize="13dp"
-                    android:layout_weight="8"></TextView>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                </LinearLayout>
-            </LinearLayout>
+                android:background="@drawable/top_rounded_with_orange_line"
+                android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="95dp"
-                android:layout_marginTop="22dp"
-                android:weightSum="28">
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:weightSum="28">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/label"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/label_2vs2_bg"
+                        android:fontFamily="@font/nanumgothic_font_family_extrabold"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="2:2 미팅"
+                        android:textColor="@color/colorPoint"
+                        android:textSize="13dp"
+                        android:layout_weight="8"></TextView>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/place"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/label_2vs2_bg"
+                        android:fontFamily="@font/nanumgothic_font_family_extrabold"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="신촌/홍대"
+                        android:textColor="@color/colorPoint"
+                        android:textSize="13dp"
+                        android:layout_weight="8"></TextView>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/label_2vs2_bg"
+                        android:fontFamily="@font/nanumgothic_font_family_extrabold"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="11월 30일 (토)"
+                        android:textColor="@color/colorPoint"
+                        android:textSize="13dp"
+                        android:layout_weight="8"></TextView>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
                 </LinearLayout>
-                <com.yamigu.yamigu_app.CustomLayout.CircularImageView
-                    android:id="@+id/iv_profile"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/user_profile_no_img"
-                    android:layout_weight="7"/>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                </LinearLayout>
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="18">
 
-                    <WebView
-                        android:id="@+id/description"
-                        android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="28"
+                    android:orientation="horizontal"
+                    android:paddingBottom="22dp">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <com.yamigu.yamigu_app.CustomLayout.CircularImageView
+                        android:id="@+id/iv_profile"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/user_profile_no_img"
+                        android:layout_weight="7"
+                        android:layout_marginTop="22dp"
+                        />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        android:gravity="left|center_vertical"
-                        android:scrollbars="none"></WebView>
-                </RelativeLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                        android:layout_weight="18">
+                        <WebView
+                            android:id="@+id/description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:gravity="left|center_vertical"
+                            android:scrollbars="none"></WebView>
+                    </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:visibility="invisible">
+            </FrameLayout>
         </LinearLayout>
     </FrameLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+    </LinearLayout>
 </LinearLayout>

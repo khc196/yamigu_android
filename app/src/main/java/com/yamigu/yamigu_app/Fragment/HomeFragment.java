@@ -64,6 +64,7 @@ import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.Activity.NotificationActivity;
 import com.yamigu.yamigu_app.Adapter.FragmentAdapter;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
+import com.yamigu.yamigu_app.CustomLayout.CustomViewPager;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard;
 import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat;
 import com.yamigu.yamigu_app.Etc.ImageUtils;
@@ -102,7 +103,8 @@ public class HomeFragment extends Fragment {
     public static DatabaseReference notiDB;
     private Fragment me;
     private TextView tv_unread_noti_count, tv_recommendation;
-    private ViewPager pager;
+    //private ViewPager pager;
+    private CustomViewPager pager;
     private FragmentAdapter fragmentAdapter;
     private TabLayout tabIndicator;
     ProgressDialog dialog = null;

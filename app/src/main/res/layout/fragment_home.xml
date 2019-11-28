@@ -239,13 +239,13 @@
                     android:textSize="18dp"
                     android:textColor="@color/colorNormal"
                     />
-                <androidx.viewpager.widget.ViewPager
+                <com.yamigu.yamigu_app.CustomLayout.CustomViewPager
                     android:id="@+id/pager"
                     android:layout_width="match_parent"
-                    android:layout_height="225dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     >
-                </androidx.viewpager.widget.ViewPager>
+                </com.yamigu.yamigu_app.CustomLayout.CustomViewPager>
                 <com.google.android.material.tabs.TabLayout
                     app:tabBackground="@drawable/page_indicator_selector2"
                     app:tabIndicatorHeight="0dp"

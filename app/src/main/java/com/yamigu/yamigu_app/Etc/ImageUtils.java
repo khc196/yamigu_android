@@ -209,4 +209,26 @@ public class ImageUtils {
 
         return resizedBitmap;
     }
+    public static Bitmap cropCenterBitmap(Bitmap src, int w, int h) {
+        if(src == null)
+            return null;
+        int width = src.getWidth();
+        int height = src.getHeight();
+
+        if(width < w && height < h)
+            return src;
+        int x = 0;
+        int y = 0;
+        if(width > w)
+            x = (width - w)/2;
+        if(height > h)
+            y = (height - h)/2;
+        int cw = w; // crop width
+        int ch = h; // crop height
+        if(w > width)
+            cw = width;
+        if(h > height)
+            ch = height;
+        return Bitmap.createBitmap(src, x, y, cw, ch);
+    }
 }

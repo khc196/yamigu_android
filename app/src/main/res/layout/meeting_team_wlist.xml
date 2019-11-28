@@ -1,203 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_gravity="center_horizontal"
     android:layout_marginBottom="21dp"
-    android:paddingLeft="12.6dp"
-    android:paddingRight="12.6dp"
+    android:weightSum="25"
+    android:orientation="horizontal"
     >
-
-
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+    </LinearLayout>
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_gravity="bottom">
-
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="23">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:orientation="vertical">
+            android:layout_gravity="bottom">
 
-            <RelativeLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/bottom_rounded_brown"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/profile1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:fontFamily="@font/roboto_font_family"
-                    android:text="subbus (24)"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="14dp" />
-
-                <TextView
-                    android:id="@+id/profile2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="16dp"
-                    android:fontFamily="@font/roboto_font_family"
-                    android:text="연세대학교, 전기전자공학부"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="14dp" />
-            </RelativeLayout>
-            <ImageView
-                android:id="@+id/point_line"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@color/colorPoint">
-
-            </ImageView>
-        </FrameLayout>
-    </FrameLayout>
-    <RelativeLayout
-        android:id="@+id/rl_applying"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:background="@drawable/bottom_rounded_orange"
-        android:visibility="invisible"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="44dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="미팅 신청하기"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:textSize="14dp"
-            android:layout_marginBottom="5dp"/>
-    </RelativeLayout>
-    <LinearLayout
-        android:id="@+id/bg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/top_bg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/top_rounded_with_orange_line"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                android:weightSum="28">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/label"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/label_2vs2_bg"
-                    android:fontFamily="@font/nanumgothic_font_family_extrabold"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="2:2 미팅"
-                    android:textColor="@color/colorPoint"
-                    android:textSize="13dp"
-                    android:layout_weight="8"></TextView>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/place"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/label_2vs2_bg"
-                    android:fontFamily="@font/nanumgothic_font_family_extrabold"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="신촌/홍대"
-                    android:textColor="@color/colorPoint"
-                    android:textSize="13dp"
-                    android:layout_weight="8"></TextView>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/date"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/label_2vs2_bg"
-                    android:fontFamily="@font/nanumgothic_font_family_extrabold"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="11월 30일 (토)"
-                    android:textColor="@color/colorPoint"
-                    android:textSize="13dp"
-                    android:layout_weight="8"></TextView>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="28"
-                android:orientation="horizontal"
-                android:paddingBottom="22dp">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                </LinearLayout>
-                <com.yamigu.yamigu_app.CustomLayout.CircularImageView
-                    android:id="@+id/iv_profile"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/user_profile_no_img"
-                    android:layout_weight="7"
-                    android:layout_marginTop="22dp"
-                    />
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                </LinearLayout>
                 <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="18">
-                    <WebView
-                        android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/bottom_rounded_brown"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/profile1"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        android:gravity="left|center_vertical"
-                        android:scrollbars="none"></WebView>
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:fontFamily="@font/roboto_font_family"
+                        android:text="subbus (24)"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/profile2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="16dp"
+                        android:fontFamily="@font/roboto_font_family"
+                        android:text="연세대학교, 전기전자공학부"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14dp" />
                 </RelativeLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-        <FrameLayout
+                <ImageView
+                    android:id="@+id/point_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@color/colorPoint">
+
+                </ImageView>
+            </FrameLayout>
+        </FrameLayout>
+        <RelativeLayout
+            android:id="@+id/rl_applying"
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:visibility="invisible">
-        </FrameLayout>
+            android:background="@drawable/bottom_rounded_orange"
+            android:visibility="invisible"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="44dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="미팅 신청하기"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:layout_marginBottom="5dp"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/top_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/top_rounded_with_orange_line"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:weightSum="28">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/label"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/label_2vs2_bg"
+                        android:fontFamily="@font/nanumgothic_font_family_extrabold"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="2:2 미팅"
+                        android:textColor="@color/colorPoint"
+                        android:textSize="13dp"
+                        android:layout_weight="8"></TextView>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/place"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/label_2vs2_bg"
+                        android:fontFamily="@font/nanumgothic_font_family_extrabold"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="신촌/홍대"
+                        android:textColor="@color/colorPoint"
+                        android:textSize="13dp"
+                        android:layout_weight="8"></TextView>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/label_2vs2_bg"
+                        android:fontFamily="@font/nanumgothic_font_family_extrabold"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="11월 30일 (토)"
+                        android:textColor="@color/colorPoint"
+                        android:textSize="13dp"
+                        android:layout_weight="8"></TextView>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="28"
+                    android:orientation="horizontal"
+                    android:paddingBottom="22dp">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <com.yamigu.yamigu_app.CustomLayout.CircularImageView
+                        android:id="@+id/iv_profile"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/user_profile_no_img"
+                        android:layout_weight="7"
+                        android:layout_marginTop="22dp"
+                        />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="18">
+                        <WebView
+                            android:id="@+id/description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:gravity="left|center_vertical"
+                            android:scrollbars="none"></WebView>
+                    </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:visibility="invisible">
+            </FrameLayout>
+        </LinearLayout>
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
     </LinearLayout>
-</FrameLayout>
+</LinearLayout>

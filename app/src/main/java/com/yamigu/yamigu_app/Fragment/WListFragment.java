@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
+import com.yamigu.yamigu_app.Etc.ImageUtils;
 import com.yamigu.yamigu_app.R;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 
@@ -550,7 +551,7 @@ public class WListFragment extends Fragment {
                     }
                     else {
                         try {
-                            top_bg.setBackgroundResource(R.drawable.top_rounded_matched);
+                            top_bg.setBackgroundResource(R.drawable.top_rounded_matched2);
                             label.setBackgroundResource(R.drawable.label_gray);
                             label.setTextColor(getResources().getColor(R.color.colorNonselect));
                             place.setBackgroundResource(R.drawable.label_gray);
@@ -653,19 +654,30 @@ public class WListFragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Bitmap bm) {
-            while(bm.getWidth() < civ.getWidth()) {
-                bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
-            }
-            while(bm.getHeight() < civ.getHeight()) {
-                bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
-            }
-            while(bm.getHeight() > civ.getHeight()) {
-                bm = Bitmap.createScaledBitmap(bm, bm.getWidth() / ( bm.getHeight() / civ.getHeight() ), civ.getHeight(), false);
-            }
+            try {
+                while (bm.getWidth() < civ.getWidth()) {
+                    bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
+                }
+                while (bm.getHeight() < civ.getHeight()) {
+                    bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
+                }
 
+                if (bm.getWidth() <= bm.getHeight() && bm.getWidth() > civ.getWidth()) {
+                    bm = Bitmap.createScaledBitmap(bm, civ.getWidth(), (bm.getHeight() * civ.getWidth()) / bm.getWidth(), false);
+                }
+                if (bm.getWidth() > bm.getHeight() && bm.getHeight() > civ.getHeight()) {
+                    bm = Bitmap.createScaledBitmap(bm, (bm.getWidth() * civ.getHeight()) / bm.getHeight(), civ.getHeight(), false);
+                }
+                if(bm.getWidth() > bm.getHeight()) {
+                    bm = ImageUtils.cropCenterBitmap(bm, bm.getHeight(), bm.getWidth());
+                }
+                else if(bm.getWidth() < bm.getHeight()){
+                    bm = ImageUtils.cropCenterBitmap(bm, bm.getWidth(), bm.getWidth());
+                }
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
             civ.setImageBitmap(bm);
-
-
             view.setVisibility(View.VISIBLE);
             view.animate()
                     .setDuration(50)

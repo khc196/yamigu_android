@@ -38,10 +38,9 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
         Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);
 
         int w = getWidth(), h = getHeight();
-
         Bitmap dst;
         Bitmap roundBitmap;
-        if(bitmap.getWidth() <= bitmap.getHeight()) {
+        if(bitmap.getWidth() < bitmap.getHeight()) {
             dst = Bitmap.createBitmap(bitmap, 0, (bitmap.getHeight()/2) - (bitmap.getWidth()/2), bitmap.getWidth(), bitmap.getWidth());
             roundBitmap = getRoundedCroppedBitmap(dst, w);
         }
@@ -76,7 +75,6 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
             rect = new Rect(0, 0, finalBitmap.getHeight(),
                     finalBitmap.getHeight());
         }
-
         paint.setAntiAlias(true);
         paint.setFilterBitmap(true);
         paint.setDither(true);
