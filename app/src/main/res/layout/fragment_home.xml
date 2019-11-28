@@ -64,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:text="모든 청춘들에게\n설레는 매일을"
                         android:textSize="24dp"
-                        android:fontFamily="@font/binggrae_font_family"
+                        android:fontFamily="@font/nanumsquareround_font_bold"
                         android:textStyle="bold"
                         android:textColor="@color/colorPrimary"
                         android:layout_marginLeft="16dp"

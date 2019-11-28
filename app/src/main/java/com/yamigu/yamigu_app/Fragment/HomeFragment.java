@@ -98,7 +98,8 @@ public class HomeFragment extends Fragment {
     private Context context;
     private MyMeetingCardFrame myMeetingCardFrame;
     private RelativeLayout btn_go_yamigu;
-    private DatabaseReference userDB, managerDB, notiDB;
+    private DatabaseReference userDB, managerDB;
+    public static DatabaseReference notiDB;
     private Fragment me;
     private TextView tv_unread_noti_count, tv_recommendation;
     private ViewPager pager;
@@ -315,10 +316,12 @@ public class HomeFragment extends Fragment {
         return mChildEventListener;
     }
     private ChildEventListener makeChildEventListenerForNotification() {
+        GlobalApplication.unread_noti_count = 0;
         ChildEventListener mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(dataSnapshot.getValue() != null) {
+                    Log.d("DATASNAPSHOT", ""+dataSnapshot.getValue());
                     HashMap mapNotification = (HashMap) dataSnapshot.getValue();
                     boolean isUnread = (boolean) mapNotification.get("isUnread");
                     String id = (String) mapNotification.get("id");
@@ -327,7 +330,7 @@ public class HomeFragment extends Fragment {
                     String content = (String) mapNotification.get("content");
                     NotificationData notificationData = new NotificationData();
                     notificationData.id = id;
-                    notificationData.isUread = isUnread;
+                    notificationData.isUnread = isUnread;
                     notificationData.time = timestamp;
                     notificationData.type = type;
                     notificationData.content = content;
@@ -335,7 +338,7 @@ public class HomeFragment extends Fragment {
                     if(isUnread) {
                         try {
                             tv_unread_noti_count.setVisibility(View.VISIBLE);
-                            GlobalApplication.unread_noti_count = GlobalApplication.notification_map.size();
+                            GlobalApplication.unread_noti_count++;
                             tv_unread_noti_count.setText("" + GlobalApplication.unread_noti_count);
                         } catch(NullPointerException e) {
                             //e.printStackTrace();
@@ -973,11 +976,11 @@ public class HomeFragment extends Fragment {
 
                             managerDB = FirebaseDatabase.getInstance().getReference().child("user").child(""+manager_uid);
 
-                            if(!manager_profile_url.isEmpty()) {
-                                ContentValues values = new ContentValues();
-                                NetworkTask4 networkTask4 = new NetworkTask4(manager_profile_url, values, ""+manager_uid);
-                                networkTask4.execute();
-                            }
+//                            if(!manager_profile_url.isEmpty()) {
+//                                ContentValues values = new ContentValues();
+//                                NetworkTask4 networkTask4 = new NetworkTask4(manager_profile_url, values, ""+manager_uid);
+//                                networkTask4.execute();
+//                            }
                             final int matching_id_final = matching_id;
                             final int partner_uid_final = partner_uid;
                             final int manager_uid_final = manager_uid;
@@ -1032,6 +1035,9 @@ public class HomeFragment extends Fragment {
                 myMeetingCardFrame.mmc_list[i].setVisibility(View.VISIBLE);
                 ((MainActivity)context).setMyMeetingCount(i+1);
             }
+            if(dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
     }
     public class NetworkTask2 extends AsyncTask<Void, Void, String> {
@@ -1072,6 +1078,9 @@ public class HomeFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            if(dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
     }
     public class NetworkTask3 extends AsyncTask<Void, Void, String> {
@@ -1098,6 +1107,9 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            if(dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
     }
     public class NetworkTask4 extends AsyncTask<Void, Void, Bitmap> {
@@ -1145,6 +1157,9 @@ public class HomeFragment extends Fragment {
                             Log.d("Update Avatar", "failed");
                         }
                     });
+            if(dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
     }
     public class NetworkTask5 extends AsyncTask<Void, Void, String> {

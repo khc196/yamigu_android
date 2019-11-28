@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/notification_bg"
     android:layout_width="match_parent"
     android:layout_height="68dp"
     android:layout_marginTop="4dp"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPointBG">
     <TextView
         android:id="@+id/tv_notification_type"
         android:layout_width="wrap_content"

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard;
 import com.yamigu.yamigu_app.Etc.Model.NotificationData;
+import com.yamigu.yamigu_app.Fragment.HomeFragment;
 import com.yamigu.yamigu_app.Fragment.MypageFragment;
 import com.yamigu.yamigu_app.Fragment.WListFragment;
 import com.yamigu.yamigu_app.R;
@@ -23,11 +24,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class NotificationActivity extends AppCompatActivity {
     private Toolbar tb;
+    private HashMap<View, Long> view_map;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +52,16 @@ public class NotificationActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        view_map = new HashMap<View, Long>();
         for(Map.Entry<String, NotificationData> noti_data: GlobalApplication.notification_map.entrySet()) {
             createNotification(noti_data.getValue());
         }
+        LinearLayout mRootLinear = (LinearLayout) findViewById(R.id.notification_bg);
+        List<View> view_list = sortByValue(view_map);
+        for(int i = 0; i < view_list.size(); i++) {
+            mRootLinear.addView(view_list.get(i));
+        }
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override
@@ -53,7 +69,19 @@ public class NotificationActivity extends AppCompatActivity {
         clearReferences();
         super.onDestroy();
     }
-
+    public static List sortByValue(final Map map) {
+        List<String> list = new ArrayList();
+        list.addAll(map.keySet());
+        Collections.sort(list,new Comparator() {
+            public int compare(Object o1,Object o2) {
+                Object v1 = map.get(o1);
+                Object v2 = map.get(o2);
+                return ((Comparable) v2).compareTo(v1);
+            }
+        });
+        Collections.reverse(list); // 주석시 오름차순
+        return list;
+    }
     private void clearReferences(){
         Activity currActivity = ((GlobalApplication)getApplicationContext()).getCurrentActivity();
         if (this.equals(currActivity))
@@ -69,7 +97,8 @@ public class NotificationActivity extends AppCompatActivity {
         LinearLayout mRootLinear = (LinearLayout) findViewById(R.id.notification_bg);
 
         final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.notification, mRootLinear, true);
+        View v = inflater.inflate(R.layout.notification, mRootLinear, false);
+
         TextView tv_notification_type = v.findViewById(R.id.tv_notification_type);
         TextView tv_notification_content = v.findViewById(R.id.tv_notification_content);
         TextView tv_notification_time = v.findViewById(R.id.tv_notification_time);
@@ -78,67 +107,19 @@ public class NotificationActivity extends AppCompatActivity {
         tv_notification_type.setText(type_string_array[(int)type]);
         tv_notification_content.setText(notificationData.content);
 
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(notificationData.data);
-        } catch(JSONException e) {
-            e.printStackTrace();
-        } catch(NullPointerException e) {
-            e.printStackTrace();
-        }
-        final JSONObject intentData = jsonObject;
-        if(notificationData.isUread) {
-            mRootLinear.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        if(notificationData.isUnread) {
+            v.setBackgroundResource(R.drawable.ic_filter_state_pointbg);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = null;
-                    switch((int)type) {
-                        case 1:
-                        case 3:
-                            try {
-                                intent = new Intent(getApplicationContext(), RequestListActivity.class);
-                                int meeting_id = intentData.getInt("meeting_id");
-                                String month = intentData.getString("month");
-                                String date = intentData.getString("date");
-                                String place = intentData.getString("place");
-                                String type = intentData.getString("type");
-                                intent.putExtra("meeting_id", meeting_id);
-                                intent.putExtra("date", month + date);
-                                intent.putExtra("place", place);
-                                intent.putExtra("type", type);
-                            } catch(JSONException e) {
-                                e.printStackTrace();
-                            } catch(NullPointerException e) {
-                                return;
-                            }
-                            break;
-                        case 2:
-                        case 6:
-                            finish();
-                            break;
-                        case 4:
-                            MainActivity.me.selectTab(2);
-                            MainActivity.me.loadFragment(new WListFragment());
-                            finish();
-                            break;
-                        case 5:
-                            MainActivity.me.selectTab(3);
-                            MainActivity.me.loadFragment(new MypageFragment());
-                            finish();
-                            break;
-                        default:
-                            break;
-                    }
-                    if(intent != null) {
-                        startActivity(intent);
-                        finish();
-                    }
+                    notificationData.isUnread = false;
+                    HomeFragment.notiDB.child(notificationData.id).setValue(notificationData);
+                    finish();
                 }
             });
         }
         else {
-            mRootLinear.setBackgroundColor(getResources().getColor(R.color.colorPointBG));
+            v.setBackgroundResource(R.drawable.ic_filter_state_white);
         }
         final long diff = System.currentTimeMillis() - notificationData.time;
         SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -178,6 +159,7 @@ public class NotificationActivity extends AppCompatActivity {
             String month_text = month + "달 전";
             tv_notification_time.setText(month_text);
         }
+        view_map.put(v, new Long(diff));
     }
 }
 

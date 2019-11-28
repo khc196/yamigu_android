@@ -65,6 +65,7 @@ import org.json.JSONObject;
 import com.yamigu.yamigu_app.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static java.security.AccessController.getContext;
@@ -101,7 +102,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     public static int gender; // my gender
     public static int partner_age;
     public static String partner_belong, partner_department;
-
+    private ArrayList<ChatData> receivedChatList;
     private String auth_token;
     private MeetingCancelDialog meetingCancelDialog;
     @Override
@@ -121,6 +122,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         partner_department = intent.getExtras().getString("partner_department");
         partner_name = intent.getExtras().getString("partner_nickname");
         date = intent.getExtras().getString("date");
+        Log.d("DAY", date);
         date_day = date.split(" ")[1];
         place = intent.getExtras().getString("place");
         type = intent.getExtras().getString("type");
@@ -171,6 +173,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         conversation.getListMessageData().add(auto_Chat1);
         conversation.getListMessageData().add(auto_Chat2);
         mAdapter.notifyDataSetChanged();
+        receivedChatList = new ArrayList<>();
         initFirebaseDatabase();
         linearLayoutManager.scrollToPosition(conversation.getListMessageData().size() - 1);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -184,6 +187,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     }
     @Override
     protected void onDestroy() {
+        mDatabaseReference.removeEventListener(mChildEventListener);
         clearReferences();
         super.onDestroy();
     }
@@ -291,7 +295,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                         chatData.message = (String) mapMessage.get("message");
                         chatData.time = (long) mapMessage.get("time");
                         conversation.getListMessageData().add(chatData);
-                        if(!chatData.idSender.equals(uid)) {
+                        if(matching_id != null && !chatData.idSender.equals(uid) && ((GlobalApplication) getApplicationContext()).getCurrentActivity().getLocalClassName().equals("Activity.ChattingActivity")) {
                             ReceivedMessage receivedMessage = new ReceivedMessage();
                             receivedMessage.id = chatData.id;
                             receivedMessage.isUnread = false;

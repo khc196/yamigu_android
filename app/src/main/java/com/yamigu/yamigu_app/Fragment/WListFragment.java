@@ -327,6 +327,9 @@ public class WListFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            if(dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
     }
 
@@ -615,6 +618,9 @@ public class WListFragment extends Fragment {
                         }
                     }
                 });
+            if(dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
     }
     public class NetworkTask3 extends AsyncTask<Void, Void, Bitmap> {
@@ -652,6 +658,9 @@ public class WListFragment extends Fragment {
             }
             while(bm.getHeight() < civ.getHeight()) {
                 bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
+            }
+            while(bm.getHeight() > civ.getHeight()) {
+                bm = Bitmap.createScaledBitmap(bm, bm.getWidth() / ( bm.getHeight() / civ.getHeight() ), civ.getHeight(), false);
             }
 
             civ.setImageBitmap(bm);
@@ -726,6 +735,9 @@ public class WListFragment extends Fragment {
                 }
             } catch(JSONException e) {
                 e.printStackTrace();
+            }
+            if(dialog.isShowing()) {
+                dialog.dismiss();
             }
         }
     }

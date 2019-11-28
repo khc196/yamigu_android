@@ -99,7 +99,7 @@
                         android:layout_marginLeft="19dp"/>
                     <LinearLayout
                         android:layout_width="359dp"
-                        android:layout_height="82.93dp"
+                        android:layout_height="90.93dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="4dp"
                         android:background="@drawable/profile_card_bg">
@@ -107,7 +107,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/text_chat_yamigu_desc"
-                            android:layout_marginTop="4.3dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginLeft="10dp"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -119,7 +119,7 @@
                 android:layout_height="44.33dp"
                 android:background="@drawable/ic_filter_state_kakao"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="88dp"
+                android:layout_marginTop="96dp"
                 android:src="@drawable/btn_kakao_chat_text"
                 >
             </ImageButton>

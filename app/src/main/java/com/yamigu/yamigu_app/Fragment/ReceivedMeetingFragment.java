@@ -114,16 +114,16 @@ public class ReceivedMeetingFragment extends Fragment {
                 for(int i = 1; i <= total_num; i++) {
                     float d = getResources().getDisplayMetrics().density;
                     fragment = fragmentAdapter.getItem(i - 1);
-                    LinearLayout.LayoutParams mLayoutParams = (LinearLayout.LayoutParams) fragment.waitingTeamCard.getLayoutParams();
+                    //LinearLayout.LayoutParams mLayoutParams = (LinearLayout.LayoutParams) fragment.waitingTeamCard.getLayoutParams();
                     if(i - 1 == currentPage) {
-                        mLayoutParams.topMargin = 0;
+                        //mLayoutParams.topMargin = 0;
                         fragment.waitingTeamCard.setAlpha(1.0f);
                     }
                     else {
-                        mLayoutParams.topMargin = Math.round(16 * d);
+                        //mLayoutParams.topMargin = Math.round(16 * d);
                         fragment.waitingTeamCard.setAlpha(0.4f);
                     }
-                    fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
+                    //fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
                 }
                 refresh();
             }
@@ -139,17 +139,17 @@ public class ReceivedMeetingFragment extends Fragment {
             @Override
             public void onGlobalLayout() {
                 if(is_initialized) {
-                    int width = viewPager.getWidth();
-                    float d = getResources().getDisplayMetrics().density;
-                    dpValue = (int) (width / d);
-                    int margin = (int) (45 * dpValue / 411 * d);
-                    viewPager.setPadding(margin, 0, margin, 0);
+//                    int width = viewPager.getWidth();
+//                    float d = getResources().getDisplayMetrics().density;
+//                    dpValue = (int) (width / d);
+//                    int margin = (int) (45 * dpValue / 411 * d);
+//                    viewPager.setPadding(margin, 0, margin, 0);
                     MeetingCardFragment fragment = fragmentAdapter.getItem(0);
-                    LinearLayout.LayoutParams mLayoutParams = (LinearLayout.LayoutParams) fragment.waitingTeamCard.getLayoutParams();
-                    mLayoutParams.topMargin = 0;
+//                    LinearLayout.LayoutParams mLayoutParams = (LinearLayout.LayoutParams) fragment.waitingTeamCard.getLayoutParams();
+//                    mLayoutParams.topMargin = 0;
                     if(ReceivedMeetingFragment.position == 0) {
                         fragment.waitingTeamCard.setAlpha(1.0f);
-                        fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
+//                        fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
                     }
 
                 }
