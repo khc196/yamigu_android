@@ -411,6 +411,7 @@ public class SplashActivity extends AppCompatActivity {
                                         editor.putString("uid", jsonObject.getString("uid"));
                                         editor.putInt("user_certified", jsonObject.getInt("user_certified"));
                                         editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
+                                        editor.putInt("num_of_ticket", jsonObject.getInt("ticket"));
                                         editor.apply();
                                     } catch (JSONException e) {
                                         e.printStackTrace();

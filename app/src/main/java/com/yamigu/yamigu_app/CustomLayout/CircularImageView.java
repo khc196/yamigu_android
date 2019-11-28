@@ -12,6 +12,9 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
+
+import com.yamigu.yamigu_app.Etc.ImageUtils;
 
 public class CircularImageView extends androidx.appcompat.widget.AppCompatImageView {
 
@@ -37,13 +40,16 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
         int w = getWidth(), h = getHeight();
 
         Bitmap dst;
-        if(bitmap.getWidth() < bitmap.getHeight()) {
+        Bitmap roundBitmap;
+        if(bitmap.getWidth() <= bitmap.getHeight()) {
             dst = Bitmap.createBitmap(bitmap, 0, (bitmap.getHeight()/2) - (bitmap.getWidth()/2), bitmap.getWidth(), bitmap.getWidth());
+            roundBitmap = getRoundedCroppedBitmap(dst, w);
         }
         else {
             dst = Bitmap.createBitmap(bitmap, (bitmap.getWidth()/2) - (bitmap.getHeight()/2), 0, bitmap.getHeight(), bitmap.getHeight());
+            roundBitmap = getRoundedCroppedBitmap(dst, w);
         }
-        Bitmap roundBitmap = getRoundedCroppedBitmap(dst, w);
+
         canvas.drawBitmap(roundBitmap, 0, 0, null);
 
     }

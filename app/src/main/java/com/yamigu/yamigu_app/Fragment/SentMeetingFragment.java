@@ -143,11 +143,6 @@ public class SentMeetingFragment extends Fragment {
         });
         viewPager.setClipToPadding(false);
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 6b6e35763bb14a3fc927a9f6c15e7951cde26833
         String url = "http://106.10.39.154:9999/api/matching/sent_request/?meeting_id="+meeting_id;
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);

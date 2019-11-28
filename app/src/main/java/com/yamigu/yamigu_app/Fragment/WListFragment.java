@@ -647,9 +647,13 @@ public class WListFragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Bitmap bm) {
-            if(bm.getWidth() < bm.getHeight()) {
-
+            while(bm.getWidth() < civ.getWidth()) {
+                bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
             }
+            while(bm.getHeight() < civ.getHeight()) {
+                bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
+            }
+
             civ.setImageBitmap(bm);
 
 

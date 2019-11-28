@@ -262,22 +262,20 @@ public class LoginActivity extends AppCompatActivity {
                 redirectVerificationActivity();
                 return;
             }
-            if (!isFirstRun) {
-                try {
-                    editor.putString("nickname", jsonObject.getString("nickname"));
-                    editor.putString("phone", jsonObject.getString("phone"));
-                    editor.putString("belong", jsonObject.getString("belong"));
-                    editor.putString("department", jsonObject.getString("department"));
-                    editor.putString("profile", jsonObject.getString("image"));
-                    editor.putInt("gender", jsonObject.getInt("gender"));
-                    editor.putInt("age", jsonObject.getInt("age"));
-                    editor.putString("uid", jsonObject.getString("uid"));
-                    editor.putInt("user_certified", jsonObject.getInt("user_certified"));
-                    editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
-                    editor.apply();
-                } catch(JSONException e) {
-                    e.printStackTrace();
-                }
+            try {
+                editor.putString("nickname", jsonObject.getString("nickname"));
+                editor.putString("phone", jsonObject.getString("phone"));
+                editor.putString("belong", jsonObject.getString("belong"));
+                editor.putString("department", jsonObject.getString("department"));
+                editor.putString("profile", jsonObject.getString("image"));
+                editor.putInt("gender", jsonObject.getInt("gender"));
+                editor.putInt("age", jsonObject.getInt("age"));
+                editor.putString("uid", jsonObject.getString("uid"));
+                editor.putInt("user_certified", jsonObject.getInt("user_certified"));
+                editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
+                editor.apply();
+            } catch(JSONException e) {
+                e.printStackTrace();
             }
             mAuth.signInWithCustomToken(firebase_token)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

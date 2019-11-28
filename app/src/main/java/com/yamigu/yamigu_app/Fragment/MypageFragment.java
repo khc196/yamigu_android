@@ -38,6 +38,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,12 +56,15 @@ import com.yamigu.yamigu_app.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -185,14 +189,21 @@ public class MypageFragment extends Fragment {
         } else {
             bitmapAvata = null;
         }
-        if(bitmapAvata != null)
+        if(bitmapAvata != null) {
+            while(bitmapAvata.getWidth() < profile_img.getWidth()) {
+                bitmapAvata = Bitmap.createScaledBitmap(bitmapAvata, bitmapAvata.getWidth() * 2, bitmapAvata.getHeight() * 2, false);
+            }
+            while(bitmapAvata.getHeight() < profile_img.getHeight()) {
+                bitmapAvata = Bitmap.createScaledBitmap(bitmapAvata, bitmapAvata.getWidth() * 2, bitmapAvata.getHeight() * 2, false);
+            }
             profile_img.setImageBitmap(bitmapAvata);
+        }
 
-//        if(!profile_url.isEmpty()) {`
-//            ContentValues values = new ContentValues();
-//            NetworkTask3 networkTask3 = new NetworkTask3(profile_url, values, profile_img);
-//            networkTask3.execute();
-//        }
+        if(!profile_url.isEmpty()) {
+            ContentValues values = new ContentValues();
+            NetworkTask3 networkTask3 = new NetworkTask3(profile_url, values, profile_img);
+            networkTask3.execute();
+        }
         tv_nickname.setText(preferences.getString("nickname", ""));
         tv_age.setText(" (" + preferences.getInt("age", 0) + ")");
         tv_belong.setText(preferences.getString("belong", ""));
@@ -233,11 +244,7 @@ public class MypageFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 if(!editable.toString().equals("")) {
-<<<<<<< HEAD
                     String url = "http://106.10.39.154:9999/api/user/validation/nickname/"+editable.toString();
-=======
-                    String url = "http://106.10.39.154:9999/api/validation/nickname/" + editable.toString();
->>>>>>> 6b6e35763bb14a3fc927a9f6c15e7951cde26833
                     ContentValues values = new ContentValues();
                     NetworkTask networkTask = new NetworkTask(url, values);
                     networkTask.execute();
@@ -430,27 +437,37 @@ public class MypageFragment extends Fragment {
 
         }
     }
-    public class NetworkTask3 extends AsyncTask<Void, Void, String> {
+    public class NetworkTask3 extends AsyncTask<Void, Void, Bitmap> {
         private String url;
         private ContentValues values;
         private RequestHttpURLConnection requestHttpURLConnection;
         private CircularImageView civ;
-        private View view;
-        public NetworkTask3(String url, ContentValues values) {
+        public NetworkTask3(String url, ContentValues values,  CircularImageView civ) {
             this.url = url;
             this.values = values;
+            this.civ = civ;
         }
         @Override
-        protected String doInBackground(Void... params) {
-            String result;
-            requestHttpURLConnection = new RequestHttpURLConnection();
+        protected Bitmap doInBackground(Void... params) {
+            try {
+                URL urlO = new URL(url);
+                URLConnection conn = urlO.openConnection();
+                conn.connect();
+                InputStream urlInputStream = conn.getInputStream();
+                return BitmapFactory.decodeStream(urlInputStream);
 
-            result = requestHttpURLConnection.request(getContext(), url, values, "POST", auth_token);
-            return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
         @Override
-        protected void onPostExecute(String s) {
-
+        protected void onPostExecute(Bitmap bm) {
+            try {
+                civ.setImageBitmap(bm.copy(Bitmap.Config.RGB_565, false));
+            } catch(NullPointerException e) {
+                e.printStackTrace();
+            }
         }
     }
     public int uploadFile(String sourceFileUri) {
@@ -491,6 +508,8 @@ public class MypageFragment extends Fragment {
         {
             try {
                 // open a URL connection to the Servlet
+//                if(!resized.isRecycled())
+//                    resized.recycle();
                 InputStream fileInputStream = ImageUtils.convertBitmapToInputStream(resized);
                 //FileInputStream fileInputStream = new FileInputStream(resizedInputStream);
                 URL url = new URL(upLoadServerUri);
@@ -506,6 +525,7 @@ public class MypageFragment extends Fragment {
                 conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
                 conn.setRequestProperty("Authorization", "Token " + auth_token);
                 conn.setRequestProperty("uploaded_file", fileName);
+                conn.setRequestProperty("Accept", "application/json");
 
                 dos = new DataOutputStream(conn.getOutputStream());
 
@@ -545,11 +565,33 @@ public class MypageFragment extends Fragment {
                         + serverResponseMessage + ": " + serverResponseCode);
 
                 if(serverResponseCode == 200){
+                     BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+
+                     // 출력물의 라인과 그 합에 대한 변수.
+                     String line;
+                     String page = "";
+
+                     // 라인을 받아와 합친다.
+                     while ((line = reader.readLine()) != null){
+                        page += line;
+                     }
+                    try {
+                        JSONObject jsonObject = new JSONObject(page);
+                        String newImageUrl = jsonObject.getString("new_avata");
+                        ContentValues values = new ContentValues();
+                        if(!newImageUrl.isEmpty()) {
+                            NetworkTask3 networkTask3 = new NetworkTask3(newImageUrl, values, profile_img);
+                            networkTask3.execute();
+                        }
+                    } catch(JSONException e) {
+                        e.printStackTrace();
+                    }
 
                     getActivity().runOnUiThread(new Runnable() {
                         public void run() {
                             Toast.makeText(getContext(), "File Upload Complete.",
                                     Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
                         }
                     });
                 }

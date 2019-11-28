@@ -120,11 +120,12 @@ public class ImageUtils {
 
     public static InputStream convertBitmapToInputStream(Bitmap bitmap){
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
-        if (bitmap != scaled) {
-            bitmap.recycle();
-        }
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+        Bitmap bitmap_copy = bitmap.copy(Bitmap.Config.RGB_565, false);
+        Bitmap scaled = Bitmap.createScaledBitmap(bitmap_copy, bitmap.getWidth(), bitmap.getHeight(), true);
+//        if (bitmap_copy != scaled) {
+//            bitmap_copy.recycle();
+//        }
+        bitmap_copy.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
 
         byte[] bitmapdata = bos.toByteArray();
         ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
@@ -204,7 +205,7 @@ public class ImageUtils {
         matrix.postRotate(degree);
 
         Bitmap resizedBitmap = Bitmap.createBitmap(bmp, 0, 0, width, height, matrix, true);
-        bmp.recycle();
+        //bmp.recycle();
 
         return resizedBitmap;
     }

@@ -28,7 +28,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/yamigu_logo_beta"
+                android:src="@drawable/yamigu_logo"
+                android:layout_gravity="center_horizontal"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -38,6 +39,7 @@
                 android:textColor="@color/colorPoint"
                 android:textSize="14dp"
                 android:text="학교와 직장이 인증된 이성과\n일주일안에 미팅하기"
+                android:fontFamily="@font/nanumsquareroundb"
                 />
         </LinearLayout>
 
