@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -52,6 +53,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.CustomLayout.MeetingCancelDialog;
+import com.yamigu.yamigu_app.Etc.ImageUtils;
 import com.yamigu.yamigu_app.Etc.Model.ChatData;
 import com.yamigu.yamigu_app.Etc.Model.Conversation;
 import com.yamigu.yamigu_app.Etc.Model.ReceivedMessage;
@@ -64,6 +66,14 @@ import org.json.JSONObject;
 
 import com.yamigu.yamigu_app.R;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -155,6 +165,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         tv_title.setText(date_day + " || " + place + " || " + type);
         uid = preferences.getString("uid", "");
         Log.d("manager_uid", manager_uid);
+
         initViews();
         ChatData auto_Chat1 = new ChatData();
         ChatData auto_Chat2 = new ChatData();
@@ -190,7 +201,64 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         clearReferences();
         super.onDestroy();
     }
+    private void loadProfileImages() {
+        String apiURL = "http://106.10.39.154:9999/api/user/";
+        String managerURL = apiURL + manager_uid + "/image/";
+        String parterURL = apiURL + partner_uid + "/image/";
+        String userURL = apiURL + uid + "/image/";
+        Log.d("managerURL", managerURL);
+        String managerPURL = loadProfileURL(managerURL);
+        String partnerPURL = loadProfileURL(parterURL);
+        //String userPURL = loadProfileURL(userURL);
+        ContentValues contentValues = new ContentValues();
+        NetworkTask3 manager_task = new NetworkTask3(managerPURL, contentValues, manager_uid);
+        NetworkTask3 partner_task = new NetworkTask3(partnerPURL, contentValues, partner_uid);
+        //NetworkTask3 user_task = new NetworkTask3(userPURL, contentValues, uid);
 
+        manager_task.execute();
+        partner_task.execute();
+        //user_task.execute();
+    }
+    private String loadProfileURL(String url) {
+        try {
+            URL url_ = new URL(url);
+            HttpURLConnection conn = null;
+            // Open a HTTP  connection to  the URL
+            conn = (HttpURLConnection) url_.openConnection();
+            conn.setDoInput(true); // Allow Inputs
+            conn.setDoOutput(true); // Allow Outputs
+            conn.setUseCaches(false); // Don't use a Cached Copy
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept-Charset", "UTF-8");
+            conn.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;charset=UTF-8");
+            conn.setRequestProperty("Authorization", "Token " + auth_token);
+            // Responses from the server (code and message)
+            int serverResponseCode = conn.getResponseCode();
+
+            if(serverResponseCode == 200){
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+
+                // 출력물의 라인과 그 합에 대한 변수.
+                String line;
+                String page = "";
+
+                // 라인을 받아와 합친다.
+                while ((line = reader.readLine()) != null){
+                    page += line;
+                }
+                JSONObject jsonObject = new JSONObject(page);
+                String ImageUrl = jsonObject.getString("profile_url");
+                return ImageUrl;
+            }
+        } catch(MalformedURLException e) {
+            e.printStackTrace();
+        } catch(IOException e) {
+            e.printStackTrace();
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     private void clearReferences(){
         Activity currActivity = ((GlobalApplication)getApplicationContext()).getCurrentActivity();
         if (this.equals(currActivity))
@@ -249,14 +317,24 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
 
 
         //mAdapter = new ChatMessageAdapter(this, R.layout.chatting_message_recv_woman);
-        String base64AvataUser = preferences.getString("avata", "");
-        if (!base64AvataUser.equals("default")) {
-            byte[] decodedString = Base64.decode(base64AvataUser, Base64.DEFAULT);
-            bitmapAvataUser = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        } else {
-            bitmapAvataUser = null;
+//        String base64AvataUser = preferences.getString("avata", "");
+//        if (!base64AvataUser.equals("default")) {
+//            byte[] decodedString = Base64.decode(base64AvataUser, Base64.DEFAULT);
+//            bitmapAvataUser = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//        } else {
+//            bitmapAvataUser = null;
+//        }
+        String profile_url = preferences.getString("profile", "");
+        if(!profile_url.isEmpty()) {
+            bitmapAvataUser = GlobalApplication.bitmap_map.get(profile_url);
         }
         bitmapAvataPartner = new HashMap<>();
+        new Thread() {
+            public void run() {
+                loadProfileImages();
+
+            }
+        }.start();
         mAdapter = new ListMessageAdapter(this, conversation, bitmapAvataPartner, bitmapAvataUser);
         //mListView.setAdapter(mAdapter);
         recyclerChat.setAdapter(mAdapter);
@@ -461,6 +539,66 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+        }
+    }
+    public class NetworkTask3 extends AsyncTask<Void, Void, Bitmap> {
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        private String uid_;
+        //private CircularImageView civ;
+        public NetworkTask3(String url, ContentValues values,  String uid) {
+            this.url = url;
+            this.values = values;
+            //this.civ = civ;
+            this.uid_ = uid;
+        }
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            try {
+                URL urlO = new URL(url);
+                URLConnection conn = urlO.openConnection();
+                conn.connect();
+                InputStream urlInputStream = conn.getInputStream();
+                return BitmapFactory.decodeStream(urlInputStream);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Bitmap bm) {
+            if(uid_.equals(uid)) {
+                bitmapAvataUser = bm;
+            }
+            else {
+                bitmapAvataPartner.put(uid_, bm);
+            }
+//            try {
+//                while (bm.getWidth() < civ.getWidth()) {
+//                    bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
+//                }
+//                while (bm.getHeight() < civ.getHeight()) {
+//                    bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
+//                }
+//
+//                if (bm.getWidth() <= bm.getHeight() && bm.getWidth() > civ.getWidth()) {
+//                    bm = Bitmap.createScaledBitmap(bm, civ.getWidth(), (bm.getHeight() * civ.getWidth()) / bm.getWidth(), false);
+//                }
+//                if (bm.getWidth() > bm.getHeight() && bm.getHeight() > civ.getHeight()) {
+//                    bm = Bitmap.createScaledBitmap(bm, (bm.getWidth() * civ.getHeight()) / bm.getHeight(), civ.getHeight(), false);
+//                }
+//                if(bm.getWidth() > bm.getHeight()) {
+//                    bm = ImageUtils.cropCenterBitmap(bm, bm.getHeight(), bm.getWidth());
+//                }
+//                else if(bm.getWidth() < bm.getHeight()){
+//                    bm = ImageUtils.cropCenterBitmap(bm, bm.getWidth(), bm.getWidth());
+//                }
+//            } catch (IllegalArgumentException e) {
+//                e.printStackTrace();
+//            }
+//            civ.setImageBitmap(bm);
         }
     }
 }

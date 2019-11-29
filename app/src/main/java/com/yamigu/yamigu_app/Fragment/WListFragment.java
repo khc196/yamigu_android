@@ -37,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yamigu.yamigu_app.Activity.GlobalApplication;
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.Etc.ImageUtils;
@@ -391,8 +392,22 @@ public class WListFragment extends Fragment {
                         mtw.setVisibility(View.INVISIBLE);
                         ContentValues values = new ContentValues();
                         mtw.setTranslationX(100);
-                        NetworkTask3 networkTask3 = new NetworkTask3(url, values, profile_img, mRootLinear, mtw);
-                        networkTask3.execute();
+                        if(GlobalApplication.bitmap_map.containsKey(url)) {
+                            profile_img.setImageBitmap(GlobalApplication.bitmap_map.get(url));
+                            mtw.setVisibility(View.VISIBLE);
+                            mtw.animate()
+                                    .setDuration(50)
+                                    .alpha(1.0f)
+                                    .translationX(0)
+                                    .setListener(null);
+                            if(dialog.isShowing()) {
+                                dialog.dismiss();
+                            }
+                        }
+                        else {
+                            NetworkTask3 networkTask3 = new NetworkTask3(url, values, profile_img, mRootLinear, mtw);
+                            networkTask3.execute();
+                        }
                     }
                     if(!is_matched) {
                         mtw.setOnClickListener(new View.OnClickListener() {
@@ -665,11 +680,11 @@ public class WListFragment extends Fragment {
                 if (bm.getWidth() <= bm.getHeight() && bm.getWidth() > civ.getWidth()) {
                     bm = Bitmap.createScaledBitmap(bm, civ.getWidth(), (bm.getHeight() * civ.getWidth()) / bm.getWidth(), false);
                 }
-                if (bm.getWidth() > bm.getHeight() && bm.getHeight() > civ.getHeight()) {
+                else if (bm.getWidth() >= bm.getHeight() && bm.getHeight() > civ.getHeight()) {
                     bm = Bitmap.createScaledBitmap(bm, (bm.getWidth() * civ.getHeight()) / bm.getHeight(), civ.getHeight(), false);
                 }
                 if(bm.getWidth() > bm.getHeight()) {
-                    bm = ImageUtils.cropCenterBitmap(bm, bm.getHeight(), bm.getWidth());
+                    bm = ImageUtils.cropCenterBitmap(bm, bm.getHeight(), bm.getHeight());
                 }
                 else if(bm.getWidth() < bm.getHeight()){
                     bm = ImageUtils.cropCenterBitmap(bm, bm.getWidth(), bm.getWidth());
@@ -678,6 +693,7 @@ public class WListFragment extends Fragment {
                 e.printStackTrace();
             }
             civ.setImageBitmap(bm);
+            GlobalApplication.bitmap_map.put(url, bm);
             view.setVisibility(View.VISIBLE);
             view.animate()
                     .setDuration(50)

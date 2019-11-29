@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.yamigu.yamigu_app.Activity.GlobalApplication;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.CustomLayout.CustomViewPager;
 import com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard3;
@@ -124,8 +125,13 @@ public class MeetingCardFragment extends Fragment {
                 String url = args.getString("profile_img_url");
                 if(!url.isEmpty()) {
                     ContentValues values = new ContentValues();
-                    NetworkTask networkTask = new NetworkTask(url, values, profile_img);
-                    networkTask.execute();
+                    if(GlobalApplication.bitmap_map.containsKey(url)) {
+                        profile_img.setImageBitmap(GlobalApplication.bitmap_map.get(url));
+                    }
+                    else {
+                        NetworkTask networkTask = new NetworkTask(url, values, profile_img);
+                        networkTask.execute();
+                    }
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -164,7 +170,6 @@ public class MeetingCardFragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Bitmap bm) {
-
 //            String url = ImageUtils.saveBitmapToJpeg(getContext(), bm);
 //            try {
 //                ExifInterface exifInterface = new ExifInterface(url);
@@ -180,7 +185,9 @@ public class MeetingCardFragment extends Fragment {
                 while (bm.getHeight() < civ.getHeight()) {
                     bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
                 }
-
+                while(bm.getWidth() < civ.getWidth() && bm.getHeight() < civ.getHeight()) {
+                    bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
+                }
                 if (bm.getWidth() <= bm.getHeight() && bm.getWidth() > civ.getWidth()) {
                     bm = Bitmap.createScaledBitmap(bm, civ.getWidth(), (bm.getHeight() * civ.getWidth()) / bm.getWidth(), false);
                 }
@@ -193,11 +200,13 @@ public class MeetingCardFragment extends Fragment {
                 else if(bm.getWidth() < bm.getHeight()){
                     bm = ImageUtils.cropCenterBitmap(bm, bm.getWidth(), bm.getWidth());
                 }
+                Log.d("SIZE", bm.getWidth() + "X" + bm.getHeight() + "    " + civ.getWidth() + "X" + civ.getHeight());
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
 
             civ.setImageBitmap(bm);
+            GlobalApplication.bitmap_map.put(url, bm);
         }
     }
 

@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -51,10 +52,21 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
             dst = Bitmap.createBitmap(bitmap, (bitmap.getWidth()/2) - (bitmap.getHeight()/2), 0, bitmap.getHeight(), bitmap.getHeight());
             roundBitmap = getRoundedCroppedBitmap(dst, w);
         }
-
         canvas.drawBitmap(roundBitmap, 0, 0, null);
     }
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
+        int measuredWidth = this.getMeasuredWidth();
+        int measuredHeight = this.getMeasuredHeight();
+
+        if (measuredHeight > measuredWidth) {
+            this.setMeasuredDimension(measuredWidth, measuredWidth);
+        } else {
+            this.setMeasuredDimension(measuredHeight, measuredHeight);
+        }
+    }
     public static Bitmap getRoundedCroppedBitmap(Bitmap bitmap, int radius) {
         Bitmap
                 finalBitmap;

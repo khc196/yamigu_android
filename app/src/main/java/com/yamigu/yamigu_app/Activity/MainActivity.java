@@ -67,11 +67,11 @@ public class MainActivity extends AppCompatActivity {
         auth_token = preferences.getString("auth_token", "");
 
         String url = preferences.getString("profile", "");
-//        if(!url.isEmpty()) {
-//            ContentValues values = new ContentValues();
-//            NetworkTask networkTask = new NetworkTask(url, values);
-//            networkTask.execute();
-//        }
+        if(!url.isEmpty()) {
+            ContentValues values = new ContentValues();
+            NetworkTask networkTask = new NetworkTask(url, values);
+            networkTask.execute();
+        }
         nav_bar = (LinearLayout) findViewById(R.id.nav_bar);
         nav_home = (ImageButton) findViewById(R.id.nav_home);
         nav_wlist = (ImageButton) findViewById(R.id.nav_wlist);
@@ -216,24 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Bitmap bm) {
-            final String imageBase64 = ImageUtils.encodeBase64(bm);
-            userDB.child("avata").setValue(imageBase64)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                editor.putString("avata", imageBase64);
-                                Log.d("avata", imageBase64);
-                                editor.apply();
-                            }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("Update Avatar", "failed");
-                        }
-                    });
+            GlobalApplication.bitmap_map.put(url, bm);
         }
     }
 }

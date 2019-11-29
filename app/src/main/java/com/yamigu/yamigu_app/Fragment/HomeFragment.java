@@ -1190,6 +1190,7 @@ public class HomeFragment extends Fragment {
             super.onPostExecute(s);
             JSONArray jsonArray = null;
             try {
+                fragmentAdapter.clear();
                 jsonArray = new JSONArray(s);
                 total_num = jsonArray.length();
                 Log.d("total_Num", ""+total_num);

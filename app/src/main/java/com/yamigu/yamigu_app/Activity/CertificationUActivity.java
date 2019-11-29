@@ -222,7 +222,6 @@ public class CertificationUActivity extends AppCompatActivity {
         else
         {
             try {
-
                 // open a URL connection to the Servlet
                 FileInputStream fileInputStream = new FileInputStream(sourceFile);
                 String upLoadServerUri = "http://106.10.39.154:9999/api/user/certificate/";
@@ -323,7 +322,6 @@ public class CertificationUActivity extends AppCompatActivity {
             }
             dialog.dismiss();
             return serverResponseCode;
-
         } // End else block
     }
     @Override

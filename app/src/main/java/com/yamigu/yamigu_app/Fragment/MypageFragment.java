@@ -45,6 +45,7 @@ import android.widget.Toast;
 
 import com.yamigu.yamigu_app.Activity.CertificationUActivity;
 import com.yamigu.yamigu_app.Activity.CertificationWActivity;
+import com.yamigu.yamigu_app.Activity.GlobalApplication;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.CustomLayout.InviteFriends;
 import com.yamigu.yamigu_app.CustomLayout.ProfileCard;
@@ -180,29 +181,31 @@ public class MypageFragment extends Fragment {
             btn_certificating.setVisibility(View.INVISIBLE);
             label_certificated.setVisibility(View.VISIBLE);
         }
-        String base64AvataUser = preferences.getString("avata", "default");
-        Log.d("avata", base64AvataUser);
-        Bitmap bitmapAvata;
-        if (!base64AvataUser.equals("default")) {
-            byte[] decodedString = Base64.decode(base64AvataUser, Base64.DEFAULT);
-            bitmapAvata = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        } else {
-            bitmapAvata = null;
-        }
-        if(bitmapAvata != null) {
-            while(bitmapAvata.getWidth() < profile_img.getWidth()) {
-                bitmapAvata = Bitmap.createScaledBitmap(bitmapAvata, bitmapAvata.getWidth() * 2, bitmapAvata.getHeight() * 2, false);
-            }
-            while(bitmapAvata.getHeight() < profile_img.getHeight()) {
-                bitmapAvata = Bitmap.createScaledBitmap(bitmapAvata, bitmapAvata.getWidth() * 2, bitmapAvata.getHeight() * 2, false);
-            }
-            profile_img.setImageBitmap(bitmapAvata);
-        }
-
+//        String base64AvataUser = preferences.getString("avata", "default");
+//        Log.d("avata", base64AvataUser);
+//        Bitmap bitmapAvata;
+//        if (!base64AvataUser.equals("default")) {
+//            byte[] decodedString = Base64.decode(base64AvataUser, Base64.DEFAULT);
+//            bitmapAvata = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//        } else {
+//            bitmapAvata = null;
+//        }
+//        if(bitmapAvata != null) {
+//            while(bitmapAvata.getWidth() < profile_img.getWidth()) {
+//                bitmapAvata = Bitmap.createScaledBitmap(bitmapAvata, bitmapAvata.getWidth() * 2, bitmapAvata.getHeight() * 2, false);
+//            }
+//            while(bitmapAvata.getHeight() < profile_img.getHeight()) {
+//                bitmapAvata = Bitmap.createScaledBitmap(bitmapAvata, bitmapAvata.getWidth() * 2, bitmapAvata.getHeight() * 2, false);
+//            }
+//            profile_img.setImageBitmap(bitmapAvata);
+//        }
+//
         if(!profile_url.isEmpty()) {
-            ContentValues values = new ContentValues();
-            NetworkTask3 networkTask3 = new NetworkTask3(profile_url, values, profile_img);
-            networkTask3.execute();
+            profile_img.setImageBitmap(GlobalApplication.bitmap_map.get(profile_url));
+
+//            ContentValues values = new ContentValues();
+//            NetworkTask3 networkTask3 = new NetworkTask3(profile_url, values, profile_img);
+//            networkTask3.execute();
         }
         tv_nickname.setText(preferences.getString("nickname", ""));
         tv_age.setText(" (" + preferences.getInt("age", 0) + ")");

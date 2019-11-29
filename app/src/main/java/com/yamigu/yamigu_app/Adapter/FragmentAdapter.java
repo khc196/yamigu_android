@@ -31,4 +31,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     public void addItem(MeetingCardFragment fragment) {
         fragments.add(fragment);
     }
+    public void clear() {
+        fragments.clear();
+    }
 }
