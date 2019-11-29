@@ -4,8 +4,10 @@ import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,13 +33,19 @@ import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 
 import com.yamigu.yamigu_app.R;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.kakao.auth.StringSet.file;
 
 public class MeetingCardFragment extends Fragment {
 
@@ -156,6 +164,15 @@ public class MeetingCardFragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Bitmap bm) {
+
+//            String url = ImageUtils.saveBitmapToJpeg(getContext(), bm);
+//            try {
+//                ExifInterface exifInterface = new ExifInterface(url);
+//                int exif = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+//                Log.d("EXIFDEGREE", ImageUtils.exifOrientationToDegrees(exif) + "");
+//            } catch(IOException e) {
+//                e.printStackTrace();
+//            }
             try {
                 while (bm.getWidth() < civ.getWidth()) {
                     bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
@@ -170,17 +187,16 @@ public class MeetingCardFragment extends Fragment {
                 else if (bm.getWidth() >= bm.getHeight() && bm.getHeight() > civ.getHeight()) {
                     bm = Bitmap.createScaledBitmap(bm, (bm.getWidth() * civ.getHeight()) / bm.getHeight(), civ.getHeight(), false);
                 }
-                Log.d("SIZE1", bm.getWidth() + "X" + bm.getHeight() + "    " + civ.getWidth() + "X" + civ.getHeight());
                 if(bm.getWidth() > bm.getHeight()) {
                     bm = ImageUtils.cropCenterBitmap(bm, bm.getHeight(), bm.getHeight());
                 }
                 else if(bm.getWidth() < bm.getHeight()){
                     bm = ImageUtils.cropCenterBitmap(bm, bm.getWidth(), bm.getWidth());
                 }
-                Log.d("SIZE2", bm.getWidth() + "X" + bm.getHeight() + "    " + civ.getWidth() + "X" + civ.getHeight());
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
+
             civ.setImageBitmap(bm);
         }
     }

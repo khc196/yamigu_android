@@ -463,8 +463,10 @@ public class MypageFragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Bitmap bm) {
+            editor.putString("profile", url);
+            editor.commit();
             try {
-                civ.setImageBitmap(bm.copy(Bitmap.Config.RGB_565, false));
+                civ.setImageBitmap(bm);
             } catch(NullPointerException e) {
                 e.printStackTrace();
             }
@@ -486,6 +488,8 @@ public class MypageFragment extends Fragment {
         File sourceFile = new File(sourceFileUri);
         Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", sourceFile);
         Bitmap resized = ImageUtils.resize(getContext(), uri, 200);
+        int radius =  resized.getWidth() <= resized.getHeight() ? resized.getWidth() : resized.getHeight();
+        resized = ImageUtils.cropCenterBitmap(resized, radius, radius);
         try {
             ExifInterface exif = new ExifInterface(sourceFileUri);
             int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);

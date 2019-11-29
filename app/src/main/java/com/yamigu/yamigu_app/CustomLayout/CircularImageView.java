@@ -17,11 +17,13 @@ import android.util.Log;
 import com.yamigu.yamigu_app.Etc.ImageUtils;
 
 public class CircularImageView extends androidx.appcompat.widget.AppCompatImageView {
-
+    private Bitmap bitmap;
     public CircularImageView(Context ctx, AttributeSet attrs) {
         super(ctx, attrs);
     }
-
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
     @Override
     protected void onDraw(Canvas canvas) {
 
@@ -34,6 +36,7 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
         if (getWidth() == 0 || getHeight() == 0) {
             return;
         }
+        this.bitmap = ((BitmapDrawable) drawable).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
         Bitmap b = ((BitmapDrawable) drawable).getBitmap();
         Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);
 
@@ -50,7 +53,6 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
         }
 
         canvas.drawBitmap(roundBitmap, 0, 0, null);
-
     }
 
     public static Bitmap getRoundedCroppedBitmap(Bitmap bitmap, int radius) {

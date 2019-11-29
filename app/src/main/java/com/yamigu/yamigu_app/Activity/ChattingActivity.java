@@ -116,7 +116,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         auth_token = preferences.getString("auth_token", "");
 
         Intent intent = getIntent();
-
         partner_age = intent.getExtras().getInt("partner_age");
         partner_belong = intent.getExtras().getString("partner_belong");
         partner_department = intent.getExtras().getString("partner_department");
@@ -128,7 +127,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         type = intent.getExtras().getString("type");
         meeting_id = intent.getExtras().getString("meeting_id");
         matching_id = intent.getExtras().getString("matching_id");
-
+        GlobalApplication.current_chatting_room = Integer.parseInt(matching_id);
         manager_name_orig = intent.getExtras().getString("manager_name");
         manager_name = "야미구 매니저 " + manager_name_orig;
 
@@ -295,7 +294,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                         chatData.message = (String) mapMessage.get("message");
                         chatData.time = (long) mapMessage.get("time");
                         conversation.getListMessageData().add(chatData);
-                        if(matching_id != null && !chatData.idSender.equals(uid) && ((GlobalApplication) getApplicationContext()).getCurrentActivity().getLocalClassName().equals("Activity.ChattingActivity")) {
+                        if(Integer.parseInt(matching_id) == GlobalApplication.current_chatting_room && !chatData.idSender.equals(uid) && ((GlobalApplication) getApplicationContext()).getCurrentActivity().getLocalClassName().equals("Activity.ChattingActivity")) {
                             ReceivedMessage receivedMessage = new ReceivedMessage();
                             receivedMessage.id = chatData.id;
                             receivedMessage.isUnread = false;

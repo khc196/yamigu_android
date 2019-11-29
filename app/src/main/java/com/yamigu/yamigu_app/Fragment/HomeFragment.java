@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment {
     private TextView tv_unread_noti_count, tv_recommendation;
     //private ViewPager pager;
     private CustomViewPager pager;
-    private FragmentAdapter fragmentAdapter;
+    public static FragmentAdapter fragmentAdapter;
     private TabLayout tabIndicator;
     ProgressDialog dialog = null;
     private int total_num;
@@ -154,6 +154,7 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        GlobalApplication.current_chatting_room = 0;
         dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
         me = this;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);

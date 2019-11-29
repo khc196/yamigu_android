@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Base64;
 
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
@@ -26,12 +27,6 @@ public class ImageUtils {
     public static final int AVATAR_WIDTH = 128;
     public static final int AVATAR_HEIGHT = 128;
 
-    /**
-     * Bo tròn ảnh avatar
-     * @param context
-     * @param src ảnh dạng bitmap
-     * @return RoundedBitmapDrawable là đầu vào cho hàm setImageDrawable()
-     */
     public static RoundedBitmapDrawable roundedImage(Context context, Bitmap src){
         /*Bo tròn avatar*/
         Resources res = context.getResources();
@@ -42,12 +37,6 @@ public class ImageUtils {
         return dr;
     }
 
-    /**
-     * Đối với ảnh hình chữ nhật thì cần cắt ảnh theo hình vuông và lấy phần tâm
-     * ảnh để khi đặt làm avatar sẽ không bị méo
-     * @param srcBmp
-     * @return
-     */
     public static Bitmap cropToSquare(Bitmap srcBmp){
         Bitmap dstBmp = null;
         if (srcBmp.getWidth() >= srcBmp.getHeight()){
@@ -143,7 +132,7 @@ public class ImageUtils {
             int samplesize = 1;
 
             while (true) {//2번
-                if (width / 2 < resize || height / 2 < resize)
+                if (width <= resize || height <= resize)
                     break;
                 width /= 2;
                 height /= 2;
@@ -161,29 +150,23 @@ public class ImageUtils {
     }
 
     public static String saveBitmapToJpeg(Context context, Bitmap bitmap){
-
-        File storage = context.getCacheDir(); // 이 부분이 임시파일 저장 경로
-
-        String fileName = "yamigu_temp.jpg"; // 파일이름은 마음대로!
-
-        File tempFile = new File(storage,fileName);
-
+        File storage = context.getCacheDir();
+        String extStorageDirectory =
+                Environment.getExternalStorageDirectory().toString();
+        File tempFile = new File(extStorageDirectory, "downimage.jpeg");
+        String fileName = "yamigu_temp.jpg";
+        //File tempFile = new File(storage,fileName);
         try{
-            tempFile.createNewFile(); // 파일을 생성해주고
-
+            tempFile.createNewFile();
             FileOutputStream out = new FileOutputStream(tempFile);
-
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90 , out); // 넘거 받은 bitmap을 jpeg(손실압축)으로 저장해줌
-
-            out.close(); // 마무리로 닫아줍니다.
-
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90 , out);
+            out.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return tempFile.getAbsolutePath(); // 임시파일 저장경로를 리턴해주면 끝!
+        return tempFile.getAbsolutePath();
     }
     public static int exifOrientationToDegrees(int exifOrientation)
     {
