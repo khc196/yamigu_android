@@ -38,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yamigu.yamigu_app.Activity.GlobalApplication;
+import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.Etc.ImageUtils;
@@ -80,7 +81,6 @@ public class WListFragment extends Fragment {
     private Menu global_menu;
     private SwipeRefreshLayout swipeRefreshLayout;
     private String refresh_url = "";
-    ProgressDialog dialog = null;
     public WListFragment() {
         this.active_type_set = new HashSet<>();
         this.active_place_set = new HashSet<>();
@@ -100,7 +100,7 @@ public class WListFragment extends Fragment {
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
                 String url = refresh_url;
-                dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
+                MainActivity.dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
                 ContentValues values = new ContentValues();
                 NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                 networkTask2.execute();
@@ -285,7 +285,6 @@ public class WListFragment extends Fragment {
                 url += "place=" + i + "&";
             }
         }
-        dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
         refresh_url = url;
         NetworkTask2 networkTask2 = new NetworkTask2(url, values);
         networkTask2.execute();
@@ -329,8 +328,8 @@ public class WListFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if(dialog.isShowing()) {
-                dialog.dismiss();
+            if(MainActivity.dialog.isShowing()) {
+                MainActivity.dialog.dismiss();
             }
         }
     }
@@ -400,8 +399,8 @@ public class WListFragment extends Fragment {
                                     .alpha(1.0f)
                                     .translationX(0)
                                     .setListener(null);
-                            if(dialog.isShowing()) {
-                                dialog.dismiss();
+                            if(MainActivity.dialog.isShowing()) {
+                                MainActivity.dialog.dismiss();
                             }
                         }
                         else {
@@ -543,6 +542,11 @@ public class WListFragment extends Fragment {
                             rl_applying.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
+                                    if(MainActivity.getMyMeetingCount() == 3){
+                                        MainActivity.setDialog("미팅은 일주일에 3번까지만 가능해요!");
+                                        MainActivity.showDialog();
+                                        return;
+                                    }
                                     try {
                                         String url = "http://106.10.39.154:9999/api/matching/send_request/";
                                         ContentValues values = new ContentValues();
@@ -552,6 +556,7 @@ public class WListFragment extends Fragment {
                                         values.put("place_string", place_string_f);
                                         values.put("meeting_id", json_data.getInt("id"));
                                         rl_applying.setVisibility(View.INVISIBLE);
+                                        MainActivity.dialog = ProgressDialog.show(getContext(), "", "미팅 신청중입니다...", true);
                                         NetworkTask4 networkTask4 = new NetworkTask4(url, values);
                                         networkTask4.execute();
 
@@ -634,8 +639,8 @@ public class WListFragment extends Fragment {
                         }
                     }
                 });
-            if(dialog.isShowing()) {
-                dialog.dismiss();
+            if(MainActivity.dialog.isShowing()) {
+                MainActivity.dialog.dismiss();
             }
         }
     }
@@ -676,7 +681,9 @@ public class WListFragment extends Fragment {
                 while (bm.getHeight() < civ.getHeight()) {
                     bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
                 }
-
+                while(bm.getWidth() < civ.getWidth() && bm.getHeight() < civ.getHeight()) {
+                    bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
+                }
                 if (bm.getWidth() <= bm.getHeight() && bm.getWidth() > civ.getWidth()) {
                     bm = Bitmap.createScaledBitmap(bm, civ.getWidth(), (bm.getHeight() * civ.getWidth()) / bm.getWidth(), false);
                 }
@@ -689,6 +696,7 @@ public class WListFragment extends Fragment {
                 else if(bm.getWidth() < bm.getHeight()){
                     bm = ImageUtils.cropCenterBitmap(bm, bm.getWidth(), bm.getWidth());
                 }
+                Log.d("SIZE", bm.getWidth() + "X" + bm.getHeight() + "    " + civ.getWidth() + "X" + civ.getHeight());
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
@@ -700,8 +708,8 @@ public class WListFragment extends Fragment {
                     .alpha(1.0f)
                     .translationX(0)
                     .setListener(null);
-            if(dialog.isShowing()) {
-                dialog.dismiss();
+            if(MainActivity.dialog.isShowing()) {
+                MainActivity.dialog.dismiss();
             }
         }
     }
@@ -730,6 +738,9 @@ public class WListFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             JSONObject jsonObject = null;
+            if(MainActivity.dialog.isShowing()) {
+                MainActivity.dialog.dismiss();
+            }
             try {
                 jsonObject = new JSONObject(s);
                 String message = jsonObject.getString("message");
@@ -749,7 +760,7 @@ public class WListFragment extends Fragment {
                     Toast.makeText(getContext(), "해당 날짜에 신청한 미팅과 인원이 달라요!", Toast.LENGTH_SHORT).show();
                 }
                 else if(message.equals("aleady exists")) {
-                    Toast.makeText(getContext(), "이미 신청한 미팅이에요!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "이미 신청했어요!", Toast.LENGTH_SHORT).show();
                 }
                 else if(message.equals("You should create new meeting for matching")) {
                     Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
@@ -764,8 +775,8 @@ public class WListFragment extends Fragment {
             } catch(JSONException e) {
                 e.printStackTrace();
             }
-            if(dialog.isShowing()) {
-                dialog.dismiss();
+            if(MainActivity.dialog.isShowing()) {
+                MainActivity.dialog.dismiss();
             }
         }
     }

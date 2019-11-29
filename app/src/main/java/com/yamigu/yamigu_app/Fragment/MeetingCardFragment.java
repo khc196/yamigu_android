@@ -188,12 +188,12 @@ public class MeetingCardFragment extends Fragment {
                 while(bm.getWidth() < civ.getWidth() && bm.getHeight() < civ.getHeight()) {
                     bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
                 }
-                if (bm.getWidth() <= bm.getHeight() && bm.getWidth() > civ.getWidth()) {
-                    bm = Bitmap.createScaledBitmap(bm, civ.getWidth(), (bm.getHeight() * civ.getWidth()) / bm.getWidth(), false);
-                }
-                else if (bm.getWidth() >= bm.getHeight() && bm.getHeight() > civ.getHeight()) {
-                    bm = Bitmap.createScaledBitmap(bm, (bm.getWidth() * civ.getHeight()) / bm.getHeight(), civ.getHeight(), false);
-                }
+//                if (bm.getWidth() <= bm.getHeight() && bm.getWidth() > civ.getWidth()) {
+//                    bm = Bitmap.createScaledBitmap(bm, civ.getWidth(), (bm.getHeight() * civ.getWidth()) / bm.getWidth(), false);
+//                }
+//                else if (bm.getWidth() >= bm.getHeight() && bm.getHeight() > civ.getHeight()) {
+//                    bm = Bitmap.createScaledBitmap(bm, (bm.getWidth() * civ.getHeight()) / bm.getHeight(), civ.getHeight(), false);
+//                }
                 if(bm.getWidth() > bm.getHeight()) {
                     bm = ImageUtils.cropCenterBitmap(bm, bm.getHeight(), bm.getHeight());
                 }

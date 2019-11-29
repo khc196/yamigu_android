@@ -8,6 +8,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yamigu.yamigu_app.CustomLayout.CustomDialog2;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
 
@@ -52,6 +55,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private LinearLayout type_view, date_view, place_view, appeal_view, ll_for_edit;
     private MeetingApplication ma;
     private TextView tv_max_appeal_length;
+    private MeetingApplicationActivity meetingApplicationActivity;
     Toast toast;
     private final int MAX_APPEAL_LENGTH = 100;
     private final String[] DOW = {"", "일", "월", "화", "수", "목", "금", "토"};
@@ -63,12 +67,14 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private final int NEW_MEETING = 0;
     private final int SEND_REQUEST = 1;
     private final int EDIT_MEETING = 2;
+    public static ProgressDialog progressDialog = null;
+    private CustomDialog2 popupDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meeting_application);
-
+        meetingApplicationActivity = this;
         Intent intent = getIntent();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         auth_token = preferences.getString("auth_token", "");
@@ -109,7 +115,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         tv_max_appeal_length.setText("0 / "+Integer.toString(MAX_APPEAL_LENGTH));
         tv_max_appeal_length.setVisibility(View.INVISIBLE);
         ma = new MeetingApplication();
-        toast = Toast.makeText(getApplicationContext(), "뭐라도 써주세요!", Toast.LENGTH_SHORT);
+        toast = Toast.makeText(getApplicationContext(), "자신과 친구들을 표현해 주세요!", Toast.LENGTH_SHORT);
         View toastView = toast.getView();
         int toastbackgroundColor = ResourcesCompat.getColor(toastView.getResources(), R.color.colorPoint, null);
         toastView.getBackground().setColorFilter(toastbackgroundColor, PorterDuff.Mode.SRC_IN);
@@ -229,15 +235,17 @@ public class MeetingApplicationActivity extends AppCompatActivity {
 
                 ma.setAppeal(et_appeal.getText().toString());
                 if(ma.getAppeal().trim().isEmpty()) {
-                    toast.setText("뭐라도 써주세요!");
+                    toast.setText("자신과 친구들을 표현해 주세요!");
                     toast.show();
                 }
                 else if(ma.getAppeal().length() > MAX_APPEAL_LENGTH) {
-                    toast.setText(Integer.toString(MAX_APPEAL_LENGTH) + "자를 넘기면 안돼요~");
+                    toast.setText("표현을 조금만 줄여주세요!");
                     toast.show();
                 }
                 else {
                     if(form_code == NEW_MEETING) {
+                        progressDialog = ProgressDialog.show(getApplicationContext(), "", "미팅 신청중입니다...", true);
+                        setDialog("미팅을 신청했어요, 이제 대기팀에서 이성팀을 찾아보세요!\n장소는 달라도 신청가능해요.");
                         String url = "http://106.10.39.154:9999/api/meetings/create/";
 
                         ContentValues values = new ContentValues();
@@ -251,6 +259,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         networkTask.execute();
                     }
                     else if(form_code == SEND_REQUEST){
+                        progressDialog = ProgressDialog.show(getApplicationContext(), "", "미팅 신청중입니다...", true);
+                        setDialog("미팅이 신청되었어요!\n상대방이 수락하면 매칭이 완료됩니다!");
                         String url = "http://106.10.39.154:9999/api/matching/send_request_new/";
                         ContentValues values = new ContentValues();
                         String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
@@ -275,6 +285,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    progressDialog = ProgressDialog.show(getApplicationContext(), "", "미팅 수정중입니다...", true);
+                                    setDialog("미팅이 수정 되었어요!");
                                     ma.setAppeal(et_appeal.getText().toString());
                                     String url = "http://106.10.39.154:9999/api/meetings/edit/";
                                     ContentValues values = new ContentValues();
@@ -306,6 +318,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    progressDialog = ProgressDialog.show(getApplicationContext(), "", "미팅 삭제중입니다...", true);
+                                    setDialog("미팅이 삭제 되었어요!");
                                     String url = "http://106.10.39.154:9999/api/meetings/delete/";
                                     ContentValues values = new ContentValues();
                                     values.put("meeting_id", edit_id);
@@ -844,6 +858,27 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         }
 
     }
+    private void setDialog(String text) {
+        popupDialog = new CustomDialog2(meetingApplicationActivity);
+        popupDialog.setCancelable(true);
+        popupDialog.setCanceledOnTouchOutside(true);
+        popupDialog.text = text;
+
+        popupDialog.getWindow().setGravity(Gravity.CENTER);
+
+        popupDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+    private void showDialog() {
+        popupDialog.show();
+    }
     public class NetworkTask extends AsyncTask<Void, Void, String> {
 
         private String url;
@@ -868,10 +903,10 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
-            finish();
+            if(progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            showDialog();
         }
     }
 }

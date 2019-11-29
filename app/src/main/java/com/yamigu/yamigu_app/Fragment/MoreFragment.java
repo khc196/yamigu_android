@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import com.yamigu.yamigu_app.Activity.AllianceListActivity;
 import com.yamigu.yamigu_app.Activity.FAQActivity;
 import com.yamigu.yamigu_app.Activity.GuideActivity;
+import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.R;
 import com.yamigu.yamigu_app.Activity.SettingActivity;
 import com.yamigu.yamigu_app.Activity.WhatisYamiguActivity;
@@ -72,6 +73,9 @@ public class MoreFragment extends Fragment {
                 getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
             }
         });
+        if(MainActivity.dialog.isShowing()) {
+            MainActivity.dialog.dismiss();
+        }
         return view;
     }
     @Override

@@ -2,6 +2,7 @@ package com.yamigu.yamigu_app.Activity;
 
 import android.app.Activity;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -22,15 +23,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.yamigu.yamigu_app.CustomLayout.CustomDialog2;
 import com.yamigu.yamigu_app.Etc.ImageUtils;
 import com.yamigu.yamigu_app.Fragment.HomeFragment;
 import com.yamigu.yamigu_app.Fragment.MoreFragment;
@@ -52,13 +56,16 @@ public class MainActivity extends AppCompatActivity {
     private String auth_token;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
-    private int count_meeting;
+    private static int count_meeting;
     private DatabaseReference userDB;
     public static MainActivity me;
+    public static ProgressDialog dialog = null;
+    private static CustomDialog2 popupDialog = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         me = this;
         Intent intent = getIntent();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -84,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
                 if(count_meeting < 3) {
                     Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
                     startActivity(intent);
+                }
+                else {
+                    setDialog("미팅은 일주일에 3번까지만 가능해요!");
+                    showDialog();
                 }
             }
         });
@@ -135,8 +146,24 @@ public class MainActivity extends AppCompatActivity {
         if (this.equals(currActivity))
             ((GlobalApplication)getApplicationContext()).setCurrentActivity(null);
     }
+    public static void setDialog(String text) {
+        popupDialog = new CustomDialog2(me);
+        popupDialog.setCancelable(true);
+        popupDialog.setCanceledOnTouchOutside(true);
+        popupDialog.text = text;
+
+        popupDialog.getWindow().setGravity(Gravity.CENTER);
+
+
+    }
+    public static void showDialog() {
+        popupDialog.show();
+    }
     public boolean loadFragment(Fragment fragment) {
         if(fragment != null) {
+
+            if(dialog == null || !dialog.isShowing())
+                MainActivity.dialog = ProgressDialog.show(this, "", "로딩중입니다...", true);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
@@ -187,6 +214,9 @@ public class MainActivity extends AppCompatActivity {
         int resources[] = {R.drawable.nav_yamigu_0, R.drawable.nav_yamigu_1, R.drawable.nav_yamigu_2, R.drawable.nav_yamigu_3};
         nav_yamigu.setImageResource(resources[num]);
         count_meeting = num;
+    }
+    public static int getMyMeetingCount() {
+        return count_meeting;
     }
     public class NetworkTask extends AsyncTask<Void, Void, Bitmap> {
         private String url;

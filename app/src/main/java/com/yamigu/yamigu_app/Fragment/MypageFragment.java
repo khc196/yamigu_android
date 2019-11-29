@@ -46,6 +46,9 @@ import android.widget.Toast;
 import com.yamigu.yamigu_app.Activity.CertificationUActivity;
 import com.yamigu.yamigu_app.Activity.CertificationWActivity;
 import com.yamigu.yamigu_app.Activity.GlobalApplication;
+import com.yamigu.yamigu_app.Activity.MainActivity;
+import com.yamigu.yamigu_app.Activity.NotificationActivity;
+import com.yamigu.yamigu_app.Activity.TicketOnboardingActivity;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
 import com.yamigu.yamigu_app.CustomLayout.InviteFriends;
 import com.yamigu.yamigu_app.CustomLayout.ProfileCard;
@@ -80,8 +83,8 @@ public class MypageFragment extends Fragment {
     private SharedPreferences.Editor editor;
     private ProfileCard profileCard;
     private InviteFriends inviteFriends;
-    private ImageButton btn_chat_manager;
-    private TextView tv_nickname, tv_age, tv_belong, tv_department, tv_available_nickname;
+    private ImageButton btn_chat_manager, btn_notification, btn_ticket;
+    private TextView tv_nickname, tv_age, tv_belong, tv_department, tv_available_nickname, tv_num_of_ticket, tv_num_of_noti;
     private EditText et_nickname;
     private ImageButton btn_edit_nickname;
     private CircularImageView profile_img;
@@ -130,10 +133,17 @@ public class MypageFragment extends Fragment {
         label_certificated = profileCard.findViewById(R.id.label_certificated);
         btn_certificating = profileCard.findViewById(R.id.btn_certify);
         fl_meeting_card = profileCard.findViewById(R.id.fl_meeting_card);
+        btn_notification = profileCard.findViewById(R.id.btn_notification);
+        btn_ticket = profileCard.findViewById(R.id.btn_ticket);
+        tv_num_of_noti = profileCard.findViewById(R.id.num_of_notifi);
+        tv_num_of_ticket = profileCard.findViewById(R.id.num_of_ticket);
         label_certificated.setVisibility(View.INVISIBLE);
         btn_certificating.setVisibility(View.INVISIBLE);
         profile_url = preferences.getString("profile", "");
         user_certified = preferences.getInt("user_certified", 0);
+        int num_of_ticket = preferences.getInt("num_of_ticket", 0);
+        tv_num_of_ticket.setText(num_of_ticket+"");
+        tv_num_of_noti.setText(GlobalApplication.unread_noti_count+"");
         if(user_certified == 0) {
             btn_certificating.setVisibility(View.VISIBLE);
             label_certificated.setVisibility(View.INVISIBLE);
@@ -153,23 +163,9 @@ public class MypageFragment extends Fragment {
                     intent.putExtra("nickname", preferences.getString("nickname", ""));
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
-                    /*
-                    if(ActivityCompat.checkSelfPermission(getActivity(),
-                            Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                    {
-                        requestPermissions(
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                2000);
-                    }
-                    else {
-                        Intent intent = new Intent(ACTION_PICK);
-                        intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-                        intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
-                    }
-                    */
                 }
             });
+
         }
         else if(user_certified == 1) {
             btn_certificating.setVisibility(View.VISIBLE);
@@ -180,6 +176,63 @@ public class MypageFragment extends Fragment {
         else {
             btn_certificating.setVisibility(View.INVISIBLE);
             label_certificated.setVisibility(View.VISIBLE);
+            btn_edit_nickname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    et_nickname.setHint(preferences.getString("nickname", ""));
+                    tv_nickname.setVisibility(View.GONE);
+                    et_nickname.setVisibility(View.VISIBLE);
+                    btn_edit_nickname.setVisibility(View.GONE);
+                    globalMenu.findItem(R.id.menu_cancel).setVisible(true);
+                    globalMenu.findItem(R.id.menu_complete).setVisible(true);
+                }
+            });
+            profile_img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(ACTION_PICK);
+                    intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                    intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+                }
+            });
+            et_nickname.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    if(!editable.toString().equals("")) {
+                        String url = "http://106.10.39.154:9999/api/user/validation/nickname/"+editable.toString();
+                        ContentValues values = new ContentValues();
+                        NetworkTask networkTask = new NetworkTask(url, values);
+                        networkTask.execute();
+                    }
+                }
+            });
+            btn_notification.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getContext(), NotificationActivity.class);
+                    startActivity(intent);
+                    ((MainActivity)getContext()).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+                }
+            });
+            btn_ticket.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getContext(), TicketOnboardingActivity.class);
+                    startActivity(intent);
+                    ((MainActivity)getContext()).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+                }
+            });
         }
 //        String base64AvataUser = preferences.getString("avata", "default");
 //        Log.d("avata", base64AvataUser);
@@ -202,7 +255,6 @@ public class MypageFragment extends Fragment {
 //
         if(!profile_url.isEmpty()) {
             profile_img.setImageBitmap(GlobalApplication.bitmap_map.get(profile_url));
-
 //            ContentValues values = new ContentValues();
 //            NetworkTask3 networkTask3 = new NetworkTask3(profile_url, values, profile_img);
 //            networkTask3.execute();
@@ -213,47 +265,9 @@ public class MypageFragment extends Fragment {
         tv_department.setText(preferences.getString("department", ""));
         auth_token = preferences.getString("auth_token", "");
 
-        btn_edit_nickname.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                et_nickname.setHint(preferences.getString("nickname", ""));
-                tv_nickname.setVisibility(View.GONE);
-                et_nickname.setVisibility(View.VISIBLE);
-                btn_edit_nickname.setVisibility(View.GONE);
-                globalMenu.findItem(R.id.menu_cancel).setVisible(true);
-                globalMenu.findItem(R.id.menu_complete).setVisible(true);
-            }
-        });
-        profile_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ACTION_PICK);
-                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
-            }
-        });
-        et_nickname.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if(!editable.toString().equals("")) {
-                    String url = "http://106.10.39.154:9999/api/user/validation/nickname/"+editable.toString();
-                    ContentValues values = new ContentValues();
-                    NetworkTask networkTask = new NetworkTask(url, values);
-                    networkTask.execute();
-                }
-            }
-        });
+        if(MainActivity.dialog.isShowing()) {
+            MainActivity.dialog.dismiss();
+        }
         return view;
     }
     @Override

@@ -165,6 +165,7 @@
                     android:layout_width="179.25dp"
                     android:layout_height="match_parent">
                     <ImageButton
+                        android:id="@+id/btn_notification"
                         android:layout_width="179.25dp"
                         android:layout_height="match_parent"
                         android:src="@drawable/icon_notify_big"
@@ -188,6 +189,7 @@
                     android:layout_width="179.25dp"
                     android:layout_height="match_parent">
                     <ImageButton
+                        android:id="@+id/btn_ticket"
                         android:layout_width="179.25dp"
                         android:layout_height="match_parent"
                         android:src="@drawable/icon_ticket_big"

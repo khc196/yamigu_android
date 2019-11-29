@@ -107,7 +107,6 @@ public class HomeFragment extends Fragment {
     private CustomViewPager pager;
     public static FragmentAdapter fragmentAdapter;
     private TabLayout tabIndicator;
-    ProgressDialog dialog = null;
     private int total_num;
     public static int ACTION_START_CHAT = 1;
     View view;
@@ -155,7 +154,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         GlobalApplication.current_chatting_room = 0;
-        dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
         me = this;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = preferences.edit();
@@ -1038,8 +1036,8 @@ public class HomeFragment extends Fragment {
                 myMeetingCardFrame.mmc_list[i].setVisibility(View.VISIBLE);
                 ((MainActivity)context).setMyMeetingCount(i+1);
             }
-            if(dialog.isShowing()) {
-                dialog.dismiss();
+            if(MainActivity.dialog.isShowing()) {
+                MainActivity.dialog.dismiss();
             }
         }
     }
@@ -1081,8 +1079,8 @@ public class HomeFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if(dialog.isShowing()) {
-                dialog.dismiss();
+            if(MainActivity.dialog.isShowing()) {
+                MainActivity.dialog.dismiss();
             }
         }
     }
@@ -1110,8 +1108,8 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if(dialog.isShowing()) {
-                dialog.dismiss();
+            if(MainActivity.dialog.isShowing()) {
+                MainActivity.dialog.dismiss();
             }
         }
     }
@@ -1160,8 +1158,8 @@ public class HomeFragment extends Fragment {
                             Log.d("Update Avatar", "failed");
                         }
                     });
-            if(dialog.isShowing()) {
-                dialog.dismiss();
+            if(MainActivity.dialog.isShowing()) {
+                MainActivity.dialog.dismiss();
             }
         }
     }
@@ -1214,7 +1212,7 @@ public class HomeFragment extends Fragment {
             } catch(JSONException e) {
                 e.printStackTrace();
             }
-            dialog.dismiss();
+            MainActivity.dialog.dismiss();
         }
     }
 }
