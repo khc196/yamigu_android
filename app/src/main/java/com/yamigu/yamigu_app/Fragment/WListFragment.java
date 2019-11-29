@@ -754,9 +754,19 @@ public class WListFragment extends Fragment {
                     } catch(NullPointerException e) {
                         e.printStackTrace();
                     }
-                    Toast.makeText(getContext(), "미팅이 신청되었어요!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "미팅이 신청되었어요!", Toast.LENGTH_SHORT).show();
+                    MainActivity.setDialog("미팅이 신청되었어요!\n상대방이 수락하면 매칭이 완료됩니다!");
+                    MainActivity.showDialog();
                 }
-                else if(message.equals("differnt type")) {
+                else if(message.equals("target already matched")) {
+                    MainActivity.setDialog("이미 상대방이 매칭되었어요.");
+                    MainActivity.showDialog();
+                }
+                else if(message.equals("my card already matched")) {
+                    MainActivity.setDialog("이미 내 미팅이 매칭되었어요.");
+                    MainActivity.showDialog();
+                }
+                else if(message.equals("different type")) {
                     Toast.makeText(getContext(), "해당 날짜에 신청한 미팅과 인원이 달라요!", Toast.LENGTH_SHORT).show();
                 }
                 else if(message.equals("aleady exists")) {
@@ -775,9 +785,7 @@ public class WListFragment extends Fragment {
             } catch(JSONException e) {
                 e.printStackTrace();
             }
-            if(MainActivity.dialog.isShowing()) {
-                MainActivity.dialog.dismiss();
-            }
+
         }
     }
 

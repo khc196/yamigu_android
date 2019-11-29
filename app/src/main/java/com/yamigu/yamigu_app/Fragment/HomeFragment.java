@@ -276,7 +276,7 @@ public class HomeFragment extends Fragment {
         receivedNotificationReference.addChildEventListener(mChildEventListener);
         return receivedNotificationReference;
     }
-    private ChildEventListener makeChildEventListener(final MyMeetingCard_Chat myMeetingCard_chat, int matching_id) {
+    private ChildEventListener makeChildEventListener(final MyMeetingCard_Chat myMeetingCard_chat, final int matching_id) {
         final DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("message/" + matching_id);
         ChildEventListener mChildEventListener = new ChildEventListener() {
             @Override
@@ -287,9 +287,20 @@ public class HomeFragment extends Fragment {
                     String id = (String) mapMessage.get("id");
                     if(isUnread) {
                         try {
+                            int unreadCount = 0;
                             myMeetingCard_chat.unread_count.setVisibility(View.VISIBLE);
-                            int unreadCount = Integer.parseInt(myMeetingCard_chat.unread_count.getText().toString()) + 1;
-                            myMeetingCard_chat.unread_count.setText("" + unreadCount);
+                            if(GlobalApplication.unread_chat_map.containsKey(matching_id)) {
+                                unreadCount = GlobalApplication.unread_chat_map.get(matching_id);
+                                unreadCount++;
+                                myMeetingCard_chat.unread_count.setText(Integer.toString(unreadCount));
+                                GlobalApplication.unread_chat_map.put(matching_id, unreadCount);
+                            }
+                            else {
+                                unreadCount = 0;
+                                unreadCount++;
+                                myMeetingCard_chat.unread_count.setText(Integer.toString(unreadCount));
+                                GlobalApplication.unread_chat_map.put(matching_id, unreadCount);
+                            }
                         } catch(NullPointerException e) {
                             //e.printStackTrace();
                         }
@@ -997,11 +1008,11 @@ public class HomeFragment extends Fragment {
                             final ChildEventListener mChildEventListener = makeChildEventListener(myMeetingCardFrame.mmc_c_list[i], matching_id);
 
                             final DatabaseReference mdatabaseReference =loadMessages(matching_id, mChildEventListener);
-                            myMeetingCardFrame.mmc_c_list[i].setOnClickListener(new View.OnClickListener() {
+                            View.OnClickListener goChattingListener = new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     Intent intent = new Intent(getContext(), ChattingActivity.class);
-                                    ((MyMeetingCard_Chat)view).unread_count.setText("0");
+                                    //((MyMeetingCard_Chat)view).unread_count.setText("0");
                                     intent.putExtra("meeting_id", ""+meeting_id);
                                     intent.putExtra("matching_id", ""+matching_id_final);
                                     intent.putExtra("partner_uid", ""+partner_uid_final);
@@ -1019,7 +1030,9 @@ public class HomeFragment extends Fragment {
                                     startActivity(intent);
                                     ((MainActivity)context).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                                 }
-                            });
+                            };
+                            myMeetingCardFrame.mmc_c_list[i].setOnClickListener(goChattingListener);
+                            myMeetingCardFrame.mmc_list[i].setOnClickListener(goChattingListener);
                             myMeetingCardFrame.mmc_list[i].setProfile1(matched_meeting.getString("openby_nickname"), matched_meeting.getInt("openby_age"));
                             myMeetingCardFrame.mmc_list[i].setProfile2(matched_meeting.getString("openby_belong"), matched_meeting.getString("openby_department"));
                             myMeetingCardFrame.mmc_list[i].setMatched(true);

@@ -33,6 +33,8 @@ public class GlobalApplication extends Application {
     public static int current_chatting_room = 0;
     public static HashMap<String, NotificationData> notification_map;
     public static HashMap<String, Bitmap> bitmap_map;
+    public static HashMap<Integer, Integer> unread_chat_map;
+    public static boolean push_noti_avail = true, chat_noti_avail = true;
     public static GlobalApplication getGlobalApplicationContext() {
         if (instance == null) {
             throw new IllegalStateException("This Application does not inherit com.kakao.GlobalApplication");
@@ -65,6 +67,7 @@ public class GlobalApplication extends Application {
         instance = this;
         notification_map = new HashMap<>();
         bitmap_map = new HashMap<>();
+        unread_chat_map = new HashMap<>();
         // Kakao Sdk 초기화
         KakaoSDK.init(new KakaoSDKAdapter());
     }

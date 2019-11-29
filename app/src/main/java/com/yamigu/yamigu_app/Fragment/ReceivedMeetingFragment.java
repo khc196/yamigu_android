@@ -3,6 +3,7 @@ package com.yamigu.yamigu_app.Fragment;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,9 +25,11 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.CustomLayout.CustomDialog;
+import com.yamigu.yamigu_app.CustomLayout.CustomDialog2;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.Adapter.FragmentAdapter;
 import com.yamigu.yamigu_app.R;
@@ -51,7 +54,8 @@ public class ReceivedMeetingFragment extends Fragment {
     int meeting_id;
     private SharedPreferences preferences;
     private CustomDialog customDialog;
-
+    private CustomDialog2 popupDialog;
+    public static ProgressDialog progressDialog = null;
     public ReceivedMeetingFragment() {
         // Required empty public constructor
     }
@@ -157,7 +161,7 @@ public class ReceivedMeetingFragment extends Fragment {
         });
 
         viewPager.setClipToPadding(false);
-
+        progressDialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
         String url = "http://106.10.39.154:9999/api/matching/received_request/?meeting_id="+meeting_id;
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
@@ -173,6 +177,7 @@ public class ReceivedMeetingFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                progressDialog = ProgressDialog.show(getContext(), "", "미팅 매칭중입니다...", true);
                                 String url = "http://106.10.39.154:9999/api/matching/accept_request/";
                                 MeetingCardFragment fragment = fragmentAdapter.getItem(viewPager.getCurrentItem());
 
@@ -202,6 +207,7 @@ public class ReceivedMeetingFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                progressDialog = ProgressDialog.show(getContext(), "", "미팅 거절중입니다...", true);
                                 String url = "http://106.10.39.154:9999/api/matching/decline_request/";
                                 MeetingCardFragment fragment = fragmentAdapter.getItem(viewPager.getCurrentItem());
 
@@ -245,7 +251,16 @@ public class ReceivedMeetingFragment extends Fragment {
             fragmentAdapter.notifyDataSetChanged();
         }
     }
-
+    private void setDialog(String text) {
+        popupDialog = new CustomDialog2(getContext());
+        popupDialog.setCancelable(true);
+        popupDialog.setCanceledOnTouchOutside(true);
+        popupDialog.text = text;
+        popupDialog.getWindow().setGravity(Gravity.CENTER);
+    }
+    private void showDialog() {
+        popupDialog.show();
+    }
     public class NetworkTask extends AsyncTask<Void, Void, String> {
 
         private String url;
@@ -271,6 +286,9 @@ public class ReceivedMeetingFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             JSONArray jsonArray = null;
+            if(progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
             try {
                 jsonArray = new JSONArray(s);
                 total_num = jsonArray.length();
@@ -347,24 +365,33 @@ public class ReceivedMeetingFragment extends Fragment {
                 }
             };
             Handler mHandler = new Handler();
-
+            if(progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
             super.onPostExecute(s);
             JSONObject jsonObject = null;
             String user_name = preferences.getString("nickname", "");
             try {
                 jsonObject = new JSONObject(s);
-                int count_meeting = jsonObject.getJSONObject("data").getInt("count_meeting");
-                Dialog("매칭 완료!", user_name+" 님,", "야미구에서의 "+ count_meeting+"번째 만남이", "좋은 인연으로 이어지길 바랍니다!");
-                mHandler.postDelayed(mRunnable, 2000);
-                customDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
-                        final Intent intent = new Intent(getContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(intent);
-                        getActivity().finish();
-                    }
-                });
+                String message = jsonObject.getString("message");
+                if(message.equals("Accepted")) {
+                    int count_meeting = jsonObject.getJSONObject("data").getInt("count_meeting");
+                    Dialog("매칭 완료!", user_name + " 님,", "야미구에서의 " + count_meeting + "번째 만남이", "좋은 인연으로 이어지길 바랍니다!");
+                    mHandler.postDelayed(mRunnable, 2000);
+                    customDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            final Intent intent = new Intent(getContext(), MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                            startActivity(intent);
+                            getActivity().finish();
+                        }
+                    });
+                }
+                else if(message.equals("Duplicated")) {
+                    setDialog("이미 상대방 또는 내 미팅이 매칭되었어요.");
+                    showDialog();
+                }
             } catch(JSONException e) {
                 e.printStackTrace();
             }
@@ -395,7 +422,12 @@ public class ReceivedMeetingFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            if(progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
             JSONArray jsonArray = null;
+            Toast.makeText(getContext(), "미팅을 거절했어요!",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 }

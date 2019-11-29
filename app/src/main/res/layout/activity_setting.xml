@@ -128,6 +128,7 @@
                     style="?android:attr/borderlessButtonStyle"
                     android:fontFamily="@font/nanumgothic_font_family"/>
                 <TextView
+                    android:id="@+id/tv_version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center_vertical"
@@ -198,17 +199,19 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <TextView
+
+                <Button
                     android:id="@+id/btn_withdrawal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="53dp"
+                    android:fontFamily="@font/nanumgothic_font_family"
                     android:text="야미구 탈퇴"
+                    android:textColor="@color/colorPoint"
                     android:textSize="13dp"
-                    android:textColor="#A6FC903B"
-                    android:layout_marginBottom="38dp"
-                    android:fontFamily="@font/nanumgothic_font_family"/>
+                    android:background="?android:selectableItemBackgroundBorderless"/>
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

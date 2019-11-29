@@ -52,7 +52,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.yamigu.yamigu_app.CustomLayout.CircularImageView;
-import com.yamigu.yamigu_app.CustomLayout.MeetingCancelDialog;
+import com.yamigu.yamigu_app.CustomLayout.CustomDialog3;
 import com.yamigu.yamigu_app.Etc.ImageUtils;
 import com.yamigu.yamigu_app.Etc.Model.ChatData;
 import com.yamigu.yamigu_app.Etc.Model.Conversation;
@@ -114,7 +114,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     public static String partner_belong, partner_department;
     private ArrayList<ChatData> receivedChatList;
     private String auth_token;
-    private MeetingCancelDialog meetingCancelDialog;
+    private CustomDialog3 meetingCancelDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,11 +141,11 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         manager_name_orig = intent.getExtras().getString("manager_name");
         manager_name = "야미구 매니저 " + manager_name_orig;
 
-
         partner_uid = intent.getExtras().getString("partner_uid");
         manager_uid = intent.getExtras().getString("manager_uid");
         accepted_at = intent.getExtras().getLong("accepted_at");
         gender = preferences.getInt("gender", 0);
+        GlobalApplication.unread_chat_map.put(Integer.parseInt(matching_id), 0);
         setSupportActionBar(tb) ;
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -284,7 +284,10 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_slide_out_right);
     }
     private void Dialog() {
-        meetingCancelDialog = new MeetingCancelDialog(ChattingActivity.this);
+        meetingCancelDialog = new CustomDialog3(ChattingActivity.this);
+        meetingCancelDialog.setText("매칭을 취소하시겠어요?\n취소하기전에 상대방에게 사유를 전달해주세요\n단, 매칭 취소시 티켓은 반환되지 않습니다");
+        meetingCancelDialog.setNoText("아니요");
+        meetingCancelDialog.setYesText("네, 취소할게요");
         meetingCancelDialog.setCancelable(true);
         meetingCancelDialog.setCanceledOnTouchOutside(true);
 

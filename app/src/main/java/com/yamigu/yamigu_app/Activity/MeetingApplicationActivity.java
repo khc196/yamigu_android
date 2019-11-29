@@ -75,6 +75,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meeting_application);
         meetingApplicationActivity = this;
+        progressDialog = ProgressDialog.show(this, "", "로딩중입니다...", true);
+
         Intent intent = getIntent();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         auth_token = preferences.getString("auth_token", "");
@@ -172,6 +174,23 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         appeal_view.setVisibility(View.GONE);
         btn_okay.setVisibility(View.INVISIBLE);
         form_code = initialize_with_prefilled_data(intent);
+        if(form_code == EDIT_MEETING || form_code == SEND_REQUEST) {
+            selected_type_text.setText(ma.getType_string());
+            selected_type.setAlpha(0.5f);
+            selected_date_text.setText(ma.getDate_string());
+            selected_date.setAlpha(0.5f);
+        }
+        if(form_code == EDIT_MEETING) {
+            selected_place_text.setText(ma.getPlace_string());
+            selected_place_text.setTextColor(getResources().getColor(R.color.colorPoint));
+            selected_place.setBackgroundResource(R.drawable.bottom_border_orange);
+            place_triangle.setBackgroundResource(R.drawable.triangle_orange);
+        }
+        if(form_code == SEND_REQUEST) {
+            selected_place_text.setText(ma.getPlace_string());
+            selected_place.setAlpha(0.5f);
+        }
+
         if(form_code == NEW_MEETING) {
             selected_type.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -259,7 +278,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         networkTask.execute();
                     }
                     else if(form_code == SEND_REQUEST){
-                        progressDialog = ProgressDialog.show(getApplicationContext(), "", "미팅 신청중입니다...", true);
+                        progressDialog = ProgressDialog.show(meetingApplicationActivity, "", "미팅 신청중입니다...", true);
                         setDialog("미팅이 신청되었어요!\n상대방이 수락하면 매칭이 완료됩니다!");
                         String url = "http://106.10.39.154:9999/api/matching/send_request_new/";
                         ContentValues values = new ContentValues();
@@ -285,7 +304,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    progressDialog = ProgressDialog.show(getApplicationContext(), "", "미팅 수정중입니다...", true);
+                                    progressDialog = ProgressDialog.show(meetingApplicationActivity, "", "미팅 수정중입니다...", true);
                                     setDialog("미팅이 수정 되었어요!");
                                     ma.setAppeal(et_appeal.getText().toString());
                                     String url = "http://106.10.39.154:9999/api/meetings/edit/";
@@ -318,7 +337,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    progressDialog = ProgressDialog.show(getApplicationContext(), "", "미팅 삭제중입니다...", true);
+                                    progressDialog = ProgressDialog.show(meetingApplicationActivity, "", "미팅 삭제중입니다...", true);
                                     setDialog("미팅이 삭제 되었어요!");
                                     String url = "http://106.10.39.154:9999/api/meetings/delete/";
                                     ContentValues values = new ContentValues();
@@ -638,6 +657,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         }
 
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
+        progressDialog.dismiss();
     }
     @Override
     protected void onDestroy() {
@@ -826,14 +846,6 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         ma.setPlace(placeInt);
         ma.setPlace_string(placeString);
         ma.setAppeal(appealString);
-        selected_type_text.setText(ma.getType_string());
-        selected_type.setAlpha(0.5f);
-        selected_date_text.setText(ma.getDate_string());
-        selected_date.setAlpha(0.5f);
-        selected_place_text.setText(ma.getPlace_string());
-        selected_place_text.setTextColor(getResources().getColor(R.color.colorPoint));
-        selected_place.setBackgroundResource(R.drawable.bottom_border_orange);
-        place_triangle.setBackgroundResource(R.drawable.triangle_orange);
 
         if(target_id == 0) {
             ma.reselect(ma.RESELECT_TYPE);
@@ -869,7 +881,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         popupDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                final Intent intent = new Intent(meetingApplicationActivity, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
                 finish();

@@ -9,10 +9,11 @@ import android.widget.TextView;
 
 import com.yamigu.yamigu_app.R;
 
-public class MeetingCancelDialog extends Dialog {
+public class CustomDialog3 extends Dialog {
 
     public Button btn_no, btn_yes;
-
+    private TextView tv_content;
+    private String text, yes_text, no_text;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,12 +24,28 @@ public class MeetingCancelDialog extends Dialog {
         lpWindow.dimAmount = 0.6f;
         getWindow().setAttributes(lpWindow);
 
-        setContentView(R.layout.custom_dialog_cancel_meeting);
+        setContentView(R.layout.custom_dialog3);
         btn_no = (Button) findViewById(R.id.btn_no);
         btn_yes = (Button) findViewById(R.id.btn_yes);
+        tv_content = findViewById(R.id.dialog_text);
+        tv_content.setText(text);
+        btn_no.setText(no_text);
+        btn_yes.setText(yes_text);
     }
 
-    public MeetingCancelDialog(Context context) {
+    public void setText(String text) {
+        this.text = text;
+    }
+    public void setYesText(String text) {
+        yes_text = text;
+
+    }
+    public void setNoText(String text) {
+        no_text = text;
+
+    }
+
+    public CustomDialog3(Context context) {
         super(context, R.style.ThemeDialogCustom);
     }
 }

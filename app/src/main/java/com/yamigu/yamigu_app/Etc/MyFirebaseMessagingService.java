@@ -27,6 +27,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.yamigu.yamigu_app.Activity.ChattingActivity;
 import com.yamigu.yamigu_app.Activity.GlobalApplication;
 import com.yamigu.yamigu_app.Activity.MainActivity;
+import com.yamigu.yamigu_app.Activity.NotificationActivity;
 import com.yamigu.yamigu_app.Activity.SplashActivity;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
@@ -40,14 +41,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private String auth_token;
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if(remoteMessage.getData() == null)
             return;
         //String clickAction = remoteMessage.getNotification().getClickAction();
         JSONObject data = new JSONObject(remoteMessage.getData());
         //sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(), clickAction, data);
+
         sendNotification(data);
     }
     private void sendNotification(JSONObject data) {
+        if(!preferences.getBoolean("push_noti_avail", true))
+            return;
         String title = "";
         String message = "";
         String clickAction = "";
@@ -74,6 +79,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent;
 
         if(activityName.equals(".ChattingActivity")) {
+            if(!preferences.getBoolean("chat_noti_avail", true))
+                return;
             try {
                 if (GlobalApplication.isAppOnForeground(getApplicationContext()) && ((GlobalApplication) getApplicationContext()).getCurrentActivity().getLocalClassName().equals("Activity.ChattingActivity")) {
                     return;
@@ -101,7 +108,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
         }
         else {
-            intent = new Intent(this, MainActivity.class);
+            intent = new Intent(this, NotificationActivity.class);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
@@ -149,7 +156,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         sendRegistrationToServer(refreshedToken);
     }
     private void sendRegistrationToServer(String token) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         auth_token = preferences.getString("auth_token", "");
         String url = "http://106.10.39.154:9999/api/fcm/register_device/";
         ContentValues values = new ContentValues();

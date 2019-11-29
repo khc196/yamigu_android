@@ -75,6 +75,17 @@
         android:weightSum="100"
         android:orientation="horizontal">
         <Button
+            android:id="@+id/btn_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:background="@drawable/ic_filter_state_gray"
+            android:text="거절하기"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:textSize="14dp"
+            android:fontFamily="@font/nanumgothic_font_family"/>
+        <Button
             android:id="@+id/btn_left"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -85,16 +96,6 @@
             android:gravity="center"
             android:textSize="14dp"
             android:fontFamily="@font/nanumgothic_font_family"/>
-        <Button
-            android:id="@+id/btn_right"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="50"
-            android:background="@drawable/state_pressed_orange4"
-            android:text="거절하기"
-            android:textColor="@color/colorPoint"
-            android:gravity="center"
-            android:textSize="14dp"
-            android:fontFamily="@font/nanumgothic_font_family"/>
+
     </LinearLayout>
 </FrameLayout>
