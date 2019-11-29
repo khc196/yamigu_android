@@ -119,6 +119,22 @@ public class SettingActivity extends AppCompatActivity {
                 Dialog("회원탈퇴시 3개월간 재가입이 불가능합니다.\n정말 탈퇴하시겠습니까?");
             }
         });
+        btn_view_private.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), PrivacyActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+            }
+        });
+        btn_view_using.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), TermsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+            }
+        });
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override
