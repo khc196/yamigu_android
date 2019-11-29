@@ -37,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.yamigu.yamigu_app.Activity.GlobalApplication;
 import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Activity.MeetingApplicationActivity;
@@ -93,7 +94,7 @@ public class WListFragment extends Fragment {
         mInflater = inflater;
         view = inflater.inflate(R.layout.fragment_wlist, container, false);
         auth_token = preferences.getString("auth_token", "");
-        tb = (Toolbar) view.findViewById(R.id.toolbar) ;
+        //tb = (Toolbar) view.findViewById(R.id.toolbar) ;
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefreshlayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -106,9 +107,9 @@ public class WListFragment extends Fragment {
                 networkTask2.execute();
             }
         });
-        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
@@ -168,6 +169,11 @@ public class WListFragment extends Fragment {
         is_initialized = true;
 
         return view;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity)getActivity()).refresh();
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

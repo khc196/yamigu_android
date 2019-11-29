@@ -7,20 +7,34 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     tools:context=".Activity.MainActivity">
-
     <FrameLayout
-        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="48dp">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <com.yamigu.yamigu_app.CustomLayout.CustomViewPager
+            android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_marginBottom="48dp">
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </com.yamigu.yamigu_app.CustomLayout.CustomViewPager>
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:layout_marginRight="10.3dp"
+            android:background="@null"
+            android:theme="@style/MyActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
     </FrameLayout>
+
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -9,10 +9,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="57dp">
+        </LinearLayout>
+        <!--androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_m2"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:background="@color/colorPrimary"
@@ -28,7 +32,7 @@
                 android:textColor="@color/colorNormal"
                 android:fontFamily="@font/nanumgothic_font_family"
                 android:textStyle="bold"/>
-        </androidx.appcompat.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar-->
         <ImageButton
             android:id="@+id/btn_whatis_yamigu"
             android:layout_width="match_parent"

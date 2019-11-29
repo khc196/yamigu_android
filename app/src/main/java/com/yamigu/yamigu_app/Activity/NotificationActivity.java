@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,6 +115,8 @@ public class NotificationActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     notificationData.isUnread = false;
                     HomeFragment.notiDB.child(notificationData.id).setValue(notificationData);
+                    GlobalApplication.unread_noti_count--;
+                    
                     finish();
                 }
             });

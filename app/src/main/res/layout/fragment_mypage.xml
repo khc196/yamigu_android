@@ -8,7 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <androidx.appcompat.widget.Toolbar
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="57dp">
+        </LinearLayout>
+        <!--androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="52dp"
@@ -25,7 +29,7 @@
             android:textColor="@color/colorNormal"
             android:fontFamily="@font/nanumgothic_font_family"
             android:textStyle="bold"/>
-        </androidx.appcompat.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar-->
         <!--RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

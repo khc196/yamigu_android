@@ -164,10 +164,10 @@ public class HomeFragment extends Fragment {
         nickname = preferences.getString("nickname", "");
         userDB = FirebaseDatabase.getInstance().getReference("user/" + uid);
         ticket_count = preferences.getInt("num_of_ticket", 0);
-        tb = (Toolbar) view.findViewById(R.id.toolbar) ;
-        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        tb = (Toolbar) view.findViewById(R.id.toolbar_h) ;
+//        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
         btn_go_yamigu = (RelativeLayout) view.findViewById(R.id.btn_go_yamigu);
         btn_go_yamigu.setVisibility(View.GONE);
@@ -229,10 +229,16 @@ public class HomeFragment extends Fragment {
         notiDB = loadNotifications(notiChildEventListenerForNotification);
         myMeetingCardFrame = new MyMeetingCardFrame(view);
         tv_ticket_count.setText(Integer.toString(ticket_count));
+
+        tv_unread_noti_count.setText(Integer.toString(GlobalApplication.unread_noti_count));
+        if(GlobalApplication.unread_noti_count == 0) {
+            tv_unread_noti_count.setVisibility(View.INVISIBLE);
+        }
         String url = "http://106.10.39.154:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
+        ((MainActivity)getActivity()).refresh();
     }
     @Override
     public void onAttach(Context context) {

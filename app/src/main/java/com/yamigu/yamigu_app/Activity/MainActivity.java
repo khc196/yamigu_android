@@ -20,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import android.util.Base64;
 import android.util.Log;
 
@@ -28,12 +30,14 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.yamigu.yamigu_app.Adapter.MainFragmentAdapter;
 import com.yamigu.yamigu_app.CustomLayout.CustomDialog2;
 import com.yamigu.yamigu_app.Etc.ImageUtils;
 import com.yamigu.yamigu_app.Fragment.HomeFragment;
@@ -61,11 +65,19 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity me;
     public static ProgressDialog dialog = null;
     private static CustomDialog2 popupDialog = null;
+    ViewPager pager;
+    MainFragmentAdapter mainFragmentAdapter;
+    public static androidx.appcompat.widget.Toolbar tb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        tb = findViewById(R.id.toolbar) ;
+        setSupportActionBar(tb) ;
+        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        setHasOptionsMenu(true);
         me = this;
         Intent intent = getIntent();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -85,6 +97,16 @@ public class MainActivity extends AppCompatActivity {
         nav_yamigu = (ImageButton) findViewById(R.id.nav_yamigu);
         nav_mypage = (ImageButton) findViewById(R.id.nav_mypage);
         nav_more = (ImageButton) findViewById(R.id.nav_more);
+        pager = findViewById(R.id.fragment_container);
+
+        mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
+        MainActivity.dialog = ProgressDialog.show(this, "", "로딩중입니다...", true);
+        mainFragmentAdapter.addItem(new HomeFragment());
+        mainFragmentAdapter.addItem(new WListFragment());
+        mainFragmentAdapter.addItem(new MypageFragment());
+        mainFragmentAdapter.addItem(new MoreFragment());
+        pager.setAdapter(mainFragmentAdapter);
+
         nav_yamigu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,36 +124,36 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 selectTab(1);
-                loadFragment(homeFragment);
+                //loadFragment(homeFragment);
             }
         });
         nav_wlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectTab(2);
-                Fragment fragment = new WListFragment();
-                loadFragment(fragment);
+                //Fragment fragment = new WListFragment();
+                //loadFragment(fragment);
             }
         });
         nav_mypage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectTab(3);
-                Fragment fragment = new MypageFragment();
-                loadFragment(fragment);
+                //Fragment fragment = new MypageFragment();
+                //loadFragment(fragment);
             }
         });
         nav_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectTab(4);
-                Fragment fragment = new MoreFragment();
-                loadFragment(fragment);
+                //Fragment fragment = new MoreFragment();
+                //loadFragment(fragment);
             }
         });
 
-        homeFragment = new HomeFragment();
-        loadFragment(homeFragment);
+        //homeFragment = new HomeFragment();
+        //loadFragment(homeFragment);
 
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
@@ -159,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
     public static void showDialog() {
         popupDialog.show();
     }
+
     public boolean loadFragment(Fragment fragment) {
         if(fragment != null) {
 
@@ -172,7 +195,14 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
+    public void refresh() {
+        if(mainFragmentAdapter != null) {
+            mainFragmentAdapter.notifyDataSetChanged();
+        }
+    }
     public void selectTab(int index) {
+        // MainActivity.dialog = ProgressDialog.show(this, "", "로딩중입니다...", true);
+        pager.setCurrentItem(index-1);
         switch(index) {
             case 1:
                 nav_home.setImageResource(R.drawable.nav_home_selected);

@@ -30,10 +30,10 @@ public class MoreFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_more, container, false);
-        tb = (Toolbar) view.findViewById(R.id.toolbar) ;
-        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        tb = (Toolbar) view.findViewById(R.id.toolbar_m2) ;
+//        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         setHasOptionsMenu(true);
 
         btn_whatis_yamigu = (ImageButton) view.findViewById(R.id.btn_whatis_yamigu);
