@@ -30,6 +30,7 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
+import com.yamigu.yamigu_app.Fragment.HomeFragment;
 import com.yamigu.yamigu_app.R;
 
 import java.io.IOException;
@@ -244,6 +245,7 @@ public class TicketActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                         editor.putInt("num_of_ticket", num_of_ticket + num);
                         editor.apply();
+                        HomeFragment.ticket_count = num_of_ticket + num;
                     }
                 });
                 dialog.dismiss();

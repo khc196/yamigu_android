@@ -263,7 +263,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 }
                 else {
                     if(form_code == NEW_MEETING) {
-                        progressDialog = ProgressDialog.show(getApplicationContext(), "", "미팅 신청중입니다...", true);
+                        progressDialog = ProgressDialog.show(meetingApplicationActivity, "", "미팅 신청중입니다...", true);
                         setDialog("미팅을 신청했어요, 이제 대기팀에서 이성팀을 찾아보세요!\n장소는 달라도 신청가능해요.");
                         String url = "http://106.10.39.154:9999/api/meetings/create/";
 

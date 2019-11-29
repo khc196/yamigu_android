@@ -13,16 +13,18 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="57dp"
+                android:layout_marginRight="10.3dp"
                 android:background="@color/colorPrimary"
                 android:theme="@style/MyActionBar"
-                android:layout_marginRight="10.3dp"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
             <TextView
+                android:id="@+id/ticket_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"

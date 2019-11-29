@@ -142,7 +142,7 @@ public class MypageFragment extends Fragment {
         profile_url = preferences.getString("profile", "");
         user_certified = preferences.getInt("user_certified", 0);
         int num_of_ticket = preferences.getInt("num_of_ticket", 0);
-        tv_num_of_ticket.setText(num_of_ticket+"");
+        tv_num_of_ticket.setText(Integer.toString(num_of_ticket));
         tv_num_of_noti.setText(GlobalApplication.unread_noti_count+"");
         if(user_certified == 0) {
             btn_certificating.setVisibility(View.VISIBLE);
@@ -269,6 +269,12 @@ public class MypageFragment extends Fragment {
             MainActivity.dialog.dismiss();
         }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tv_num_of_ticket.setText(Integer.toString(HomeFragment.ticket_count));
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

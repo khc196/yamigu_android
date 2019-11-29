@@ -384,7 +384,24 @@ public class SplashActivity extends AppCompatActivity {
 
 
             is_signedup = !signup_flag;
-
+            if (is_signedup) {
+                try {
+                    editor.putString("nickname", jsonObject.getString("nickname"));
+                    editor.putString("phone", jsonObject.getString("phone"));
+                    editor.putString("belong", jsonObject.getString("belong"));
+                    editor.putString("department", jsonObject.getString("department"));
+                    editor.putString("profile", jsonObject.getString("image"));
+                    editor.putInt("gender", jsonObject.getInt("gender"));
+                    editor.putInt("age", jsonObject.getInt("age"));
+                    editor.putString("uid", jsonObject.getString("uid"));
+                    editor.putInt("user_certified", jsonObject.getInt("user_certified"));
+                    editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
+                    editor.putInt("num_of_ticket", jsonObject.getInt("ticket"));
+                    editor.apply();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
             Log.d("FIREBASE", firebase_token);
             mAuth.signInWithCustomToken(firebase_token)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -399,24 +416,7 @@ public class SplashActivity extends AppCompatActivity {
                                 ContentValues values = new ContentValues();
                                 values.put("registration_id", fcm_token);
                                 values.put("type", "android");
-                                if (is_signedup) {
-                                    try {
-                                        editor.putString("nickname", jsonObject.getString("nickname"));
-                                        editor.putString("phone", jsonObject.getString("phone"));
-                                        editor.putString("belong", jsonObject.getString("belong"));
-                                        editor.putString("department", jsonObject.getString("department"));
-                                        editor.putString("profile", jsonObject.getString("image"));
-                                        editor.putInt("gender", jsonObject.getInt("gender"));
-                                        editor.putInt("age", jsonObject.getInt("age"));
-                                        editor.putString("uid", jsonObject.getString("uid"));
-                                        editor.putInt("user_certified", jsonObject.getInt("user_certified"));
-                                        editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
-                                        editor.putInt("num_of_ticket", jsonObject.getInt("ticket"));
-                                        editor.apply();
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
+
                                 NetworkTask3 networkTask3 = new NetworkTask3(url, values);
                                 networkTask3.execute();
                                 FirebaseUser user = mAuth.getCurrentUser();

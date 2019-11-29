@@ -102,12 +102,13 @@ public class HomeFragment extends Fragment {
     private DatabaseReference userDB, managerDB;
     public static DatabaseReference notiDB;
     private Fragment me;
-    private TextView tv_unread_noti_count, tv_recommendation;
+    private TextView tv_unread_noti_count, tv_ticket_count, tv_recommendation;
     //private ViewPager pager;
     private CustomViewPager pager;
     public static FragmentAdapter fragmentAdapter;
     private TabLayout tabIndicator;
     private int total_num;
+    public static int ticket_count;
     public static int ACTION_START_CHAT = 1;
     View view;
     private class MyMeetingCardFrame {
@@ -162,7 +163,7 @@ public class HomeFragment extends Fragment {
         uid = preferences.getString("uid", "");
         nickname = preferences.getString("nickname", "");
         userDB = FirebaseDatabase.getInstance().getReference("user/" + uid);
-
+        ticket_count = preferences.getInt("num_of_ticket", 0);
         tb = (Toolbar) view.findViewById(R.id.toolbar) ;
         ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
@@ -180,6 +181,8 @@ public class HomeFragment extends Fragment {
         tv_unread_noti_count = view.findViewById(R.id.unread_noti_count);
         tv_unread_noti_count.setVisibility(View.INVISIBLE);
         tv_unread_noti_count.setText("0");
+        tv_ticket_count = view.findViewById(R.id.ticket_count);
+        tv_ticket_count.setText(Integer.toString(ticket_count));
         tv_recommendation = view.findViewById(R.id.tv_recommendation);
         tv_recommendation.setText(nickname+"님을 위한 추천 미팅");
 //        String url = "http://106.10.39.154:9999/api/meetings/my/";
@@ -225,6 +228,7 @@ public class HomeFragment extends Fragment {
         ChildEventListener notiChildEventListenerForNotification = makeChildEventListenerForNotification();
         notiDB = loadNotifications(notiChildEventListenerForNotification);
         myMeetingCardFrame = new MyMeetingCardFrame(view);
+        tv_ticket_count.setText(Integer.toString(ticket_count));
         String url = "http://106.10.39.154:9999/api/meetings/my/";
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
@@ -245,7 +249,7 @@ public class HomeFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.actionbar_items, menu);
-        RelativeLayout badgeLayout = (RelativeLayout) menu.findItem(R.id.menu_ticket).getActionView();
+        //RelativeLayout badgeLayout = (RelativeLayout) menu.findItem(R.id.menu_ticket).getActionView();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
