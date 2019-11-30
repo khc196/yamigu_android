@@ -21,6 +21,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -71,6 +73,8 @@ public class CertificationUActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_certification_u);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
         tb = (Toolbar) findViewById(R.id.toolbar) ;
         setSupportActionBar(tb) ;
         getSupportActionBar().setElevation(0);
@@ -83,23 +87,81 @@ public class CertificationUActivity extends AppCompatActivity {
             }
         });
         Intent intent = getIntent();
-        nickname = intent.getExtras().getString("nickname");
-        friend_code = intent.getExtras().getString("friend_code");
-        real_name = intent.getExtras().getString("realname");
-        phonenumber = intent.getExtras().getString("phonenumber");
-        gender_string = intent.getExtras().getString("gender");
-        birthdate = intent.getExtras().getString("birthdate");
-        age = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(birthdate.substring(0, 4)) + 1;
-        gender = Integer.parseInt(gender_string);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = preferences.edit();
+        //nickname = intent.getExtras().getString("nickname");
+        //friend_code = preferences.getString("friend_code", "");
+//        real_name = intent.getExtras().getString("realname");
+//        phonenumber = intent.getExtras().getString("phonenumber");
+//        gender_string = intent.getExtras().getString("gender");
+//        birthdate = intent.getExtras().getString("birthdate");
+        nickname = preferences.getString("nickname", "");
+        friend_code = preferences.getString("friend_code", "");
+        real_name = preferences.getString("real_name", "");
+        phonenumber = preferences.getString("phonenumber", "");
+        gender_string = preferences.getString("gender_string", "");
+        birthdate = preferences.getString("birthdate", "");
+
+        if(birthdate.isEmpty()) {
+            age = preferences.getInt("age", 0);
+        }
+        else {
+            age = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(birthdate.substring(0, 4)) + 1;
+        }
+        if(gender_string.isEmpty()) {
+            gender = preferences.getInt("gender", 0);
+        }
+        else {
+            gender = Integer.parseInt(gender_string);
+
+        }
         auth_token = preferences.getString("auth_token", "");
         btn_attach_file = (ImageButton) findViewById(R.id.btn_attach_file);
         btn_go_home = (Button) findViewById(R.id.btn_gohome);
         btn_skip = (TextView) findViewById(R.id.btn_skip);
         et_university = (EditText) findViewById(R.id.et_university);
         et_major = (EditText) findViewById(R.id.et_major);
+        btn_go_home.setBackgroundResource(R.drawable.state_pressed_gray);
+        et_university.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.toString().isEmpty() && et_major.getText().toString().isEmpty()) {
+                    btn_go_home.setBackgroundResource(R.drawable.state_pressed_gray);
+                }
+                else {
+                    btn_go_home.setBackgroundResource(R.drawable.state_pressed_orange);
+                }
+            }
+        });
+        et_major.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.toString().isEmpty() && et_university.getText().toString().isEmpty()) {
+                    btn_go_home.setBackgroundResource(R.drawable.state_pressed_gray);
+                }
+                else {
+                    btn_go_home.setBackgroundResource(R.drawable.state_pressed_orange);
+                }
+            }
+        });
         btn_attach_file.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {  // 클릭하면 ACTION_PICK 연결로 기본 갤러리를 불러옵니다.
 //                Intent intent = new Intent(ACTION_PICK);
@@ -112,6 +174,7 @@ public class CertificationUActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
             }
         });
+
         btn_go_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

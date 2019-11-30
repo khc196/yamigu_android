@@ -211,36 +211,43 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:layout_marginTop="21dp"
+                    android:layout_marginTop="36dp"
                     android:layout_marginLeft="34dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="* 아래는 필독사항과 반환규정입니다."
-                        android:textSize="14dp"
+                        android:textSize="17dp"
                         android:textColor="@color/colorBlack"
-                        android:fontFamily="@font/nanumgothic_font_family"
+                        android:fontFamily="@font/nanumgothic_font_family_bold"
                         />
                     <TextView
                         android:layout_marginTop="11dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="- 티켓은 매칭 후 만남까지 이용권입니다."
-                        android:textSize="10dp"
+                        android:textSize="11dp"
                         android:textColor="@color/colorNonselect"
                         android:fontFamily="@font/nanumgothic_font_family"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="- 상대가 미팅을 취소하는 경우만 이용권은 반환됩니다."
-                        android:textSize="10dp"
+                        android:textSize="11dp"
                         android:textColor="@color/colorNonselect"
                         android:fontFamily="@font/nanumgothic_font_family"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="- 이용권 사용 후 미팅 취소는 반환되지 않습니다."
-                        android:textSize="10dp"
+                        android:textSize="11dp"
+                        android:textColor="@color/colorNonselect"
+                        android:fontFamily="@font/nanumgothic_font_family"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="- 미팅노쇼인 경우 야미구 사용에 제한이 걸립니다."
+                        android:textSize="11dp"
                         android:textColor="@color/colorNonselect"
                         android:fontFamily="@font/nanumgothic_font_family"/>
                 </LinearLayout>

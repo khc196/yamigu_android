@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
@@ -27,6 +29,8 @@ import java.net.URL;
 public class NICEActivity extends AppCompatActivity {
 
     private WebView mWebView;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
     private static final String URL_INFO = "http://106.10.39.154:5000/checkplus_main"; //휴대폰본인인증 호출하는 URL 입력;
 
     @Override
@@ -35,7 +39,8 @@ public class NICEActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nice);
 
         mWebView = (WebView) findViewById(R.id.webView);
-
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
         //웹뷰의 설정을 다음과 같이 맞춰주시기 바랍니다.
         mWebView.getSettings().setJavaScriptEnabled(true);	//필수설정(true)
         mWebView.getSettings().setDomStorageEnabled(true);		//필수설정(true)
@@ -56,8 +61,9 @@ public class NICEActivity extends AppCompatActivity {
 
          웹뷰 내 앱링크를 사용하려면 WebViewClient를 반드시 설정하여 주시기바랍니다. (하단 DemoWebViewClient 참고)
          **/
-        mWebView.setWebViewClient(new DemoWebViewClient());
         mWebView.addJavascriptInterface(new MyJavascriptInterface(), "Android");
+
+        mWebView.setWebViewClient(new DemoWebViewClient());
 
         mWebView.loadUrl(URL_INFO);
     }
@@ -160,10 +166,15 @@ public class NICEActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = new JSONObject(html);
                 Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
-                intent.putExtra("birthdate", jsonObject.getString("birthdate"));
-                intent.putExtra("gender", jsonObject.getString("gender"));
-                intent.putExtra("phonenumber", jsonObject.getString("mobileno"));
-                intent.putExtra("name", jsonObject.getString("name"));
+//                intent.putExtra("birthdate", jsonObject.getString("birthdate"));
+//                intent.putExtra("gender", jsonObject.getString("gender"));
+//                intent.putExtra("phonenumber", jsonObject.getString("mobileno"));
+//                intent.putExtra("name", jsonObject.getString("name"));
+                editor.putString("birthdate", jsonObject.getString("birthdate"));
+                editor.putString("gender_string", jsonObject.getString("gender"));
+                editor.putString("phonenumber", jsonObject.getString("mobileno"));
+                editor.putString("real_name", jsonObject.getString("name"));
+                editor.apply();
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                 finish();

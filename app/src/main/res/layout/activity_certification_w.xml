@@ -39,16 +39,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="직업 입력"
+                android:text="회사 입력"
                 android:textColor="@color/colorNormal"
                 android:textSize="14dp"
                 android:fontFamily="@font/roboto_font_family"
                 />
             <EditText
-                android:id="@+id/et_job"
+                android:id="@+id/et_company"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:hint="ex) 회사원, 디자이너"
+                android:hint="ex) 삼성전자, 스타트업, 프리랜서"
                 android:textSize="12dp"
                 android:background="@drawable/edittext_signup"
                 android:gravity="center_vertical"
@@ -65,21 +65,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13.8dp"
-                android:text="회사 입력"
+                android:text="직업 입력"
                 android:textColor="@color/colorNormal"
                 android:textSize="14dp"
                 android:fontFamily="@font/roboto_font_family"
                 />
 
             <EditText
-                android:id="@+id/et_company"
+                android:id="@+id/et_job"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 android:layout_marginTop="6.1dp"
                 android:background="@drawable/edittext_signup"
                 android:fontFamily="@font/roboto_font_family"
                 android:gravity="center_vertical"
-                android:hint="ex) 삼성전자, 스타트업, 프리랜서"
+                android:hint="ex) 직장인, 디자이너, 치과의사, 선생님"
                 android:inputType="text"
                 android:paddingLeft="16dp"
                 android:paddingTop="10.5dp"
@@ -119,11 +119,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5.7dp"
-                android:text="* 사원증, 명함, 사업자등록증 등 첨부해주세요!"
-                android:textColor="@color/colorHint"
+                android:text="* 사원증, 명함, 사업자등록증, 자격증, 면허증 등 첨부해주세요!"
                 android:textSize="10dp"
-                android:gravity="right"
-                android:fontFamily="@font/roboto_font_family">
+                android:textColor="@color/colorHint"
+                android:fontFamily="@font/roboto_font_family"
+                android:gravity="right">
             </TextView>
             <TextView
                 android:layout_width="match_parent"

@@ -18,6 +18,8 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -80,12 +82,19 @@ public class CertificationWActivity extends AppCompatActivity {
             }
         });
         Intent intent = getIntent();
-        nickname = intent.getExtras().getString("nickname");
-        friend_code = intent.getExtras().getString("friend_code");
-        real_name = intent.getExtras().getString("realname");
-        phonenumber = intent.getExtras().getString("phonenumber");
-        gender_string = intent.getExtras().getString("gender");
-        birthdate = intent.getExtras().getString("birthdate");
+//        nickname = intent.getExtras().getString("nickname");
+//        friend_code = intent.getExtras().getString("friend_code");
+//        real_name = intent.getExtras().getString("realname");
+//        phonenumber = intent.getExtras().getString("phonenumber");
+//        gender_string = intent.getExtras().getString("gender");
+//        birthdate = intent.getExtras().getString("birthdate");
+        nickname = preferences.getString("nickname", "");
+        friend_code = preferences.getString("friend_code", "");
+        real_name = preferences.getString("real_name", "");
+        phonenumber = preferences.getString("phonenumber", "");
+        gender_string = preferences.getString("gender_string", "");
+        birthdate = preferences.getString("birthdate", "");
+
         age = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(birthdate.substring(0, 4)) + 1;
         gender = Integer.parseInt(gender_string);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -96,6 +105,49 @@ public class CertificationWActivity extends AppCompatActivity {
         btn_skip = (TextView) findViewById(R.id.btn_skip);
         et_company = (EditText) findViewById(R.id.et_company);
         et_job = (EditText) findViewById(R.id.et_job);
+        btn_go_home.setBackgroundResource(R.drawable.state_pressed_gray);
+        et_company.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.toString().isEmpty() && et_job.getText().toString().isEmpty()) {
+                    btn_go_home.setBackgroundResource(R.drawable.state_pressed_gray);
+                }
+                else {
+                    btn_go_home.setBackgroundResource(R.drawable.state_pressed_orange);
+                }
+            }
+        });
+        et_job.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.toString().isEmpty() && et_company.getText().toString().isEmpty()) {
+                    btn_go_home.setBackgroundResource(R.drawable.state_pressed_gray);
+                }
+                else {
+                    btn_go_home.setBackgroundResource(R.drawable.state_pressed_orange);
+                }
+            }
+        });
         btn_attach_file.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){  // 클릭하면 ACTION_PICK 연결로 기본 갤러리를 불러옵니다.
                 Intent intent = new Intent(ACTION_PICK);

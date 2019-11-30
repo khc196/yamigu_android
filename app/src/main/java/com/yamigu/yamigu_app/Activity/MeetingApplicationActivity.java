@@ -882,6 +882,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 final Intent intent = new Intent(meetingApplicationActivity, MainActivity.class);
+                MainActivity.selectTab(1);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
                 finish();

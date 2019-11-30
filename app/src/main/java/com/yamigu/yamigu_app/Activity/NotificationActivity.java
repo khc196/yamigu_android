@@ -2,11 +2,14 @@ package com.yamigu.yamigu_app.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +17,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat;
 import com.yamigu.yamigu_app.CustomLayout.WaitingTeamCard;
 import com.yamigu.yamigu_app.Etc.Model.NotificationData;
 import com.yamigu.yamigu_app.Fragment.HomeFragment;
@@ -38,11 +47,17 @@ import java.util.TreeMap;
 public class NotificationActivity extends AppCompatActivity {
     private Toolbar tb;
     private HashMap<View, Long> view_map;
+    private DatabaseReference userDB;
+    private  DatabaseReference notiDB;
+    private ChildEventListener mChildEventListener;
+    private SharedPreferences preferences;
+    private String uid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         tb = (Toolbar) findViewById(R.id.toolbar) ;
+        GlobalApplication.notiActivity = this;
         setSupportActionBar(tb) ;
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -53,21 +68,20 @@ public class NotificationActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        view_map = new HashMap<View, Long>();
-        for(Map.Entry<String, NotificationData> noti_data: GlobalApplication.notification_map.entrySet()) {
-            createNotification(noti_data.getValue());
-        }
-        LinearLayout mRootLinear = (LinearLayout) findViewById(R.id.notification_bg);
-        List<View> view_list = sortByValue(view_map);
-        for(int i = 0; i < view_list.size(); i++) {
-            mRootLinear.addView(view_list.get(i));
-        }
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        uid = preferences.getString("uid", "");
 
+        //userDB = FirebaseDatabase.getInstance().getReference("user/" + uid);
+        //ChildEventListener notiChildEventListenerForNotification = makeChildEventListenerForNotification();
+
+
+        //loadNotifications(notiChildEventListenerForNotification);
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override
     protected void onDestroy() {
         clearReferences();
+        //notiDB.removeEventListener(mChildEventListener);
         super.onDestroy();
     }
     public static List sortByValue(final Map map) {
@@ -94,6 +108,18 @@ public class NotificationActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_slide_out_right);
     }
+    public void refresh() {
+        view_map = new HashMap<View, Long>();
+        for(Map.Entry<String, NotificationData> noti_data: GlobalApplication.notification_map.entrySet()) {
+            createNotification(noti_data.getValue());
+        }
+        LinearLayout mRootLinear = (LinearLayout) findViewById(R.id.notification_bg);
+        mRootLinear.removeAllViews();
+        List<View> view_list = sortByValue(view_map);
+        for(int i = 0; i < view_list.size(); i++) {
+            mRootLinear.addView(view_list.get(i));
+        }
+    }
     private void createNotification(final NotificationData notificationData) {
         LinearLayout mRootLinear = (LinearLayout) findViewById(R.id.notification_bg);
 
@@ -114,9 +140,9 @@ public class NotificationActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     notificationData.isUnread = false;
-                    HomeFragment.notiDB.child(notificationData.id).setValue(notificationData);
+//                    HomeFragment.notiDB.child(notificationData.id).setValue(notificationData);
                     GlobalApplication.unread_noti_count--;
-                    
+
                     finish();
                 }
             });
@@ -164,5 +190,55 @@ public class NotificationActivity extends AppCompatActivity {
         }
         view_map.put(v, new Long(diff));
     }
+    private ChildEventListener makeChildEventListenerForNotification() {
+        GlobalApplication.unread_noti_count = 0;
+        ChildEventListener mChildEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                try {
+                    if (dataSnapshot.getValue() != null) {
+                        Log.d("DATASNAPSHOT", "" + dataSnapshot.getValue());
+                        HashMap mapNotification = (HashMap) dataSnapshot.getValue();
+                        boolean isUnread = (boolean) mapNotification.get("isUnread");
+                        String id = (String) mapNotification.get("id");
+                        long timestamp = (long) mapNotification.get("time");
+                        long type = (long) mapNotification.get("type");
+                        String content = (String) mapNotification.get("content");
+                        NotificationData notificationData = new NotificationData();
+                        notificationData.id = id;
+                        notificationData.isUnread = isUnread;
+                        notificationData.time = timestamp;
+                        notificationData.type = type;
+                        notificationData.content = content;
+                        GlobalApplication.notification_map.put("" + id, notificationData);
+                        refresh();
+                    }
+                } catch(ClassCastException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        return mChildEventListener;
+    }
+    private void loadNotifications(ChildEventListener mChildEventListener) {
+        notiDB.addChildEventListener(mChildEventListener);
+    }
+
 }
 

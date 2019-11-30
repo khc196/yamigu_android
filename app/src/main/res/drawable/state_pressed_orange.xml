@@ -9,6 +9,6 @@
                 android:bottomRightRadius="10dp"/>
             <solid android:color="@color/colorPoint"/>
         </shape>
-        <color android:color="#FB9047"/>
+        <color android:color="#E76F1F"/>
     </item>
 </ripple>

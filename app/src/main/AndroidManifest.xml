@@ -37,11 +37,14 @@ meta-data
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".Activity.NoticeActivity"></activity>
-        <activity android:name=".Activity.NotificationActivity" />
+        <activity
+            android:name=".Activity.NotificationActivity"
+            android:parentActivityName=".Activity.MainActivity"/>
         <activity android:name=".Activity.NICEActivity" />
         <activity android:name=".Activity.RequestListActivity" />
         <activity
             android:name=".Activity.ChattingActivity"
+            android:parentActivityName=".Activity.MainActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name=".ChattingActivity" />

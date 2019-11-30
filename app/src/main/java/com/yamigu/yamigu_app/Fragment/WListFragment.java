@@ -82,6 +82,7 @@ public class WListFragment extends Fragment {
     private Menu global_menu;
     private SwipeRefreshLayout swipeRefreshLayout;
     private String refresh_url = "";
+    private boolean invisible_flag = false;
     public WListFragment() {
         this.active_type_set = new HashSet<>();
         this.active_place_set = new HashSet<>();
@@ -100,13 +101,13 @@ public class WListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
-                String url = refresh_url;
-                MainActivity.dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
-                ContentValues values = new ContentValues();
-                NetworkTask2 networkTask2 = new NetworkTask2(url, values);
-                networkTask2.execute();
+                refresh();
+
             }
         });
+        invisible_flag = true;
+        final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
+        mRootLinear.setVisibility(View.INVISIBLE);
 //        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -173,7 +174,23 @@ public class WListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity)getActivity()).refresh();
+        invisible_flag = true;
+        refresh();
+//        ((MainActivity)getActivity()).refresh();
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
+        mRootLinear.setVisibility(View.INVISIBLE);
+        //((MainActivity)getActivity()).refresh();
+    }
+    public void refresh() {
+        String url = refresh_url;
+        //MainActivity.dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
+        ContentValues values = new ContentValues();
+        NetworkTask2 networkTask2 = new NetworkTask2(url, values);
+        networkTask2.execute();
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -548,11 +565,11 @@ public class WListFragment extends Fragment {
                             rl_applying.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    if(MainActivity.getMyMeetingCount() == 3){
-                                        MainActivity.setDialog("미팅은 일주일에 3번까지만 가능해요!");
-                                        MainActivity.showDialog();
-                                        return;
-                                    }
+//                                    if(MainActivity.getMyMeetingCount() == 3){
+//                                        MainActivity.setDialog("미팅은 일주일에 3번까지만 가능해요!");
+//                                        MainActivity.showDialog();
+//                                        return;
+//                                    }
                                     try {
                                         String url = "http://106.10.39.154:9999/api/matching/send_request/";
                                         ContentValues values = new ContentValues();
@@ -632,6 +649,10 @@ public class WListFragment extends Fragment {
                                 createWaitingTeamCard(json_results.getJSONObject(i));
                                 if(!json_results.getJSONObject(i).getBoolean("is_matched")) meeting_count++;
                             }
+                            if(invisible_flag) {
+                                mRootLinear.setVisibility(View.VISIBLE);
+                                invisible_flag = false;
+                            }
                             mRootLinear.setAlpha(1.0f);
                             mRootLinear.setTranslationX(0);
 //                            mRootLinear.setTranslationX(100);
@@ -645,9 +666,6 @@ public class WListFragment extends Fragment {
                         }
                     }
                 });
-            if(MainActivity.dialog.isShowing()) {
-                MainActivity.dialog.dismiss();
-            }
         }
     }
     public class NetworkTask3 extends AsyncTask<Void, Void, Bitmap> {
@@ -763,20 +781,25 @@ public class WListFragment extends Fragment {
                     //Toast.makeText(getContext(), "미팅이 신청되었어요!", Toast.LENGTH_SHORT).show();
                     MainActivity.setDialog("미팅이 신청되었어요!\n상대방이 수락하면 매칭이 완료됩니다!");
                     MainActivity.showDialog();
+                    MainActivity.selectTab(1);
                 }
                 else if(message.equals("target already matched")) {
                     MainActivity.setDialog("이미 상대방이 매칭되었어요.");
-                    MainActivity.showDialog();
-                }
+                MainActivity.showDialog();
+            }
                 else if(message.equals("my card already matched")) {
-                    MainActivity.setDialog("이미 내 미팅이 매칭되었어요.");
-                    MainActivity.showDialog();
-                }
+                MainActivity.setDialog("해당 날짜에 이미 예정된 미팅이 있어요.");
+                MainActivity.showDialog();
+            }
                 else if(message.equals("different type")) {
                     Toast.makeText(getContext(), "해당 날짜에 신청한 미팅과 인원이 달라요!", Toast.LENGTH_SHORT).show();
                 }
-                else if(message.equals("aleady exists")) {
+                else if(message.equals("already exists")) {
                     Toast.makeText(getContext(), "이미 신청했어요!", Toast.LENGTH_SHORT).show();
+                }
+                else if(message.equals("full card")) {
+                    MainActivity.setDialog("미팅은 일주일에 3번까지만 가능해요!");
+                    MainActivity.showDialog();
                 }
                 else if(message.equals("You should create new meeting for matching")) {
                     Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);

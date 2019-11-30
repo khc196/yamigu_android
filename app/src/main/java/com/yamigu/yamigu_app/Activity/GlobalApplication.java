@@ -9,10 +9,20 @@ import android.content.Context;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.View;
 
 import androidx.collection.ArraySet;
+import androidx.fragment.app.Fragment;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.IApplicationConfig;
@@ -20,6 +30,11 @@ import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
 import com.yamigu.yamigu_app.Etc.Model.NotificationData;
+import com.yamigu.yamigu_app.Fragment.HomeFragment;
+import com.yamigu.yamigu_app.Kakao.KakaoSDKAdapter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +50,13 @@ public class GlobalApplication extends Application {
     public static HashMap<String, Bitmap> bitmap_map;
     public static HashMap<Integer, Integer> unread_chat_map;
     public static boolean push_noti_avail = true, chat_noti_avail = true;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    public static  DatabaseReference notiDB;
+    private ChildEventListener mChildEventListener;
+    public static HomeFragment homefragment;
+    public static NotificationActivity notiActivity;
+    private String uid;
     public static GlobalApplication getGlobalApplicationContext() {
         if (instance == null) {
             throw new IllegalStateException("This Application does not inherit com.kakao.GlobalApplication");
@@ -68,8 +90,101 @@ public class GlobalApplication extends Application {
         notification_map = new HashMap<>();
         bitmap_map = new HashMap<>();
         unread_chat_map = new HashMap<>();
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = preferences.edit();
         // Kakao Sdk 초기화
         KakaoSDK.init(new KakaoSDKAdapter());
+        uid = preferences.getString("uid", "");
+        notiDB = FirebaseDatabase.getInstance().getReference("user/"+ uid + "/notifications");
+        mChildEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if(dataSnapshot.getValue() != null) {
+                    try {
+                        HashMap mapNotification = (HashMap) dataSnapshot.getValue();
+                        boolean isUnread = (boolean) mapNotification.get("isUnread");
+                        String id = (String) mapNotification.get("id");
+                        long timestamp = (long) mapNotification.get("time");
+                        long type = (long) mapNotification.get("type");
+                        String content = (String) mapNotification.get("content");
+                        NotificationData notificationData = new NotificationData();
+                        notificationData.id = id;
+                        notificationData.isUnread = isUnread;
+                        notificationData.time = timestamp;
+                        notificationData.type = type;
+                        notificationData.content = content;
+                        notification_map.put(id, notificationData);
+                        if (isUnread) {
+                            try {
+                                unread_noti_count++;
+                                if(homefragment != null && homefragment.isResumed()) {
+                                    homefragment.onResume();
+                                    homefragment.refresh();
+                                }
+                                if(notiActivity != null && getCurrentActivity().getLocalClassName().equals("Activity.NotificationActivity")) {
+                                    notiActivity.refresh();
+                                }
+                            } catch (NullPointerException e) {
+                                //e.printStackTrace();
+                            }
+                        }
+                    } catch(ClassCastException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                if(dataSnapshot.getValue() != null) {
+                    try {
+                        HashMap mapNotification = (HashMap) dataSnapshot.getValue();
+                        boolean isUnread = (boolean) mapNotification.get("isUnread");
+                        String id = (String) mapNotification.get("id");
+                        long timestamp = (long) mapNotification.get("time");
+                        long type = (long) mapNotification.get("type");
+                        String content = (String) mapNotification.get("content");
+                        NotificationData notificationData = new NotificationData();
+                        notificationData.id = id;
+                        notificationData.isUnread = isUnread;
+                        notificationData.time = timestamp;
+                        notificationData.type = type;
+                        notificationData.content = content;
+                        notification_map.put(id, notificationData);
+                        if (isUnread) {
+                            try {
+                                unread_noti_count++;
+                                if(homefragment != null) {
+                                    homefragment.onResume();
+                                    homefragment.refresh();
+                                    Log.d("UNREADCOUNT", unread_noti_count+"");
+                                }
+                                if(notiActivity != null) {
+                                    notiActivity.refresh();
+                                }
+                            } catch (NullPointerException e) {
+                                //e.printStackTrace();
+                            }
+                        }
+                    } catch(ClassCastException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        notiDB.addChildEventListener(mChildEventListener);
+
     }
     @Override
     public void onTerminate() {

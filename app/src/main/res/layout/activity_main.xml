@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.yamigu.yamigu_app.CustomLayout.CustomViewPager
+        <com.yamigu.yamigu_app.CustomLayout.CustomViewPager2
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -23,7 +23,7 @@
                 android:orientation="vertical">
 
             </LinearLayout>
-        </com.yamigu.yamigu_app.CustomLayout.CustomViewPager>
+        </com.yamigu.yamigu_app.CustomLayout.CustomViewPager2>
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"

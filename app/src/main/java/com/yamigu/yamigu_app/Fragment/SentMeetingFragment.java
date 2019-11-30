@@ -46,7 +46,7 @@ public class SentMeetingFragment extends Fragment {
     public SentMeetingFragment() {
         // Required empty public constructor
     }
-    public static SentMeetingFragment newInstance(String param1, String param2) {
+    public static SentMeetingFragment newInstance() {
         SentMeetingFragment fragment = new SentMeetingFragment();
         Bundle args = new Bundle();
 
@@ -92,25 +92,28 @@ public class SentMeetingFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                MeetingCardFragment fragment;
-                int currentPage = viewPager.getCurrentItem();
-                SentMeetingFragment.position = position;
-                tv_current.setText(Integer.toString(currentPage + 1));
-                for(int i = 1; i <= total_num; i++) {
-                    float d = getResources().getDisplayMetrics().density;
-                    fragment = fragmentAdapter.getItem(i - 1);
-                    //LinearLayout.LayoutParams mLayoutParams = (LinearLayout.LayoutParams) fragment.waitingTeamCard.getLayoutParams();
-                    if(i - 1 == currentPage) {
-                        //mLayoutParams.topMargin = 0;
-                        fragment.waitingTeamCard.setAlpha(1.0f);
+                try {
+                    MeetingCardFragment fragment;
+                    int currentPage = viewPager.getCurrentItem();
+                    SentMeetingFragment.position = position;
+                    tv_current.setText(Integer.toString(currentPage + 1));
+                    for (int i = 1; i <= total_num; i++) {
+                        float d = getResources().getDisplayMetrics().density;
+                        fragment = fragmentAdapter.getItem(i - 1);
+                        //LinearLayout.LayoutParams mLayoutParams = (LinearLayout.LayoutParams) fragment.waitingTeamCard.getLayoutParams();
+                        if (i - 1 == currentPage) {
+                            //mLayoutParams.topMargin = 0;
+                            fragment.waitingTeamCard.setAlpha(1.0f);
+                        } else {
+                            //mLayoutParams.topMargin = Math.round(16 * d);
+                            fragment.waitingTeamCard.setAlpha(0.4f);
+                        }
+                        //fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
                     }
-                    else {
-                        //mLayoutParams.topMargin = Math.round(16 * d);
-                        fragment.waitingTeamCard.setAlpha(0.4f);
-                    }
-                    //fragment.waitingTeamCard.setLayoutParams(mLayoutParams);
+                    refresh();
+                } catch(NullPointerException e) {
+                    refresh();
                 }
-                refresh();
             }
             @Override
             public void onPageScrollStateChanged(int i) {

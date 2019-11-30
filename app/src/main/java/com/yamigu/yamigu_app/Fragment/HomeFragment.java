@@ -156,6 +156,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         GlobalApplication.current_chatting_room = 0;
         me = this;
+        GlobalApplication.homefragment = (HomeFragment)me;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = preferences.edit();
         view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -204,7 +205,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                refresh();
+                //refresh();
             }
 
             @Override
@@ -225,19 +226,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ChildEventListener notiChildEventListenerForNotification = makeChildEventListenerForNotification();
-        notiDB = loadNotifications(notiChildEventListenerForNotification);
-        myMeetingCardFrame = new MyMeetingCardFrame(view);
-        tv_ticket_count.setText(Integer.toString(ticket_count));
+//        ChildEventListener notiChildEventListenerForNotification = makeChildEventListenerForNotification();
+//        notiDB = loadNotifications(notiChildEventListenerForNotification);
 
-        tv_unread_noti_count.setText(Integer.toString(GlobalApplication.unread_noti_count));
-        if(GlobalApplication.unread_noti_count == 0) {
-            tv_unread_noti_count.setVisibility(View.INVISIBLE);
-        }
-        String url = "http://106.10.39.154:9999/api/meetings/my/";
-        ContentValues values = new ContentValues();
-        NetworkTask networkTask = new NetworkTask(url, values);
-        networkTask.execute();
+        refresh();
         ((MainActivity)getActivity()).refresh();
     }
     @Override
@@ -247,6 +239,20 @@ public class HomeFragment extends Fragment {
         this.context = context;
     }
     public void refresh() {
+        myMeetingCardFrame = new MyMeetingCardFrame(view);
+        tv_ticket_count.setText(Integer.toString(ticket_count));
+
+        tv_unread_noti_count.setText(Integer.toString(GlobalApplication.unread_noti_count));
+        if(GlobalApplication.unread_noti_count == 0) {
+            tv_unread_noti_count.setVisibility(View.INVISIBLE);
+        }
+        else {
+            tv_unread_noti_count.setVisibility(View.VISIBLE);
+        }
+        String url = "http://106.10.39.154:9999/api/meetings/my/";
+        ContentValues values = new ContentValues();
+        NetworkTask networkTask = new NetworkTask(url, values);
+        networkTask.execute();
         if(fragmentAdapter != null) {
             fragmentAdapter.notifyDataSetChanged();
         }
@@ -304,6 +310,7 @@ public class HomeFragment extends Fragment {
                                 unreadCount++;
                                 myMeetingCard_chat.unread_count.setText(Integer.toString(unreadCount));
                                 GlobalApplication.unread_chat_map.put(matching_id, unreadCount);
+                                ((MainActivity)getActivity()).refresh();
                             }
                             else {
                                 unreadCount = 0;
@@ -342,30 +349,34 @@ public class HomeFragment extends Fragment {
         ChildEventListener mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if(dataSnapshot.getValue() != null) {
-                    Log.d("DATASNAPSHOT", ""+dataSnapshot.getValue());
-                    HashMap mapNotification = (HashMap) dataSnapshot.getValue();
-                    boolean isUnread = (boolean) mapNotification.get("isUnread");
-                    String id = (String) mapNotification.get("id");
-                    long timestamp = (long) mapNotification.get("time");
-                    long type = (long) mapNotification.get("type");
-                    String content = (String) mapNotification.get("content");
-                    NotificationData notificationData = new NotificationData();
-                    notificationData.id = id;
-                    notificationData.isUnread = isUnread;
-                    notificationData.time = timestamp;
-                    notificationData.type = type;
-                    notificationData.content = content;
-                    GlobalApplication.notification_map.put(""+id, notificationData);
-                    if(isUnread) {
-                        try {
-                            tv_unread_noti_count.setVisibility(View.VISIBLE);
-                            GlobalApplication.unread_noti_count++;
-                            tv_unread_noti_count.setText("" + GlobalApplication.unread_noti_count);
-                        } catch(NullPointerException e) {
-                            //e.printStackTrace();
+                try {
+                    if (dataSnapshot.getValue() != null) {
+                        Log.d("DATASNAPSHOT", "" + dataSnapshot.getValue());
+                        HashMap mapNotification = (HashMap) dataSnapshot.getValue();
+                        boolean isUnread = (boolean) mapNotification.get("isUnread");
+                        String id = (String) mapNotification.get("id");
+                        long timestamp = (long) mapNotification.get("time");
+                        long type = (long) mapNotification.get("type");
+                        String content = (String) mapNotification.get("content");
+                        NotificationData notificationData = new NotificationData();
+                        notificationData.id = id;
+                        notificationData.isUnread = isUnread;
+                        notificationData.time = timestamp;
+                        notificationData.type = type;
+                        notificationData.content = content;
+                        GlobalApplication.notification_map.put("" + id, notificationData);
+                        if (isUnread) {
+                            try {
+                                tv_unread_noti_count.setVisibility(View.VISIBLE);
+                                GlobalApplication.unread_noti_count++;
+                                tv_unread_noti_count.setText(Integer.toString(GlobalApplication.unread_noti_count));
+                            } catch (NullPointerException e) {
+                                //e.printStackTrace();
+                            }
                         }
                     }
+                } catch(ClassCastException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -588,10 +599,8 @@ public class HomeFragment extends Fragment {
                                         String url = "http://106.10.39.154:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
-                                            values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
-                                            values.put("visual", visual);
-                                            values.put("fun", fun);
-                                            values.put("manner", manner);
+                                            //values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
+                                            values.put("meeting_id", json_data.getInt("id"));
                                             NetworkTask3 networkTask3 = new NetworkTask3(url, values);
                                             networkTask3.execute();
                                         } catch(JSONException e) {
@@ -683,7 +692,8 @@ public class HomeFragment extends Fragment {
                                         String url = "http://106.10.39.154:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
-                                            values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
+                                            //values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
+                                            values.put("meeting_id", json_data.getInt("id"));
                                             values.put("visual", visual);
                                             values.put("fun", fun);
                                             values.put("manner", manner);
@@ -778,7 +788,8 @@ public class HomeFragment extends Fragment {
                                         String url = "http://106.10.39.154:9999/api/meetings/rate/";
                                         ContentValues values = new ContentValues();
                                         try {
-                                            values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
+                                            //values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
+                                            values.put("meeting_id", json_data.getInt("id"));
                                             values.put("visual", visual);
                                             values.put("fun", fun);
                                             values.put("manner", manner);
@@ -838,7 +849,8 @@ public class HomeFragment extends Fragment {
                                 String url = "http://106.10.39.154:9999/api/meetings/feedback/";
                                 ContentValues values = new ContentValues();
                                 try {
-                                    values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
+                                    //values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
+                                    values.put("meeting_id", json_data.getInt("id"));
                                     values.put("feedback", et_feedback.getText().toString());
                                     NetworkTask3 networkTask3 = new NetworkTask3(url, values);
                                     networkTask3.execute();

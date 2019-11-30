@@ -10,7 +10,15 @@
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="57dp">
+            android:layout_height="57dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="대기팀 리스트 "
+                android:textSize="14dp"
+                android:fontFamily="@font/roboto_font_family"
+                android:gravity="center_horizontal|center_vertical"/>
         </LinearLayout>
         <!--androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_w"

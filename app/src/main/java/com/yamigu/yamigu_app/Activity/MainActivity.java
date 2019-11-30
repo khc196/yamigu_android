@@ -39,6 +39,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.yamigu.yamigu_app.Adapter.MainFragmentAdapter;
 import com.yamigu.yamigu_app.CustomLayout.CustomDialog2;
+import com.yamigu.yamigu_app.CustomLayout.CustomViewPager;
+import com.yamigu.yamigu_app.CustomLayout.CustomViewPager2;
 import com.yamigu.yamigu_app.Etc.ImageUtils;
 import com.yamigu.yamigu_app.Fragment.HomeFragment;
 import com.yamigu.yamigu_app.Fragment.MoreFragment;
@@ -56,7 +58,7 @@ import java.security.MessageDigest;
 public class MainActivity extends AppCompatActivity {
     private Fragment homeFragment;
     private LinearLayout nav_bar;
-    public ImageButton nav_home, nav_wlist, nav_yamigu, nav_mypage, nav_more;
+    public static ImageButton nav_home, nav_wlist, nav_yamigu, nav_mypage, nav_more;
     private String auth_token;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -65,9 +67,10 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity me;
     public static ProgressDialog dialog = null;
     private static CustomDialog2 popupDialog = null;
-    ViewPager pager;
-    MainFragmentAdapter mainFragmentAdapter;
+    private static CustomViewPager2 pager;
+    public static MainFragmentAdapter mainFragmentAdapter;
     public static androidx.appcompat.widget.Toolbar tb;
+    private static int cur_index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         nav_mypage = (ImageButton) findViewById(R.id.nav_mypage);
         nav_more = (ImageButton) findViewById(R.id.nav_more);
         pager = findViewById(R.id.fragment_container);
-
+        pager.setPagingEnabled(false);
         mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
         MainActivity.dialog = ProgressDialog.show(this, "", "로딩중입니다...", true);
         mainFragmentAdapter.addItem(new HomeFragment());
@@ -200,21 +203,23 @@ public class MainActivity extends AppCompatActivity {
             mainFragmentAdapter.notifyDataSetChanged();
         }
     }
-    public void selectTab(int index) {
+    public static void selectTab(int index) {
         // MainActivity.dialog = ProgressDialog.show(this, "", "로딩중입니다...", true);
-        pager.setCurrentItem(index-1);
         switch(index) {
             case 1:
                 nav_home.setImageResource(R.drawable.nav_home_selected);
                 nav_wlist.setImageResource(R.drawable.nav_wlist);
                 nav_mypage.setImageResource(R.drawable.nav_mypage);
                 nav_more.setImageResource(R.drawable.nav_more);
+
+                //((HomeFragment)mainFragmentAdapter.getItem(index-1)).refresh();
                 break;
             case 2:
                 nav_home.setImageResource(R.drawable.nav_home);
                 nav_wlist.setImageResource(R.drawable.nav_wlist_selected);
                 nav_mypage.setImageResource(R.drawable.nav_mypage);
                 nav_more.setImageResource(R.drawable.nav_more);
+                //((WListFragment)mainFragmentAdapter.getItem(index-1)).refresh();
                 break;
             case 3:
                 nav_home.setImageResource(R.drawable.nav_home);
@@ -231,6 +236,12 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+        mainFragmentAdapter.getItem(cur_index).setUserVisibleHint(false);
+        mainFragmentAdapter.getItem(cur_index).onPause();
+        pager.setCurrentItem(index-1, false);
+        cur_index = index-1;
+        mainFragmentAdapter.getItem(cur_index).setUserVisibleHint(true);
+        mainFragmentAdapter.getItem(cur_index).onResume();
     }
     @Override
     public void onResume() {

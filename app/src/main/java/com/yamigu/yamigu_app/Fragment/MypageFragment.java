@@ -140,6 +140,7 @@ public class MypageFragment extends Fragment {
         label_certificated.setVisibility(View.INVISIBLE);
         btn_certificating.setVisibility(View.INVISIBLE);
         profile_url = preferences.getString("profile", "");
+
         user_certified = preferences.getInt("user_certified", 0);
         int num_of_ticket = preferences.getInt("num_of_ticket", 0);
         tv_num_of_ticket.setText(Integer.toString(num_of_ticket));
