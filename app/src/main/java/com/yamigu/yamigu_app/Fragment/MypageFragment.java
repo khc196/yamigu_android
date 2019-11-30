@@ -278,6 +278,10 @@ public class MypageFragment extends Fragment {
         tv_num_of_ticket.setText(Integer.toString(HomeFragment.ticket_count));
     }
     @Override
+    public void onPause() {
+        super.onPause();
+    }
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.actionbar_edit_nickname, menu);

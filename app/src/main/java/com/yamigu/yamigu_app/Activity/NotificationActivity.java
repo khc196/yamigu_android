@@ -74,7 +74,7 @@ public class NotificationActivity extends AppCompatActivity {
         //userDB = FirebaseDatabase.getInstance().getReference("user/" + uid);
         //ChildEventListener notiChildEventListenerForNotification = makeChildEventListenerForNotification();
 
-
+        refresh();
         //loadNotifications(notiChildEventListenerForNotification);
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
@@ -82,6 +82,7 @@ public class NotificationActivity extends AppCompatActivity {
     protected void onDestroy() {
         clearReferences();
         //notiDB.removeEventListener(mChildEventListener);
+        GlobalApplication.notiActivity = null;
         super.onDestroy();
     }
     public static List sortByValue(final Map map) {
