@@ -230,7 +230,7 @@ public class HomeFragment extends Fragment {
 //        notiDB = loadNotifications(notiChildEventListenerForNotification);
 
         refresh();
-        ((MainActivity)getActivity()).refresh();
+        //((MainActivity)getActivity()).refresh();
     }
     @Override
     public void onAttach(Context context) {

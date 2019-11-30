@@ -34,6 +34,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -42,6 +43,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -96,12 +98,12 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     //private ArrayAdapter<ChatData> mAdapter;
     private ListView mListView;
     private EditText et_message;
-    private ImageButton btn_send_message;
+    private ImageButton btn_send_message, btn_call_manager;
     private TextView tv_title;
     private LinearLayoutManager linearLayoutManager;
     public static SharedPreferences preferences;
 
-    public static String nickname, date, date_day, place, type, matching_id, meeting_id, partner_name, manager_name, manager_name_orig;
+    public static String nickname, date, date_month, date_day, place, type, matching_id, meeting_id, partner_name, manager_name, manager_name_orig;
 
     private long accepted_at;
     public static String uid, partner_uid, manager_uid;
@@ -132,6 +134,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         partner_name = intent.getExtras().getString("partner_nickname");
         date = intent.getExtras().getString("date");
         Log.d("DAY", date);
+
         date_day = date.split(" ")[1];
         place = intent.getExtras().getString("place");
         type = intent.getExtras().getString("type");
@@ -161,8 +164,26 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         et_message = findViewById(R.id.et_message);
         btn_send_message = findViewById(R.id.btn_send_message);
         btn_send_message.setOnClickListener(this);
+        btn_call_manager = findViewById(R.id.btn_call_manager);
+
+        btn_call_manager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    btn_call_manager.setImageResource(R.drawable.btn_call_manager_active);
+
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
+                   // do nothing
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    btn_call_manager.setImageResource(R.drawable.btn_call_manager);
+                    Toast.makeText(getApplicationContext(), "매니저를 호출했어요!",
+                            Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
         tv_title = findViewById(R.id.tv_title);
-        tv_title.setText(date_day + " || " + place + " || " + type);
+        tv_title.setText(date + " || " + place + " || " + type);
         uid = preferences.getString("uid", "");
         Log.d("manager_uid", manager_uid);
 
@@ -800,6 +821,7 @@ class ItemMessagePartnerHolder extends RecyclerView.ViewHolder {
 
 class ItemMessageManagerHolder extends RecyclerView.ViewHolder {
     private LinearLayout content_welcome, content_precautions, content_place, content_normal;
+    private Button btn_view_recommendation;
     public TextView usrName, txtContent, txtTime;
     public CircularImageView avata;
 
@@ -817,6 +839,15 @@ class ItemMessageManagerHolder extends RecyclerView.ViewHolder {
         txtContent = (TextView) itemView.findViewById(R.id.chatting_content);
         txtTime = (TextView) itemView.findViewById(R.id.time);
         avata = (CircularImageView) itemView.findViewById(R.id.iv_profile);
+        btn_view_recommendation = content_place.findViewById(R.id.btn_view_recommendation);
+        btn_view_recommendation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), AllianceListActivity.class);
+                view.getContext().startActivity(intent);
+                ((ChattingActivity)view.getContext()).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+            }
+        });
     }
     public void setType(String Type) {
         Log.d("setType", Type);

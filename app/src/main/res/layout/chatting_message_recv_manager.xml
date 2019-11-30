@@ -143,6 +143,7 @@
                                 android:fontFamily="@font/binggrae_font_family"
                                 android:textSize="10dp"
                                 android:textColor="@color/colorBlack"
+                                android:visibility="gone"
                                 />
                             <TextView
                                 android:id="@+id/chatting_content_type"
@@ -162,7 +163,8 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingRight="10dp"
-                            android:visibility="gone">
+                            android:visibility="gone"
+                            >
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -188,7 +190,7 @@
                                 android:layout_width="180dp"
                                 android:layout_height="37dp"
                                 android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="46dp"
+                                android:layout_marginTop="14dp"
                                 android:background="@drawable/ic_filter_state_orange2"
                                 android:text="추천 매장 보기"
                                 android:textSize="14dp"
@@ -208,7 +210,7 @@
                                 android:maxWidth="210dp"
                                 android:text="안녕하세요 :)\n미팅 진행을 도와줄 매칭 매니저 sub입니다.\n\n아래 내용을 꼭 참고해주세요\n*채팅내에서 자유롭게 약속을 수정하셔도 됩니다.
     \n*개인 연락처 교환시 야미구 미팅에서 벗어나 모든 책임 및 환불제도에서 제외됩니다.
-    \n\n매니저가 필요하거나 궁금한점이 생기면 언제든 우측 상단 아이콘을 눌러주세요!"
+    \n\n매니저가 필요하거나 궁금한점이 생기면 언제든 좌측 하단 아이콘을 눌러주세요!"
                                 android:fontFamily="@font/binggrae_font_family"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="10dp" />
