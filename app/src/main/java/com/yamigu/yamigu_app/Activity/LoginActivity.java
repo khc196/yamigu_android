@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
@@ -16,6 +17,7 @@ import android.util.Log;
 
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
 
     ImageButton btn_login_kakao;
     private LoginButton btn_kakao_login;
+    private TextView tv_what_is_yamigu;
     private SessionCallback callback;
     private String auth_token;
     private SharedPreferences preferences;
@@ -62,9 +65,18 @@ public class LoginActivity extends AppCompatActivity {
 //        Session.getCurrentSession().addCallback(callback);
 //        Session.getCurrentSession().checkAndImplicitOpen();
         mAuth = FirebaseAuth.getInstance();
-
+        tv_what_is_yamigu = (TextView) findViewById(R.id.tv_what_is_yamigu);
         btn_login_kakao = (ImageButton) findViewById(R.id.btn_login_kakao);
         me = this;
+        tv_what_is_yamigu.setPaintFlags(tv_what_is_yamigu.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        tv_what_is_yamigu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), WhatisYamiguActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+            }
+        });
         btn_login_kakao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

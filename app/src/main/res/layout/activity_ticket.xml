@@ -226,28 +226,31 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="- 티켓은 매칭 후 만남까지 이용권입니다."
-                        android:textSize="11dp"
+                        android:textSize="14dp"
                         android:textColor="@color/colorNonselect"
                         android:fontFamily="@font/nanumgothic_font_family"/>
                     <TextView
+                        android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="- 상대가 미팅을 취소하는 경우만 이용권은 반환됩니다."
-                        android:textSize="11dp"
+                        android:textSize="14dp"
                         android:textColor="@color/colorNonselect"
                         android:fontFamily="@font/nanumgothic_font_family"/>
                     <TextView
+                        android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="- 이용권 사용 후 미팅 취소는 반환되지 않습니다."
-                        android:textSize="11dp"
+                        android:textSize="14dp"
                         android:textColor="@color/colorNonselect"
                         android:fontFamily="@font/nanumgothic_font_family"/>
                     <TextView
+                        android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="- 미팅노쇼인 경우 야미구 사용에 제한이 걸립니다."
-                        android:textSize="11dp"
+                        android:textSize="14dp"
                         android:textColor="@color/colorNonselect"
                         android:fontFamily="@font/nanumgothic_font_family"/>
                 </LinearLayout>
