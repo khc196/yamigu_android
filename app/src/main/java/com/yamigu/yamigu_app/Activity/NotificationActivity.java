@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -52,6 +53,7 @@ public class NotificationActivity extends AppCompatActivity {
     private ChildEventListener mChildEventListener;
     private SharedPreferences preferences;
     private String uid;
+    private long mLastClickTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,6 +142,10 @@ public class NotificationActivity extends AppCompatActivity {
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
                     notificationData.isUnread = false;
                     GlobalApplication.notiDB.child(notificationData.id).setValue(notificationData);
                     GlobalApplication.unread_noti_count --;

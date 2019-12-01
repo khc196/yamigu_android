@@ -14,6 +14,7 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
@@ -110,6 +111,7 @@ public class HomeFragment extends Fragment {
     private int total_num;
     public static int ticket_count;
     public static int ACTION_START_CHAT = 1;
+    private long mLastClickTime = 0;
     View view;
     private class MyMeetingCardFrame {
         private MyMeetingCard mmc_list[];
@@ -1033,6 +1035,10 @@ public class HomeFragment extends Fragment {
                             View.OnClickListener goChattingListener = new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
+                                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                                        return;
+                                    }
+                                    mLastClickTime = SystemClock.elapsedRealtime();
                                     Intent intent = new Intent(getContext(), ChattingActivity.class);
                                     //((MyMeetingCard_Chat)view).unread_count.setText("0");
                                     intent.putExtra("meeting_id", ""+meeting_id);
