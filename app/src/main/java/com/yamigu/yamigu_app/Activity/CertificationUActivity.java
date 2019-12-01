@@ -133,7 +133,7 @@ public class CertificationUActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(editable.toString().isEmpty() && et_major.getText().toString().isEmpty()) {
+                if(editable.toString().isEmpty() || et_major.getText().toString().isEmpty()) {
                     btn_go_home.setBackgroundResource(R.drawable.state_pressed_gray);
                 }
                 else {
@@ -154,7 +154,7 @@ public class CertificationUActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(editable.toString().isEmpty() && et_university.getText().toString().isEmpty()) {
+                if(editable.toString().isEmpty() || et_university.getText().toString().isEmpty()) {
                     btn_go_home.setBackgroundResource(R.drawable.state_pressed_gray);
                 }
                 else {

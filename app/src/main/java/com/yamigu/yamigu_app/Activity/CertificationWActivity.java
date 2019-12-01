@@ -129,7 +129,7 @@ public class CertificationWActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(editable.toString().isEmpty() && et_job.getText().toString().isEmpty()) {
+                if(editable.toString().isEmpty() || et_job.getText().toString().isEmpty()) {
                     btn_go_home.setBackgroundResource(R.drawable.state_pressed_gray);
                 }
                 else {
@@ -150,7 +150,7 @@ public class CertificationWActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(editable.toString().isEmpty() && et_company.getText().toString().isEmpty()) {
+                if(editable.toString().isEmpty() || et_company.getText().toString().isEmpty()) {
                     btn_go_home.setBackgroundResource(R.drawable.state_pressed_gray);
                 }
                 else {
