@@ -75,7 +75,7 @@ public class RequestListActivity extends AppCompatActivity {
                 pager.setCurrentItem(tag);
             }
         };
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
 

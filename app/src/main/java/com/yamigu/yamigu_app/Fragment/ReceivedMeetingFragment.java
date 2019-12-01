@@ -280,7 +280,7 @@ public class ReceivedMeetingFragment extends Fragment {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-//                                    progressDialog = ProgressDialog.show(getContext(), "", "미팅 매칭중입니다...", true);
+                                    progressDialog = ProgressDialog.show(getContext(), "", "미팅 매칭중입니다...", true);
                                     String url = "http://106.10.39.154:9999/api/matching/accept_request/";
                                     MeetingCardFragment fragment = fragmentAdapter.getItem(viewPager.getCurrentItem());
 

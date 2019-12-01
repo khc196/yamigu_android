@@ -37,22 +37,24 @@ public class CircularImageView extends androidx.appcompat.widget.AppCompatImageV
         if (getWidth() == 0 || getHeight() == 0) {
             return;
         }
-        this.bitmap = ((BitmapDrawable) drawable).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
-        Bitmap b = ((BitmapDrawable) drawable).getBitmap();
-        Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);
+        try {
+            this.bitmap = ((BitmapDrawable) drawable).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
+            Bitmap b = ((BitmapDrawable) drawable).getBitmap();
+            Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true);
 
-        int w = getWidth(), h = getHeight();
-        Bitmap dst;
-        Bitmap roundBitmap;
-        if(bitmap.getWidth() < bitmap.getHeight()) {
-            dst = Bitmap.createBitmap(bitmap, 0, (bitmap.getHeight()/2) - (bitmap.getWidth()/2), bitmap.getWidth(), bitmap.getWidth());
-            roundBitmap = getRoundedCroppedBitmap(dst, w);
+            int w = getWidth(), h = getHeight();
+            Bitmap dst;
+            Bitmap roundBitmap;
+            if (bitmap.getWidth() < bitmap.getHeight()) {
+                dst = Bitmap.createBitmap(bitmap, 0, (bitmap.getHeight() / 2) - (bitmap.getWidth() / 2), bitmap.getWidth(), bitmap.getWidth());
+                roundBitmap = getRoundedCroppedBitmap(dst, w);
+            } else {
+                dst = Bitmap.createBitmap(bitmap, (bitmap.getWidth() / 2) - (bitmap.getHeight() / 2), 0, bitmap.getHeight(), bitmap.getHeight());
+                roundBitmap = getRoundedCroppedBitmap(dst, w);
+            }
+            canvas.drawBitmap(roundBitmap, 0, 0, null);
+        } catch(NullPointerException e) {
         }
-        else {
-            dst = Bitmap.createBitmap(bitmap, (bitmap.getWidth()/2) - (bitmap.getHeight()/2), 0, bitmap.getHeight(), bitmap.getHeight());
-            roundBitmap = getRoundedCroppedBitmap(dst, w);
-        }
-        canvas.drawBitmap(roundBitmap, 0, 0, null);
     }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

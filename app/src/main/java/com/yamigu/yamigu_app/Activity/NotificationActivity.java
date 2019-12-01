@@ -141,9 +141,8 @@ public class NotificationActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     notificationData.isUnread = false;
-//                    HomeFragment.notiDB.child(notificationData.id).setValue(notificationData);
-                    GlobalApplication.unread_noti_count--;
-
+                    GlobalApplication.notiDB.child(notificationData.id).setValue(notificationData);
+                    GlobalApplication.unread_noti_count --;
                     finish();
                 }
             });

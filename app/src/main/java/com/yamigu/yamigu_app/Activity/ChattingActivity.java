@@ -899,7 +899,7 @@ class ItemMessageManagerHolder extends RecyclerView.ViewHolder {
             content_precautions.setVisibility(View.VISIBLE);
             String str = "안녕하세요 :)\n미팅 진행을 도와줄 매칭 매니저 sub입니다.\n\n아래 내용을 꼭 참고해주세요\n*채팅내에서 자유롭게 약속을 수정하셔도 됩니다.\n" +
                     "\n*개인 연락처 교환시 야미구 미팅에서 벗어나 모든 책임 및 환불제도에서 제외됩니다.\n" +
-                    "\n\n매니저가 필요하거나 궁금한점이 생기면 언제든 우측 상단 아이콘을 눌러주세요!";
+                    "\n\n매니저가 필요하거나 궁금한점이 생기면 언제든 좌측 하단 아이콘을 눌러주세요!";
             SpannableStringBuilder ssb = new SpannableStringBuilder(str);
             ssb.setSpan(new ForegroundColorSpan(Color.parseColor("#FF7B22")), 20, 30, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             ssb.setSpan(new ForegroundColorSpan(Color.parseColor("#FF7B22")), 68, 70, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

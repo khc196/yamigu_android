@@ -82,7 +82,7 @@ public class WListFragment extends Fragment {
     private Menu global_menu;
     private SwipeRefreshLayout swipeRefreshLayout;
     private String refresh_url = "";
-    private boolean invisible_flag = false;
+    private boolean invisible_flag = true;
     public WListFragment() {
         this.active_type_set = new HashSet<>();
         this.active_place_set = new HashSet<>();
@@ -188,6 +188,7 @@ public class WListFragment extends Fragment {
     public void refresh() {
         String url = refresh_url;
         //MainActivity.dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
+
         ContentValues values = new ContentValues();
         NetworkTask2 networkTask2 = new NetworkTask2(url, values);
         networkTask2.execute();
@@ -429,6 +430,19 @@ public class WListFragment extends Fragment {
                         else {
                             NetworkTask3 networkTask3 = new NetworkTask3(url, values, profile_img, mRootLinear, mtw);
                             networkTask3.execute();
+                        }
+                    }
+                    else {
+                        mtw.setVisibility(View.INVISIBLE);
+                        mtw.setTranslationX(100);
+                        mtw.setVisibility(View.VISIBLE);
+                        mtw.animate()
+                                .setDuration(50)
+                                .alpha(1.0f)
+                                .translationX(0)
+                                .setListener(null);
+                        if(MainActivity.dialog.isShowing()) {
+                            MainActivity.dialog.dismiss();
                         }
                     }
                     if(!is_matched) {

@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -87,7 +88,7 @@ public class MypageFragment extends Fragment {
     private TextView tv_nickname, tv_age, tv_belong, tv_department, tv_available_nickname, tv_num_of_ticket, tv_num_of_noti;
     private EditText et_nickname;
     private ImageButton btn_edit_nickname;
-    private CircularImageView profile_img;
+    public static CircularImageView profile_img;
     private RelativeLayout label_certificated;
     private FrameLayout fl_meeting_card;
     private Button btn_certificating;
@@ -255,7 +256,7 @@ public class MypageFragment extends Fragment {
 //        }
 //
         if(!profile_url.isEmpty()) {
-            profile_img.setImageBitmap(GlobalApplication.bitmap_map.get(profile_url));
+//            profile_img.setImageBitmap(GlobalApplication.bitmap_map.get(profile_url));
 //            ContentValues values = new ContentValues();
 //            NetworkTask3 networkTask3 = new NetworkTask3(profile_url, values, profile_img);
 //            networkTask3.execute();
@@ -276,6 +277,7 @@ public class MypageFragment extends Fragment {
     public void onResume() {
         super.onResume();
         tv_num_of_ticket.setText(Integer.toString(HomeFragment.ticket_count));
+        tv_num_of_noti.setText(Integer.toString(GlobalApplication.unread_noti_count));
     }
     @Override
     public void onPause() {

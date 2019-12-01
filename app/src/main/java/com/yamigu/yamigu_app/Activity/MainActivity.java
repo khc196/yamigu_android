@@ -89,11 +89,7 @@ public class MainActivity extends AppCompatActivity {
         auth_token = preferences.getString("auth_token", "");
 
         String url = preferences.getString("profile", "");
-        if(!url.isEmpty()) {
-            ContentValues values = new ContentValues();
-            NetworkTask networkTask = new NetworkTask(url, values);
-            networkTask.execute();
-        }
+
         nav_bar = (LinearLayout) findViewById(R.id.nav_bar);
         nav_home = (ImageButton) findViewById(R.id.nav_home);
         nav_wlist = (ImageButton) findViewById(R.id.nav_wlist);
@@ -157,7 +153,33 @@ public class MainActivity extends AppCompatActivity {
 
         //homeFragment = new HomeFragment();
         //loadFragment(homeFragment);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mainFragmentAdapter.getItem(cur_index).setUserVisibleHint(false);
+                mainFragmentAdapter.getItem(cur_index).onPause();
+                cur_index = position;
+                mainFragmentAdapter.getItem(cur_index).setUserVisibleHint(true);
+                mainFragmentAdapter.getItem(cur_index).onResume();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        pager.setOffscreenPageLimit(3);
+        if(!url.isEmpty()) {
+            ContentValues values = new ContentValues();
+            NetworkTask networkTask = new NetworkTask(url, values);
+            networkTask.execute();
+        }
+        pager.setCurrentItem(0, false);
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override
@@ -236,12 +258,9 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
-        mainFragmentAdapter.getItem(cur_index).setUserVisibleHint(false);
-        mainFragmentAdapter.getItem(cur_index).onPause();
+
         pager.setCurrentItem(index-1, false);
-        cur_index = index-1;
-        mainFragmentAdapter.getItem(cur_index).setUserVisibleHint(true);
-        mainFragmentAdapter.getItem(cur_index).onResume();
+
     }
     @Override
     public void onResume() {
@@ -288,6 +307,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Bitmap bm) {
             GlobalApplication.bitmap_map.put(url, bm);
+            MypageFragment.profile_img.setImageBitmap(GlobalApplication.bitmap_map.get(url));
         }
     }
 }
