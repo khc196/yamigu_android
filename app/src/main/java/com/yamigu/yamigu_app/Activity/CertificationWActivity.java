@@ -71,6 +71,8 @@ public class CertificationWActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_certification_w);
         tb = (Toolbar) findViewById(R.id.toolbar) ;
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
         setSupportActionBar(tb) ;
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -94,11 +96,19 @@ public class CertificationWActivity extends AppCompatActivity {
         phonenumber = preferences.getString("phonenumber", "");
         gender_string = preferences.getString("gender_string", "");
         birthdate = preferences.getString("birthdate", "");
+        if(birthdate.isEmpty()) {
+            age = preferences.getInt("age", 0);
+        }
+        else {
+            age = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(birthdate.substring(0, 4)) + 1;
+        }
+        if(gender_string.isEmpty()) {
+            gender = preferences.getInt("gender", 0);
+        }
+        else {
+            gender = Integer.parseInt(gender_string);
 
-        age = Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt(birthdate.substring(0, 4)) + 1;
-        gender = Integer.parseInt(gender_string);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = preferences.edit();
+        }
         auth_token = preferences.getString("auth_token", "");
         btn_attach_file = (ImageButton) findViewById(R.id.btn_attach_file);
         btn_go_home = (Button) findViewById(R.id.btn_gohome);
