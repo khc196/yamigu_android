@@ -7,6 +7,10 @@
     tools:context=".Activity.CertificationUActivity"
     android:background="@color/colorPrimary">
     <LinearLayout
+        android:id="@+id/overall_layout"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -29,6 +33,10 @@
             </TextView>
         </androidx.appcompat.widget.Toolbar>
         <LinearLayout
+            android:id="@+id/inner_layout"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="36dp"

@@ -26,7 +26,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -74,6 +76,18 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meeting_application);
+        findViewById(R.id.overall_layout).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch(NullPointerException e) {
+
+                }
+                return true;
+            }
+        });
         meetingApplicationActivity = this;
         progressDialog = ProgressDialog.show(this, "", "로딩중입니다...", true);
 
@@ -165,6 +179,18 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         date_view = (LinearLayout) findViewById(R.id.date_view);
         place_view = (LinearLayout) findViewById(R.id.place_view);
         appeal_view = (LinearLayout) findViewById(R.id.appeal_view);
+        appeal_view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch(NullPointerException e) {
+
+                }
+                return true;
+            }
+        });
         btn_okay = (Button) findViewById(R.id.btn_okay);
         selected_type_text.setText("인원");
         selected_date_text.setText("날짜");
