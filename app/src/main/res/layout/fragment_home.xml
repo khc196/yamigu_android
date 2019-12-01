@@ -181,7 +181,7 @@
                     app:month="5월"
                     app:date="28일"
                     app:dday="Today"
-
+                    android:visibility="gone"
                     >
                 </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard>
                 <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat
@@ -191,7 +191,8 @@
                     android:layout_gravity="center_horizontal"
                     app:chat="오늘 재밌게 놀아요~"
                     app:unread="2"
-                    app:time="오후 2:22">
+                    app:time="오후 2:22"
+                    android:visibility="gone">
                 </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat>
                 <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard
                     android:id="@+id/mmc_2"
@@ -205,6 +206,7 @@
                     app:month="5월"
                     app:date="28일"
                     app:dday="Today"
+                    android:visibility="gone"
                     >
                 </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard>
                 <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat
@@ -214,7 +216,8 @@
                     android:layout_gravity="center_horizontal"
                     app:chat="오늘 재밌게 놀아요~"
                     app:unread="2"
-                    app:time="오후 2:22">
+                    app:time="오후 2:22"
+                    android:visibility="gone">
                 </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat>
                 <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard
                     android:id="@+id/mmc_3"
@@ -228,6 +231,7 @@
                     app:month="5월"
                     app:date="28일"
                     app:dday="Today"
+                    android:visibility="gone"
                     >
                 </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard>
                 <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat
@@ -237,7 +241,8 @@
                     android:layout_gravity="center_horizontal"
                     app:chat="오늘 재밌게 놀아요~"
                     app:unread="2"
-                    app:time="오후 2:22">
+                    app:time="오후 2:22"
+                    android:visibility="gone">
                 </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat>
                 <TextView
                     android:id="@+id/tv_recommendation"

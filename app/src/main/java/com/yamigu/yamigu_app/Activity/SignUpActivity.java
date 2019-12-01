@@ -30,6 +30,7 @@ import com.yamigu.yamigu_app.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -384,23 +385,26 @@ public class SignUpActivity extends AppCompatActivity {
 
             String pattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]*$";
             Editable editable = et_nickname.getText();
-            boolean is_validate = editable.length() <= 6 && Pattern.matches(pattern, editable.toString());
-            if(!editable.toString().isEmpty()) {
-                tv_available_nickname.setVisibility(View.VISIBLE);
-                if (!is_validate || !validated_from_server) {
-                    tv_available_nickname.setTextColor(getResources().getColor(R.color.colorRed));
-                    tv_available_nickname.setText("사용 불가능합니다.");
-                    nickname_validated = false;
-                    nickname = "";
+            try {
+                boolean is_validate = editable.toString().getBytes("euc-kr").length <= 12 && Pattern.matches(pattern, editable.toString());
+                if (!editable.toString().isEmpty()) {
+                    tv_available_nickname.setVisibility(View.VISIBLE);
+                    if (!is_validate || !validated_from_server) {
+                        tv_available_nickname.setTextColor(getResources().getColor(R.color.colorRed));
+                        tv_available_nickname.setText("사용 불가능합니다.");
+                        nickname_validated = false;
+                        nickname = "";
+                    } else {
+                        tv_available_nickname.setTextColor(getResources().getColor(R.color.colorBlue));
+                        tv_available_nickname.setText("사용 가능합니다.");
+                        nickname_validated = true;
+                        nickname = editable.toString();
+                    }
                 } else {
-                    tv_available_nickname.setTextColor(getResources().getColor(R.color.colorBlue));
-                    tv_available_nickname.setText("사용 가능합니다.");
-                    nickname_validated = true;
-                    nickname = editable.toString();
+                    tv_available_nickname.setVisibility(View.GONE);
                 }
-            }
-            else {
-                tv_available_nickname.setVisibility(View.GONE);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
     }

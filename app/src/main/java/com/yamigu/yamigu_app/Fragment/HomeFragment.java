@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment {
     public static FragmentAdapter fragmentAdapter;
     private TabLayout tabIndicator;
     private int total_num;
-    public static int ticket_count;
+    public static int ticket_count = 0;
     public static int ACTION_START_CHAT = 1;
     private long mLastClickTime = 0;
     View view;
@@ -165,8 +165,9 @@ public class HomeFragment extends Fragment {
         auth_token = preferences.getString("auth_token", "");
         uid = preferences.getString("uid", "");
         nickname = preferences.getString("nickname", "");
-        userDB = FirebaseDatabase.getInstance().getReference("user/" + uid);
         ticket_count = preferences.getInt("num_of_ticket", 0);
+        userDB = FirebaseDatabase.getInstance().getReference("user/" + uid);
+
 //        tb = (Toolbar) view.findViewById(R.id.toolbar_h) ;
 //        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
@@ -937,6 +938,7 @@ public class HomeFragment extends Fragment {
             else {
                 btn_go_yamigu.setVisibility(View.GONE);
             }
+            ArrayList<String> date_list = new ArrayList<>();
             for(int i = 0; i < myMeetingCardFrame.getActive_length(); i++) {
                 try {
                     final int meeting_id = jsonArray.getJSONObject(i).getInt("id");
@@ -954,12 +956,14 @@ public class HomeFragment extends Fragment {
                     myMeetingCardFrame.mmc_list[i].setAppeal(jsonArray.getJSONObject(i).getString("appeal"));
                     SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+
                     Date translated_date;
                     Date today = new Date();
                     Calendar cal_meeting_day = Calendar.getInstance();
                     Calendar cal_today = Calendar.getInstance();
                     try {
                         String date_string = jsonArray.getJSONObject(i).getString("date");
+                        date_list.add(date_string);
                         translated_date = transFormat.parse(date_string);
                         myMeetingCardFrame.mmc_list[i].setDateString(date_string);
                         cal_meeting_day.setTime(translated_date);
@@ -1077,6 +1081,7 @@ public class HomeFragment extends Fragment {
                 myMeetingCardFrame.mmc_list[i].setVisibility(View.VISIBLE);
                 ((MainActivity)context).setMyMeetingCount(i+1);
             }
+            GlobalApplication.active_date_list = date_list;
             if(MainActivity.dialog.isShowing()) {
                 MainActivity.dialog.dismiss();
             }

@@ -479,6 +479,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                 }
             });
         }
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (int i = 0; i < btn_select_date_array.length; i++) {
             final Button button = btn_select_date_array[i];
             final int me = i+1;
@@ -488,10 +489,28 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             cal.add(Calendar.DATE, 1);
             String date_text = getTime + " " + DOW[day_of_week];
             button.setText(date_text);
+            boolean flag = false;
+            for(int j = 0; j < GlobalApplication.active_date_list.size(); j++) {
+                try {
+                    Date date_obj = transFormat.parse(GlobalApplication.active_date_list.get(j));
+                    Calendar cal2 = Calendar.getInstance();
+                    cal2.setTime(date_obj);
+                    if(cal2.get(Calendar.MONTH) == cal.get(Calendar.MONTH) && cal2.get(Calendar.DATE) == cal.get(Calendar.DATE)) {
+                        flag = true;
+                        break;
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
             if(ma.getDate_string().equals(date_text)) {
                 ma.setDate(me);
                 button.setBackgroundColor(getResources().getColor(R.color.colorPoint));
                 button.setTextColor(Color.WHITE);
+            }
+            if(flag) {
+                button.setAlpha(0.5f);
+                continue;
             }
             button.setOnClickListener(new View.OnClickListener() {
                 @Override

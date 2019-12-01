@@ -49,6 +49,7 @@ public class GlobalApplication extends Application {
     public static HashMap<String, NotificationData> notification_map;
     public static HashMap<String, Bitmap> bitmap_map;
     public static HashMap<Integer, Integer> unread_chat_map;
+    public static ArrayList<String> active_date_list;
     public static boolean push_noti_avail = true, chat_noti_avail = true;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -96,6 +97,7 @@ public class GlobalApplication extends Application {
         KakaoSDK.init(new KakaoSDKAdapter());
         uid = preferences.getString("uid", "");
         notiDB = FirebaseDatabase.getInstance().getReference("user/"+ uid + "/notifications");
+        active_date_list = new ArrayList<>();
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

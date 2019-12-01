@@ -1,17 +1,22 @@
 package com.yamigu.yamigu_app.Activity;
 
+import android.Manifest;
 import android.app.Activity;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import android.os.Bundle;
 import android.util.Log;
 
@@ -59,6 +64,16 @@ public class LoginActivity extends AppCompatActivity {
         mauth_flag = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(LoginActivity.this,
+                    new String[]{
+                            Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(LoginActivity.this,
+                    new String[]{
+                            Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        }
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
 //        callback = new SessionCallback();
