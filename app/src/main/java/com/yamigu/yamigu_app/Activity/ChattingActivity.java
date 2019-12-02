@@ -349,7 +349,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             public boolean onTouch(View v, MotionEvent event) {
                 GlobalApplication.hideKeyboard(ChattingActivity.this);
                 return false;
-            }5
+            }
         });
 
         //mAdapter = new ChatMessageAdapter(this, R.layout.chatting_message_recv_woman);
