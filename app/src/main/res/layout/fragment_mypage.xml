@@ -68,9 +68,11 @@
                     />
             </RelativeLayout-->
             <ScrollView
+                android:id="@+id/overall_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <LinearLayout
+                    android:id="@+id/inner_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -92,6 +94,7 @@
                         app:code="q7tik3">
                     </com.yamigu.yamigu_app.CustomLayout.InviteFriends>
                     <FrameLayout
+                        android:id="@+id/chat_manager"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="33dp"
