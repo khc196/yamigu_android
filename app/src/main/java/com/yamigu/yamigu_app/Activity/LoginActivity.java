@@ -278,7 +278,10 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             try {
-                signup_flag = jsonObject.getString("nickname").equals("null");
+                signup_flag = jsonObject.getString("nickname").equals("null")
+                        || jsonObject.getString("nickname").isEmpty()
+                        || jsonObject.getString("real_name").equals("null")
+                        || jsonObject.getString("real_name").isEmpty();
                 firebase_token = jsonObject.getString("firebase_token");
             } catch(JSONException e) {
                 e.printStackTrace();

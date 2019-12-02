@@ -386,7 +386,8 @@ public class SignUpActivity extends AppCompatActivity {
             String pattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]*$";
             Editable editable = et_nickname.getText();
             try {
-                boolean is_validate = editable.toString().getBytes("euc-kr").length <= 12 && Pattern.matches(pattern, editable.toString());
+                int length = editable.toString().getBytes("euc-kr").length;
+                boolean is_validate =  length > 0 && length <= 12 && Pattern.matches(pattern, editable.toString());
                 if (!editable.toString().isEmpty()) {
                     tv_available_nickname.setVisibility(View.VISIBLE);
                     if (!is_validate || !validated_from_server) {

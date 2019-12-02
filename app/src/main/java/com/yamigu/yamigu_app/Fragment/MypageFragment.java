@@ -217,6 +217,12 @@ public class MypageFragment extends Fragment {
                         ContentValues values = new ContentValues();
                         NetworkTask networkTask = new NetworkTask(url, values);
                         networkTask.execute();
+                        tv_available_nickname.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        nickname_validated = false;
+                        tv_available_nickname.setVisibility(View.GONE);
+                        globalMenu.findItem(R.id.menu_complete).setEnabled(false);
                     }
                 }
             });
@@ -291,6 +297,7 @@ public class MypageFragment extends Fragment {
         globalMenu = menu;
         menu.findItem(R.id.menu_complete).setVisible(false);
         menu.findItem(R.id.menu_cancel).setVisible(false);
+        menu.findItem(R.id.menu_complete).setEnabled(false);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -313,6 +320,7 @@ public class MypageFragment extends Fragment {
             case R.id.menu_cancel:
                 tv_nickname.setVisibility(View.VISIBLE);
                 et_nickname.setVisibility(View.GONE);
+                et_nickname.setText("");
                 btn_edit_nickname.setVisibility(View.VISIBLE);
                 tv_available_nickname.setVisibility(View.GONE);
                 globalMenu.findItem(R.id.menu_cancel).setVisible(false);
@@ -410,17 +418,20 @@ public class MypageFragment extends Fragment {
             String pattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]*$";
             Editable editable = et_nickname.getText();
             try {
-                boolean is_validate = editable.toString().getBytes("euc-kr").length <= 12 && Pattern.matches(pattern, editable.toString());
+                int length = editable.toString().getBytes("euc-kr").length;
+                boolean is_validate =  length > 0 && length <= 12 && Pattern.matches(pattern, editable.toString());
                 if (!editable.toString().isEmpty() || !editable.toString().equals(tv_nickname.getText().toString())) {
                     tv_available_nickname.setVisibility(View.VISIBLE);
                     if (!is_validate || !validated_from_server) {
                         tv_available_nickname.setTextColor(getResources().getColor(R.color.colorRed));
                         tv_available_nickname.setText("사용 불가능합니다.");
                         nickname_validated = false;
+                        globalMenu.findItem(R.id.menu_complete).setEnabled(false);
                         nickname = "";
                     } else {
                         tv_available_nickname.setTextColor(getResources().getColor(R.color.colorBlue));
                         tv_available_nickname.setText("사용 가능합니다.");
+                        globalMenu.findItem(R.id.menu_complete).setEnabled(true);
                         nickname_validated = true;
                         nickname = editable.toString();
                     }
