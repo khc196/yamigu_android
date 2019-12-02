@@ -351,7 +351,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 } catch(NullPointerException e) {
-
+                    return false;
                 }
                 return true;
             }
