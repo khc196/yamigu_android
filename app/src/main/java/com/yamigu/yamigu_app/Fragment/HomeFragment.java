@@ -297,58 +297,58 @@ public class HomeFragment extends Fragment {
         receivedNotificationReference.addChildEventListener(mChildEventListener);
         return receivedNotificationReference;
     }
-    private ChildEventListener makeChildEventListener(final MyMeetingCard_Chat myMeetingCard_chat, final int matching_id) {
-        final DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("message/" + matching_id);
-        ChildEventListener mChildEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if(dataSnapshot.getValue() != null) {
-                    HashMap mapMessage = (HashMap) dataSnapshot.getValue();
-                    boolean isUnread = (boolean) mapMessage.get("isUnread");
-                    String id = (String) mapMessage.get("id");
-                    if(isUnread) {
-                        try {
-                            int unreadCount = 0;
-                            myMeetingCard_chat.unread_count.setVisibility(View.VISIBLE);
-                            if(GlobalApplication.unread_chat_map.containsKey(matching_id)) {
-                                unreadCount = GlobalApplication.unread_chat_map.get(matching_id);
-                                unreadCount++;
-                                myMeetingCard_chat.unread_count.setText(Integer.toString(unreadCount));
-                                GlobalApplication.unread_chat_map.put(matching_id, unreadCount);
-                                ((MainActivity)getActivity()).refresh();
-                            }
-                            else {
-                                unreadCount = 0;
-                                unreadCount++;
-                                myMeetingCard_chat.unread_count.setText(Integer.toString(unreadCount));
-                                GlobalApplication.unread_chat_map.put(matching_id, unreadCount);
-                            }
-                        } catch(NullPointerException e) {
-                            //e.printStackTrace();
-                        }
-                    }
-                    chatReference.child(id).addValueEventListener(makeValueEventListener(myMeetingCard_chat));
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        };
-        return mChildEventListener;
-    }
+//    private ChildEventListener makeChildEventListener(final MyMeetingCard_Chat myMeetingCard_chat, final int matching_id) {
+//        final DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("message/" + matching_id);
+//        ChildEventListener mChildEventListener = new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                if(dataSnapshot.getValue() != null) {
+//                    HashMap mapMessage = (HashMap) dataSnapshot.getValue();
+//                    boolean isUnread = (boolean) mapMessage.get("isUnread");
+//                    String id = (String) mapMessage.get("id");
+//                    if(isUnread) {
+//                        try {
+//                            int unreadCount = 0;
+//                            myMeetingCard_chat.unread_count.setVisibility(View.VISIBLE);
+//                            if(GlobalApplication.unread_chat_map.containsKey(matching_id)) {
+//                                unreadCount = GlobalApplication.unread_chat_map.get(matching_id);
+//                                unreadCount++;
+//                                myMeetingCard_chat.unread_count.setText(Integer.toString(unreadCount));
+//                                GlobalApplication.unread_chat_map.put(matching_id, unreadCount);
+//                                ((MainActivity)getActivity()).refresh();
+//                            }
+//                            else {
+//                                unreadCount = 0;
+//                                unreadCount++;
+//                                myMeetingCard_chat.unread_count.setText(Integer.toString(unreadCount));
+//                                GlobalApplication.unread_chat_map.put(matching_id, unreadCount);
+//                            }
+//                        } catch(NullPointerException e) {
+//                            //e.printStackTrace();
+//                        }
+//                    }
+//                    chatReference.child(id).addValueEventListener(makeValueEventListener(myMeetingCard_chat));
+//                }
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//            }
+//        };
+//        return mChildEventListener;
+//    }
     private ChildEventListener makeChildEventListenerForNotification() {
         GlobalApplication.unread_noti_count = 0;
         ChildEventListener mChildEventListener = new ChildEventListener() {
@@ -1030,14 +1030,19 @@ public class HomeFragment extends Fragment {
                             final long accepted_at_final = accepted_at;
                             SimpleDateFormat format = new SimpleDateFormat( "a h:mm");
                             myMeetingCardFrame.mmc_c_list[i].setVisibility(View.VISIBLE);
-                            myMeetingCardFrame.mmc_c_list[i].time.setText(format.format(accepted_at));
-                            myMeetingCardFrame.mmc_c_list[i].chat_content.setText("매칭이 완료되었습니다. 채팅을 시작해보세요!");
-                            myMeetingCardFrame.mmc_c_list[i].unread_count.setText("0");
-                            myMeetingCardFrame.mmc_c_list[i].unread_count.setVisibility(View.INVISIBLE);
 
-                            final ChildEventListener mChildEventListener = makeChildEventListener(myMeetingCardFrame.mmc_c_list[i], matching_id);
+                            if(!GlobalApplication.unread_chat_map.containsKey(matching_id)) {
+                                myMeetingCardFrame.mmc_c_list[i].chat_content.setText("매칭이 완료되었습니다. 채팅을 시작해보세요!");
+                                myMeetingCardFrame.mmc_c_list[i].unread_count.setText("0");
+                                myMeetingCardFrame.mmc_c_list[i].unread_count.setVisibility(View.INVISIBLE);
+                                myMeetingCardFrame.mmc_c_list[i].time.setText(format.format(accepted_at));
+                            }
+//                            if(!GlobalApplication.matching_id_set.contains(matching_id)) {
+//                                final ChildEventListener mChildEventListener = makeChildEventListener(myMeetingCardFrame.mmc_c_list[i], matching_id);
+//                                final DatabaseReference mdatabaseReference = loadMessages(matching_id, mChildEventListener);
+//                            }
+                            GlobalApplication.updateChatPreview(matching_id, myMeetingCardFrame.mmc_c_list[i]);
 
-                            final DatabaseReference mdatabaseReference =loadMessages(matching_id, mChildEventListener);
                             View.OnClickListener goChattingListener = new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -1060,7 +1065,14 @@ public class HomeFragment extends Fragment {
                                     intent.putExtra("place", place);
                                     intent.putExtra("date", date);
                                     intent.putExtra("type", type);
-                                    mdatabaseReference.removeEventListener(mChildEventListener);
+//                                    mdatabaseReference.removeEventListener(mChildEventListener);
+                                    if(GlobalApplication.unread_chat_map.containsKey(matching_id_final)) {
+                                        GlobalApplication.ChatPreviewData cpd = GlobalApplication.unread_chat_map.get(matching_id_final);
+                                        cpd.unread_count = 0;
+                                        cpd.myMeetingCard_chat.unread_count.setVisibility(View.INVISIBLE);
+                                        GlobalApplication.unread_chat_map.put(matching_id_final, cpd);
+                                    }
+
                                     startActivity(intent);
                                     ((MainActivity)context).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                                 }

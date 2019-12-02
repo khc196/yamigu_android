@@ -13,10 +13,12 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.NonNull;
 import androidx.collection.ArraySet;
 import androidx.fragment.app.Fragment;
 
@@ -25,12 +27,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
+import com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat;
+import com.yamigu.yamigu_app.Etc.Model.ChatData;
 import com.yamigu.yamigu_app.Etc.Model.NotificationData;
 import com.yamigu.yamigu_app.Fragment.HomeFragment;
 import com.yamigu.yamigu_app.Kakao.KakaoSDKAdapter;
@@ -38,9 +43,12 @@ import com.yamigu.yamigu_app.Kakao.KakaoSDKAdapter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GlobalApplication extends Application {
     private static GlobalApplication instance;
@@ -50,8 +58,9 @@ public class GlobalApplication extends Application {
     public static int current_chatting_room = 0;
     public static HashMap<String, NotificationData> notification_map;
     public static HashMap<String, Bitmap> bitmap_map;
-    public static HashMap<Integer, Integer> unread_chat_map;
+    public static HashMap<Integer, ChatPreviewData> unread_chat_map;
     public static ArrayList<String> active_date_list;
+    public static HashSet<Integer> matching_id_set;
     public static boolean push_noti_avail = true, chat_noti_avail = true;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -59,7 +68,28 @@ public class GlobalApplication extends Application {
     private ChildEventListener mChildEventListener;
     public static HomeFragment homefragment;
     public static NotificationActivity notiActivity;
-    private String uid;
+    private static String uid;
+    public static class ChatPreviewData {
+        public int unread_count;
+        public String last_message;
+        public MyMeetingCard_Chat myMeetingCard_chat;
+        public DatabaseReference messageDB;
+        public ChatPreviewData(int unread_count, String last_message, MyMeetingCard_Chat myMeetingCard_chat, DatabaseReference messageDB) {
+            this.unread_count = unread_count;
+            this.last_message = last_message;
+            this.myMeetingCard_chat = myMeetingCard_chat;
+            this.messageDB = messageDB;
+        }
+    }
+    public static void updateChatPreview(int matching_id, MyMeetingCard_Chat myMeetingCard_chat) {
+        if(!unread_chat_map.containsKey(matching_id)) {
+            ChildEventListener mChildEventListener = makeChildEventListener(myMeetingCard_chat, matching_id);
+            DatabaseReference messageDB =  FirebaseDatabase.getInstance().getReference("user/" + uid).child("receivedMessages").child(""+matching_id);
+            unread_chat_map.put(matching_id, new ChatPreviewData(0, "", myMeetingCard_chat, messageDB));
+            messageDB.addChildEventListener(mChildEventListener);
+
+        }
+    }
     public static GlobalApplication getGlobalApplicationContext() {
         if (instance == null) {
             throw new IllegalStateException("This Application does not inherit com.kakao.GlobalApplication");
@@ -100,6 +130,7 @@ public class GlobalApplication extends Application {
         uid = preferences.getString("uid", "");
         notiDB = FirebaseDatabase.getInstance().getReference("user/"+ uid + "/notifications");
         active_date_list = new ArrayList<>();
+        matching_id_set = new HashSet<>();
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -189,6 +220,80 @@ public class GlobalApplication extends Application {
         };
         notiDB.addChildEventListener(mChildEventListener);
 
+    }
+    private static ChildEventListener makeChildEventListener(final MyMeetingCard_Chat myMeetingCard_chat, final int matching_id) {
+        final DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("message/" + matching_id);
+        ChildEventListener mChildEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if(dataSnapshot.getValue() != null) {
+                    HashMap mapMessage = (HashMap) dataSnapshot.getValue();
+                    boolean isUnread = (boolean) mapMessage.get("isUnread");
+                    String id = (String) mapMessage.get("id");
+                    if(isUnread) {
+                        try {
+                            int unreadCount = 0;
+                            String lastMessage = "";
+                            myMeetingCard_chat.unread_count.setVisibility(View.VISIBLE);
+                            if(unread_chat_map.containsKey(matching_id)) {
+                                ChatPreviewData cpd = unread_chat_map.get(matching_id);
+                                cpd.unread_count++;
+                                myMeetingCard_chat.unread_count.setText(Integer.toString(cpd.unread_count));
+                                GlobalApplication.unread_chat_map.put(matching_id,  cpd);
+                            }
+                        } catch(NullPointerException e) {
+                            //e.printStackTrace();
+                        }
+                    }
+                    chatReference.child(id).addValueEventListener(makeValueEventListener(myMeetingCard_chat));
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        return mChildEventListener;
+    }
+    private static ValueEventListener makeValueEventListener(final MyMeetingCard_Chat myMeetingCard_chat) {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null) {
+                    try {
+                        ChatData chatData = dataSnapshot.getValue(ChatData.class);
+                        if(chatData.message.equals(ChattingActivity.MANAGER_PLACE_TAG)) {
+                            myMeetingCard_chat.chat_content.setText("장소를 정해주세요");
+                        }
+                        else {
+                            myMeetingCard_chat.chat_content.setText(chatData.message);
+                        }
+                        SimpleDateFormat format = new SimpleDateFormat("a h:mm");
+                        String time = format.format(chatData.time);
+                        myMeetingCard_chat.time.setText(time);
+                    } catch(NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        return valueEventListener;
     }
     @Override
     public void onTerminate() {

@@ -137,7 +137,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         date = intent.getExtras().getString("date");
         Log.d("DAY", date);
 
-        date_day = date.split(" ")[1];
         place = intent.getExtras().getString("place");
         type = intent.getExtras().getString("type");
         meeting_id = intent.getExtras().getString("meeting_id");
@@ -150,7 +149,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         manager_uid = intent.getExtras().getString("manager_uid");
         accepted_at = intent.getExtras().getLong("accepted_at");
         gender = preferences.getInt("gender", 0);
-        GlobalApplication.unread_chat_map.put(Integer.parseInt(matching_id), 0);
+        //GlobalApplication.unread_chat_map.put(Integer.parseInt(matching_id), 0);
         setSupportActionBar(tb) ;
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -644,7 +643,7 @@ class ListMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private Conversation conversation;
     private HashMap<String, Bitmap> bitmapAvata;
-    private HashMap<String, DatabaseReference> bitmapAvataDB;
+    //private HashMap<String, DatabaseReference> bitmapAvataDB;
     private Bitmap bitmapAvataUser;
 
     public ListMessageAdapter(Context context, Conversation conversation, HashMap<String, Bitmap> bitmapAvata, Bitmap bitmapAvataUser) {
@@ -652,7 +651,7 @@ class ListMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.conversation = conversation;
         this.bitmapAvata = bitmapAvata;
         this.bitmapAvataUser = bitmapAvataUser;
-        bitmapAvataDB = new HashMap<>();
+//        bitmapAvataDB = new HashMap<>();
     }
 
     @Override
@@ -700,34 +699,34 @@ class ListMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((ItemMessagePartnerHolder) holder).avata.setImageBitmap(currentAvata);
             } else {
                 final String id = conversation.getListMessageData().get(position).idSender;
-                if(bitmapAvataDB.get(id) == null){
-                    try {
-                        bitmapAvataDB.put(id, FirebaseDatabase.getInstance().getReference().child("user/" + id + "/avata"));
-                        bitmapAvataDB.get(id).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.getValue() != null) {
-                                    String avataStr = (String) dataSnapshot.getValue();
-                                    if (!avataStr.equals("default")) {
-                                        byte[] decodedString = Base64.decode(avataStr, Base64.DEFAULT);
-                                        ChattingActivity.bitmapAvataPartner.put(id, BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
-                                    } else {
-                                        ChattingActivity.bitmapAvataPartner.put(id, BitmapFactory.decodeResource(context.getResources(), R.drawable.user_profile_no_img));
-                                    }
-                                    notifyDataSetChanged();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                    catch (NullPointerException e){
-                        e.printStackTrace();
-                    }
-                }
+//                if(bitmapAvataDB.get(id) == null){
+//                    try {
+//                        bitmapAvataDB.put(id, FirebaseDatabase.getInstance().getReference().child("user/" + id + "/avata"));
+//                        bitmapAvataDB.get(id).addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                if (dataSnapshot.getValue() != null) {
+//                                    String avataStr = (String) dataSnapshot.getValue();
+//                                    if (!avataStr.equals("default")) {
+//                                        byte[] decodedString = Base64.decode(avataStr, Base64.DEFAULT);
+//                                        ChattingActivity.bitmapAvataPartner.put(id, BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+//                                    } else {
+//                                        ChattingActivity.bitmapAvataPartner.put(id, BitmapFactory.decodeResource(context.getResources(), R.drawable.user_profile_no_img));
+//                                    }
+//                                    notifyDataSetChanged();
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//
+//                            }
+//                        });
+//                    }
+//                    catch (NullPointerException e){
+//                        e.printStackTrace();
+//                    }
+//                }
             }
         } else if (holder instanceof ItemMessageManagerHolder) {
             ((ItemMessageManagerHolder) holder).setType(conversation.getListMessageData().get(position).message);
@@ -745,34 +744,34 @@ class ListMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((ItemMessageManagerHolder) holder).avata.setImageBitmap(currentAvata);
             } else {
                 final String id = conversation.getListMessageData().get(position).idSender;
-                if(bitmapAvataDB.get(id) == null){
-                    try {
-                        bitmapAvataDB.put(id, FirebaseDatabase.getInstance().getReference().child("user/" + id + "/avata"));
-                        bitmapAvataDB.get(id).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.getValue() != null) {
-                                    String avataStr = (String) dataSnapshot.getValue();
-                                    if (!avataStr.equals("default")) {
-                                        byte[] decodedString = Base64.decode(avataStr, Base64.DEFAULT);
-                                        ChattingActivity.bitmapAvataPartner.put(id, BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
-                                    } else {
-                                        ChattingActivity.bitmapAvataPartner.put(id, BitmapFactory.decodeResource(context.getResources(), R.drawable.user_profile_no_img));
-                                    }
-                                    notifyDataSetChanged();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                    catch (NullPointerException e){
-                        e.printStackTrace();
-                    }
-                }
+//                if(bitmapAvataDB.get(id) == null){
+//                    try {
+//                        bitmapAvataDB.put(id, FirebaseDatabase.getInstance().getReference().child("user/" + id + "/avata"));
+//                        bitmapAvataDB.get(id).addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                if (dataSnapshot.getValue() != null) {
+//                                    String avataStr = (String) dataSnapshot.getValue();
+//                                    if (!avataStr.equals("default")) {
+//                                        byte[] decodedString = Base64.decode(avataStr, Base64.DEFAULT);
+//                                        ChattingActivity.bitmapAvataPartner.put(id, BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+//                                    } else {
+//                                        ChattingActivity.bitmapAvataPartner.put(id, BitmapFactory.decodeResource(context.getResources(), R.drawable.user_profile_no_img));
+//                                    }
+//                                    notifyDataSetChanged();
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//
+//                            }
+//                        });
+//                    }
+//                    catch (NullPointerException e){
+//                        e.printStackTrace();
+//                    }
+//                }
             }
         } else if (holder instanceof ItemMessageUserHolder) {
             ((ItemMessageUserHolder) holder).usrName.setText(conversation.getListMessageData().get(position).userName);

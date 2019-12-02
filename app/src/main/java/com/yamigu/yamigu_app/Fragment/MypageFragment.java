@@ -564,7 +564,7 @@ public class MypageFragment extends Fragment {
         int maxBufferSize = 1 * 1024 * 1024;
         File sourceFile = new File(sourceFileUri);
         Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", sourceFile);
-        Bitmap resized = ImageUtils.resize(getContext(), uri, 200);
+        Bitmap resized = ImageUtils.resize(getContext(), uri, 400);
         int radius =  resized.getWidth() <= resized.getHeight() ? resized.getWidth() : resized.getHeight();
         resized = ImageUtils.cropCenterBitmap(resized, radius, radius);
         try {
