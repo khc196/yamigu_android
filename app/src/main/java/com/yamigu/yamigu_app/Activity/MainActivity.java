@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
     public static MainFragmentAdapter mainFragmentAdapter;
     public static androidx.appcompat.widget.Toolbar tb;
     private static int cur_index = 0;
+    public static TextView tv_unread_noti_count, tv_ticket_count;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        tv_unread_noti_count = findViewById(R.id.unread_noti_count);
+        tv_ticket_count = findViewById(R.id.ticket_count);
         tb = findViewById(R.id.toolbar) ;
         setSupportActionBar(tb) ;
         getSupportActionBar().setElevation(0);

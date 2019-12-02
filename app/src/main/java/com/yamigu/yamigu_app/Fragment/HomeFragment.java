@@ -184,10 +184,10 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        tv_unread_noti_count = view.findViewById(R.id.unread_noti_count);
+        tv_unread_noti_count = MainActivity.tv_unread_noti_count;
         tv_unread_noti_count.setVisibility(View.INVISIBLE);
         tv_unread_noti_count.setText("0");
-        tv_ticket_count = view.findViewById(R.id.ticket_count);
+        tv_ticket_count = MainActivity.tv_ticket_count;
         tv_ticket_count.setText(Integer.toString(ticket_count));
         tv_recommendation = view.findViewById(R.id.tv_recommendation);
         tv_recommendation.setText(nickname+"님을 위한 추천 미팅");
@@ -238,6 +238,12 @@ public class HomeFragment extends Fragment {
         //((MainActivity)getActivity()).refresh();
     }
     @Override
+    public void onPause() {
+        super.onPause();
+        tv_unread_noti_count.setVisibility(View.INVISIBLE);
+        tv_ticket_count.setVisibility(View.INVISIBLE);
+    }
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         fragmentAdapter = new FragmentAdapter(getChildFragmentManager());
@@ -245,6 +251,8 @@ public class HomeFragment extends Fragment {
     }
     public void refresh() {
         myMeetingCardFrame = new MyMeetingCardFrame(view);
+        tv_unread_noti_count.setVisibility(View.VISIBLE);
+        tv_ticket_count.setVisibility(View.VISIBLE);
         tv_ticket_count.setText(Integer.toString(ticket_count));
 
         tv_unread_noti_count.setText(Integer.toString(GlobalApplication.unread_noti_count));
