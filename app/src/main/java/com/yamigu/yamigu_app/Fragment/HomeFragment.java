@@ -411,7 +411,7 @@ public class HomeFragment extends Fragment {
                     try {
                         ChatData chatData = dataSnapshot.getValue(ChatData.class);
                         if(chatData.message.equals(ChattingActivity.MANAGER_PLACE_TAG)) {
-                            myMeetingCard_chat.chat_content.setText("장소를 정해주세요");
+                            myMeetingCard_chat.chat_content.setText("추천 장소를 확인해보세요!");
                         }
                         else {
                             myMeetingCard_chat.chat_content.setText(chatData.message);

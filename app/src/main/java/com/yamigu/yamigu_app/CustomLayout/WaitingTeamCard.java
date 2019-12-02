@@ -92,8 +92,8 @@ public class WaitingTeamCard extends LinearLayout {
                 "</style>"+
                 "<body>"+
                 "<div style=" +
-                "\"display:table; width:100%; height:100%; wbackground-color:rgba(255,255,255, 0);overflow-y:hidden;\">" +
-                "<div style=\"display: table-cell; vertical-align: middle; text-align:center; word-break: break-all; color: black; font-size:12px; padding:3px;overflow-y:hidden;overflow-x:hidden;" +
+                "\"display:table; width:100%; height:100%; background-color:rgba(255,255,255, 0);overflow-y:hidden;\">" +
+                "<div style=\"display: table-cell; vertical-align: middle; text-align:center; word-break: break-all; color: black; font-size:14px;overflow-y:hidden;overflow-x:hidden;" +
                 "\">"
                 +desc_string+
                 "</div>" +
