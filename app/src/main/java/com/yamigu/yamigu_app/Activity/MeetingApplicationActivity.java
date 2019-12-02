@@ -486,7 +486,6 @@ public class MeetingApplicationActivity extends AppCompatActivity {
 
             String getTime = sdf.format(cal.getTime());
             int day_of_week = cal.get(Calendar.DAY_OF_WEEK);
-            cal.add(Calendar.DATE, 1);
             String date_text = getTime + " " + DOW[day_of_week];
             button.setText(date_text);
             boolean flag = false;
@@ -503,6 +502,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+            cal.add(Calendar.DATE, 1);
             if(ma.getDate_string().equals(date_text)) {
                 ma.setDate(me);
                 button.setBackgroundColor(getResources().getColor(R.color.colorPoint));
