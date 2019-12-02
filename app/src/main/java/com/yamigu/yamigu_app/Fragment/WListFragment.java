@@ -107,7 +107,6 @@ public class WListFragment extends Fragment {
         });
         invisible_flag = true;
         final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
-        mRootLinear.setVisibility(View.INVISIBLE);
 //        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -167,7 +166,8 @@ public class WListFragment extends Fragment {
 //        }
         active_date_set = new HashSet<>();
         activateDates(active_date_set);
-        is_initialized = true;
+        mRootLinear.setVisibility(View.INVISIBLE);
+
 
         return view;
     }
@@ -175,7 +175,12 @@ public class WListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         invisible_flag = true;
-        refresh();
+        if(!is_initialized) {
+            is_initialized = true;
+        }
+        else {
+            refresh();
+        }
 //        ((MainActivity)getActivity()).refresh();
     }
     @Override
