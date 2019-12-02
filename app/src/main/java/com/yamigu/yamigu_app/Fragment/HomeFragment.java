@@ -100,6 +100,7 @@ public class HomeFragment extends Fragment {
     private Context context;
     private MyMeetingCardFrame myMeetingCardFrame;
     private RelativeLayout btn_go_yamigu;
+    private LinearLayout ll_root_pane;
     private DatabaseReference userDB, managerDB;
     public static DatabaseReference notiDB;
     private Fragment me;
@@ -167,7 +168,8 @@ public class HomeFragment extends Fragment {
         nickname = preferences.getString("nickname", "");
         ticket_count = preferences.getInt("num_of_ticket", 0);
         userDB = FirebaseDatabase.getInstance().getReference("user/" + uid);
-
+        ll_root_pane = view.findViewById(R.id.root_pane);
+        ll_root_pane.setVisibility(View.INVISIBLE);
 //        tb = (Toolbar) view.findViewById(R.id.toolbar_h) ;
 //        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
@@ -231,7 +233,7 @@ public class HomeFragment extends Fragment {
         super.onResume();
 //        ChildEventListener notiChildEventListenerForNotification = makeChildEventListenerForNotification();
 //        notiDB = loadNotifications(notiChildEventListenerForNotification);
-
+        ll_root_pane.setVisibility(View.INVISIBLE);
         refresh();
         //((MainActivity)getActivity()).refresh();
     }
@@ -1085,6 +1087,7 @@ public class HomeFragment extends Fragment {
             if(MainActivity.dialog.isShowing()) {
                 MainActivity.dialog.dismiss();
             }
+            ll_root_pane.setVisibility(View.VISIBLE);
         }
     }
     public class NetworkTask2 extends AsyncTask<Void, Void, String> {
