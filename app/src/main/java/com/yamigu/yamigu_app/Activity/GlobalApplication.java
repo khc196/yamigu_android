@@ -11,9 +11,11 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.collection.ArraySet;
 import androidx.fragment.app.Fragment;
@@ -193,6 +195,23 @@ public class GlobalApplication extends Application {
         super.onTerminate();
         mCurrentActivity = null;
         instance = null;
+    }
+    public static void hideKeyboard(final Activity activity) {
+        final View view = activity.getCurrentFocus();
+        final InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (view == null) {
+                    View view2 = new View(activity);
+                    imm.hideSoftInputFromWindow(view2.getWindowToken(), 0);
+                } else {
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        }, 125);
     }
     private static class KakaoSDKAdapter extends KakaoAdapter {
         /**

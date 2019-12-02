@@ -48,6 +48,7 @@ import android.widget.Toast;
 
 import com.yamigu.yamigu_app.Activity.CertificationUActivity;
 import com.yamigu.yamigu_app.Activity.CertificationWActivity;
+import com.yamigu.yamigu_app.Activity.ChattingActivity;
 import com.yamigu.yamigu_app.Activity.GlobalApplication;
 import com.yamigu.yamigu_app.Activity.MainActivity;
 import com.yamigu.yamigu_app.Activity.NotificationActivity;
@@ -124,49 +125,29 @@ public class MypageFragment extends Fragment {
         view.findViewById(R.id.overall_layout).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                try {
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                } catch(NullPointerException e) {
-
-                }
-                return true;
+                GlobalApplication.hideKeyboard(getActivity());
+                return false;
             }
         });
         view.findViewById(R.id.inner_layout).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                try {
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                } catch(NullPointerException e) {
-
-                }
-                return true;
+                GlobalApplication.hideKeyboard(getActivity());
+                return false;
             }
         });
         view.findViewById(R.id.profile_card).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                try {
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                } catch(NullPointerException e) {
-
-                }
-                return true;
+                GlobalApplication.hideKeyboard(getActivity());
+                return false;
             }
         });
         view.findViewById(R.id.chat_manager).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                try {
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                } catch(NullPointerException e) {
-
-                }
-                return true;
+                GlobalApplication.hideKeyboard(getActivity());
+                return false;
             }
         });
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());

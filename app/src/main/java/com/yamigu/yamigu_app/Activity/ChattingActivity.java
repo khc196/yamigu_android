@@ -347,16 +347,10 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         recyclerChat.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                try {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                } catch(NullPointerException e) {
-                    return false;
-                }
-                return true;
-            }
+                GlobalApplication.hideKeyboard(ChattingActivity.this);
+                return false;
+            }5
         });
-
 
         //mAdapter = new ChatMessageAdapter(this, R.layout.chatting_message_recv_woman);
 //        String base64AvataUser = preferences.getString("avata", "");

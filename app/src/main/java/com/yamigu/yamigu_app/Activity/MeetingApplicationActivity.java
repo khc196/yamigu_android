@@ -79,13 +79,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         findViewById(R.id.overall_layout).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                try {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                } catch(NullPointerException e) {
-
-                }
-                return true;
+                GlobalApplication.hideKeyboard(MeetingApplicationActivity.this);
+                return false;
             }
         });
         meetingApplicationActivity = this;
@@ -182,13 +177,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         appeal_view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                try {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                } catch(NullPointerException e) {
-
-                }
-                return true;
+                GlobalApplication.hideKeyboard(MeetingApplicationActivity.this);
+                return false;
             }
         });
         btn_okay = (Button) findViewById(R.id.btn_okay);
