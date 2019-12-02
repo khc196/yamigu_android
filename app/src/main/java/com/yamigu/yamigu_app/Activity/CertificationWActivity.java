@@ -110,13 +110,13 @@ public class CertificationWActivity extends AppCompatActivity {
             }
         });
         Intent intent = getIntent();
-//        nickname = intent.getExtras().getString("nickname");
+        nickname = intent.getExtras().getString("nickname");
 //        friend_code = intent.getExtras().getString("friend_code");
 //        real_name = intent.getExtras().getString("realname");
 //        phonenumber = intent.getExtras().getString("phonenumber");
 //        gender_string = intent.getExtras().getString("gender");
 //        birthdate = intent.getExtras().getString("birthdate");
-        nickname = preferences.getString("nickname", "");
+//        nickname = preferences.getString("nickname", "");
         friend_code = preferences.getString("friend_code", "");
         real_name = preferences.getString("real_name", "");
         phonenumber = preferences.getString("phonenumber", "");

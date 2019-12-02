@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ import org.json.JSONObject;
 public class ReceivedMeetingFragment extends Fragment {
     private FragmentAdapter fragmentAdapter;
     private ViewPager viewPager;
+    private RelativeLayout rl_num_display;
     private TextView tv_current, tv_total;
     private boolean is_initialized = false;
     private LinearLayout page_layout, empty_layout;
@@ -92,6 +94,8 @@ public class ReceivedMeetingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_received_meeting, container, false);
         progressDialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
+        rl_num_display = view.findViewById(R.id.rl_num_display);
+        rl_num_display.setVisibility(View.INVISIBLE);
         // Inflate the layout for this fragment
         page_layout = view.findViewById(R.id.page_view);
         empty_layout = view.findViewById(R.id.empty_view);
@@ -256,19 +260,21 @@ public class ReceivedMeetingFragment extends Fragment {
                     meetingCardFragment.setArguments(bundle);
                     fragmentAdapter.addItem(meetingCardFragment);
                 }
-                refresh();
                 if(jsonArray.length() > 0) {
                     is_initialized = true;
+                    rl_num_display.setVisibility(View.INVISIBLE);
                     page_layout.setVisibility(View.VISIBLE);
                     empty_layout.setVisibility(View.INVISIBLE);
                     ll_btn_layout.setVisibility(View.VISIBLE);
                 }
                 else {
+                    rl_num_display.setVisibility(View.VISIBLE);
                     page_layout.setVisibility(View.INVISIBLE);
                     empty_layout.setVisibility(View.VISIBLE);
                     ll_btn_layout.setVisibility(View.INVISIBLE);
 
                 }
+                refresh();
             } catch (JSONException e) {
                 e.printStackTrace();
             }

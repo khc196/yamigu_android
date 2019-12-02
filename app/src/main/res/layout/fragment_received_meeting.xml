@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <RelativeLayout
+            android:id="@+id/rl_num_display"
             android:layout_width="98dp"
             android:layout_height="65dp"
             android:layout_gravity="center_horizontal"
@@ -25,14 +26,15 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/nanumgothic_font_family"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/nanumgothic_font_family"
                 android:text="/"
                 android:textColor="@color/colorNonselect"
-                android:textSize="35dp"
-                android:layout_centerInParent="true"
-                android:fontFamily="@font/nanumgothic_font_family"/>
+                android:textSize="35dp" />
             <TextView
                 android:id="@+id/tv_total_of_recv"
                 android:layout_width="wrap_content"

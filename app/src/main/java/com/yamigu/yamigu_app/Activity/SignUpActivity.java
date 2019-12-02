@@ -183,8 +183,8 @@ public class SignUpActivity extends AppCompatActivity {
                 if(!selectorR.isAgreed_all()) {
                     return;
                 }
-//                intent.putExtra("nickname", nickname);
-//                intent.putExtra("friend_code", friend_code);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("friend_code", friend_code);
 //                intent.putExtra("realname", real_name);
 //                intent.putExtra("phonenumber", phonenumber);
 //                intent.putExtra("gender", gender);
