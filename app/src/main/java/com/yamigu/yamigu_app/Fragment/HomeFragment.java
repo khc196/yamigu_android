@@ -277,6 +277,11 @@ public class HomeFragment extends Fragment {
         ContentValues values = new ContentValues();
         NetworkTask networkTask = new NetworkTask(url, values);
         networkTask.execute();
+        String url2 = "http://106.10.39.154:9999/api/user/info/";
+        ContentValues values2 = new ContentValues();
+        NetworkTask6 networkTask6 = new NetworkTask6(url2, values2);
+        networkTask6.execute();
+
         if(fragmentAdapter != null) {
             fragmentAdapter.notifyDataSetChanged();
         }
@@ -1293,6 +1298,53 @@ public class HomeFragment extends Fragment {
                 e.printStackTrace();
             }
             MainActivity.dialog.dismiss();
+        }
+    }
+    public class NetworkTask6 extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask6(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+        @Override
+        protected String doInBackground(Void... params) {
+
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(context, url, values, "GET", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(s);
+                editor.putString("nickname", jsonObject.getString("nickname"));
+                editor.putString("phone", jsonObject.getString("phone"));
+                editor.putString("belong", jsonObject.getString("belong"));
+                editor.putString("department", jsonObject.getString("department"));
+                editor.putString("profile", jsonObject.getString("image"));
+                editor.putInt("gender", jsonObject.getInt("gender"));
+                editor.putInt("age", jsonObject.getInt("age"));
+                editor.putString("uid", jsonObject.getString("uid"));
+                editor.putInt("user_certified", jsonObject.getInt("user_certified"));
+                editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
+                editor.putInt("num_of_ticket", jsonObject.getInt("ticket"));
+                editor.putString("real_name", jsonObject.getString("real_name"));
+                editor.putString("phonenumber", jsonObject.getString("phone"));
+                editor.apply();
+                ticket_count = preferences.getInt("num_of_ticket", 0);
+                tv_ticket_count.setText(Integer.toString(ticket_count));
+            } catch(JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

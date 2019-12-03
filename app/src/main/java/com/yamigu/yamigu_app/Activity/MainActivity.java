@@ -139,8 +139,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(count_meeting < 3) {
-                    Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
-                    startActivity(intent);
+                    int ticket_count = preferences.getInt("num_of_ticket", 0);
+                    if(ticket_count == 0) {
+                        setDialog("티켓이 있어야 미팅을 할 수 있어요! \n" +
+                                "단, 매칭 완료시에 티켓이 사용됩니다.");
+                        showDialog();
+                    }
+                    else {
+                        Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
+                        startActivity(intent);
+                    }
                 }
                 else {
                     setDialog("미팅은 일주일에 3번까지만 가능해요!");

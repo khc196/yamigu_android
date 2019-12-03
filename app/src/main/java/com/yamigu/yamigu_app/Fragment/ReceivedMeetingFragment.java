@@ -55,6 +55,7 @@ public class ReceivedMeetingFragment extends Fragment {
     int dpValue = 0;
     int meeting_id;
     private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
     private CustomDialog customDialog;
     private CustomDialog2 popupDialog;
     Fragment me;
@@ -82,6 +83,7 @@ public class ReceivedMeetingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        editor = preferences.edit();
         if (getArguments() != null) {
              meeting_id = getArguments().getInt("meeting_id");
              auth_token = preferences.getString("auth_token", "");
@@ -295,6 +297,11 @@ public class ReceivedMeetingFragment extends Fragment {
                                     values.put("request_id", id);
                                     NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                                     networkTask2.execute();
+                                    int num_of_ticket = preferences.getInt("num_of_ticket", 0);
+                                    if(num_of_ticket > 0) {
+                                        editor.putInt("num_of_ticket", num_of_ticket - 1);
+                                        editor.apply();
+                                    }
                                 }
                             }).setNegativeButton("취소",
 

@@ -67,6 +67,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private int target_id, edit_id;
     private boolean is_changing;
     private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
     private final int NEW_MEETING = 0;
     private final int SEND_REQUEST = 1;
     private final int EDIT_MEETING = 2;
@@ -90,6 +91,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
         auth_token = preferences.getString("auth_token", "");
 
         tb = (Toolbar) findViewById(R.id.toolbar) ;
@@ -308,6 +310,11 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         values.put("meeting_id", target_id);
                         NetworkTask networkTask = new NetworkTask(url, values);
                         networkTask.execute();
+                        int num_of_ticket = preferences.getInt("num_of_ticket", 0);
+                        if(num_of_ticket > 0) {
+                            editor.putInt("num_of_ticket", num_of_ticket - 1);
+                            editor.apply();
+                        }
                     }
                 }
             }
@@ -362,6 +369,12 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                     values.put("meeting_id", edit_id);
                                     NetworkTask networkTask = new NetworkTask(url, values);
                                     networkTask.execute();
+
+                                    int num_of_ticket = preferences.getInt("num_of_ticket", 0);
+                                    if(num_of_ticket > 0) {
+                                        editor.putInt("num_of_ticket", num_of_ticket + 1);
+                                        editor.apply();
+                                    }
                                 }
                             }).setNegativeButton("취소",
                             new DialogInterface.OnClickListener() {

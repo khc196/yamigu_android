@@ -811,12 +811,17 @@ public class WListFragment extends Fragment {
                 }
                 else if(message.equals("target already matched")) {
                     MainActivity.setDialog("이미 상대방이 매칭되었어요.");
-                MainActivity.showDialog();
-            }
+                    MainActivity.showDialog();
+                }
                 else if(message.equals("my card already matched")) {
-                MainActivity.setDialog("해당 날짜에 이미 예정된 미팅이 있어요.");
-                MainActivity.showDialog();
-            }
+                    MainActivity.setDialog("해당 날짜에 이미 예정된 미팅이 있어요.");
+                    MainActivity.showDialog();
+                }
+                else if(message.equals("no ticket")) {
+                    MainActivity.setDialog("티켓이 있어야 미팅을 할 수 있어요! \n" +
+                            "단, 매칭 완료시에 티켓이 사용됩니다.");
+                    MainActivity.showDialog();
+                }
                 else if(message.equals("different type")) {
                     Toast.makeText(getContext(), "해당 날짜에 신청한 미팅과 인원이 달라요!", Toast.LENGTH_SHORT).show();
                 }
