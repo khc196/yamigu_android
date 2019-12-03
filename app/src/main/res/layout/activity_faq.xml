@@ -10,23 +10,47 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="@color/colorPrimary"
-        android:theme="@style/MyActionBar2"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:text="자주하는 질문"
-            android:textSize="14dp"
-            android:textColor="@color/colorNormal"
-            android:fontFamily="@font/nanumgothic_font_family"
-            android:textStyle="bold">
-        </TextView>
-    </androidx.appcompat.widget.Toolbar>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="52dp"
+                android:fitsSystemWindows="true"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                <ListView
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:id="@+id/listview_faq"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="13dp"
+                    android:paddingBottom="21dp">>
+                </ListView>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+            <!--/ScrollView-->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@color/colorPrimary"
+                android:theme="@style/MyActionBar2"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:text="자주 하는 질문"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorNormal"
+                    android:fontFamily="@font/nanumgothic_font_family_bold"
+                    android:textStyle="bold">
+                </TextView>
+            </androidx.appcompat.widget.Toolbar>
+        </FrameLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,6 +32,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity me;
     public static ProgressDialog dialog = null;
     private static CustomDialog2 popupDialog = null;
-    private static CustomViewPager2 pager;
+    public static CustomViewPager2 pager;
     public static MainFragmentAdapter mainFragmentAdapter;
     public static androidx.appcompat.widget.Toolbar tb;
     private static int cur_index = 0;
@@ -259,7 +260,6 @@ public class MainActivity extends AppCompatActivity {
                 nav_wlist.setImageResource(R.drawable.nav_wlist);
                 nav_mypage.setImageResource(R.drawable.nav_mypage);
                 nav_more.setImageResource(R.drawable.nav_more);
-
                 //((HomeFragment)mainFragmentAdapter.getItem(index-1)).refresh();
                 break;
             case 2:
@@ -284,7 +284,8 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
-
+        tv_unread_noti_count.setVisibility(View.INVISIBLE);
+        tv_ticket_count.setVisibility(View.INVISIBLE);
         pager.setCurrentItem(index-1, false);
 
     }
@@ -333,7 +334,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Bitmap bm) {
             GlobalApplication.bitmap_map.put(url, bm);
-            MypageFragment.profile_img.setImageBitmap(GlobalApplication.bitmap_map.get(url));
+            try {
+                MypageFragment.profile_img.setImageBitmap(GlobalApplication.bitmap_map.get(url));
+            } catch(NullPointerException e) {
+
+            }
         }
     }
 }

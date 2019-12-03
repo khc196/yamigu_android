@@ -10,37 +10,43 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:background="@color/colorPrimary"
-            android:theme="@style/MyActionBar2"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:text="야미구 가이드"
-                android:textSize="14dp"
-                android:textColor="@color/colorNormal"
-                android:fontFamily="@font/nanumgothic_font_family"
-                android:textStyle="bold">
-            </TextView>
-        </androidx.appcompat.widget.Toolbar>
-        <ScrollView
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <TextView
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
-                android:text="티켓 하나당 하나의 미팅 카드를 신청할 수 있다.\n단, 티켓은 매칭된 이후에 사용된다. (매칭이 안되면 티켓은 남아 있다.)\n미팅을 같이 나갈 친구를 구해 팀을 구해 미팅을 신청한다.\n신청은 한명만 해도 가능하다.\n일주일 이내의 원하는 날짜에 신청한다.\n원하는 지역을 고른다.\n이성에게 자신들을 소개하거나 원하는 이성들을 설명한다.\n미팅 카드가 생성되면 같은 날짜에 같은 조건에 맞는 이성카드를 살펴본다.\n같은 조건에 신청카드가 들어오면 수락하여 미팅날 미팅을 진행한다.\n야미구 매니저와 함께 있는 채팅에서 약속을 잡고 제휴매장을 통해서 당일날 제휴쿠폰을 제공받는다.\n직원인증 버튼으로 무료 쿠폰 주류를 받는다.\n미팅이 끝나고 야미구에서 후기를 남긴다."
-                android:textSize="13dp"
-                android:textColor="@color/colorBlack"
-                android:lineSpacingExtra="15dp"/>
-
-        </ScrollView>
+                android:orientation="vertical"
+                android:layout_marginTop="52dp"
+                android:fitsSystemWindows="true"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                <LinearLayout
+                    android:id="@+id/root_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                </LinearLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+            <!--/ScrollView-->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@color/colorPrimary"
+                android:theme="@style/MyActionBar2"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:text="야미구 가이드"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorNormal"
+                    android:fontFamily="@font/nanumgothic_font_family_bold"
+                    android:textStyle="bold">
+                </TextView>
+            </androidx.appcompat.widget.Toolbar>
+        </FrameLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

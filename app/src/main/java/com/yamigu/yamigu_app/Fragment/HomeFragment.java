@@ -234,7 +234,9 @@ public class HomeFragment extends Fragment {
 //        ChildEventListener notiChildEventListenerForNotification = makeChildEventListenerForNotification();
 //        notiDB = loadNotifications(notiChildEventListenerForNotification);
         ll_root_pane.setVisibility(View.INVISIBLE);
-        refresh();
+        if(MainActivity.pager.getCurrentItem() == 0) {
+            refresh();
+        }
         //((MainActivity)getActivity()).refresh();
     }
     @Override

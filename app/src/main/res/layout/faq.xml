@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bg"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:paddingBottom="13dp">
+    <LinearLayout
+        android:id="@+id/chatting_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_orange_full2"
+        android:orientation="vertical"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="8dp">
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="8dp"
+                android:layout_height="match_parent">
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/content_"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="8dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="야미구 미팅은 어떻게 진행되나요?"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/nanumgothic_font_family_bold"
+                    android:textColor="@color/colorPoint">
+                </TextView>
+                <TextView
+                    android:id="@+id/answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="야미구 미팅은 우선은 함께 나갈 친구와 상의하여 원하는 인원, 날짜, 장소에 맞는 이성팀과의 매칭을 우선으로 하고 있습니다. 미팅 카드 신청 후에 같은 조건에 이성팀과 매칭 후 관리자와 함께 채팅을 통해 약속을 잡고 정해진 날에 미팅을 진행하시면 됩니다 :) "
+                    android:fontFamily="@font/nanumgothic_font_family"
+                    android:textSize="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/colorPoint"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="10dp">
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

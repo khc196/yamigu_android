@@ -105,7 +105,7 @@ public class WListFragment extends Fragment {
 
             }
         });
-        invisible_flag = true;
+        invisible_flag = false;
         final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
 //        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
@@ -179,7 +179,9 @@ public class WListFragment extends Fragment {
             is_initialized = true;
         }
         else {
-            refresh();
+            if(MainActivity.pager.getCurrentItem() == 1) {
+                refresh();
+            }
         }
 //        ((MainActivity)getActivity()).refresh();
     }
@@ -658,6 +660,7 @@ public class WListFragment extends Fragment {
                         super.onAnimationEnd(animation);
                         JSONObject jsonObject = null;
                         try {
+                            Log.d("DATA", data);
                             removeAllWaitingTeamCard();
                             if(data == null) return;
                             jsonObject = new JSONObject(data);
@@ -739,7 +742,7 @@ public class WListFragment extends Fragment {
                 else if(bm.getWidth() < bm.getHeight()){
                     bm = ImageUtils.cropCenterBitmap(bm, bm.getWidth(), bm.getWidth());
                 }
-                Log.d("SIZE", bm.getWidth() + "X" + bm.getHeight() + "    " + civ.getWidth() + "X" + civ.getHeight());
+                //Log.d("SIZE", bm.getWidth() + "X" + bm.getHeight() + "    " + civ.getWidth() + "X" + civ.getHeight());
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.SafeMeetingFragment">
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="13dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="안전한 만남"
+                android:layout_gravity="center_horizontal"
+                android:textSize="18dp"
+                android:textColor="@color/colorPoint"
+                android:fontFamily="@font/nanumgothic_font_family_bold">
+            </TextView>
+            <TextView
+                android:layout_marginTop="3dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="야미구에서는 S.A.F.E를 모토로 안전한 만남을 제공합니다."
+                android:layout_gravity="center_horizontal"
+                android:textSize="13dp"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/nanumgothic_font_family_bold">
+            </TextView>
+            <ListView
+                android:id="@+id/listview_safe_meeting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="14dp">
+            </ListView>
+        </LinearLayout>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+</FrameLayout>

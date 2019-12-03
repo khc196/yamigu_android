@@ -254,7 +254,11 @@ public class MypageFragment extends Fragment {
                     else {
                         nickname_validated = false;
                         tv_available_nickname.setVisibility(View.GONE);
-                        globalMenu.findItem(R.id.menu_complete).setEnabled(false);
+                        try {
+                            globalMenu.findItem(R.id.menu_complete).setEnabled(false);
+                        } catch(NullPointerException e) {
+
+                        }
                     }
                 }
             });

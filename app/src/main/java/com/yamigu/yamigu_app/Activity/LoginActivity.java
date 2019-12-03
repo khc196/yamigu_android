@@ -303,6 +303,9 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("uid", jsonObject.getString("uid"));
                 editor.putInt("user_certified", jsonObject.getInt("user_certified"));
                 editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
+                editor.putInt("num_of_ticket", jsonObject.getInt("ticket"));
+                editor.putString("real_name", jsonObject.getString("real_name"));
+                editor.putString("phonenumber", jsonObject.getString("phone"));
                 editor.apply();
             } catch(JSONException e) {
                 e.printStackTrace();
