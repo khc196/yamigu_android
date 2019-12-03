@@ -2,6 +2,7 @@ package com.yamigu.yamigu_app.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
@@ -29,6 +30,7 @@ public class TicketOnboardingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_ticket_onboarding);
         tb = (Toolbar) findViewById(R.id.toolbar) ;
         setSupportActionBar(tb) ;

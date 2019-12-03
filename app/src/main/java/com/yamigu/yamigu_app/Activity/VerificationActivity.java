@@ -3,6 +3,7 @@ package com.yamigu.yamigu_app.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.preference.PreferenceManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public class VerificationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_verification);
         tb = (Toolbar) findViewById(R.id.toolbar);
         tb.setNavigationIcon(R.drawable.arrow_back_ios);

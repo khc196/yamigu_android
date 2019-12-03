@@ -233,7 +233,12 @@ public class HomeFragment extends Fragment {
         super.onResume();
 //        ChildEventListener notiChildEventListenerForNotification = makeChildEventListenerForNotification();
 //        notiDB = loadNotifications(notiChildEventListenerForNotification);
-        ll_root_pane.setVisibility(View.INVISIBLE);
+        try {
+            ll_root_pane.setVisibility(View.INVISIBLE);
+        }
+        catch (NullPointerException e) {
+
+        }
         if(MainActivity.pager.getCurrentItem() == 0) {
             refresh();
         }
@@ -242,8 +247,12 @@ public class HomeFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        tv_unread_noti_count.setVisibility(View.INVISIBLE);
-        tv_ticket_count.setVisibility(View.INVISIBLE);
+        try {
+            tv_unread_noti_count.setVisibility(View.INVISIBLE);
+            tv_ticket_count.setVisibility(View.INVISIBLE);
+        } catch(NullPointerException e){
+
+        }
     }
     @Override
     public void onAttach(Context context) {

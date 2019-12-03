@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -185,15 +187,12 @@ public class MeetingCardFragment extends Fragment {
                 while (bm.getHeight() < civ.getHeight()) {
                     bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
                 }
-                while(bm.getWidth() < civ.getWidth() && bm.getHeight() < civ.getHeight()) {
-                    bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
+                if (bm.getWidth() <= bm.getHeight() && bm.getWidth() > civ.getWidth()) {
+                    bm = Bitmap.createScaledBitmap(bm, civ.getWidth(), (bm.getHeight() * civ.getWidth()) / bm.getWidth(), false);
                 }
-//                if (bm.getWidth() <= bm.getHeight() && bm.getWidth() > civ.getWidth()) {
-//                    bm = Bitmap.createScaledBitmap(bm, civ.getWidth(), (bm.getHeight() * civ.getWidth()) / bm.getWidth(), false);
-//                }
-//                else if (bm.getWidth() >= bm.getHeight() && bm.getHeight() > civ.getHeight()) {
-//                    bm = Bitmap.createScaledBitmap(bm, (bm.getWidth() * civ.getHeight()) / bm.getHeight(), civ.getHeight(), false);
-//                }
+                else if (bm.getWidth() >= bm.getHeight() && bm.getHeight() > civ.getHeight()) {
+                    bm = Bitmap.createScaledBitmap(bm, (bm.getWidth() * civ.getHeight()) / bm.getHeight(), civ.getHeight(), false);
+                }
                 if(bm.getWidth() > bm.getHeight()) {
                     bm = ImageUtils.cropCenterBitmap(bm, bm.getHeight(), bm.getHeight());
                 }

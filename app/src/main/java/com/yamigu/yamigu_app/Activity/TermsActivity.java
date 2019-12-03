@@ -3,6 +3,7 @@ package com.yamigu.yamigu_app.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +22,7 @@ public class TermsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_terms);
         tb = (Toolbar) findViewById(R.id.toolbar) ;
         tv_content = findViewById(R.id.tv_content);

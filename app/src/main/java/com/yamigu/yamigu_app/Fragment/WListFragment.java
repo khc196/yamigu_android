@@ -188,8 +188,12 @@ public class WListFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
-        mRootLinear.setVisibility(View.INVISIBLE);
+        try {
+            final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
+            mRootLinear.setVisibility(View.INVISIBLE);
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+        }
         //((MainActivity)getActivity()).refresh();
     }
     public void refresh() {
@@ -742,7 +746,7 @@ public class WListFragment extends Fragment {
                 else if(bm.getWidth() < bm.getHeight()){
                     bm = ImageUtils.cropCenterBitmap(bm, bm.getWidth(), bm.getWidth());
                 }
-                //Log.d("SIZE", bm.getWidth() + "X" + bm.getHeight() + "    " + civ.getWidth() + "X" + civ.getHeight());
+                Log.d("SIZE", bm.getWidth() + "X" + bm.getHeight() + "    " + civ.getWidth() + "X" + civ.getHeight());
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
