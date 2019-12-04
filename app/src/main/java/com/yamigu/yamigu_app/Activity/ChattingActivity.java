@@ -329,6 +329,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         meetingCancelDialog.btn_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                meetingCancelDialog.dismiss();
                 String url = "http://106.10.39.154:9999/api/matching/cancel_matching/";
                 ContentValues values = new ContentValues();
                 values.put("match_id", matching_id);
@@ -516,7 +517,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                         String key2 = messageRef.push().getKey();
                         chatData_place.id = key2;
                         messageRef.child(key2).setValue(chatData_place);
-
                         break;
                     }
                 }

@@ -114,6 +114,7 @@ public class MyMeetingCard extends LinearLayout {
             public void onClick(View view) {
                 MainActivity.dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
                 Intent intent = new Intent(getContext(), MeetingApplicationActivity.class);
+                intent.putExtra("form_code", MeetingApplicationActivity.EDIT_MEETING);
                 intent.putExtra("meeting_id", id);
                 intent.putExtra("type", typeInt);
                 intent.putExtra("place", place);

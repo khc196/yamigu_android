@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-<item
-    android:state_pressed="true"
-    android:state_enabled="true"
-    android:drawable="@drawable/state_pressed_ripple"/>
-<item
-    android:state_enabled="true"
-    android:drawable="@drawable/yamigu_btn_bg_red" />
-</selector>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#D65015">
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="#D65015" />
+        </shape>
+    </item>
+
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <solid
+                android:color="#FF4D00"/>
+        </shape>
+    </item>
+</ripple>

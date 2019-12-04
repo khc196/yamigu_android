@@ -837,7 +837,7 @@ public class WListFragment extends Fragment {
                     invisible_flag = true;
                     MainActivity.dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
                     Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
-
+                    intent.putExtra("form_code", MeetingApplicationActivity.SEND_REQUEST);
                     intent.putExtra("type", values.getAsInteger("meeting_type"));
                     intent.putExtra("date_string", values.getAsString("date"));
                     intent.putExtra("place", values.getAsInteger("place"));

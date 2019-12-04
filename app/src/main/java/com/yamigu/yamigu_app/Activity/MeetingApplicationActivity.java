@@ -71,9 +71,9 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private boolean is_changing;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
-    private final int NEW_MEETING = 0;
-    private final int SEND_REQUEST = 1;
-    private final int EDIT_MEETING = 2;
+    public static final int NEW_MEETING = 0;
+    public static final int SEND_REQUEST = 1;
+    public static final int EDIT_MEETING = 2;
     public static ProgressDialog progressDialog = null;
     private CustomDialog2 popupDialog = null;
 
@@ -87,6 +87,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         progressDialog = MainActivity.dialog.show(this, "", "로딩중입니다...", true);
 
         final Intent intent = getIntent();
+        final int form_code = intent.getIntExtra("form_code", 0);
+
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         auth_token = preferences.getString("auth_token", "");
@@ -117,599 +119,645 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         ll_for_edit = (LinearLayout) findViewById(R.id.ll_for_edit);
         btn_edit = (Button) findViewById(R.id.btn_edit);
         btn_delete = (Button) findViewById(R.id.btn_delete);
-
+        btn_okay = (Button) findViewById(R.id.btn_okay);
+        btn_okay.setVisibility(View.INVISIBLE);
+        ll_for_edit.setVisibility(View.INVISIBLE);
         root_view = findViewById(R.id.root_view);
         toast = Toast.makeText(getApplicationContext(), "자신과 친구들을 표현해 주세요!", Toast.LENGTH_SHORT);
         progressDialog.dismiss();
         final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        type_view = inflater.inflate(R.layout.type_view, root_view, false);
-        date_view =  inflater.inflate(R.layout.date_view, root_view, false);
-        place_view =  inflater.inflate(R.layout.place_view, root_view, false);
-        appeal_view =  inflater.inflate(R.layout.appeal_view, root_view, false);
-        root_view.addView(type_view);
-        root_view.addView(date_view);
-        root_view.addView(place_view);
-        root_view.addView(appeal_view);
-        btn_select_type_array = new Button[3];
-        btn_select_type_array[0] = (Button) type_view.findViewById(R.id.btn_select_2vs2);
-        btn_select_type_array[1] = (Button) type_view.findViewById(R.id.btn_select_3vs3);
-        btn_select_type_array[2] = (Button) type_view.findViewById(R.id.btn_select_4vs4);
-        btn_select_date_array = new Button[7];
-        btn_select_date_array[0] = (Button) date_view.findViewById(R.id.btn_select_date1);
-        btn_select_date_array[1] = (Button) date_view.findViewById(R.id.btn_select_date2);
-        btn_select_date_array[2] = (Button) date_view.findViewById(R.id.btn_select_date3);
-        btn_select_date_array[3] = (Button) date_view.findViewById(R.id.btn_select_date4);
-        btn_select_date_array[4] = (Button) date_view.findViewById(R.id.btn_select_date5);
-        btn_select_date_array[5] = (Button) date_view.findViewById(R.id.btn_select_date6);
-        btn_select_date_array[6] = (Button) date_view.findViewById(R.id.btn_select_date7);
-        btn_select_place_array = new Button[3];
-        btn_select_place_array[0] = (Button) place_view.findViewById(R.id.btn_select_place1);
-        btn_select_place_array[1] = (Button) place_view.findViewById(R.id.btn_select_place2);
-        btn_select_place_array[2] = (Button) place_view.findViewById(R.id.btn_select_place3);
-
-        et_appeal = (EditText) appeal_view.findViewById(R.id.edittext_appeal);
-        tv_max_appeal_length = (TextView) appeal_view.findViewById(R.id.max_appeal_length);
-        ll_for_edit.setVisibility(View.INVISIBLE);
-        tv_max_appeal_length.setText("0 / "+Integer.toString(MAX_APPEAL_LENGTH));
-        tv_max_appeal_length.setVisibility(View.INVISIBLE);
-
         ma = new MeetingApplication();
-        View toastView = toast.getView();
-        int toastbackgroundColor = ResourcesCompat.getColor(toastView.getResources(), R.color.colorPoint, null);
-        toastView.getBackground().setColorFilter(toastbackgroundColor, PorterDuff.Mode.SRC_IN);
-        TextView toasttv = (TextView) toastView.findViewById(android.R.id.message);
-        toasttv.setTextColor(Color.WHITE);
-        form_code = 0;
-        findViewById(R.id.overall_layout).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                GlobalApplication.hideKeyboard(MeetingApplicationActivity.this);
-                return false;
-            }
-        });
-        et_appeal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
+        if(form_code == NEW_MEETING) {
+            type_view = inflater.inflate(R.layout.type_view, root_view, false);
+            root_view.addView(type_view);
+        }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        else if (form_code == EDIT_MEETING) {
+            initialize_with_prefilled_data(intent);
+            appeal_view =  inflater.inflate(R.layout.appeal_view, root_view, false);
+            root_view.addView(appeal_view);
+            ll_for_edit.setVisibility(View.VISIBLE);
+            et_appeal = (EditText) appeal_view.findViewById(R.id.edittext_appeal);
+            et_appeal.setText(ma.getAppeal());
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                tv_max_appeal_length.setText(Integer.toString(et_appeal.getText().length()) + " / " + Integer.toString(MAX_APPEAL_LENGTH));
-            }
-        });
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        SimpleDateFormat sdf = new SimpleDateFormat("M월 d일");
-
-        appeal_view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                GlobalApplication.hideKeyboard(MeetingApplicationActivity.this);
-                return false;
-            }
-        });
-        btn_okay = (Button) findViewById(R.id.btn_okay);
-        selected_type_text.setText("인원");
-        selected_date_text.setText("날짜");
-        selected_place_text.setText("장소");
-        date_view.setVisibility(View.GONE);
-        place_view.setVisibility(View.GONE);
-        appeal_view.setVisibility(View.GONE);
-        btn_okay.setVisibility(View.INVISIBLE);
-        form_code = initialize_with_prefilled_data(intent);
-        if(form_code == EDIT_MEETING || form_code == SEND_REQUEST) {
+            tv_max_appeal_length = (TextView) appeal_view.findViewById(R.id.max_appeal_length);
+            tv_max_appeal_length.setText("0 / "+Integer.toString(MAX_APPEAL_LENGTH));
             selected_type_text.setText(ma.getType_string());
             selected_type.setAlpha(0.5f);
             selected_date_text.setText(ma.getDate_string());
             selected_date.setAlpha(0.5f);
-        }
-        if(form_code == EDIT_MEETING) {
             selected_place_text.setText(ma.getPlace_string());
             selected_place_text.setTextColor(getResources().getColor(R.color.colorPoint));
             selected_place.setBackgroundResource(R.drawable.bottom_border_orange);
             place_triangle.setBackgroundResource(R.drawable.triangle_orange);
         }
-        if(form_code == SEND_REQUEST) {
+        else if (form_code == SEND_REQUEST) {
+            initialize_with_prefilled_data(intent);
+            appeal_view =  inflater.inflate(R.layout.appeal_view, root_view, false);
+            root_view.addView(appeal_view);
+            btn_okay.setVisibility(View.VISIBLE);
+            et_appeal = (EditText) appeal_view.findViewById(R.id.edittext_appeal);
+            tv_max_appeal_length = (TextView) appeal_view.findViewById(R.id.max_appeal_length);
+            tv_max_appeal_length.setText("0 / "+Integer.toString(MAX_APPEAL_LENGTH));
+            selected_type_text.setText(ma.getType_string());
+            selected_type.setAlpha(0.5f);
+            selected_date_text.setText(ma.getDate_string());
+            selected_date.setAlpha(0.5f);
             selected_place_text.setText(ma.getPlace_string());
             selected_place.setAlpha(0.5f);
         }
-
-        if(form_code == NEW_MEETING) {
-            selected_type.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ma.reselect(ma.RESELECT_TYPE);
-
-                    type_view.setVisibility(View.VISIBLE);
-                    date_view.setVisibility(View.GONE);
-                    place_view.setVisibility(View.GONE);
-                    appeal_view.setVisibility(View.GONE);
-                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
-                    btn_okay.setVisibility(View.INVISIBLE);
-                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
-                }
-            });
-            selected_date.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ma.reselect(ma.RESELECT_DATE);
-
-                    type_view.setVisibility(View.GONE);
-                    date_view.setVisibility(View.VISIBLE);
-                    place_view.setVisibility(View.GONE);
-                    appeal_view.setVisibility(View.GONE);
-                    btn_okay.setVisibility(View.INVISIBLE);
-                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
-                }
-            });
-            selected_place.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ma.reselect(ma.RESELECT_PLACE);
-
-                    type_view.setVisibility(View.GONE);
-                    date_view.setVisibility(View.GONE);
-                    place_view.setVisibility(View.VISIBLE);
-                    appeal_view.setVisibility(View.GONE);
-                    btn_okay.setVisibility(View.INVISIBLE);
-                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
-                }
-            });
-        }
-        if(form_code == EDIT_MEETING) {
-            selected_place.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ma.reselect(ma.RESELECT_PLACE);
-
-                    type_view.setVisibility(View.GONE);
-                    date_view.setVisibility(View.GONE);
-                    place_view.setVisibility(View.VISIBLE);
-                    appeal_view.setVisibility(View.GONE);
-                    btn_okay.setVisibility(View.INVISIBLE);
-                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
-                }
-            });
-        }
-        btn_okay.setOnClickListener(new View.OnClickListener() {
+        new Thread(new Runnable() {
             @Override
-            public void onClick(View view) {
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(form_code == NEW_MEETING) {
+                            date_view =  inflater.inflate(R.layout.date_view, root_view, false);
+                            place_view =  inflater.inflate(R.layout.place_view, root_view, false);
+                            appeal_view =  inflater.inflate(R.layout.appeal_view, root_view, false);
+                            root_view.addView(date_view);
+                            root_view.addView(place_view);
+                            root_view.addView(appeal_view);
+                            date_view.setVisibility(View.GONE);
+                            place_view.setVisibility(View.GONE);
+                            appeal_view.setVisibility(View.GONE);
+                        }
+                        else if(form_code == EDIT_MEETING || form_code == SEND_REQUEST) {
+                            type_view = inflater.inflate(R.layout.type_view, root_view, false);
+                            date_view =  inflater.inflate(R.layout.date_view, root_view, false);
+                            place_view =  inflater.inflate(R.layout.place_view, root_view, false);
+                            root_view.addView(type_view);
+                            root_view.addView(date_view);
+                            root_view.addView(place_view);
+                            type_view.setVisibility(View.GONE);
+                            date_view.setVisibility(View.GONE);
+                            place_view.setVisibility(View.GONE);
+                        }
+                        if(form_code == NEW_MEETING || form_code == EDIT_MEETING) {
+                            btn_select_type_array = new Button[3];
+                            btn_select_type_array[0] = (Button) type_view.findViewById(R.id.btn_select_2vs2);
+                            btn_select_type_array[1] = (Button) type_view.findViewById(R.id.btn_select_3vs3);
+                            btn_select_type_array[2] = (Button) type_view.findViewById(R.id.btn_select_4vs4);
+                            btn_select_date_array = new Button[7];
+                            btn_select_date_array[0] = (Button) date_view.findViewById(R.id.btn_select_date1);
+                            btn_select_date_array[1] = (Button) date_view.findViewById(R.id.btn_select_date2);
+                            btn_select_date_array[2] = (Button) date_view.findViewById(R.id.btn_select_date3);
+                            btn_select_date_array[3] = (Button) date_view.findViewById(R.id.btn_select_date4);
+                            btn_select_date_array[4] = (Button) date_view.findViewById(R.id.btn_select_date5);
+                            btn_select_date_array[5] = (Button) date_view.findViewById(R.id.btn_select_date6);
+                            btn_select_date_array[6] = (Button) date_view.findViewById(R.id.btn_select_date7);
+                            btn_select_place_array = new Button[3];
+                            btn_select_place_array[0] = (Button) place_view.findViewById(R.id.btn_select_place1);
+                            btn_select_place_array[1] = (Button) place_view.findViewById(R.id.btn_select_place2);
+                            btn_select_place_array[2] = (Button) place_view.findViewById(R.id.btn_select_place3);
+                        }
 
-                ma.setAppeal(et_appeal.getText().toString());
-                if(ma.getAppeal().trim().isEmpty()) {
-                    toast.setText("자신과 친구들을 표현해 주세요!");
-                    toast.show();
-                }
-                else if(ma.getAppeal().length() > MAX_APPEAL_LENGTH) {
-                    toast.setText("표현을 조금만 줄여주세요!");
-                    toast.show();
-                }
-                else {
-                    if(form_code == NEW_MEETING) {
-                        progressDialog = ProgressDialog.show(meetingApplicationActivity, "", "미팅 신청중입니다...", true);
-                        setDialog("미팅을 신청했어요, 이제 대기팀에서 이성팀을 찾아보세요!\n장소는 달라도 신청가능해요.");
-                        String url = "http://106.10.39.154:9999/api/meetings/create/";
 
-                        ContentValues values = new ContentValues();
-                        String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
-                        values.put("meeting_type", ma.getType());
-                        values.put("date", new_date.trim());
-                        values.put("place", ma.getPlace());
-                        values.put("appeal", ma.getAppeal());
+                        if(form_code == NEW_MEETING) {
+                            et_appeal = (EditText) appeal_view.findViewById(R.id.edittext_appeal);
+                            tv_max_appeal_length = (TextView) appeal_view.findViewById(R.id.max_appeal_length);
+                            tv_max_appeal_length.setText("0 / "+Integer.toString(MAX_APPEAL_LENGTH));
+                            tv_max_appeal_length.setVisibility(View.INVISIBLE);
 
-                        NetworkTask networkTask = new NetworkTask(url, values);
-                        networkTask.execute();
-                    }
-                    else if(form_code == SEND_REQUEST){
-                        progressDialog = ProgressDialog.show(meetingApplicationActivity, "", "미팅 신청중입니다...", true);
-                        setDialog("미팅이 신청되었어요!\n상대방이 수락하면 매칭이 완료됩니다!");
-                        String url = "http://106.10.39.154:9999/api/matching/send_request_new/";
-                        ContentValues values = new ContentValues();
-                        String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
-                        values.put("meeting_type", ma.getType());
-                        values.put("date", new_date.trim());
-                        values.put("place", ma.getPlace());
-                        values.put("appeal", ma.getAppeal());
-                        values.put("meeting_id", target_id);
-                        NetworkTask networkTask = new NetworkTask(url, values);
-                        networkTask.execute();
-                        int num_of_ticket = preferences.getInt("num_of_ticket", 0);
-                    }
-                }
-            }
-        });
-        if(form_code == EDIT_MEETING) {
-            btn_edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    AlertDialog.Builder alert_confirm = new AlertDialog.Builder(view.getContext());
-                    alert_confirm.setMessage("수정 사항을 저장하시겠습니까?").setCancelable(false).setPositiveButton("확인",
-                            new DialogInterface.OnClickListener() {
+                        }
+                        else if(form_code == EDIT_MEETING) {
+                            ma.reselect(ma.RESELECT_TYPE);
+                            tv_max_appeal_length.setVisibility(View.VISIBLE);
+                        }
+                        else if(form_code == SEND_REQUEST) {
+                            tv_max_appeal_length.setVisibility(View.VISIBLE);
+
+                        }
+                        View toastView = toast.getView();
+                        int toastbackgroundColor = ResourcesCompat.getColor(toastView.getResources(), R.color.colorPoint, null);
+                        toastView.getBackground().setColorFilter(toastbackgroundColor, PorterDuff.Mode.SRC_IN);
+                        TextView toasttv = (TextView) toastView.findViewById(android.R.id.message);
+                        toasttv.setTextColor(Color.WHITE);
+                        findViewById(R.id.overall_layout).setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                GlobalApplication.hideKeyboard(MeetingApplicationActivity.this);
+                                return false;
+                            }
+                        });
+                        et_appeal.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+                                tv_max_appeal_length.setText(Integer.toString(et_appeal.getText().length()) + " / " + Integer.toString(MAX_APPEAL_LENGTH));
+                            }
+                        });
+
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(new Date());
+                        SimpleDateFormat sdf = new SimpleDateFormat("M월 d일");
+
+                        appeal_view.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                GlobalApplication.hideKeyboard(MeetingApplicationActivity.this);
+                                return false;
+                            }
+                        });
+
+                        if(form_code == NEW_MEETING) {
+                            selected_type.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    progressDialog = ProgressDialog.show(meetingApplicationActivity, "", "미팅 수정중입니다...", true);
-                                    setDialog("미팅이 수정 되었어요!");
-                                    ma.setAppeal(et_appeal.getText().toString());
-                                    String url = "http://106.10.39.154:9999/api/meetings/edit/";
-                                    ContentValues values = new ContentValues();
-                                    String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
-                                    values.put("meeting_type", ma.getType());
-                                    values.put("date", new_date.trim());
-                                    values.put("place", ma.getPlace());
-                                    values.put("appeal", ma.getAppeal());
-                                    values.put("meeting_id", edit_id);
-                                    NetworkTask networkTask = new NetworkTask(url, values);
-                                    networkTask.execute();
-                                }
-                            }).setNegativeButton("취소",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    return;
+                                public void onClick(View view) {
+                                    ma.reselect(ma.RESELECT_TYPE);
+
+                                    type_view.setVisibility(View.VISIBLE);
+                                    date_view.setVisibility(View.GONE);
+                                    place_view.setVisibility(View.GONE);
+                                    appeal_view.setVisibility(View.GONE);
+                                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
+                                    btn_okay.setVisibility(View.INVISIBLE);
+                                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
                                 }
                             });
-                    AlertDialog alert = alert_confirm.create();
-                    alert.show();
-                }
-            });
-            btn_delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    AlertDialog.Builder alert_confirm = new AlertDialog.Builder(view.getContext());
-                    alert_confirm.setMessage("미팅을 삭제하시겠습니까?").setCancelable(false).setPositiveButton("확인",
-                            new DialogInterface.OnClickListener() {
+                            selected_date.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    progressDialog = ProgressDialog.show(meetingApplicationActivity, "", "미팅 삭제중입니다...", true);
-                                    setDialog("미팅이 삭제 되었어요!");
-                                    String url = "http://106.10.39.154:9999/api/meetings/delete/";
-                                    ContentValues values = new ContentValues();
-                                    values.put("meeting_id", edit_id);
-                                    NetworkTask networkTask = new NetworkTask(url, values);
-                                    networkTask.execute();
+                                public void onClick(View view) {
+                                    ma.reselect(ma.RESELECT_DATE);
 
-                                    int num_of_ticket = preferences.getInt("num_of_ticket", 0);
-                                    if(num_of_ticket > 0) {
-                                        editor.putInt("num_of_ticket", num_of_ticket + 1);
-                                        editor.apply();
+                                    type_view.setVisibility(View.GONE);
+                                    date_view.setVisibility(View.VISIBLE);
+                                    place_view.setVisibility(View.GONE);
+                                    appeal_view.setVisibility(View.GONE);
+                                    btn_okay.setVisibility(View.INVISIBLE);
+                                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                            selected_place.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    ma.reselect(ma.RESELECT_PLACE);
+
+                                    type_view.setVisibility(View.GONE);
+                                    date_view.setVisibility(View.GONE);
+                                    place_view.setVisibility(View.VISIBLE);
+                                    appeal_view.setVisibility(View.GONE);
+                                    btn_okay.setVisibility(View.INVISIBLE);
+                                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                        }
+                        if(form_code == EDIT_MEETING) {
+                            selected_place.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    ma.reselect(ma.RESELECT_PLACE);
+
+                                    type_view.setVisibility(View.GONE);
+                                    date_view.setVisibility(View.GONE);
+                                    place_view.setVisibility(View.VISIBLE);
+                                    appeal_view.setVisibility(View.GONE);
+                                    btn_okay.setVisibility(View.INVISIBLE);
+                                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                        }
+                        btn_okay.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                ma.setAppeal(et_appeal.getText().toString());
+                                if(ma.getAppeal().trim().isEmpty()) {
+                                    toast.setText("자신과 친구들을 표현해 주세요!");
+                                    toast.show();
+                                }
+                                else if(ma.getAppeal().length() > MAX_APPEAL_LENGTH) {
+                                    toast.setText("표현을 조금만 줄여주세요!");
+                                    toast.show();
+                                }
+                                else {
+                                    if(form_code == NEW_MEETING) {
+                                        progressDialog = ProgressDialog.show(meetingApplicationActivity, "", "미팅 신청중입니다...", true);
+                                        setDialog("미팅을 신청했어요, 이제 대기팀에서 이성팀을 찾아보세요!\n장소는 달라도 신청가능해요.");
+                                        String url = "http://106.10.39.154:9999/api/meetings/create/";
+
+                                        ContentValues values = new ContentValues();
+                                        String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
+                                        values.put("meeting_type", ma.getType());
+                                        values.put("date", new_date.trim());
+                                        values.put("place", ma.getPlace());
+                                        values.put("appeal", ma.getAppeal());
+
+                                        NetworkTask networkTask = new NetworkTask(url, values);
+                                        networkTask.execute();
+                                    }
+                                    else if(form_code == SEND_REQUEST){
+                                        progressDialog = ProgressDialog.show(meetingApplicationActivity, "", "미팅 신청중입니다...", true);
+                                        setDialog("미팅이 신청되었어요!\n상대방이 수락하면 매칭이 완료됩니다!");
+                                        String url = "http://106.10.39.154:9999/api/matching/send_request_new/";
+                                        ContentValues values = new ContentValues();
+                                        String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
+                                        values.put("meeting_type", ma.getType());
+                                        values.put("date", new_date.trim());
+                                        values.put("place", ma.getPlace());
+                                        values.put("appeal", ma.getAppeal());
+                                        values.put("meeting_id", target_id);
+                                        NetworkTask networkTask = new NetworkTask(url, values);
+                                        networkTask.execute();
+                                        int num_of_ticket = preferences.getInt("num_of_ticket", 0);
                                     }
                                 }
-                            }).setNegativeButton("취소",
-                            new DialogInterface.OnClickListener() {
+                            }
+                        });
+                        if(form_code == EDIT_MEETING) {
+                            btn_edit.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    return;
+                                public void onClick(View view) {
+                                    AlertDialog.Builder alert_confirm = new AlertDialog.Builder(view.getContext());
+                                    alert_confirm.setMessage("수정 사항을 저장하시겠습니까?").setCancelable(false).setPositiveButton("확인",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    progressDialog = ProgressDialog.show(meetingApplicationActivity, "", "미팅 수정중입니다...", true);
+                                                    setDialog("미팅이 수정 되었어요!");
+                                                    ma.setAppeal(et_appeal.getText().toString());
+                                                    String url = "http://106.10.39.154:9999/api/meetings/edit/";
+                                                    ContentValues values = new ContentValues();
+                                                    String new_date = ma.getDate_string().substring(0, ma.getDate_string().length() - 1);
+                                                    values.put("meeting_type", ma.getType());
+                                                    values.put("date", new_date.trim());
+                                                    values.put("place", ma.getPlace());
+                                                    values.put("appeal", ma.getAppeal());
+                                                    values.put("meeting_id", edit_id);
+                                                    NetworkTask networkTask = new NetworkTask(url, values);
+                                                    networkTask.execute();
+                                                }
+                                            }).setNegativeButton("취소",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    return;
+                                                }
+                                            });
+                                    AlertDialog alert = alert_confirm.create();
+                                    alert.show();
                                 }
                             });
-                    AlertDialog alert = alert_confirm.create();
-                    alert.show();
+                            btn_delete.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    AlertDialog.Builder alert_confirm = new AlertDialog.Builder(view.getContext());
+                                    alert_confirm.setMessage("미팅을 삭제하시겠습니까?").setCancelable(false).setPositiveButton("확인",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    progressDialog = ProgressDialog.show(meetingApplicationActivity, "", "미팅 삭제중입니다...", true);
+                                                    setDialog("미팅이 삭제 되었어요!");
+                                                    String url = "http://106.10.39.154:9999/api/meetings/delete/";
+                                                    ContentValues values = new ContentValues();
+                                                    values.put("meeting_id", edit_id);
+                                                    NetworkTask networkTask = new NetworkTask(url, values);
+                                                    networkTask.execute();
 
-                }
-            });
-        }
-        for (int i = 0; i < btn_select_type_array.length; i++) {
-            final Button button = btn_select_type_array[i];
-            final int me = i+1;
-            if(ma.getType() == me) {
-                button.setBackgroundColor(getResources().getColor(R.color.colorPoint));
-                button.setTextColor(Color.WHITE);
-            }
+                                                    int num_of_ticket = preferences.getInt("num_of_ticket", 0);
+                                                    if(num_of_ticket > 0) {
+                                                        editor.putInt("num_of_ticket", num_of_ticket + 1);
+                                                        editor.apply();
+                                                    }
+                                                }
+                                            }).setNegativeButton("취소",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    return;
+                                                }
+                                            });
+                                    AlertDialog alert = alert_confirm.create();
+                                    alert.show();
 
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(is_changing)
-                        return;
-                    Button obutton;
-                    for (int j = 0; j < btn_select_type_array.length; j++){
-                        obutton = btn_select_type_array[j];
-                        if(me != j+1) {
-                            obutton.setBackgroundResource(0);
-                            obutton.setTextColor(Color.BLACK);
+                                }
+                            });
+                        }
+                        if(form_code == NEW_MEETING || form_code == EDIT_MEETING) {
+                            for (int i = 0; i < btn_select_type_array.length; i++) {
+                                final Button button = btn_select_type_array[i];
+                                final int me = i + 1;
+                                if (ma.getType() == me) {
+                                    button.setBackgroundColor(getResources().getColor(R.color.colorPoint));
+                                    button.setTextColor(Color.WHITE);
+                                }
+
+                                button.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (is_changing)
+                                            return;
+                                        Button obutton;
+                                        for (int j = 0; j < btn_select_type_array.length; j++) {
+                                            obutton = btn_select_type_array[j];
+                                            if (me != j + 1) {
+                                                obutton.setBackgroundResource(0);
+                                                obutton.setTextColor(Color.BLACK);
+                                            }
+                                        }
+                                        if (me != ma.getType()) {
+                                            ma.setType(me);
+                                            ma.setType_string(button.getText().toString());
+
+                                            int colorFrom = getResources().getColor(R.color.colorBackground);
+                                            int colorTo = getResources().getColor(R.color.colorPoint);
+                                            int colorFrom2 = getResources().getColor(R.color.colorBlack);
+                                            int colorTo2 = getResources().getColor(R.color.colorPrimary);
+                                            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                                            ValueAnimator colorAnimation2 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom2, colorTo2);
+                                            colorAnimation.setDuration(350); // milliseconds
+                                            colorAnimation2.setDuration(350);
+                                            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                @Override
+                                                public void onAnimationUpdate(ValueAnimator animator) {
+                                                    button.setBackgroundColor((int) animator.getAnimatedValue());
+                                                }
+
+                                            });
+                                            colorAnimation.addListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationEnd(Animator animation) {
+                                                    super.onAnimationEnd(animation);
+                                                    is_changing = false;
+                                                    if (ma.getDate() == -1) {
+                                                        ma.reselect(ma.RESELECT_DATE);
+                                                        type_view.setVisibility(View.GONE);
+                                                        date_view.setVisibility(View.VISIBLE);
+                                                        place_view.setVisibility(View.GONE);
+                                                    } else if (ma.getPlace() == -1) {
+                                                        ma.reselect(ma.RESELECT_PLACE);
+                                                        type_view.setVisibility(View.GONE);
+                                                        date_view.setVisibility(View.GONE);
+                                                        place_view.setVisibility(View.VISIBLE);
+                                                    } else {
+                                                        ma.reselect(ma.RESELECT_APPEAL);
+                                                        type_view.setVisibility(View.GONE);
+                                                        date_view.setVisibility(View.GONE);
+                                                        place_view.setVisibility(View.GONE);
+                                                        appeal_view.setVisibility(View.VISIBLE);
+                                                        tv_max_appeal_length.setVisibility(View.VISIBLE);
+                                                        if (form_code == NEW_MEETING)
+                                                            btn_okay.setVisibility(View.VISIBLE);
+                                                    }
+                                                }
+                                            });
+                                            colorAnimation2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                @Override
+                                                public void onAnimationUpdate(ValueAnimator animator) {
+                                                    button.setTextColor((int) animator.getAnimatedValue());
+                                                    selected_type_text.setText(button.getText().toString());
+                                                    selected_type_text.setTextColor(getResources().getColor(R.color.colorPoint));
+                                                    selected_type.setBackgroundResource(R.drawable.bottom_border_orange);
+                                                    type_triangle.setBackgroundResource(R.drawable.triangle_orange);
+                                                }
+                                            });
+                                            is_changing = true;
+                                            colorAnimation.start();
+                                            colorAnimation2.start();
+                                        } else {
+                                            ma.setType(-1);
+                                            ma.setType_string("");
+                                            button.setBackgroundResource(0);
+                                            button.setTextColor(Color.BLACK);
+                                            selected_type_text.setText("인원");
+                                            selected_type_text.setTextColor(getResources().getColor(R.color.colorNonselect));
+                                            selected_type.setBackgroundResource(R.drawable.bottom_border_gray2);
+                                            type_triangle.setBackgroundResource(R.drawable.triangle_gray);
+                                        }
+                                    }
+                                });
+                            }
+                            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            for (int i = 0; i < btn_select_date_array.length; i++) {
+                                final Button button = btn_select_date_array[i];
+                                final int me = i + 1;
+
+                                String getTime = sdf.format(cal.getTime());
+                                int day_of_week = cal.get(Calendar.DAY_OF_WEEK);
+                                String date_text = getTime + " " + DOW[day_of_week];
+                                button.setText(date_text);
+                                boolean flag = false;
+                                for (int j = 0; j < GlobalApplication.active_date_list.size(); j++) {
+                                    try {
+                                        Date date_obj = transFormat.parse(GlobalApplication.active_date_list.get(j));
+                                        Calendar cal2 = Calendar.getInstance();
+                                        cal2.setTime(date_obj);
+                                        if (cal2.get(Calendar.MONTH) == cal.get(Calendar.MONTH) && cal2.get(Calendar.DATE) == cal.get(Calendar.DATE)) {
+                                            flag = true;
+                                            break;
+                                        }
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                cal.add(Calendar.DATE, 1);
+                                if (ma.getDate_string().equals(date_text)) {
+                                    ma.setDate(me);
+                                    button.setBackgroundColor(getResources().getColor(R.color.colorPoint));
+                                    button.setTextColor(Color.WHITE);
+                                }
+                                if (flag) {
+                                    button.setAlpha(0.2f);
+                                    continue;
+                                }
+                                button.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (is_changing) {
+                                            return;
+                                        }
+                                        Button obutton;
+                                        for (int j = 0; j < btn_select_date_array.length; j++) {
+                                            obutton = btn_select_date_array[j];
+                                            if (me != j + 1) {
+                                                obutton.setBackgroundResource(0);
+                                                obutton.setTextColor(Color.BLACK);
+                                            }
+                                        }
+                                        if (me != ma.getDate()) {
+                                            ma.setDate(me);
+                                            ma.setDate_string(button.getText().toString());
+                                            int colorFrom = getResources().getColor(R.color.colorBackground);
+                                            int colorTo = getResources().getColor(R.color.colorPoint);
+                                            int colorFrom2 = getResources().getColor(R.color.colorBlack);
+                                            int colorTo2 = getResources().getColor(R.color.colorPrimary);
+                                            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                                            ValueAnimator colorAnimation2 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom2, colorTo2);
+                                            colorAnimation.setDuration(350); // milliseconds
+                                            colorAnimation2.setDuration(350);
+                                            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                @Override
+                                                public void onAnimationUpdate(ValueAnimator animator) {
+                                                    button.setBackgroundColor((int) animator.getAnimatedValue());
+                                                }
+
+                                            });
+                                            colorAnimation.addListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationEnd(Animator animation) {
+                                                    super.onAnimationEnd(animation);
+                                                    is_changing = false;
+                                                    if (ma.getType() == -1) {
+                                                        ma.reselect(ma.RESELECT_TYPE);
+                                                        type_view.setVisibility(View.VISIBLE);
+                                                        date_view.setVisibility(View.GONE);
+                                                        place_view.setVisibility(View.GONE);
+                                                        tv_max_appeal_length.setVisibility(View.INVISIBLE);
+                                                    } else if (ma.getPlace() == -1) {
+                                                        ma.reselect(ma.RESELECT_PLACE);
+                                                        type_view.setVisibility(View.GONE);
+                                                        date_view.setVisibility(View.GONE);
+                                                        place_view.setVisibility(View.VISIBLE);
+                                                        tv_max_appeal_length.setVisibility(View.INVISIBLE);
+                                                    } else {
+                                                        ma.reselect(ma.RESELECT_APPEAL);
+                                                        type_view.setVisibility(View.GONE);
+                                                        date_view.setVisibility(View.GONE);
+                                                        place_view.setVisibility(View.GONE);
+                                                        appeal_view.setVisibility(View.VISIBLE);
+                                                        tv_max_appeal_length.setVisibility(View.VISIBLE);
+
+                                                        if (form_code == NEW_MEETING)
+                                                            btn_okay.setVisibility(View.VISIBLE);
+                                                    }
+                                                }
+                                            });
+                                            colorAnimation2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                @Override
+                                                public void onAnimationUpdate(ValueAnimator animator) {
+                                                    button.setTextColor((int) animator.getAnimatedValue());
+                                                    selected_date_text.setText(ma.getDate_string());
+                                                    selected_date_text.setTextColor(getResources().getColor(R.color.colorPoint));
+                                                    selected_date.setBackgroundResource(R.drawable.bottom_border_orange);
+                                                    date_triangle.setBackgroundResource(R.drawable.triangle_orange);
+
+                                                }
+                                            });
+                                            is_changing = true;
+                                            colorAnimation.start();
+                                            colorAnimation2.start();
+                                        } else {
+                                            ma.setDate(-1);
+                                            ma.setDate_string("");
+                                            button.setBackgroundResource(0);
+                                            button.setTextColor(Color.BLACK);
+                                            selected_date_text.setText("날짜");
+                                            selected_date_text.setTextColor(getResources().getColor(R.color.colorNonselect));
+                                            selected_date.setBackgroundResource(R.drawable.bottom_border_gray2);
+                                            date_triangle.setBackgroundResource(R.drawable.triangle_gray);
+                                        }
+
+                                    }
+                                });
+                            }
+                            for (int i = 0; i < btn_select_place_array.length; i++) {
+                                final Button button = btn_select_place_array[i];
+                                final int me = i + 1;
+                                if (ma.getPlace() == me) {
+                                    button.setBackgroundColor(getResources().getColor(R.color.colorPoint));
+                                    button.setTextColor(Color.WHITE);
+                                }
+                                button.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (is_changing)
+                                            return;
+                                        Button obutton;
+                                        for (int j = 0; j < btn_select_place_array.length; j++) {
+                                            obutton = btn_select_place_array[j];
+                                            if (me != j + 1) {
+                                                obutton.setBackgroundResource(0);
+                                                obutton.setTextColor(Color.BLACK);
+                                            }
+                                        }
+                                        if (me != ma.getPlace()) {
+                                            ma.setPlace(me);
+                                            ma.setPlace_string(button.getText().toString());
+                                            int colorFrom = getResources().getColor(R.color.colorBackground);
+                                            int colorTo = getResources().getColor(R.color.colorPoint);
+                                            int colorFrom2 = getResources().getColor(R.color.colorBlack);
+                                            int colorTo2 = getResources().getColor(R.color.colorPrimary);
+                                            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                                            ValueAnimator colorAnimation2 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom2, colorTo2);
+                                            colorAnimation.setDuration(350); // milliseconds
+                                            colorAnimation2.setDuration(350);
+                                            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                @Override
+                                                public void onAnimationUpdate(ValueAnimator animator) {
+                                                    button.setBackgroundColor((int) animator.getAnimatedValue());
+                                                }
+
+                                            });
+                                            colorAnimation.addListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationEnd(Animator animation) {
+                                                    super.onAnimationEnd(animation);
+                                                    is_changing = false;
+                                                    if (ma.getType() == -1) {
+                                                        ma.reselect(ma.RESELECT_TYPE);
+                                                        type_view.setVisibility(View.VISIBLE);
+                                                        date_view.setVisibility(View.GONE);
+                                                        place_view.setVisibility(View.GONE);
+                                                    } else if (ma.getDate() == -1) {
+                                                        ma.reselect(ma.RESELECT_DATE);
+                                                        type_view.setVisibility(View.GONE);
+                                                        date_view.setVisibility(View.VISIBLE);
+                                                        place_view.setVisibility(View.GONE);
+                                                    } else {
+                                                        ma.reselect(ma.RESELECT_APPEAL);
+                                                        type_view.setVisibility(View.GONE);
+                                                        date_view.setVisibility(View.GONE);
+                                                        place_view.setVisibility(View.GONE);
+                                                        appeal_view.setVisibility(View.VISIBLE);
+                                                        tv_max_appeal_length.setVisibility(View.VISIBLE);
+                                                        if (form_code == NEW_MEETING)
+                                                            btn_okay.setVisibility(View.VISIBLE);
+                                                    }
+                                                }
+                                            });
+                                            colorAnimation2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                                @Override
+                                                public void onAnimationUpdate(ValueAnimator animator) {
+                                                    button.setTextColor((int) animator.getAnimatedValue());
+                                                    selected_place_text.setText(ma.getPlace_string());
+                                                    selected_place_text.setTextColor(getResources().getColor(R.color.colorPoint));
+                                                    selected_place.setBackgroundResource(R.drawable.bottom_border_orange);
+                                                    place_triangle.setBackgroundResource(R.drawable.triangle_orange);
+
+                                                }
+                                            });
+                                            is_changing = true;
+                                            colorAnimation.start();
+                                            colorAnimation2.start();
+                                        } else {
+                                            ma.setPlace(-1);
+                                            ma.setPlace_string("");
+                                            button.setBackgroundResource(0);
+                                            button.setTextColor(Color.BLACK);
+                                            selected_place_text.setText("장소");
+                                            selected_place_text.setTextColor(getResources().getColor(R.color.colorNonselect));
+                                            selected_place.setBackgroundResource(R.drawable.bottom_border_gray2);
+                                            place_triangle.setBackgroundResource(R.drawable.triangle_gray);
+                                        }
+                                    }
+                                });
+                            }
                         }
                     }
-                    if(me != ma.getType()) {
-                        ma.setType(me);
-                        ma.setType_string(button.getText().toString());
-
-                        int colorFrom = getResources().getColor(R.color.colorBackground);
-                        int colorTo = getResources().getColor(R.color.colorPoint);
-                        int colorFrom2 = getResources().getColor(R.color.colorBlack);
-                        int colorTo2 = getResources().getColor(R.color.colorPrimary);
-                        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-                        ValueAnimator colorAnimation2 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom2, colorTo2);
-                        colorAnimation.setDuration(350); // milliseconds
-                        colorAnimation2.setDuration(350);
-                        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animator) {
-                                button.setBackgroundColor((int) animator.getAnimatedValue());
-                            }
-
-                        });
-                        colorAnimation.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                is_changing = false;
-                                if (ma.getDate() == -1) {
-                                    ma.reselect(ma.RESELECT_DATE);
-                                    type_view.setVisibility(View.GONE);
-                                    date_view.setVisibility(View.VISIBLE);
-                                    place_view.setVisibility(View.GONE);
-                                } else if (ma.getPlace() == -1) {
-                                    ma.reselect(ma.RESELECT_PLACE);
-                                    type_view.setVisibility(View.GONE);
-                                    date_view.setVisibility(View.GONE);
-                                    place_view.setVisibility(View.VISIBLE);
-                                } else {
-                                    ma.reselect(ma.RESELECT_APPEAL);
-                                    type_view.setVisibility(View.GONE);
-                                    date_view.setVisibility(View.GONE);
-                                    place_view.setVisibility(View.GONE);
-                                    appeal_view.setVisibility(View.VISIBLE);
-                                    tv_max_appeal_length.setVisibility(View.VISIBLE);
-                                    if(form_code == NEW_MEETING)
-                                        btn_okay.setVisibility(View.VISIBLE);
-                                }
-                            }
-                        });
-                        colorAnimation2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animator) {
-                                button.setTextColor((int) animator.getAnimatedValue());
-                                selected_type_text.setText(button.getText().toString());
-                                selected_type_text.setTextColor(getResources().getColor(R.color.colorPoint));
-                                selected_type.setBackgroundResource(R.drawable.bottom_border_orange);
-                                type_triangle.setBackgroundResource(R.drawable.triangle_orange);
-                            }
-                        });
-                        is_changing = true;
-                        colorAnimation.start();
-                        colorAnimation2.start();
-                    }
-                    else {
-                        ma.setType(-1);
-                        ma.setType_string("");
-                        button.setBackgroundResource(0);
-                        button.setTextColor(Color.BLACK);
-                        selected_type_text.setText("인원");
-                        selected_type_text.setTextColor(getResources().getColor(R.color.colorNonselect));
-                        selected_type.setBackgroundResource(R.drawable.bottom_border_gray2);
-                        type_triangle.setBackgroundResource(R.drawable.triangle_gray);
-                    }
-
-                }
-            });
-        }
-        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
-        for (int i = 0; i < btn_select_date_array.length; i++) {
-            final Button button = btn_select_date_array[i];
-            final int me = i+1;
-
-            String getTime = sdf.format(cal.getTime());
-            int day_of_week = cal.get(Calendar.DAY_OF_WEEK);
-            String date_text = getTime + " " + DOW[day_of_week];
-            button.setText(date_text);
-            boolean flag = false;
-            for(int j = 0; j < GlobalApplication.active_date_list.size(); j++) {
-                try {
-                    Date date_obj = transFormat.parse(GlobalApplication.active_date_list.get(j));
-                    Calendar cal2 = Calendar.getInstance();
-                    cal2.setTime(date_obj);
-                    if(cal2.get(Calendar.MONTH) == cal.get(Calendar.MONTH) && cal2.get(Calendar.DATE) == cal.get(Calendar.DATE)) {
-                        flag = true;
-                        break;
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                });
             }
-            cal.add(Calendar.DATE, 1);
-            if(ma.getDate_string().equals(date_text)) {
-                ma.setDate(me);
-                button.setBackgroundColor(getResources().getColor(R.color.colorPoint));
-                button.setTextColor(Color.WHITE);
-            }
-            if(flag) {
-                button.setAlpha(0.5f);
-                continue;
-            }
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view){
-                    if(is_changing) {
-                        return;
-                    }
-                    Button obutton;
-                    for (int j = 0; j < btn_select_date_array.length; j++) {
-                        obutton = btn_select_date_array[j];
-                        if(me != j+1) {
-                            obutton.setBackgroundResource(0);
-                            obutton.setTextColor(Color.BLACK);
-                        }
-                    }
-                    if(me != ma.getDate()) {
-                        ma.setDate(me);
-                        ma.setDate_string(button.getText().toString());
-                        int colorFrom = getResources().getColor(R.color.colorBackground);
-                        int colorTo = getResources().getColor(R.color.colorPoint);
-                        int colorFrom2 = getResources().getColor(R.color.colorBlack);
-                        int colorTo2 = getResources().getColor(R.color.colorPrimary);
-                        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-                        ValueAnimator colorAnimation2 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom2, colorTo2);
-                        colorAnimation.setDuration(350); // milliseconds
-                        colorAnimation2.setDuration(350);
-                        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animator) {
-                                button.setBackgroundColor((int) animator.getAnimatedValue());
-                            }
-
-                        });
-                        colorAnimation.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                is_changing = false;
-                                if(ma.getType() == -1) {
-                                    ma.reselect(ma.RESELECT_TYPE);
-                                    type_view.setVisibility(View.VISIBLE);
-                                    date_view.setVisibility(View.GONE);
-                                    place_view.setVisibility(View.GONE);
-                                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
-                                }
-                                else if(ma.getPlace() == -1) {
-                                    ma.reselect(ma.RESELECT_PLACE);
-                                    type_view.setVisibility(View.GONE);
-                                    date_view.setVisibility(View.GONE);
-                                    place_view.setVisibility(View.VISIBLE);
-                                    tv_max_appeal_length.setVisibility(View.INVISIBLE);
-                                }
-                                else {
-                                    ma.reselect(ma.RESELECT_APPEAL);
-                                    type_view.setVisibility(View.GONE);
-                                    date_view.setVisibility(View.GONE);
-                                    place_view.setVisibility(View.GONE);
-                                    appeal_view.setVisibility(View.VISIBLE);
-                                    tv_max_appeal_length.setVisibility(View.VISIBLE);
-
-                                    if(form_code == NEW_MEETING)
-                                        btn_okay.setVisibility(View.VISIBLE);
-                                }
-                            }
-                        });
-                        colorAnimation2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animator) {
-                                button.setTextColor((int) animator.getAnimatedValue());
-                                selected_date_text.setText(ma.getDate_string());
-                                selected_date_text.setTextColor(getResources().getColor(R.color.colorPoint));
-                                selected_date.setBackgroundResource(R.drawable.bottom_border_orange);
-                                date_triangle.setBackgroundResource(R.drawable.triangle_orange);
-
-                            }
-                        });
-                        is_changing = true;
-                        colorAnimation.start();
-                        colorAnimation2.start();
-                    }
-                    else {
-                        ma.setDate(-1);
-                        ma.setDate_string("");
-                        button.setBackgroundResource(0);
-                        button.setTextColor(Color.BLACK);
-                        selected_date_text.setText("날짜");
-                        selected_date_text.setTextColor(getResources().getColor(R.color.colorNonselect));
-                        selected_date.setBackgroundResource(R.drawable.bottom_border_gray2);
-                        date_triangle.setBackgroundResource(R.drawable.triangle_gray);
-                    }
-
-                }
-            });
-        }
-        for (int i = 0; i < btn_select_place_array.length; i++) {
-            final Button button = btn_select_place_array[i];
-            final int me = i+1;
-            if(ma.getPlace() == me) {
-                button.setBackgroundColor(getResources().getColor(R.color.colorPoint));
-                button.setTextColor(Color.WHITE);
-            }
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(is_changing)
-                        return;
-                    Button obutton;
-                    for(int j = 0; j < btn_select_place_array.length; j++) {
-                        obutton = btn_select_place_array[j];
-                        if(me != j+1) {
-                            obutton.setBackgroundResource(0);
-                            obutton.setTextColor(Color.BLACK);
-                        }
-                    }
-                    if(me != ma.getPlace()) {
-                        ma.setPlace(me);
-                        ma.setPlace_string(button.getText().toString());
-                        int colorFrom = getResources().getColor(R.color.colorBackground);
-                        int colorTo = getResources().getColor(R.color.colorPoint);
-                        int colorFrom2 = getResources().getColor(R.color.colorBlack);
-                        int colorTo2 = getResources().getColor(R.color.colorPrimary);
-                        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-                        ValueAnimator colorAnimation2 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom2, colorTo2);
-                        colorAnimation.setDuration(350); // milliseconds
-                        colorAnimation2.setDuration(350);
-                        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animator) {
-                                button.setBackgroundColor((int) animator.getAnimatedValue());
-                            }
-
-                        });
-                        colorAnimation.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                is_changing = false;
-                                if(ma.getType() == -1) {
-                                    ma.reselect(ma.RESELECT_TYPE);
-                                    type_view.setVisibility(View.VISIBLE);
-                                    date_view.setVisibility(View.GONE);
-                                    place_view.setVisibility(View.GONE);
-                                }
-                                else if(ma.getDate() == -1) {
-                                    ma.reselect(ma.RESELECT_DATE);
-                                    type_view.setVisibility(View.GONE);
-                                    date_view.setVisibility(View.VISIBLE);
-                                    place_view.setVisibility(View.GONE);
-                                }
-                                else {
-                                    ma.reselect(ma.RESELECT_APPEAL);
-                                    type_view.setVisibility(View.GONE);
-                                    date_view.setVisibility(View.GONE);
-                                    place_view.setVisibility(View.GONE);
-                                    appeal_view.setVisibility(View.VISIBLE);
-                                    tv_max_appeal_length.setVisibility(View.VISIBLE);
-                                    if(form_code == NEW_MEETING)
-                                        btn_okay.setVisibility(View.VISIBLE);
-                                }
-                            }
-                        });
-                        colorAnimation2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                            @Override
-                            public void onAnimationUpdate(ValueAnimator animator) {
-                                button.setTextColor((int) animator.getAnimatedValue());
-                                selected_place_text.setText(ma.getPlace_string());
-                                selected_place_text.setTextColor(getResources().getColor(R.color.colorPoint));
-                                selected_place.setBackgroundResource(R.drawable.bottom_border_orange);
-                                place_triangle.setBackgroundResource(R.drawable.triangle_orange);
-
-                            }
-                        });
-                        is_changing = true;
-                        colorAnimation.start();
-                        colorAnimation2.start();
-                    }
-                    else {
-                        ma.setPlace(-1);
-                        ma.setPlace_string("");
-                        button.setBackgroundResource(0);
-                        button.setTextColor(Color.BLACK);
-                        selected_place_text.setText("장소");
-                        selected_place_text.setTextColor(getResources().getColor(R.color.colorNonselect));
-                        selected_place.setBackgroundResource(R.drawable.bottom_border_gray2);
-                        place_triangle.setBackgroundResource(R.drawable.triangle_gray);
-                    }
-                }
-            });
-        }
+        }).start();
 
 
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
@@ -846,15 +894,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             }
         }
     }
-    private int initialize_with_prefilled_data(Intent intent) {
-        try {
-            if (intent.getExtras().getInt("type") <= 0) {
-                return NEW_MEETING;
-            }
-        }
-        catch (NullPointerException e){
-            return NEW_MEETING;
-        }
+    private void initialize_with_prefilled_data(Intent intent) {
         int typeInt = intent.getExtras().getInt("type");
         int placeInt = intent.getExtras().getInt("place");
         String dateString = intent.getExtras().getString("date_string");
@@ -901,29 +941,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         ma.setPlace(placeInt);
         ma.setPlace_string(placeString);
         ma.setAppeal(appealString);
-
-        if(target_id == 0) {
-            ma.reselect(ma.RESELECT_TYPE);
-            type_view.setVisibility(View.GONE);
-            date_view.setVisibility(View.GONE);
-            place_view.setVisibility(View.GONE);
-            appeal_view.setVisibility(View.VISIBLE);
-            tv_max_appeal_length.setVisibility(View.VISIBLE);
-            btn_okay.setVisibility(View.INVISIBLE);
-            ll_for_edit.setVisibility(View.VISIBLE);
-            et_appeal.setText(ma.getAppeal());
-            return EDIT_MEETING;
-        }
-        else {
-            type_view.setVisibility(View.GONE);
-            date_view.setVisibility(View.GONE);
-            place_view.setVisibility(View.GONE);
-            appeal_view.setVisibility(View.VISIBLE);
-            tv_max_appeal_length.setVisibility(View.VISIBLE);
-            btn_okay.setVisibility(View.VISIBLE);
-            return SEND_REQUEST;
-        }
-
+        ma.reselect(ma.RESELECT_TYPE);
     }
     private void setDialog(String text) {
         popupDialog = new CustomDialog2(meetingApplicationActivity);

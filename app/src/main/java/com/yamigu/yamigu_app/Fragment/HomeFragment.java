@@ -181,6 +181,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
+                intent.putExtra("form_code", MeetingApplicationActivity.NEW_MEETING);
                 startActivity(intent);
             }
         });

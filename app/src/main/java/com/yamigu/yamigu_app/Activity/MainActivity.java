@@ -37,6 +37,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     public static androidx.appcompat.widget.Toolbar tb;
     private static int cur_index = 0;
     public static TextView tv_unread_noti_count, tv_ticket_count;
-
+    private long time= 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
                     else {
                         dialog = ProgressDialog.show(MainActivity.this, "", "로딩중입니다...", true);
                         Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
+                        intent.putExtra("form_code", MeetingApplicationActivity.NEW_MEETING);
                         startActivity(intent);
                     }
                 }
@@ -306,7 +308,17 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        finish();
+        if(pager.getCurrentItem() == 0) {
+            if (System.currentTimeMillis() - time >= 2000) {
+                time = System.currentTimeMillis();
+                Toast.makeText(getApplicationContext(), "뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT).show();
+            } else if (System.currentTimeMillis() - time < 2000) {
+                finish();
+            }
+        }
+        else {
+            selectTab(1) ;
+        }
     }
     public void setMyMeetingCount(int num) {
         int resources[] = {R.drawable.nav_yamigu_0, R.drawable.nav_yamigu_1, R.drawable.nav_yamigu_2, R.drawable.nav_yamigu_3};
