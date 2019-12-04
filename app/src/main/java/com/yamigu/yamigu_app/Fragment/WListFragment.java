@@ -190,7 +190,8 @@ public class WListFragment extends Fragment {
         super.onPause();
         try {
             final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
-            mRootLinear.setVisibility(View.INVISIBLE);
+            if(!invisible_flag)
+                mRootLinear.setVisibility(View.INVISIBLE);
         } catch(NullPointerException e) {
             e.printStackTrace();
         }
@@ -797,13 +798,13 @@ public class WListFragment extends Fragment {
                 Log.d("message", message);
 
                 if(message.equals("created")) {
-                    try {
-                        Intent intent_me = getActivity().getIntent();
-                        getActivity().finish();
-                        startActivity(intent_me);
-                    } catch(NullPointerException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        Intent intent_me = getActivity().getIntent();
+//                        getActivity().finish();
+//                        startActivity(intent_me);
+//                    } catch(NullPointerException e) {
+//                        e.printStackTrace();
+//                    }
                     //Toast.makeText(getContext(), "미팅이 신청되었어요!", Toast.LENGTH_SHORT).show();
                     MainActivity.setDialog("미팅이 신청되었어요!\n상대방이 수락하면 매칭이 완료됩니다!");
                     MainActivity.showDialog();
@@ -833,6 +834,8 @@ public class WListFragment extends Fragment {
                     MainActivity.showDialog();
                 }
                 else if(message.equals("You should create new meeting for matching")) {
+                    invisible_flag = true;
+                    MainActivity.dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
                     Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
 
                     intent.putExtra("type", values.getAsInteger("meeting_type"));
@@ -845,7 +848,6 @@ public class WListFragment extends Fragment {
             } catch(JSONException e) {
                 e.printStackTrace();
             }
-
         }
     }
 

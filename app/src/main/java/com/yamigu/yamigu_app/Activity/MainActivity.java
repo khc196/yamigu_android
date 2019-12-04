@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                         showDialog();
                     }
                     else {
+                        dialog = ProgressDialog.show(MainActivity.this, "", "로딩중입니다...", true);
                         Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
                         startActivity(intent);
                     }

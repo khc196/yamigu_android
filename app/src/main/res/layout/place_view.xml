@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/place_view"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:visibility="gone"
+    >
+<ImageView
+    android:id="@+id/question_where"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="18dp"
+    android:layout_marginTop="7dp"
+    android:src="@drawable/question_where"
+    />
+<LinearLayout
+    android:id="@+id/select_pane_where"
+    android:layout_width="387dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="7dp"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@drawable/shadow_box"
+    >
+    <Button
+        android:id="@+id/btn_select_place1"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="379dp"
+        android:layout_height="62dp"
+        android:background="@null"
+        android:text="신촌/홍대"
+        android:fontFamily="@font/nanumgothic_font_family"
+        android:gravity="center"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#D9D9D9"
+        ></LinearLayout>
+    <Button
+        android:id="@+id/btn_select_place2"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="379dp"
+        android:layout_height="62dp"
+        android:background="@null"
+        android:text="건대/왕십리"
+        android:fontFamily="@font/nanumgothic_font_family"
+        android:gravity="center"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#D9D9D9"
+        ></LinearLayout>
+    <Button
+        android:id="@+id/btn_select_place3"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="379dp"
+        android:layout_height="62dp"
+        android:background="@null"
+        android:text="강남"
+        android:fontFamily="@font/nanumgothic_font_family"
+        android:gravity="center"
+        />
+</LinearLayout>
+</LinearLayout>

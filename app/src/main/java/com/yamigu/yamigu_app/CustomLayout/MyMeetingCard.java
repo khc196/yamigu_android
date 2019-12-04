@@ -1,5 +1,6 @@
 package com.yamigu.yamigu_app.CustomLayout;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -111,6 +112,7 @@ public class MyMeetingCard extends LinearLayout {
         btn_edit_card.setOnClickListener((new OnClickListener() {
             @Override
             public void onClick(View view) {
+                MainActivity.dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
                 Intent intent = new Intent(getContext(), MeetingApplicationActivity.class);
                 intent.putExtra("meeting_id", id);
                 intent.putExtra("type", typeInt);

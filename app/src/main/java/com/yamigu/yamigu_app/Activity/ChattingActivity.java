@@ -137,7 +137,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         partner_department = intent.getExtras().getString("partner_department");
         partner_name = intent.getExtras().getString("partner_nickname");
         date = intent.getExtras().getString("date");
-        Log.d("DAY", date);
 
         place = intent.getExtras().getString("place");
         type = intent.getExtras().getString("type");
@@ -192,7 +191,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         tv_title = findViewById(R.id.tv_title);
         tv_title.setText(date + " || " + place + " || " + type);
         uid = preferences.getString("uid", "");
-        Log.d("manager_uid", manager_uid);
 
         initViews();
         ChatData auto_Chat1 = new ChatData();
@@ -234,7 +232,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         String managerURL = apiURL + manager_uid + "/image/";
         String parterURL = apiURL + partner_uid + "/image/";
         String userURL = apiURL + uid + "/image/";
-        Log.d("managerURL", managerURL);
         String managerPURL = loadProfileURL(managerURL);
         String partnerPURL = loadProfileURL(parterURL);
         //String userPURL = loadProfileURL(userURL);
@@ -372,6 +369,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
 
             }
         }.start();
+
         mAdapter = new ListMessageAdapter(this, conversation, bitmapAvataPartner, bitmapAvataUser);
         //mListView.setAdapter(mAdapter);
         recyclerChat.setAdapter(mAdapter);
@@ -612,6 +610,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             else {
                 bitmapAvataPartner.put(uid_, bm);
             }
+            mAdapter.notifyDataSetChanged();
 //            try {
 //                while (bm.getWidth() < civ.getWidth()) {
 //                    bm = Bitmap.createScaledBitmap(bm, bm.getWidth() * 2, bm.getHeight() * 2, false);
@@ -692,7 +691,7 @@ class ListMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((ItemMessagePartnerHolder) holder).txtTime.setText(format.format(conversation.getListMessageData().get(position).time));
             Bitmap currentAvata;
             try {
-                currentAvata = bitmapAvata.get(conversation.getListMessageData().get(position).idSender);
+                currentAvata = ChattingActivity.bitmapAvataPartner.get(conversation.getListMessageData().get(position).idSender);
             } catch(NullPointerException e){
                 e.printStackTrace();
                 currentAvata = null;
@@ -736,8 +735,10 @@ class ListMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((ItemMessageManagerHolder) holder).txtTime.setText(format.format(conversation.getListMessageData().get(position).time));
             ((ItemMessageManagerHolder) holder).txtContent.setText(conversation.getListMessageData().get(position).message);
             Bitmap currentAvata;
+            if(ChattingActivity.bitmapAvataPartner.containsKey(conversation.getListMessageData().get(position).idSender)) {
+            }
             try {
-                currentAvata = bitmapAvata.get(conversation.getListMessageData().get(position).idSender);
+                currentAvata = ChattingActivity.bitmapAvataPartner.get(conversation.getListMessageData().get(position).idSender);
             } catch(NullPointerException e){
                 e.printStackTrace();
                 currentAvata = null;
@@ -863,13 +864,11 @@ class ItemMessageManagerHolder extends RecyclerView.ViewHolder {
         });
     }
     public void setType(String Type) {
-        Log.d("setType", Type);
         if(Type.equals(ChattingActivity.MANAGER_WELCOME_TAG)) {
             content_precautions.setVisibility(View.GONE);
             content_place.setVisibility(View.GONE);
             content_normal.setVisibility(View.GONE);
             content_welcome.setVisibility(View.VISIBLE);
-            Log.d("WELCOME_TAG", ChattingActivity.MANAGER_WELCOME_TAG);
             TextView chatting_content_name_and_age_man, chatting_content_name_and_age_woman, chatting_content_belong_man, chatting_content_belong_woman, chatting_content_date, chatting_content_place, chatting_content_type;
             chatting_content_name_and_age_man = content_welcome.findViewById(R.id.chatting_content_name_and_age_man);
             chatting_content_belong_man = content_welcome.findViewById(R.id.chatting_content_belong_man);

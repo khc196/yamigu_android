@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -55,7 +57,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private Button[] btn_select_type_array, btn_select_date_array, btn_select_place_array;
     private ImageView iv_question_type, iv_question_when, iv_question_where, iv_question_appeal, type_triangle, date_triangle, place_triangle;
     private EditText et_appeal;
-    private LinearLayout type_view, date_view, place_view, appeal_view, ll_for_edit;
+    private LinearLayout root_view, ll_for_edit;
+    private View type_view, date_view, place_view, appeal_view;
     private MeetingApplication ma;
     private TextView tv_max_appeal_length;
     private MeetingApplicationActivity meetingApplicationActivity;
@@ -79,17 +82,11 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_meeting_application);
-        findViewById(R.id.overall_layout).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                GlobalApplication.hideKeyboard(MeetingApplicationActivity.this);
-                return false;
-            }
-        });
-        meetingApplicationActivity = this;
-        progressDialog = ProgressDialog.show(this, "", "로딩중입니다...", true);
 
-        Intent intent = getIntent();
+        meetingApplicationActivity = this;
+        progressDialog = MainActivity.dialog.show(this, "", "로딩중입니다...", true);
+
+        final Intent intent = getIntent();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         auth_token = preferences.getString("auth_token", "");
@@ -120,23 +117,56 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         ll_for_edit = (LinearLayout) findViewById(R.id.ll_for_edit);
         btn_edit = (Button) findViewById(R.id.btn_edit);
         btn_delete = (Button) findViewById(R.id.btn_delete);
+
+        root_view = findViewById(R.id.root_view);
+        toast = Toast.makeText(getApplicationContext(), "자신과 친구들을 표현해 주세요!", Toast.LENGTH_SHORT);
+        progressDialog.dismiss();
+        final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        type_view = inflater.inflate(R.layout.type_view, root_view, false);
+        date_view =  inflater.inflate(R.layout.date_view, root_view, false);
+        place_view =  inflater.inflate(R.layout.place_view, root_view, false);
+        appeal_view =  inflater.inflate(R.layout.appeal_view, root_view, false);
+        root_view.addView(type_view);
+        root_view.addView(date_view);
+        root_view.addView(place_view);
+        root_view.addView(appeal_view);
         btn_select_type_array = new Button[3];
-        btn_select_type_array[0] = (Button) findViewById(R.id.btn_select_2vs2);
-        btn_select_type_array[1] = (Button) findViewById(R.id.btn_select_3vs3);
-        btn_select_type_array[2] = (Button) findViewById(R.id.btn_select_4vs4);
-        et_appeal = (EditText) findViewById(R.id.edittext_appeal);
-        tv_max_appeal_length = (TextView) findViewById(R.id.max_appeal_length);
+        btn_select_type_array[0] = (Button) type_view.findViewById(R.id.btn_select_2vs2);
+        btn_select_type_array[1] = (Button) type_view.findViewById(R.id.btn_select_3vs3);
+        btn_select_type_array[2] = (Button) type_view.findViewById(R.id.btn_select_4vs4);
+        btn_select_date_array = new Button[7];
+        btn_select_date_array[0] = (Button) date_view.findViewById(R.id.btn_select_date1);
+        btn_select_date_array[1] = (Button) date_view.findViewById(R.id.btn_select_date2);
+        btn_select_date_array[2] = (Button) date_view.findViewById(R.id.btn_select_date3);
+        btn_select_date_array[3] = (Button) date_view.findViewById(R.id.btn_select_date4);
+        btn_select_date_array[4] = (Button) date_view.findViewById(R.id.btn_select_date5);
+        btn_select_date_array[5] = (Button) date_view.findViewById(R.id.btn_select_date6);
+        btn_select_date_array[6] = (Button) date_view.findViewById(R.id.btn_select_date7);
+        btn_select_place_array = new Button[3];
+        btn_select_place_array[0] = (Button) place_view.findViewById(R.id.btn_select_place1);
+        btn_select_place_array[1] = (Button) place_view.findViewById(R.id.btn_select_place2);
+        btn_select_place_array[2] = (Button) place_view.findViewById(R.id.btn_select_place3);
+
+        et_appeal = (EditText) appeal_view.findViewById(R.id.edittext_appeal);
+        tv_max_appeal_length = (TextView) appeal_view.findViewById(R.id.max_appeal_length);
         ll_for_edit.setVisibility(View.INVISIBLE);
         tv_max_appeal_length.setText("0 / "+Integer.toString(MAX_APPEAL_LENGTH));
         tv_max_appeal_length.setVisibility(View.INVISIBLE);
+
         ma = new MeetingApplication();
-        toast = Toast.makeText(getApplicationContext(), "자신과 친구들을 표현해 주세요!", Toast.LENGTH_SHORT);
         View toastView = toast.getView();
         int toastbackgroundColor = ResourcesCompat.getColor(toastView.getResources(), R.color.colorPoint, null);
         toastView.getBackground().setColorFilter(toastbackgroundColor, PorterDuff.Mode.SRC_IN);
         TextView toasttv = (TextView) toastView.findViewById(android.R.id.message);
         toasttv.setTextColor(Color.WHITE);
         form_code = 0;
+        findViewById(R.id.overall_layout).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                GlobalApplication.hideKeyboard(MeetingApplicationActivity.this);
+                return false;
+            }
+        });
         et_appeal.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -154,28 +184,10 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             }
         });
 
-        btn_select_date_array = new Button[7];
-        btn_select_date_array[0] = (Button) findViewById(R.id.btn_select_date1);
-        btn_select_date_array[1] = (Button) findViewById(R.id.btn_select_date2);
-        btn_select_date_array[2] = (Button) findViewById(R.id.btn_select_date3);
-        btn_select_date_array[3] = (Button) findViewById(R.id.btn_select_date4);
-        btn_select_date_array[4] = (Button) findViewById(R.id.btn_select_date5);
-        btn_select_date_array[5] = (Button) findViewById(R.id.btn_select_date6);
-        btn_select_date_array[6] = (Button) findViewById(R.id.btn_select_date7);
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         SimpleDateFormat sdf = new SimpleDateFormat("M월 d일");
 
-
-        btn_select_place_array = new Button[3];
-        btn_select_place_array[0] = (Button) findViewById(R.id.btn_select_place1);
-        btn_select_place_array[1] = (Button) findViewById(R.id.btn_select_place2);
-        btn_select_place_array[2] = (Button) findViewById(R.id.btn_select_place3);
-
-        type_view = (LinearLayout) findViewById(R.id.type_view);
-        date_view = (LinearLayout) findViewById(R.id.date_view);
-        place_view = (LinearLayout) findViewById(R.id.place_view);
-        appeal_view = (LinearLayout) findViewById(R.id.appeal_view);
         appeal_view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -314,7 +326,6 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             }
         });
         if(form_code == EDIT_MEETING) {
-
             btn_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -700,8 +711,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             });
         }
 
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
-        progressDialog.dismiss();
     }
     @Override
     protected void onDestroy() {
