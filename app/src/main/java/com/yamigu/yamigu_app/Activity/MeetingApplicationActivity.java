@@ -154,8 +154,6 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             }
         });
 
-
-
         btn_select_date_array = new Button[7];
         btn_select_date_array[0] = (Button) findViewById(R.id.btn_select_date1);
         btn_select_date_array[1] = (Button) findViewById(R.id.btn_select_date2);
@@ -311,10 +309,6 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                         NetworkTask networkTask = new NetworkTask(url, values);
                         networkTask.execute();
                         int num_of_ticket = preferences.getInt("num_of_ticket", 0);
-                        if(num_of_ticket > 0) {
-                            editor.putInt("num_of_ticket", num_of_ticket - 1);
-                            editor.apply();
-                        }
                     }
                 }
             }

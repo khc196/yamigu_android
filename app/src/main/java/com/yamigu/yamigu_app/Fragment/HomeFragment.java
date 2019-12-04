@@ -1055,12 +1055,10 @@ public class HomeFragment extends Fragment {
                             SimpleDateFormat format = new SimpleDateFormat( "a h:mm");
                             myMeetingCardFrame.mmc_c_list[i].setVisibility(View.VISIBLE);
 
-                            if(!GlobalApplication.unread_chat_map.containsKey(matching_id)) {
-                                myMeetingCardFrame.mmc_c_list[i].chat_content.setText("매칭이 완료되었습니다. 채팅을 시작해보세요!");
-                                myMeetingCardFrame.mmc_c_list[i].unread_count.setText("0");
-                                myMeetingCardFrame.mmc_c_list[i].unread_count.setVisibility(View.INVISIBLE);
-                                myMeetingCardFrame.mmc_c_list[i].time.setText(format.format(accepted_at));
-                            }
+                            myMeetingCardFrame.mmc_c_list[i].chat_content.setText("매칭이 완료되었습니다. 채팅을 시작해보세요!");
+                            myMeetingCardFrame.mmc_c_list[i].unread_count.setText("0");
+                            myMeetingCardFrame.mmc_c_list[i].unread_count.setVisibility(View.INVISIBLE);
+                            myMeetingCardFrame.mmc_c_list[i].time.setText(format.format(accepted_at));
 //                            if(!GlobalApplication.matching_id_set.contains(matching_id)) {
 //                                final ChildEventListener mChildEventListener = makeChildEventListener(myMeetingCardFrame.mmc_c_list[i], matching_id);
 //                                final DatabaseReference mdatabaseReference = loadMessages(matching_id, mChildEventListener);

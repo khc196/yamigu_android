@@ -71,12 +71,13 @@ public class GlobalApplication extends Application {
     private static String uid;
     public static class ChatPreviewData {
         public int unread_count;
-        public String last_message;
+        public String last_message, last_time;
         public MyMeetingCard_Chat myMeetingCard_chat;
         public DatabaseReference messageDB;
-        public ChatPreviewData(int unread_count, String last_message, MyMeetingCard_Chat myMeetingCard_chat, DatabaseReference messageDB) {
+        public ChatPreviewData(int unread_count, String last_message, String last_time, MyMeetingCard_Chat myMeetingCard_chat, DatabaseReference messageDB) {
             this.unread_count = unread_count;
             this.last_message = last_message;
+            this.last_time = last_time;
             this.myMeetingCard_chat = myMeetingCard_chat;
             this.messageDB = messageDB;
         }
@@ -85,9 +86,23 @@ public class GlobalApplication extends Application {
         if(!unread_chat_map.containsKey(matching_id)) {
             ChildEventListener mChildEventListener = makeChildEventListener(myMeetingCard_chat, matching_id);
             DatabaseReference messageDB =  FirebaseDatabase.getInstance().getReference("user/" + uid).child("receivedMessages").child(""+matching_id);
-            unread_chat_map.put(matching_id, new ChatPreviewData(0, "", myMeetingCard_chat, messageDB));
+            unread_chat_map.put(matching_id, new ChatPreviewData(0, "", "", myMeetingCard_chat, messageDB));
             messageDB.addChildEventListener(mChildEventListener);
-
+        }
+        else {
+            if(!unread_chat_map.get(matching_id).last_message.isEmpty()){
+                myMeetingCard_chat.chat_content.setText(unread_chat_map.get(matching_id).last_message);
+            }
+            if(!unread_chat_map.get(matching_id).last_time.isEmpty()) {
+                myMeetingCard_chat.time.setText(unread_chat_map.get(matching_id).last_time);
+            }
+            myMeetingCard_chat.unread_count.setText(Integer.toString(unread_chat_map.get(matching_id).unread_count));
+            if(unread_chat_map.get(matching_id).unread_count > 0) {
+                myMeetingCard_chat.unread_count.setVisibility(View.VISIBLE);
+            }
+            else {
+                myMeetingCard_chat.unread_count.setVisibility(View.INVISIBLE);
+            }
         }
     }
     public static GlobalApplication getGlobalApplicationContext() {
@@ -273,16 +288,23 @@ public class GlobalApplication extends Application {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot != null) {
                     try {
+                        int match_id = Integer.parseInt(dataSnapshot.getRef().getParent().getKey());
+                        ChatPreviewData cpd = unread_chat_map.get(match_id);
                         ChatData chatData = dataSnapshot.getValue(ChatData.class);
                         if(chatData.message.equals(ChattingActivity.MANAGER_PLACE_TAG)) {
-                            myMeetingCard_chat.chat_content.setText("장소를 정해주세요");
+                            myMeetingCard_chat.chat_content.setText("추천 장소를 확인해보세요!");
+                            cpd.last_message = "추천 장소를 확인해보세요!";
                         }
                         else {
                             myMeetingCard_chat.chat_content.setText(chatData.message);
+                            cpd.last_message = chatData.message;
                         }
+
                         SimpleDateFormat format = new SimpleDateFormat("a h:mm");
                         String time = format.format(chatData.time);
+                        cpd.last_time = time;
                         myMeetingCard_chat.time.setText(time);
+                        unread_chat_map.put(match_id, cpd);
                     } catch(NullPointerException e) {
                         e.printStackTrace();
                     }

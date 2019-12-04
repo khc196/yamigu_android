@@ -39,10 +39,14 @@ import org.json.JSONStringer;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
     private String auth_token;
+    private int id = 0;
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
+        id = preferences.getInt("fcm_id", 0);
         if(remoteMessage.getData() == null)
             return;
         //String clickAction = remoteMessage.getNotification().getClickAction();
@@ -152,7 +156,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             builder.setSound(defaultSoundUri);
             builder.setVibrate(new long[]{500, 500});
         }
-        mManager.notify(0, builder.build());
+        Log.d("NOTIID", ""+id);
+        mManager.notify(id, builder.build());
+        id++;
+        editor.putInt("fcm_id", id);
+        editor.apply();
     }
     @Override
     public void onNewToken(String s) {

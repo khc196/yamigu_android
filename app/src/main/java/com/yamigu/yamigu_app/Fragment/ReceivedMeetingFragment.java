@@ -297,11 +297,6 @@ public class ReceivedMeetingFragment extends Fragment {
                                     values.put("request_id", id);
                                     NetworkTask2 networkTask2 = new NetworkTask2(url, values);
                                     networkTask2.execute();
-                                    int num_of_ticket = preferences.getInt("num_of_ticket", 0);
-                                    if(num_of_ticket > 0) {
-                                        editor.putInt("num_of_ticket", num_of_ticket - 1);
-                                        editor.apply();
-                                    }
                                 }
                             }).setNegativeButton("취소",
 

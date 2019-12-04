@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                     int ticket_count = preferences.getInt("num_of_ticket", 0);
                     if(ticket_count == 0) {
                         setDialog("티켓이 있어야 미팅을 할 수 있어요! \n" +
-                                "단, 매칭 완료시에 티켓이 사용됩니다.");
+                                "단, 매칭이 안되면 티켓은 돌려줘요.");
                         showDialog();
                     }
                     else {

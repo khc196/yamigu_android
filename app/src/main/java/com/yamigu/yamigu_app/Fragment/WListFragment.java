@@ -819,7 +819,7 @@ public class WListFragment extends Fragment {
                 }
                 else if(message.equals("no ticket")) {
                     MainActivity.setDialog("티켓이 있어야 미팅을 할 수 있어요! \n" +
-                            "단, 매칭 완료시에 티켓이 사용됩니다.");
+                            "단, 매칭이 안되면 티켓은 돌려줘요.");
                     MainActivity.showDialog();
                 }
                 else if(message.equals("different type")) {
