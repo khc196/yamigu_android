@@ -5,7 +5,6 @@
     <color name="colorPrimaryDark">#D2D2D2</color>
     <color name="colorAccent">#FC903B</color>
     <color name="colorBackground">#FCFCFC</color>
-    <color name="colorBorder">#E5E5E5</color>
     <color name="colorRed">#FF4D00</color>
     <color name="colorPoint">#FF7B22</color>
     <color name="color3vs3">#FF6024</color>
@@ -13,11 +12,8 @@
     <color name="colorBrown">#383633</color>
     <color name="colorGray">#A0A0A0</color>
     <color name="colorKakao">#FDDC3F</color>
-    <color name="colorGoogle">#DC4E41</color>
     <color name="colorNonselect">#707070</color>
     <color name="colorYellow">#FFC850</color>
-    <color name="colorGreen">#00AB66</color>
-    <color name="colorBlackTransparent">#4D000000</color>
     <color name="colorTransparent">#00000000</color>
     <color name="colorHint">#C6C6C6</color>
     <color name="colorNormal">#20252C</color>
