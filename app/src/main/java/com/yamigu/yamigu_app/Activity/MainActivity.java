@@ -220,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
             networkTask.execute();
         }
         pager.setCurrentItem(0, false);
+        ((WListFragment)mainFragmentAdapter.getItem(1)).onPause();
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override

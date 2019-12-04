@@ -1123,6 +1123,16 @@ public class HomeFragment extends Fragment {
                 MainActivity.dialog.dismiss();
             }
             ll_root_pane.setVisibility(View.VISIBLE);
+            ll_root_pane.setAlpha(0.0f);
+            ll_root_pane.animate()
+                    .setDuration(250)
+                    .alpha(1.0f)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                        }
+                    });
         }
     }
     public class NetworkTask2 extends AsyncTask<Void, Void, String> {
