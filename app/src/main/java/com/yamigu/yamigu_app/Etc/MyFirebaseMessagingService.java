@@ -77,7 +77,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         activityName = clickAction;
 
 
-//        Log.d("ACTIVITYNAME", activityName);
+//        //Log.d("ACTIVITYNAME", activityName);
 //        Log.d("Content", message);
 //        Log.d("data", intent_args.toString());
 
@@ -156,7 +156,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             builder.setSound(defaultSoundUri);
             builder.setVibrate(new long[]{500, 500});
         }
-        Log.d("NOTIID", ""+id);
+        //Log.d("NOTIID", ""+id);
         mManager.notify(id, builder.build());
         id++;
         editor.putInt("fcm_id", id);

@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Boolean isFirstRun;
     private Boolean mauth_flag;
+    private int userCertified;
     ProgressDialog dialog = null;
     Activity me;
     @Override
@@ -81,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
 //        callback = new SessionCallback();
 //        Session.getCurrentSession().addCallback(callback);
 //        Session.getCurrentSession().checkAndImplicitOpen();
+        userCertified = preferences.getInt("user_certifed", 0);
         mAuth = FirebaseAuth.getInstance();
         tv_what_is_yamigu = (TextView) findViewById(R.id.tv_what_is_yamigu);
         btn_login_kakao = (ImageButton) findViewById(R.id.btn_login_kakao);
@@ -303,6 +305,9 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putInt("gender", jsonObject.getInt("gender"));
                 editor.putInt("age", jsonObject.getInt("age"));
                 editor.putString("uid", jsonObject.getString("uid"));
+                if(userCertified == 1 && jsonObject.getInt("user_certified") == 2) {
+                    GlobalApplication.userCertChange = true;
+                }
                 editor.putInt("user_certified", jsonObject.getInt("user_certified"));
                 editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
                 editor.putInt("num_of_ticket", jsonObject.getInt("ticket"));
@@ -319,7 +324,7 @@ public class LoginActivity extends AppCompatActivity {
                             String TAG = "SPLASH Firebase login";
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithCustomToken:success");
+                                //Log.d(TAG, "signInWithCustomToken:success");
                                 if(!mauth_flag) {
                                     mauth_flag = true;
                                     //redirectVerificationActivity();

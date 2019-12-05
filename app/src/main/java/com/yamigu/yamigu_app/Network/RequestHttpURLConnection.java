@@ -121,7 +121,7 @@ public class RequestHttpURLConnection {
         SharedPreferences pref = context.getSharedPreferences("sessionCookie",Context.MODE_PRIVATE);
         String sessionid = pref.getString("sessionid",null);
         if(sessionid!=null) {
-            Log.d("LOG","세션 아이디"+sessionid+"가 요청 헤더에 포함 되었습니다.");
+            //Log.d("LOG","세션 아이디"+sessionid+"가 요청 헤더에 포함 되었습니다.");
             urlConn.setRequestProperty("Cookie", sessionid);
         }
     }
@@ -146,10 +146,9 @@ public class RequestHttpURLConnection {
         SharedPreferences pref = context.getSharedPreferences("sessionCookie",Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = pref.edit();
         if(pref.getString("sessionid",null) == null){ //처음 로그인하여 세션아이디를 받은 경우
-            Log.d("LOG","처음 로그인하여 세션 아이디를 pref에 넣었습니다."+sessionid);
+            //Log.d("LOG","처음 로그인하여 세션 아이디를 pref에 넣었습니다."+sessionid);
         }else if(!pref.getString("sessionid",null).equals(sessionid)){ //서버의 세션 아이디 만료 후 갱신된 아이디가 수신된경우
-            Log.d("LOG","기존의 세션 아이디"+pref.getString("sessionid",null)+"가 만료 되어서 "
-                    +"서버의 세션 아이디 "+sessionid+" 로 교체 되었습니다.");
+            //Log.d("LOG","기존의 세션 아이디"+pref.getString("sessionid",null)+"가 만료 되어서 "+"서버의 세션 아이디 "+sessionid+" 로 교체 되었습니다.");
         }
         edit.putString("sessionid",sessionid);
         edit.apply(); //비동기 처리

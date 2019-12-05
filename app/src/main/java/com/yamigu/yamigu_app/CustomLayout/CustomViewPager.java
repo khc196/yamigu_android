@@ -29,7 +29,7 @@ public class CustomViewPager extends ViewPager
                     child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
                     int h = child.getMeasuredHeight();
                     if (h > height) height = h;
-                    Log.d("HEIGHT", h + "");
+                    //Log.d("HEIGHT", h + "");
                 }
                 heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
             }

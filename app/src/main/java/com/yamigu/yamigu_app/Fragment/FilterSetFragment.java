@@ -106,8 +106,8 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
             public void onGlobalLayout() {
                 seekbar_length = iv_seekbar_bg.getWidth();
                 l_unit = seekbar_length / 11;
-                Log.d("seekbar_length", ""+seekbar_length);
-                Log.d("l_unit", ""+l_unit);
+                //Log.d("seekbar_length", ""+seekbar_length);
+                //Log.d("l_unit", ""+l_unit);
                 filter.initialize();
 
             }
@@ -185,7 +185,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                     distanceX = sx - cx;
                     distanceY = sy - cy;
                     params_r = (ViewGroup.MarginLayoutParams)iv_maximum_age.getLayoutParams();
-                    Log.d("distanceX", Float.toString(distanceX));
+                    //Log.d("distanceX", Float.toString(distanceX));
                     if(is_same_age) {
                         if(distanceX >= -1.2 || (distanceX < 0 && filter.getMinimum_age_current() != filter.getMaximum_age_current())) {
                             params_l = (ViewGroup.MarginLayoutParams)iv_minimum_age.getLayoutParams();
@@ -696,7 +696,7 @@ public class FilterSetFragment extends DialogFragment implements View.OnClickLis
                 jsonObject = new JSONObject(s);
 
                 meeting_count = jsonObject.getInt("count");
-                Log.d("MEETING_COUNT", ""+meeting_count);
+                //Log.d("MEETING_COUNT", ""+meeting_count);
                 btn_apply_filter.setText(meeting_count+"팀 보기");
                 
             } catch (JSONException e){

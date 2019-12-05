@@ -162,9 +162,9 @@ public class NotificationActivity extends AppCompatActivity {
         SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String str = dayTime.format(new Date(System.currentTimeMillis()));
         String str2 = dayTime.format(new Date(notificationData.time));
-        Log.d("now", str);
-        Log.d("noti", str2);
-        Log.d("diff", ""+diff);
+        //Log.d("now", str);
+        //Log.d("noti", str2);
+        //Log.d("diff", ""+diff);
         int minute = (int)(diff / 1000 / 60);
 
         tv_notification_time.setText("지금");
@@ -205,7 +205,7 @@ public class NotificationActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 try {
                     if (dataSnapshot.getValue() != null) {
-                        Log.d("DATASNAPSHOT", "" + dataSnapshot.getValue());
+                        //Log.d("DATASNAPSHOT", "" + dataSnapshot.getValue());
                         HashMap mapNotification = (HashMap) dataSnapshot.getValue();
                         boolean isUnread = (boolean) mapNotification.get("isUnread");
                         String id = (String) mapNotification.get("id");

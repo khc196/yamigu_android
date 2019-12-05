@@ -155,7 +155,7 @@ public class NICEActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.d("checkplus", s);
+            //Log.d("checkplus", s);
             Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);

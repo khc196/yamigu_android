@@ -113,6 +113,7 @@ public class HomeFragment extends Fragment {
     public static int ticket_count = 0;
     public static int ACTION_START_CHAT = 1;
     private long mLastClickTime = 0;
+    private boolean isFirstLoading = true;
     View view;
     private class MyMeetingCardFrame {
         private MyMeetingCard mmc_list[];
@@ -381,7 +382,7 @@ public class HomeFragment extends Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 try {
                     if (dataSnapshot.getValue() != null) {
-                        Log.d("DATASNAPSHOT", "" + dataSnapshot.getValue());
+                        //Log.d("DATASNAPSHOT", "" + dataSnapshot.getValue());
                         HashMap mapNotification = (HashMap) dataSnapshot.getValue();
                         boolean isUnread = (boolean) mapNotification.get("isUnread");
                         String id = (String) mapNotification.get("id");
@@ -966,173 +967,178 @@ public class HomeFragment extends Fragment {
                 btn_go_yamigu.setVisibility(View.GONE);
             }
             ArrayList<String> date_list = new ArrayList<>();
-            for(int i = 0; i < myMeetingCardFrame.getActive_length(); i++) {
-                try {
-                    final int meeting_id = jsonArray.getJSONObject(i).getInt("id");
-                    int matching_id = 0;
-                    int partner_uid = 0;
-                    int manager_uid = 0;
-                    long accepted_at = 0;
-                    String manager_name = "";
-                    JSONObject received_request = jsonArray.getJSONObject(i).getJSONObject("received_request");
-                    JSONObject sent_request = jsonArray.getJSONObject(i).getJSONObject("sent_request");
-                    myMeetingCardFrame.mmc_list[i].setId(meeting_id);
-                    myMeetingCardFrame.mmc_list[i].setPlace(jsonArray.getJSONObject(i).getInt("place_type"));
-                    myMeetingCardFrame.mmc_list[i].setType(jsonArray.getJSONObject(i).getInt("meeting_type"));
-                    myMeetingCardFrame.mmc_list[i].setNum_of_applying(received_request.getInt("count"));
-                    myMeetingCardFrame.mmc_list[i].setAppeal(jsonArray.getJSONObject(i).getString("appeal"));
-                    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-
-                    Date translated_date;
-                    Date today = new Date();
-                    Calendar cal_meeting_day = Calendar.getInstance();
-                    Calendar cal_today = Calendar.getInstance();
+            if(!isFirstLoading) {
+                for(int i = 0; i < myMeetingCardFrame.getActive_length(); i++) {
                     try {
-                        String date_string = jsonArray.getJSONObject(i).getString("date");
-                        date_list.add(date_string);
-                        translated_date = transFormat.parse(date_string);
-                        myMeetingCardFrame.mmc_list[i].setDateString(date_string);
-                        cal_meeting_day.setTime(translated_date);
-                        cal_today.setTime(today);
-                        long l_mday = cal_meeting_day.getTimeInMillis() / (24 * 60 * 60 * 1000);
-                        long l_tday = cal_today.getTimeInMillis() / (24 * 60 * 60 * 1000);
+                        final int meeting_id = jsonArray.getJSONObject(i).getInt("id");
+                        int matching_id = 0;
+                        int partner_uid = 0;
+                        int manager_uid = 0;
+                        long accepted_at = 0;
+                        String manager_name = "";
+                        JSONObject received_request = jsonArray.getJSONObject(i).getJSONObject("received_request");
+                        JSONObject sent_request = jsonArray.getJSONObject(i).getJSONObject("sent_request");
+                        myMeetingCardFrame.mmc_list[i].setId(meeting_id);
+                        myMeetingCardFrame.mmc_list[i].setPlace(jsonArray.getJSONObject(i).getInt("place_type"));
+                        myMeetingCardFrame.mmc_list[i].setType(jsonArray.getJSONObject(i).getInt("meeting_type"));
+                        myMeetingCardFrame.mmc_list[i].setNum_of_applying(received_request.getInt("count"));
+                        myMeetingCardFrame.mmc_list[i].setAppeal(jsonArray.getJSONObject(i).getString("appeal"));
+                        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-                        myMeetingCardFrame.mmc_list[i].setDate(date_string);
-                        if(jsonArray.getJSONObject(i).getBoolean("is_matched")) {
-                            String place_array[] = {"신촌/홍대", "건대/왕십리", "강남"};
-                            String type_array[] = {"2:2", "3:3", "4:4"};
-                            final JSONObject matched_meeting = jsonArray.getJSONObject(i).getJSONObject("matched_meeting");
-                            partner_uid = matched_meeting.getInt("openby_uid");
-                            final int age = matched_meeting.getInt("openby_age");
-                            final String partner_belong = matched_meeting.getString("openby_belong");
-                            final String partner_department = matched_meeting.getString("openby_department");
-                            final String partner_nickname = matched_meeting.getString("openby_nickname");
-                            final String place = place_array[jsonArray.getJSONObject(i).getInt("place_type") - 1];
-                            final String type = type_array[jsonArray.getJSONObject(i).getInt("meeting_type") - 1];
-                            String before_date = jsonArray.getJSONObject(i).getString("date");
-                            Date date_obj = new SimpleDateFormat("yyyy-MM-dd").parse(before_date);
-                            final String date = date_obj.getMonth() + 1 + "월" + " " + date_obj.getDate() + "일";
-                            boolean flag = false;
-                            String manager_profile_url = "";
-                            for(int j = 0 ; j < received_request.getInt("count"); j++) {
-                                JSONObject request_obj = received_request.getJSONArray("data").getJSONObject(j);
-                                if(request_obj.getBoolean("is_selected") && request_obj.getInt("receiver") == meeting_id) {
-                                    matching_id = request_obj.getInt("id");
-                                    manager_uid = request_obj.getInt("manager_uid");
-                                    manager_name = request_obj.getString("manager_name");
-                                    accepted_at = request_obj.getLong("accepted_at");
-                                    manager_profile_url = request_obj.getString("manager_profile");
-                                    flag = true;
-                                    break;
-                                }
-                            }
-                            if(!flag) {
-                                for (int j = 0; j < sent_request.getInt("count"); j++) {
-                                    JSONObject request_obj = sent_request.getJSONArray("data").getJSONObject(j);
-                                    if(request_obj.getBoolean("is_selected") && request_obj.getInt("sender") == meeting_id) {
+
+                        Date translated_date;
+                        Date today = new Date();
+                        Calendar cal_meeting_day = Calendar.getInstance();
+                        Calendar cal_today = Calendar.getInstance();
+                        try {
+                            String date_string = jsonArray.getJSONObject(i).getString("date");
+                            date_list.add(date_string);
+                            translated_date = transFormat.parse(date_string);
+                            myMeetingCardFrame.mmc_list[i].setDateString(date_string);
+                            cal_meeting_day.setTime(translated_date);
+                            cal_today.setTime(today);
+                            long l_mday = cal_meeting_day.getTimeInMillis() / (24 * 60 * 60 * 1000);
+                            long l_tday = cal_today.getTimeInMillis() / (24 * 60 * 60 * 1000);
+
+                            myMeetingCardFrame.mmc_list[i].setDate(date_string);
+                            if(jsonArray.getJSONObject(i).getBoolean("is_matched")) {
+                                String place_array[] = {"신촌/홍대", "건대/왕십리", "강남"};
+                                String type_array[] = {"2:2", "3:3", "4:4"};
+                                final JSONObject matched_meeting = jsonArray.getJSONObject(i).getJSONObject("matched_meeting");
+                                partner_uid = matched_meeting.getInt("openby_uid");
+                                final int age = matched_meeting.getInt("openby_age");
+                                final String partner_belong = matched_meeting.getString("openby_belong");
+                                final String partner_department = matched_meeting.getString("openby_department");
+                                final String partner_nickname = matched_meeting.getString("openby_nickname");
+                                final String place = place_array[jsonArray.getJSONObject(i).getInt("place_type") - 1];
+                                final String type = type_array[jsonArray.getJSONObject(i).getInt("meeting_type") - 1];
+                                String before_date = jsonArray.getJSONObject(i).getString("date");
+                                Date date_obj = new SimpleDateFormat("yyyy-MM-dd").parse(before_date);
+                                final String date = date_obj.getMonth() + 1 + "월" + " " + date_obj.getDate() + "일";
+                                boolean flag = false;
+                                String manager_profile_url = "";
+                                for(int j = 0 ; j < received_request.getInt("count"); j++) {
+                                    JSONObject request_obj = received_request.getJSONArray("data").getJSONObject(j);
+                                    if(request_obj.getBoolean("is_selected") && request_obj.getInt("receiver") == meeting_id) {
                                         matching_id = request_obj.getInt("id");
                                         manager_uid = request_obj.getInt("manager_uid");
                                         manager_name = request_obj.getString("manager_name");
                                         accepted_at = request_obj.getLong("accepted_at");
                                         manager_profile_url = request_obj.getString("manager_profile");
+                                        flag = true;
                                         break;
                                     }
                                 }
-                            }
-
-                            managerDB = FirebaseDatabase.getInstance().getReference().child("user").child(""+manager_uid);
-
-//                            if(!manager_profile_url.isEmpty()) {
-//                                ContentValues values = new ContentValues();
-//                                NetworkTask4 networkTask4 = new NetworkTask4(manager_profile_url, values, ""+manager_uid);
-//                                networkTask4.execute();
-//                            }
-                            final int matching_id_final = matching_id;
-                            final int partner_uid_final = partner_uid;
-                            final int manager_uid_final = manager_uid;
-                            final String manager_name_final = manager_name;
-                            final long accepted_at_final = accepted_at;
-                            SimpleDateFormat format = new SimpleDateFormat( "a h:mm");
-                            myMeetingCardFrame.mmc_c_list[i].setVisibility(View.VISIBLE);
-
-                            myMeetingCardFrame.mmc_c_list[i].chat_content.setText("매칭이 완료되었습니다. 채팅을 시작해보세요!");
-                            myMeetingCardFrame.mmc_c_list[i].unread_count.setText("0");
-                            myMeetingCardFrame.mmc_c_list[i].unread_count.setVisibility(View.INVISIBLE);
-                            myMeetingCardFrame.mmc_c_list[i].time.setText(format.format(accepted_at));
-//                            if(!GlobalApplication.matching_id_set.contains(matching_id)) {
-//                                final ChildEventListener mChildEventListener = makeChildEventListener(myMeetingCardFrame.mmc_c_list[i], matching_id);
-//                                final DatabaseReference mdatabaseReference = loadMessages(matching_id, mChildEventListener);
-//                            }
-                            GlobalApplication.updateChatPreview(matching_id, myMeetingCardFrame.mmc_c_list[i]);
-
-                            View.OnClickListener goChattingListener = new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
-                                        return;
+                                if(!flag) {
+                                    for (int j = 0; j < sent_request.getInt("count"); j++) {
+                                        JSONObject request_obj = sent_request.getJSONArray("data").getJSONObject(j);
+                                        if(request_obj.getBoolean("is_selected") && request_obj.getInt("sender") == meeting_id) {
+                                            matching_id = request_obj.getInt("id");
+                                            manager_uid = request_obj.getInt("manager_uid");
+                                            manager_name = request_obj.getString("manager_name");
+                                            accepted_at = request_obj.getLong("accepted_at");
+                                            manager_profile_url = request_obj.getString("manager_profile");
+                                            break;
+                                        }
                                     }
-                                    mLastClickTime = SystemClock.elapsedRealtime();
-                                    Intent intent = new Intent(getContext(), ChattingActivity.class);
-                                    //((MyMeetingCard_Chat)view).unread_count.setText("0");
-                                    intent.putExtra("meeting_id", ""+meeting_id);
-                                    intent.putExtra("matching_id", ""+matching_id_final);
-                                    intent.putExtra("partner_uid", ""+partner_uid_final);
-                                    intent.putExtra("manager_uid", ""+manager_uid_final);
-                                    intent.putExtra("manager_name", manager_name_final);
-                                    intent.putExtra("accepted_at", accepted_at_final);
-                                    intent.putExtra("partner_age", age);
-                                    intent.putExtra("partner_belong", partner_belong);
-                                    intent.putExtra("partner_department", partner_department);
-                                    intent.putExtra("partner_nickname", partner_nickname);
-                                    intent.putExtra("place", place);
-                                    intent.putExtra("date", date);
-                                    intent.putExtra("type", type);
-//                                    mdatabaseReference.removeEventListener(mChildEventListener);
-                                    if(GlobalApplication.unread_chat_map.containsKey(matching_id_final)) {
-                                        GlobalApplication.ChatPreviewData cpd = GlobalApplication.unread_chat_map.get(matching_id_final);
-                                        cpd.unread_count = 0;
-                                        cpd.myMeetingCard_chat.unread_count.setVisibility(View.INVISIBLE);
-                                        GlobalApplication.unread_chat_map.put(matching_id_final, cpd);
-                                    }
-
-                                    startActivity(intent);
-                                    ((MainActivity)context).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                                 }
-                            };
-                            myMeetingCardFrame.mmc_c_list[i].setOnClickListener(goChattingListener);
-                            myMeetingCardFrame.mmc_list[i].setOnClickListener(goChattingListener);
-                            myMeetingCardFrame.mmc_list[i].setProfile1(matched_meeting.getString("openby_nickname"), matched_meeting.getInt("openby_age"));
-                            myMeetingCardFrame.mmc_list[i].setProfile2(matched_meeting.getString("openby_belong"), matched_meeting.getString("openby_department"));
-                            myMeetingCardFrame.mmc_list[i].setMatched(true);
+
+                                managerDB = FirebaseDatabase.getInstance().getReference().child("user").child(""+manager_uid);
+
+    //                            if(!manager_profile_url.isEmpty()) {
+    //                                ContentValues values = new ContentValues();
+    //                                NetworkTask4 networkTask4 = new NetworkTask4(manager_profile_url, values, ""+manager_uid);
+    //                                networkTask4.execute();
+    //                            }
+                                final int matching_id_final = matching_id;
+                                final int partner_uid_final = partner_uid;
+                                final int manager_uid_final = manager_uid;
+                                final String manager_name_final = manager_name;
+                                final long accepted_at_final = accepted_at;
+                                SimpleDateFormat format = new SimpleDateFormat( "a h:mm");
+                                myMeetingCardFrame.mmc_c_list[i].setVisibility(View.VISIBLE);
+
+                                myMeetingCardFrame.mmc_c_list[i].chat_content.setText("매칭이 완료되었습니다. 채팅을 시작해보세요!");
+                                myMeetingCardFrame.mmc_c_list[i].unread_count.setText("0");
+                                myMeetingCardFrame.mmc_c_list[i].unread_count.setVisibility(View.INVISIBLE);
+                                myMeetingCardFrame.mmc_c_list[i].time.setText(format.format(accepted_at));
+    //                            if(!GlobalApplication.matching_id_set.contains(matching_id)) {
+    //                                final ChildEventListener mChildEventListener = makeChildEventListener(myMeetingCardFrame.mmc_c_list[i], matching_id);
+    //                                final DatabaseReference mdatabaseReference = loadMessages(matching_id, mChildEventListener);
+    //                            }
+                                GlobalApplication.updateChatPreview(matching_id, myMeetingCardFrame.mmc_c_list[i]);
+
+                                View.OnClickListener goChattingListener = new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                                            return;
+                                        }
+                                        mLastClickTime = SystemClock.elapsedRealtime();
+                                        Intent intent = new Intent(getContext(), ChattingActivity.class);
+                                        //((MyMeetingCard_Chat)view).unread_count.setText("0");
+                                        intent.putExtra("meeting_id", ""+meeting_id);
+                                        intent.putExtra("matching_id", ""+matching_id_final);
+                                        intent.putExtra("partner_uid", ""+partner_uid_final);
+                                        intent.putExtra("manager_uid", ""+manager_uid_final);
+                                        intent.putExtra("manager_name", manager_name_final);
+                                        intent.putExtra("accepted_at", accepted_at_final);
+                                        intent.putExtra("partner_age", age);
+                                        intent.putExtra("partner_belong", partner_belong);
+                                        intent.putExtra("partner_department", partner_department);
+                                        intent.putExtra("partner_nickname", partner_nickname);
+                                        intent.putExtra("place", place);
+                                        intent.putExtra("date", date);
+                                        intent.putExtra("type", type);
+    //                                    mdatabaseReference.removeEventListener(mChildEventListener);
+                                        if(GlobalApplication.unread_chat_map.containsKey(matching_id_final)) {
+                                            GlobalApplication.ChatPreviewData cpd = GlobalApplication.unread_chat_map.get(matching_id_final);
+                                            cpd.unread_count = 0;
+                                            cpd.myMeetingCard_chat.unread_count.setVisibility(View.INVISIBLE);
+                                            GlobalApplication.unread_chat_map.put(matching_id_final, cpd);
+                                        }
+
+                                        startActivity(intent);
+                                        ((MainActivity)context).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+                                    }
+                                };
+                                myMeetingCardFrame.mmc_c_list[i].setOnClickListener(goChattingListener);
+                                myMeetingCardFrame.mmc_list[i].setOnClickListener(goChattingListener);
+                                myMeetingCardFrame.mmc_list[i].setProfile1(matched_meeting.getString("openby_nickname"), matched_meeting.getInt("openby_age"));
+                                myMeetingCardFrame.mmc_list[i].setProfile2(matched_meeting.getString("openby_belong"), matched_meeting.getString("openby_department"));
+                                myMeetingCardFrame.mmc_list[i].setMatched(true);
+                            }
+                            else {
+                                myMeetingCardFrame.mmc_list[i].setMatched(false);
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
-                        else {
-                            myMeetingCardFrame.mmc_list[i].setMatched(false);
-                        }
-                    } catch (ParseException e) {
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    myMeetingCardFrame.mmc_list[i].setVisibility(View.VISIBLE);
+                    ((MainActivity)context).setMyMeetingCount(i+1);
                 }
-                myMeetingCardFrame.mmc_list[i].setVisibility(View.VISIBLE);
-                ((MainActivity)context).setMyMeetingCount(i+1);
+                GlobalApplication.active_date_list = date_list;
+                if(MainActivity.dialog.isShowing()) {
+                    MainActivity.dialog.dismiss();
+                }
+                ll_root_pane.setVisibility(View.VISIBLE);
+                    ll_root_pane.setAlpha(0.0f);
+                    ll_root_pane.animate()
+                            .setDuration(250)
+                            .alpha(1.0f)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                }
+                            });
+                }
+            else {
+                isFirstLoading = false;
             }
-            GlobalApplication.active_date_list = date_list;
-            if(MainActivity.dialog.isShowing()) {
-                MainActivity.dialog.dismiss();
-            }
-            ll_root_pane.setVisibility(View.VISIBLE);
-            ll_root_pane.setAlpha(0.0f);
-            ll_root_pane.animate()
-                    .setDuration(250)
-                    .alpha(1.0f)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                        }
-                    });
         }
     }
     public class NetworkTask2 extends AsyncTask<Void, Void, String> {
@@ -1249,7 +1255,7 @@ public class HomeFragment extends Fragment {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d("Update Avatar", "failed");
+                            //Log.d("Update Avatar", "failed");
                         }
                     });
             if(MainActivity.dialog.isShowing()) {
@@ -1285,7 +1291,7 @@ public class HomeFragment extends Fragment {
                 fragmentAdapter.clear();
                 jsonArray = new JSONArray(s);
                 total_num = jsonArray.length();
-                Log.d("total_Num", ""+total_num);
+                //Log.d("total_Num", ""+total_num);
                 for(int i = 0; i < jsonArray.length(); i++) {
                     MeetingCardFragment meetingCardFragment = new MeetingCardFragment();
                     Bundle bundle = new Bundle();

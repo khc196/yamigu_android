@@ -492,7 +492,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                 data.put("content", message);
                 data.put("clickAction", ".ChattingActivity");
                 data.put("intentArgs", intent_args);
-                Log.d("SendData", data.toString());
+                //Log.d("SendData", data.toString());
                 values.put("data", data.toString());
                 NetworkTask networkTask = new NetworkTask(url, values);
                 networkTask.execute();

@@ -69,6 +69,7 @@ public class GlobalApplication extends Application {
     public static HomeFragment homefragment;
     public static NotificationActivity notiActivity;
     private static String uid;
+    public static boolean userCertChange = false;
     public static class ChatPreviewData {
         public int unread_count;
         public String last_message, last_time;
@@ -207,7 +208,7 @@ public class GlobalApplication extends Application {
                                 if(homefragment != null) {
                                     homefragment.onResume();
                                     homefragment.refresh();
-                                    Log.d("UNREADCOUNT", unread_noti_count+"");
+                                    //Log.d("UNREADCOUNT", unread_noti_count+"");
                                 }
                                 if(notiActivity != null) {
                                     notiActivity.refresh();

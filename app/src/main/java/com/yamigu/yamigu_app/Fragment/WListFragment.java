@@ -73,16 +73,20 @@ public class WListFragment extends Fragment {
     public static int maximum_age = 11;
     public static int meeting_count = 0;
     public static boolean filter_applied = false;
+    private static boolean is_loading = false;
     private LayoutInflater mInflater;
     private View view;
     private Context context;
+    public static LinearLayout rootLinear;
     static int id = 1;
     private boolean is_initialized = false;
     private SharedPreferences preferences;
     private Menu global_menu;
     private SwipeRefreshLayout swipeRefreshLayout;
     private String refresh_url = "";
-    private boolean invisible_flag = true;
+    public static boolean invisible_flag = true;
+    private boolean isFirstLoading = true;
+
     public WListFragment() {
         this.active_type_set = new HashSet<>();
         this.active_place_set = new HashSet<>();
@@ -107,6 +111,7 @@ public class WListFragment extends Fragment {
         });
         invisible_flag = false;
         final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
+        rootLinear = mRootLinear;
 //        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -423,18 +428,24 @@ public class WListFragment extends Fragment {
                     String url = json_data.getString("openby_profile");
                     boolean is_matched = json_data.getBoolean("is_matched");
                     mRootLinear.addView(mtw);
+                    mtw.setVisibility(View.INVISIBLE);
+
                     if(!url.isEmpty()) {
-                        mtw.setVisibility(View.INVISIBLE);
                         ContentValues values = new ContentValues();
-                        mtw.setTranslationX(100);
                         if(GlobalApplication.bitmap_map.containsKey(url)) {
                             profile_img.setImageBitmap(GlobalApplication.bitmap_map.get(url));
                             mtw.setVisibility(View.VISIBLE);
-                            mtw.animate()
-                                    .setDuration(50)
-                                    .alpha(1.0f)
-                                    .translationX(0)
-                                    .setListener(null);
+                            if(!isFirstLoading) {
+                                mtw.setAlpha(0.f);
+//                                mtw.setTranslationX(100);
+
+                                mtw.animate()
+                                        .setDuration(250)
+                                        .alpha(1.0f)
+//                                        .translationX(0)
+                                        .setListener(null);
+                            }
+
                             if(MainActivity.dialog.isShowing()) {
                                 MainActivity.dialog.dismiss();
                             }
@@ -445,14 +456,17 @@ public class WListFragment extends Fragment {
                         }
                     }
                     else {
-                        mtw.setVisibility(View.INVISIBLE);
-                        mtw.setTranslationX(100);
                         mtw.setVisibility(View.VISIBLE);
-                        mtw.animate()
-                                .setDuration(50)
-                                .alpha(1.0f)
-                                .translationX(0)
-                                .setListener(null);
+                        if(isFirstLoading) {
+                            mtw.setAlpha(0.f);
+//                            mtw.setTranslationX(100);
+
+                            mtw.animate()
+                                    .setDuration(250)
+                                    .alpha(1.0f)
+//                                    .translationX(0)
+                                    .setListener(null);
+                        }
                         if(MainActivity.dialog.isShowing()) {
                             MainActivity.dialog.dismiss();
                         }
@@ -655,44 +669,45 @@ public class WListFragment extends Fragment {
             super.onPostExecute(s);
             final String data = s;
             final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
-            mRootLinear.animate()
-                .setDuration(50)
-                .translationX(-100)
-                .alpha(0.0f)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        JSONObject jsonObject = null;
-                        try {
-                            Log.d("DATA", data);
-                            removeAllWaitingTeamCard();
-                            if(data == null) return;
-                            jsonObject = new JSONObject(data);
-                            JSONArray json_results = jsonObject.getJSONArray("results");
-                            meeting_count = 0;
-                            for(int i = 0; i < json_results.length(); i++) {
-                                //Log.d("results:", json_results.getJSONObject(i).toString());
-                                createWaitingTeamCard(json_results.getJSONObject(i));
-                                if(!json_results.getJSONObject(i).getBoolean("is_matched")) meeting_count++;
+            if(!isFirstLoading) {
+                mRootLinear.animate()
+                        .setDuration(50)
+//                        .translationX(-100)
+                        .alpha(0.0f)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                JSONObject jsonObject = null;
+                                is_loading = false;
+                                try {
+                                    //Log.d("DATA", data);
+                                    removeAllWaitingTeamCard();
+                                    if (data == null) return;
+                                    jsonObject = new JSONObject(data);
+                                    JSONArray json_results = jsonObject.getJSONArray("results");
+                                    meeting_count = 0;
+                                    for (int i = 0; i < json_results.length(); i++) {
+                                        //Log.d("results:", json_results.getJSONObject(i).toString());
+                                        createWaitingTeamCard(json_results.getJSONObject(i));
+                                        if (!json_results.getJSONObject(i).getBoolean("is_matched"))
+                                            meeting_count++;
+                                    }
+                                    if (invisible_flag) {
+                                        mRootLinear.setVisibility(View.VISIBLE);
+                                        invisible_flag = false;
+                                    }
+                                    mRootLinear.setAlpha(1.0f);
+                                    mRootLinear.setTranslationX(0);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                            if(invisible_flag) {
-                                mRootLinear.setVisibility(View.VISIBLE);
-                                invisible_flag = false;
-                            }
-                            mRootLinear.setAlpha(1.0f);
-                            mRootLinear.setTranslationX(0);
-//                            mRootLinear.setTranslationX(100);
-//                            mRootLinear.animate()
-//                                    .setDuration(50)
-//                                    .alpha(1.0f)
-//                                    .translationX(0)
-//                                    .setListener(null);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                        });
+            }
+            else {
+                isFirstLoading = false;
+            }
         }
     }
     public class NetworkTask3 extends AsyncTask<Void, Void, Bitmap> {
@@ -747,7 +762,7 @@ public class WListFragment extends Fragment {
                 else if(bm.getWidth() < bm.getHeight()){
                     bm = ImageUtils.cropCenterBitmap(bm, bm.getWidth(), bm.getWidth());
                 }
-                Log.d("SIZE", bm.getWidth() + "X" + bm.getHeight() + "    " + civ.getWidth() + "X" + civ.getHeight());
+                //Log.d("SIZE", bm.getWidth() + "X" + bm.getHeight() + "    " + civ.getWidth() + "X" + civ.getHeight());
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
@@ -755,9 +770,9 @@ public class WListFragment extends Fragment {
             GlobalApplication.bitmap_map.put(url, bm);
             view.setVisibility(View.VISIBLE);
             view.animate()
-                    .setDuration(50)
+                    .setDuration(250)
                     .alpha(1.0f)
-                    .translationX(0)
+//                    .translationX(0)
                     .setListener(null);
             if(MainActivity.dialog.isShowing()) {
                 MainActivity.dialog.dismiss();
@@ -795,7 +810,7 @@ public class WListFragment extends Fragment {
             try {
                 jsonObject = new JSONObject(s);
                 String message = jsonObject.getString("message");
-                Log.d("message", message);
+                //Log.d("message", message);
 
                 if(message.equals("created")) {
 //                    try {

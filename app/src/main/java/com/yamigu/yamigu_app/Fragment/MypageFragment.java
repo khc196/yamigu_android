@@ -378,7 +378,7 @@ public class MypageFragment extends Fragment {
 
                     Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
                     final String filePath = ImageFilePath.getPath(getContext(), data.getData());
-                    Log.d("filePath", filePath);
+                    //Log.d("filePath", filePath);
 //
 //                    String url = "http://106.10.39.154:9999/api/user/certificate/";
 //                    ContentValues values = new ContentValues();
@@ -412,7 +412,7 @@ public class MypageFragment extends Fragment {
                 }
             }
             else {
-                Log.d("OnAcitivityResult", "Fail");
+                //Log.d("OnAcitivityResult", "Fail");
             }
         }
     }

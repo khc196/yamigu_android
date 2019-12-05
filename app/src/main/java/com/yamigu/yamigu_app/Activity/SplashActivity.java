@@ -80,7 +80,7 @@ public class SplashActivity extends AppCompatActivity {
     private JSONObject jsonObject;
     private FirebaseAuth mAuth;
     private Boolean isFirstRun;
-
+    private int userCertified;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +93,7 @@ public class SplashActivity extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
+        userCertified = preferences.getInt("user_certified", 0);
         mAuth = FirebaseAuth.getInstance();
         mHandler = new Handler();
         mRunnable1 = new Runnable() {
@@ -214,7 +215,7 @@ public class SplashActivity extends AppCompatActivity {
                 md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 keyHash = new String(Base64.encode(md.digest(), 0));
-                Log.d(TAG, keyHash);
+                //Log.d(TAG, keyHash);
             }
         } catch (Exception e) {
             Log.e("name not found", e.toString());
@@ -284,7 +285,7 @@ public class SplashActivity extends AppCompatActivity {
                     String access_token = Session.getCurrentSession().getTokenInfo().getAccessToken();
                     ContentValues values = new ContentValues();
                     values.put("access_token", access_token);
-                    Log.d("Kakao", access_token);
+                    //Log.d("Kakao", access_token);
                     //values.put("kakao_account", userProfile.toString());
                     if(!is_loggedin) {
                         NetworkTask networkTask = new NetworkTask(url, values);
@@ -376,7 +377,7 @@ public class SplashActivity extends AppCompatActivity {
             String firebase_token = "";
             try {
                 jsonObject = new JSONObject(s);
-                Log.d("Login info", jsonObject.toString());
+                //Log.d("Login info", jsonObject.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -386,7 +387,7 @@ public class SplashActivity extends AppCompatActivity {
                         || jsonObject.getString("real_name").equals("null")
                         || jsonObject.getString("real_name").isEmpty();
                 firebase_token = jsonObject.getString("firebase_token");
-                Log.d("NICKNAME", jsonObject.getString("nickname"));
+                //Log.d("NICKNAME", jsonObject.getString("nickname"));
             } catch(JSONException e) {
                 e.printStackTrace();
             }
@@ -403,6 +404,9 @@ public class SplashActivity extends AppCompatActivity {
                     editor.putInt("gender", jsonObject.getInt("gender"));
                     editor.putInt("age", jsonObject.getInt("age"));
                     editor.putString("uid", jsonObject.getString("uid"));
+                    if(userCertified == 1 && jsonObject.getInt("user_certified") == 2) {
+                        GlobalApplication.userCertChange = true;
+                    }
                     editor.putInt("user_certified", jsonObject.getInt("user_certified"));
                     editor.putBoolean("is_student", jsonObject.getBoolean("is_student"));
                     editor.putInt("num_of_ticket", jsonObject.getInt("ticket"));
@@ -414,7 +418,7 @@ public class SplashActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            Log.d("FIREBASE", firebase_token);
+            //Log.d("FIREBASE", firebase_token);
             mAuth.signInWithCustomToken(firebase_token)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -422,7 +426,7 @@ public class SplashActivity extends AppCompatActivity {
                             String TAG = "SPLASH Firebase login";
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithCustomToken:success");
+                                //Log.d(TAG, "signInWithCustomToken:success");
                                 String url = "http://106.10.39.154:9999/api/fcm/register_device/";
                                 String fcm_token = FirebaseInstanceId.getInstance().getToken();
                                 ContentValues values = new ContentValues();

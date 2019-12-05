@@ -111,10 +111,10 @@ public class TicketActivity extends AppCompatActivity {
             @Override
             public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
                 if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    Log.d("BillingClient","상품을 성공적으로 소모하였습니다");
+                    //Log.d("BillingClient","상품을 성공적으로 소모하였습니다");
                 }
                 else {
-                    Log.d("BillingClient", "상품 소모에 실패하였습니다. 오류코드: "+ billingResult.getResponseCode() + ":" + billingResult.getDebugMessage());
+                    //Log.d("BillingClient", "상품 소모에 실패하였습니다. 오류코드: "+ billingResult.getResponseCode() + ":" + billingResult.getDebugMessage());
                 }
             }
         };
@@ -122,9 +122,9 @@ public class TicketActivity extends AppCompatActivity {
             @Override
             public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
                 if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
-                    Log.d("BillingClient", "결제에 성공하였습니다");
+                    //Log.d("BillingClient", "결제에 성공하였습니다");
                     for(Purchase pur: purchases){
-                        Log.d("BillingClient", pur.getSignature());
+                        //Log.d("BillingClient", pur.getSignature());
                         ConsumeParams consumeParams =
                                 ConsumeParams.newBuilder()
                                         .setPurchaseToken(pur.getPurchaseToken())
@@ -142,10 +142,10 @@ public class TicketActivity extends AppCompatActivity {
                     //sendTicketToAPI(ticket_count);
                 }
                 else if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
-                    Log.d("BillingClient", "사용자에 의해 결제가 취소되었습니다");
+                    //Log.d("BillingClient", "사용자에 의해 결제가 취소되었습니다");
                 }
                 else {
-                    Log.d("BillingClient", "결제가 취소되었습니다");
+                    //Log.d("BillingClient", "결제가 취소되었습니다");
                 }
                 if(selector.isFirst()) selector.toggleFirst();
                 else if(selector.isSecond()) selector.toggleSecond();
@@ -157,7 +157,7 @@ public class TicketActivity extends AppCompatActivity {
             public void onBillingSetupFinished(BillingResult billingResult) {
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     // The BillingClient is ready. You can query purchases here.
-                    Log.d("BillingClient", "구글 결제 서버에 접속 성공했습니다");
+                    //Log.d("BillingClient", "구글 결제 서버에 접속 성공했습니다");
                     final List<String> skuList = new ArrayList<>();
                     skuList.add("ticket_1");
                     skuList.add("ticket_2_plus_1");
@@ -170,27 +170,27 @@ public class TicketActivity extends AppCompatActivity {
                                                                  List<SkuDetails> skuDetailsList) {
                                     //Log.d("SKUDetailsList", skuDetailsList.toString());
                                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
-                                        Log.d("BillingClient", "응답 받은 데이터 숫자: "+ skuDetailsList.size());
+                                        //Log.d("BillingClient", "응답 받은 데이터 숫자: "+ skuDetailsList.size());
                                         for(int i = 0; i < skuDetailsList.size(); i++) {
-                                            Log.d("BillingClient", skuDetailsList.get(i).getTitle() + ": " + skuDetailsList.get(i).getPrice());
+                                            //Log.d("BillingClient", skuDetailsList.get(i).getTitle() + ": " + skuDetailsList.get(i).getPrice());
                                         }
                                         mSkuDetailList = skuDetailsList;
                                     }
                                     else {
-                                        Log.d("BillingClient", "상품 정보를 가져오던 중 오류가 발생했습니다. 오류코드: "+ billingResult.getResponseCode());
+                                        //Log.d("BillingClient", "상품 정보를 가져오던 중 오류가 발생했습니다. 오류코드: "+ billingResult.getResponseCode());
                                     }
                                 }
                             });
                 }
                 else {
-                    Log.d("BillingClient", "구글 결제 서버에 접속 실패했습니다");
+                    //Log.d("BillingClient", "구글 결제 서버에 접속 실패했습니다");
                 }
             }
             @Override
             public void onBillingServiceDisconnected() {
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
-                Log.d("BillingClient", "구글 결제 서버 접속이 끊어졌습니다");
+                //Log.d("BillingClient", "구글 결제 서버 접속이 끊어졌습니다");
             }
         });
 
@@ -202,7 +202,7 @@ public class TicketActivity extends AppCompatActivity {
     }
     public void purchaseTicket(int index) {
         SkuDetails skuDetails = mSkuDetailList.get(index);
-        Log.d("BillingClient", skuDetails.getTitle());
+        //Log.d("BillingClient", skuDetails.getTitle());
         BillingFlowParams flowParams = BillingFlowParams.newBuilder()
                 .setSkuDetails(skuDetails)
                 .build();

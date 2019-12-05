@@ -244,7 +244,7 @@ public class ReceivedMeetingFragment extends Fragment {
                 for(int i = 0; i < jsonArray.length(); i++) {
                     int request_id = jsonArray.getJSONObject(i).getInt("id");
                     JSONObject json_data = jsonArray.getJSONObject(i).getJSONObject("sender");
-                    Log.d("onPostExecute", json_data.toString());
+                    //Log.d("onPostExecute", json_data.toString());
 
                     MeetingCardFragment meetingCardFragment = new MeetingCardFragment();
                     Bundle bundle = new Bundle();

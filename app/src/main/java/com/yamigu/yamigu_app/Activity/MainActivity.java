@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     private static int cur_index = 0;
     public static TextView tv_unread_noti_count, tv_ticket_count;
     private long time= 0;
+    public static boolean isFirstMain = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +136,11 @@ public class MainActivity extends AppCompatActivity {
         mainFragmentAdapter.addItem(new MypageFragment());
         mainFragmentAdapter.addItem(new MoreFragment());
         pager.setAdapter(mainFragmentAdapter);
-
+        if(GlobalApplication.userCertChange) {
+            setDialog("인증 완료 기념으로 미팅티켓 1장을 무료로 드렸어요.\n신청하기를 눌러 야미구를 시작해보세요!");
+            showDialog();
+            GlobalApplication.userCertChange = false;
+        }
         nav_yamigu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -220,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
             networkTask.execute();
         }
         pager.setCurrentItem(0, false);
-        ((WListFragment)mainFragmentAdapter.getItem(1)).onPause();
+
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override
