@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
     private Context context;
     private MyMeetingCardFrame myMeetingCardFrame;
     private RelativeLayout btn_go_yamigu;
-    private LinearLayout ll_root_pane;
+    private LinearLayout ll_root_pane, mm_root_pane;
     private DatabaseReference userDB, managerDB;
     public static DatabaseReference notiDB;
     private Fragment me;
@@ -170,6 +170,7 @@ public class HomeFragment extends Fragment {
         ticket_count = preferences.getInt("num_of_ticket", 0);
         userDB = FirebaseDatabase.getInstance().getReference("user/" + uid);
         ll_root_pane = view.findViewById(R.id.root_pane);
+        mm_root_pane = view.findViewById(R.id.my_meeting_root);
         ll_root_pane.setVisibility(View.INVISIBLE);
 //        tb = (Toolbar) view.findViewById(R.id.toolbar_h) ;
 //        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
@@ -459,7 +460,7 @@ public class HomeFragment extends Fragment {
     }
     private void createPastMeetingCard(final JSONObject json_data) {
         try {
-            LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.past_meeting_root);
+            final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.past_meeting_root);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
             final View mmca = inflater.inflate(R.layout.my_meeting_card_after, mRootLinear, false);
             mRootLinear.addView(mmca);
@@ -475,7 +476,93 @@ public class HomeFragment extends Fragment {
             //first pane
             TextView tv_how_were = mmca.findViewById(R.id.tv_how_were);
             final Button btn_go_review = mmca.findViewById(R.id.btn_go_review);
+            final Button btn_skip_review = mmca.findViewById(R.id.btn_skip_review);
+            btn_skip_review.setPaintFlags(btn_skip_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            btn_skip_review.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
+                    AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
+                    fadeIn.setDuration(500);
+                    fadeOut.setDuration(500);
+                    fadeIn.setFillAfter(true);
+                    fadeIn.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
 
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            first_pane.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            forth_pane.setVisibility(View.VISIBLE);
+                            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                            String url = "http://106.10.39.154:9999/api/meetings/feedback/";
+                            ContentValues values = new ContentValues();
+                            try {
+                                //values.put("meeting_id", json_data.getJSONObject("matched_meeting").getInt("id"));
+                                values.put("meeting_id", json_data.getInt("id"));
+                                values.put("feedback", "");
+                                NetworkTask3 networkTask3 = new NetworkTask3(url, values);
+                                networkTask3.execute();
+                            } catch(JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    forth_pane.startAnimation(fadeIn);
+                    first_pane.startAnimation(fadeOut);
+
+                    Runnable mRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            mmca.animate()
+                                    .setDuration(250)
+                                    .alpha(0.0f)
+                                    .scaleY(0)
+                                    .scaleX(0)
+                                    .setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            mmca.setVisibility(View.INVISIBLE);
+                                        }});
+                            mm_root_pane.animate()
+                                    .setDuration(250)
+                                    .translationY(-mmca.getHeight())
+                                    .setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            ll_root_pane.setTranslationY(0);
+                                        }});
+                        }
+                    };
+                    Handler mHandler = new Handler();
+                    mHandler.postDelayed(mRunnable, 2000);
+                }
+            });
             //second pane
             final Button btn_stars_visual[] = new Button[5];
             final Button btn_stars_fun[] = new Button[5];
@@ -907,17 +994,27 @@ public class HomeFragment extends Fragment {
                             @Override
                             public void run() {
                                 mmca.animate()
-                                        .translationY(-1000)
+                                        .setDuration(250)
                                         .alpha(0.0f)
+                                        .scaleY(0)
+                                        .scaleX(0)
                                         .setListener(new AnimatorListenerAdapter() {
                                             @Override
                                             public void onAnimationEnd(Animator animation) {
                                                 super.onAnimationEnd(animation);
-                                                mmca.setVisibility(View.GONE);
+                                                mmca.setVisibility(View.INVISIBLE);
+                                            }});
+                                mm_root_pane.animate()
+                                        .setDuration(250)
+                                        .translationY(-mmca.getHeight())
+                                        .setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                super.onAnimationEnd(animation);
+                                                ll_root_pane.setTranslationY(0);
                                             }});
                             }
                         };
-
                         Handler mHandler = new Handler();
                         mHandler.postDelayed(mRunnable, 2000);
                     }

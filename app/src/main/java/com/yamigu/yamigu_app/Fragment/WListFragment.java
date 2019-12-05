@@ -671,7 +671,7 @@ public class WListFragment extends Fragment {
             final LinearLayout mRootLinear = (LinearLayout) view.findViewById(R.id.wating_card_root);
             if(!isFirstLoading) {
                 mRootLinear.animate()
-                        .setDuration(50)
+                        .setDuration(250)
 //                        .translationX(-100)
                         .alpha(0.0f)
                         .setListener(new AnimatorListenerAdapter() {

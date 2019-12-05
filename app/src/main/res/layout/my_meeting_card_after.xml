@@ -36,16 +36,29 @@
         android:background="@drawable/ic_filter_state_orange"
         >
     </Button>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="상대방은 절대 몰라요!"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/colorGray"
-        android:textSize="10dp"
-        android:fontFamily="@font/nanumgothic_font_family"
-        android:layout_marginTop="5dp">
-    </TextView>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+            <Button
+                android:id="@+id/btn_skip_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="건너뛰기"
+                android:textColor="#979797"
+                android:textSize="10dp"
+                android:fontFamily="@font/nanumgothic_font_family"
+                android:background="?attr/selectableItemBackground"
+                >
+            </Button>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#979797">
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
     <RelativeLayout
         android:id="@+id/second_pane"
@@ -341,8 +354,7 @@
             android:layout_height="wrap_content"
             android:textSize="19dp"
             android:textColor="@color/colorNormal"
-            android:fontFamily="@font/nanumgothic_font_family"
-            android:textStyle="bold"
+            android:fontFamily="@font/nanumgothic_font_family_extrabold"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="60dp"
             android:text="다음에는 더 즐거운 야미구하세요!">

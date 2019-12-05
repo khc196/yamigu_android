@@ -303,8 +303,10 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
-        tv_unread_noti_count.setVisibility(View.INVISIBLE);
-        tv_ticket_count.setVisibility(View.INVISIBLE);
+        if(index != 1) {
+            tv_unread_noti_count.setVisibility(View.INVISIBLE);
+            tv_ticket_count.setVisibility(View.INVISIBLE);
+        }
         pager.setCurrentItem(index-1, false);
 
     }

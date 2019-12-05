@@ -166,7 +166,7 @@
                 <LinearLayout
                     android:id="@+id/root_pane"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <LinearLayout
                         android:id="@+id/past_meeting_root"
@@ -174,113 +174,121 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                     </LinearLayout>
-                    <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard
-                        android:id="@+id/mmc_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
-                        android:layout_gravity="center_horizontal"
-                        app:label="1"
-                        app:place="건대/왕십리"
-                        app:noa="2"
-                        app:month="5월"
-                        app:date="28일"
-                        app:dday="Today"
-                        android:visibility="gone"
-                        >
-                    </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard>
-                    <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat
-                        android:id="@+id/mmc_c_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        app:chat="오늘 재밌게 놀아요~"
-                        app:unread="2"
-                        app:time="오후 2:22"
-                        android:visibility="gone">
-                    </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat>
-                    <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard
-                        android:id="@+id/mmc_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
-                        android:layout_gravity="center_horizontal"
-                        app:label="1"
-                        app:place="건대/왕십리"
-                        app:noa="2"
-                        app:month="5월"
-                        app:date="28일"
-                        app:dday="Today"
-                        android:visibility="gone"
-                        >
-                    </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard>
-                    <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat
-                        android:id="@+id/mmc_c_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        app:chat="오늘 재밌게 놀아요~"
-                        app:unread="2"
-                        app:time="오후 2:22"
-                        android:visibility="gone">
-                    </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat>
-                    <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard
-                        android:id="@+id/mmc_3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
-                        android:layout_gravity="center_horizontal"
-                        app:label="1"
-                        app:place="건대/왕십리"
-                        app:noa="2"
-                        app:month="5월"
-                        app:date="28일"
-                        app:dday="Today"
-                        android:visibility="gone"
-                        >
-                    </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard>
-                    <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat
-                        android:id="@+id/mmc_c_3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        app:chat="오늘 재밌게 놀아요~"
-                        app:unread="2"
-                        app:time="오후 2:22"
-                        android:visibility="gone">
-                    </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat>
-                    <TextView
-                        android:id="@+id/tv_recommendation"
+                    <LinearLayout
+                        android:id="@+id/my_meeting_root"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="28dp"
-                        android:layout_marginLeft="34dp"
-                        android:layout_marginBottom="4dp"
-                        android:text="subbus님을 위한 추천 미팅"
-                        android:fontFamily="@font/nanumgothic_font_family"
-                        android:textSize="18dp"
-                        android:textColor="@color/colorNormal"
-                        />
-                    <com.yamigu.yamigu_app.CustomLayout.CustomViewPager
-                        android:id="@+id/pager"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="-20dp"
-                        >
-                    </com.yamigu.yamigu_app.CustomLayout.CustomViewPager>
-                    <com.google.android.material.tabs.TabLayout
-                        app:tabBackground="@drawable/page_indicator_selector2"
-                        app:tabIndicatorHeight="0dp"
-                        app:tabRippleColor="@null"
-                        android:id="@+id/tab_indicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        app:tabPaddingStart="8dp"
-                        app:tabPaddingEnd="8dp">
-                    </com.google.android.material.tabs.TabLayout>
-                </LinearLayout>
+                        android:orientation="vertical">
+                        <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard
+                            android:id="@+id/mmc_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:layout_gravity="center_horizontal"
+                            app:label="1"
+                            app:place="건대/왕십리"
+                            app:noa="2"
+                            app:month="5월"
+                            app:date="28일"
+                            app:dday="Today"
+                            android:visibility="gone"
+                            >
+                        </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard>
+                        <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat
+                            android:id="@+id/mmc_c_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            app:chat="오늘 재밌게 놀아요~"
+                            app:unread="2"
+                            app:time="오후 2:22"
+                            android:visibility="gone">
+                        </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat>
+                        <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard
+                            android:id="@+id/mmc_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:layout_gravity="center_horizontal"
+                            app:label="1"
+                            app:place="건대/왕십리"
+                            app:noa="2"
+                            app:month="5월"
+                            app:date="28일"
+                            app:dday="Today"
+                            android:visibility="gone"
+                            >
+                        </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard>
+                        <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat
+                            android:id="@+id/mmc_c_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            app:chat="오늘 재밌게 놀아요~"
+                            app:unread="2"
+                            app:time="오후 2:22"
+                            android:visibility="gone">
+                        </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat>
+                        <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard
+                            android:id="@+id/mmc_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:layout_gravity="center_horizontal"
+                            app:label="1"
+                            app:place="건대/왕십리"
+                            app:noa="2"
+                            app:month="5월"
+                            app:date="28일"
+                            app:dday="Today"
+                            android:visibility="gone"
+                            >
+                        </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard>
+                        <com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat
+                            android:id="@+id/mmc_c_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            app:chat="오늘 재밌게 놀아요~"
+                            app:unread="2"
+                            app:time="오후 2:22"
+                            android:visibility="gone">
+                        </com.yamigu.yamigu_app.CustomLayout.MyMeetingCard_Chat>
+                        <TextView
+                            android:id="@+id/tv_recommendation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="28dp"
+                            android:layout_marginLeft="34dp"
+                            android:layout_marginBottom="4dp"
+                            android:text="subbus님을 위한 추천 미팅"
+                            android:fontFamily="@font/nanumgothic_font_family"
+                            android:textSize="18dp"
+                            android:textColor="@color/colorNormal"
+                            />
+                        <com.yamigu.yamigu_app.CustomLayout.CustomViewPager
+                            android:id="@+id/pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="-20dp"
+                            >
+                        </com.yamigu.yamigu_app.CustomLayout.CustomViewPager>
+                        <com.google.android.material.tabs.TabLayout
+                            app:tabBackground="@drawable/page_indicator_selector2"
+                            app:tabIndicatorHeight="0dp"
+                            app:tabRippleColor="@null"
+                            android:id="@+id/tab_indicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            app:tabPaddingStart="8dp"
+                            app:tabPaddingEnd="8dp">
+                        </com.google.android.material.tabs.TabLayout>
+                    </LinearLayout>
+                    </LinearLayout>
+
+
 
                 <!--ImageView
                     android:layout_width="wrap_content"
