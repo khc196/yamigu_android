@@ -405,6 +405,10 @@ public class SignUpActivity extends AppCompatActivity {
                         tv_available_nickname.setText("사용 가능합니다.");
                         nickname_validated = true;
                         nickname = editable.toString();
+                        if(selectorR.isAgreed_all() && (selector.isStudent() || selector.isWorker())) {
+                            btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
+                            btn_certify.setBackgroundResource(R.drawable.state_pressed_orange);
+                        }
                     }
                 } else {
                     tv_available_nickname.setVisibility(View.GONE);
