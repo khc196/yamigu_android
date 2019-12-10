@@ -42,7 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
     private TextView btn_view_using, btn_view_private, tv_available_nickname;
     private Selector selector;
     private SelectorR selectorR;
-    private boolean nickname_validated;
+    private boolean nickname_validated = false;
     private String nickname;
     private String friend_code;
     private String auth_token;
@@ -135,7 +135,7 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 }
                 else {
-                    btn_select_student.setTextColor(getResources().getColor(R.color.colorHint));
+                    btn_select_student.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_select_student.setBackgroundResource(R.drawable.state_pressed_gray);
                     btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_certify.setBackgroundResource(R.drawable.state_pressed_gray);
@@ -182,6 +182,12 @@ public class SignUpActivity extends AppCompatActivity {
                 if(!selectorR.isAgreed_all()) {
                     return;
                 }
+                if(nickname.isEmpty()) {
+                    return;
+                }
+                if(!nickname_validated) {
+                    return;
+                }
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("friend_code", friend_code);
 //                intent.putExtra("realname", real_name);
@@ -206,7 +212,7 @@ public class SignUpActivity extends AppCompatActivity {
                 radio_agree_using.setChecked(selectorR.isAgreed_term());
                 radio_agree_private.setChecked(selectorR.isAgreed_privacy());
                 radio_agree_all.setChecked(selectorR.isAgreed_all());
-                if(selectorR.isAgreed_all() && (selector.isStudent() || selector.isWorker())) {
+                if(selectorR.isAgreed_all() && nickname_validated && (selector.isStudent() || selector.isWorker())) {
                     btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_certify.setBackgroundResource(R.drawable.state_pressed_orange);
                 }
@@ -227,7 +233,7 @@ public class SignUpActivity extends AppCompatActivity {
                 }
                 radio_agree_using.setChecked(selectorR.isAgreed_term());
                 radio_agree_all.setChecked(selectorR.isAgreed_all());
-                if(selectorR.isAgreed_all() && (selector.isStudent() || selector.isWorker())) {
+                if(selectorR.isAgreed_all() && nickname_validated && (selector.isStudent() || selector.isWorker())) {
                     btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_certify.setBackgroundResource(R.drawable.state_pressed_orange);
                 }
@@ -248,7 +254,7 @@ public class SignUpActivity extends AppCompatActivity {
                 }
                 radio_agree_private.setChecked(selectorR.isAgreed_privacy());
                 radio_agree_all.setChecked(selectorR.isAgreed_all());
-                if(selectorR.isAgreed_all() && (selector.isStudent() || selector.isWorker())) {
+                if(selectorR.isAgreed_all() && nickname_validated && (selector.isStudent() || selector.isWorker())) {
                     btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_certify.setBackgroundResource(R.drawable.state_pressed_orange);
                 }
