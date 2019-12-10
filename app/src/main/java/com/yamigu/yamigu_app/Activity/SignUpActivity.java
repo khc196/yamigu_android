@@ -129,7 +129,7 @@ public class SignUpActivity extends AppCompatActivity {
                     btn_select_student.setBackgroundResource(R.drawable.state_pressed_yellow);
                     btn_select_worker.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_select_worker.setBackgroundResource(R.drawable.state_pressed_gray);
-                    if(selectorR.isAgreed_all()) {
+                    if(selectorR.isAgreed_all() && nickname_validated) {
                         btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
                         btn_certify.setBackgroundResource(R.drawable.state_pressed_orange);
                     }
@@ -153,7 +153,7 @@ public class SignUpActivity extends AppCompatActivity {
                     btn_select_worker.setBackgroundResource(R.drawable.state_pressed_yellow);
                     btn_select_student.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_select_student.setBackgroundResource(R.drawable.state_pressed_gray);
-                    if(selectorR.isAgreed_all()) {
+                    if(selectorR.isAgreed_all() && nickname_validated) {
                         btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
                         btn_certify.setBackgroundResource(R.drawable.state_pressed_orange);
                     }
