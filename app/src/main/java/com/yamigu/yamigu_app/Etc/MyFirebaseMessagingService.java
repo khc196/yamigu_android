@@ -79,7 +79,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 //        //Log.d("ACTIVITYNAME", activityName);
 //        Log.d("Content", message);
-//        Log.d("data", intent_args.toString());
+        Log.d("data", intent_args.toString());
 
         Intent intent;
 

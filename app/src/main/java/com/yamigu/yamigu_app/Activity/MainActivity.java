@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         pager.setPagingEnabled(false);
         mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
         MainActivity.dialog = ProgressDialog.show(this, "", "로딩중입니다...", true);
+        MainActivity.dialog.setCancelable(true);
         mainFragmentAdapter.addItem(new HomeFragment());
         mainFragmentAdapter.addItem(new WListFragment());
         mainFragmentAdapter.addItem(new MypageFragment());

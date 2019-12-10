@@ -118,6 +118,8 @@ public class SignUpActivity extends AppCompatActivity {
         });
         btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
         btn_certify.setBackgroundResource(R.drawable.state_pressed_gray);
+        btn_select_student.setTextColor(getResources().getColor(R.color.colorPrimary));
+        btn_select_worker.setBackgroundResource(R.drawable.state_pressed_gray);
         btn_select_student.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +127,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if(selector.isStudent()) {
                     btn_select_student.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_select_student.setBackgroundResource(R.drawable.state_pressed_yellow);
-                    btn_select_worker.setTextColor(getResources().getColor(R.color.colorHint));
+                    btn_select_worker.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_select_worker.setBackgroundResource(R.drawable.state_pressed_gray);
                     if(selectorR.isAgreed_all()) {
                         btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -140,7 +142,7 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
-        btn_select_worker.setTextColor(getResources().getColor(R.color.colorHint));
+        btn_select_worker.setTextColor(getResources().getColor(R.color.colorPrimary));
         btn_select_worker.setBackgroundResource(R.drawable.state_pressed_gray);
         btn_select_worker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +151,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if(selector.isWorker()) {
                     btn_select_worker.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_select_worker.setBackgroundResource(R.drawable.state_pressed_yellow);
-                    btn_select_student.setTextColor(getResources().getColor(R.color.colorHint));
+                    btn_select_student.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_select_student.setBackgroundResource(R.drawable.state_pressed_gray);
                     if(selectorR.isAgreed_all()) {
                         btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -157,7 +159,7 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 }
                 else {
-                    btn_select_worker.setTextColor(getResources().getColor(R.color.colorHint));
+                    btn_select_worker.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_select_worker.setBackgroundResource(R.drawable.state_pressed_gray);
                     btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
                     btn_certify.setBackgroundResource(R.drawable.state_pressed_gray);

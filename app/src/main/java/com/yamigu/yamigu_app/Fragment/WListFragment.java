@@ -86,7 +86,7 @@ public class WListFragment extends Fragment {
     private String refresh_url = "";
     public static boolean invisible_flag = true;
     private boolean isFirstLoading = true;
-
+    private TextView tv_no_meeting;
     public WListFragment() {
         this.active_type_set = new HashSet<>();
         this.active_place_set = new HashSet<>();
@@ -124,6 +124,7 @@ public class WListFragment extends Fragment {
         filter_applied = false;
         btn_date_list = new Button[7];
         date_list = new String[7];
+        tv_no_meeting = view.findViewById(R.id.tv_no_meeting);
         int[] btn_date_id_list = {R.id.btn_date_1, R.id.btn_date_2, R.id.btn_date_3, R.id.btn_date_4, R.id.btn_date_5, R.id.btn_date_6, R.id.btn_date_7};
         for(int i = 0; i < btn_date_list.length; i++) {
             final TextView btn_date = (TextView) view.findViewById(btn_date_id_list[i]);
@@ -687,6 +688,7 @@ public class WListFragment extends Fragment {
                                     jsonObject = new JSONObject(data);
                                     JSONArray json_results = jsonObject.getJSONArray("results");
                                     meeting_count = 0;
+                                    tv_no_meeting.setVisibility(View.INVISIBLE);
                                     for (int i = 0; i < json_results.length(); i++) {
                                         //Log.d("results:", json_results.getJSONObject(i).toString());
                                         createWaitingTeamCard(json_results.getJSONObject(i));
@@ -696,6 +698,9 @@ public class WListFragment extends Fragment {
                                     if (invisible_flag) {
                                         mRootLinear.setVisibility(View.VISIBLE);
                                         invisible_flag = false;
+                                    }
+                                    if(json_results.length() == 0) {
+                                        tv_no_meeting.setVisibility(View.VISIBLE);
                                     }
                                     mRootLinear.setAlpha(1.0f);
                                     mRootLinear.setTranslationX(0);

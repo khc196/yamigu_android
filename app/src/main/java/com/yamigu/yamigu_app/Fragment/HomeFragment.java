@@ -1069,7 +1069,7 @@ public class HomeFragment extends Fragment {
                     try {
                         final int meeting_id = jsonArray.getJSONObject(i).getInt("id");
                         int matching_id = 0;
-                        int partner_uid = 0;
+                        String partner_uid = "";
                         int manager_uid = 0;
                         long accepted_at = 0;
                         String manager_name = "";
@@ -1102,7 +1102,7 @@ public class HomeFragment extends Fragment {
                                 String place_array[] = {"신촌/홍대", "건대/왕십리", "강남"};
                                 String type_array[] = {"2:2", "3:3", "4:4"};
                                 final JSONObject matched_meeting = jsonArray.getJSONObject(i).getJSONObject("matched_meeting");
-                                partner_uid = matched_meeting.getInt("openby_uid");
+                                partner_uid = matched_meeting.getString("openby_uid");
                                 final int age = matched_meeting.getInt("openby_age");
                                 final String partner_belong = matched_meeting.getString("openby_belong");
                                 final String partner_department = matched_meeting.getString("openby_department");
@@ -1148,7 +1148,7 @@ public class HomeFragment extends Fragment {
     //                                networkTask4.execute();
     //                            }
                                 final int matching_id_final = matching_id;
-                                final int partner_uid_final = partner_uid;
+                                final String partner_uid_final = partner_uid;
                                 final int manager_uid_final = manager_uid;
                                 final String manager_name_final = manager_name;
                                 final long accepted_at_final = accepted_at;

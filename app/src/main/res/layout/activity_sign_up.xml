@@ -108,6 +108,7 @@
                 android:textAlignment="textStart"
                 android:layout_gravity="start"
                 android:text="이용약관에 동의 (필수)"
+                android:textSize="14dp"
                 android:buttonTint="@color/colorPoint"
                 android:fontFamily="@font/roboto_font_family"/>
             <TextView
@@ -255,7 +256,7 @@
                     android:background="@drawable/state_pressed_gray"
                     android:fontFamily="@font/roboto_font_family"
                     android:text="대학생"
-                    android:textColor="@color/colorHint"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="12dp" />
 
                 <TextView
@@ -269,7 +270,7 @@
                     android:layout_weight="48"
                     android:background="@drawable/state_pressed_gray"
                     android:text="직장인"
-                    android:textColor="@color/colorHint"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="12dp"
                     style="?android:attr/borderlessButtonStyle"
                     android:fontFamily="@font/roboto_font_family"

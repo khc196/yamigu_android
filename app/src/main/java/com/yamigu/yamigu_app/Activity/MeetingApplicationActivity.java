@@ -84,7 +84,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_meeting_application);
 
         meetingApplicationActivity = this;
-        progressDialog = MainActivity.dialog.show(this, "", "로딩중입니다...", true);
+        progressDialog = MainActivity.dialog;
 
         final Intent intent = getIntent();
         final int form_code = intent.getIntExtra("form_code", 0);
