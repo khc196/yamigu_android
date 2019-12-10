@@ -283,6 +283,10 @@ public class SignUpActivity extends AppCompatActivity {
                     NetworkTask networkTask = new NetworkTask(url, values);
                     networkTask.execute();
                 }
+                else {
+                    tv_available_nickname.setVisibility(View.GONE);
+                    nickname_validated = false;
+                }
             }
         });
 
@@ -411,6 +415,7 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     }
                 } else {
+                    nickname_validated = false;
                     tv_available_nickname.setVisibility(View.GONE);
                 }
             } catch (UnsupportedEncodingException e) {
