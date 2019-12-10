@@ -182,6 +182,12 @@ public class HomeFragment extends Fragment {
         btn_go_yamigu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(ticket_count <= 0) {
+                    MainActivity.setDialog("티켓이 있어야 미팅을 할 수 있어요! \n" +
+                            "단, 매칭이 안되면 티켓은 돌려줘요.");
+                    MainActivity.showDialog();
+                    return;
+                }
                 Intent intent = new Intent(view.getContext(), MeetingApplicationActivity.class);
                 intent.putExtra("form_code", MeetingApplicationActivity.NEW_MEETING);
                 startActivity(intent);

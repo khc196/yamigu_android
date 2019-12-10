@@ -328,7 +328,12 @@ public class LoginActivity extends AppCompatActivity {
                                 if(!mauth_flag) {
                                     mauth_flag = true;
                                     //redirectVerificationActivity();
-                                    dialog.dismiss();
+                                    try {
+                                        dialog.dismiss();
+                                    } catch(IllegalArgumentException e){
+
+                                    }
+
                                     redirectMainActivity();
                                 }
                                 //updateUI(user);

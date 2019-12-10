@@ -284,6 +284,8 @@ public class SignUpActivity extends AppCompatActivity {
                     networkTask.execute();
                 }
                 else {
+                    btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    btn_certify.setBackgroundResource(R.drawable.state_pressed_gray);
                     tv_available_nickname.setVisibility(View.GONE);
                     nickname_validated = false;
                 }
@@ -404,6 +406,8 @@ public class SignUpActivity extends AppCompatActivity {
                         tv_available_nickname.setText("사용 불가능합니다.");
                         nickname_validated = false;
                         nickname = "";
+                        btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        btn_certify.setBackgroundResource(R.drawable.state_pressed_gray);
                     } else {
                         tv_available_nickname.setTextColor(getResources().getColor(R.color.colorBlue));
                         tv_available_nickname.setText("사용 가능합니다.");
@@ -417,6 +421,8 @@ public class SignUpActivity extends AppCompatActivity {
                 } else {
                     nickname_validated = false;
                     tv_available_nickname.setVisibility(View.GONE);
+                    btn_certify.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    btn_certify.setBackgroundResource(R.drawable.state_pressed_gray);
                 }
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
