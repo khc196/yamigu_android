@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.yamigu.yamigu_app"
-        minSdkVersion 210
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 16
         versionName "2.5"
