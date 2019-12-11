@@ -179,6 +179,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     String url = "http://106.10.39.154:9999/api/call_manager/";
                     ContentValues values = new ContentValues();
+                    values.put("matching_id", matching_id);
                     NetworkTask networkTask = new NetworkTask(url, values);
                     networkTask.execute();
                     btn_call_manager.setImageResource(R.drawable.btn_call_manager);

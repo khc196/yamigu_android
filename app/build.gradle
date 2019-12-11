@@ -4,10 +4,10 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.yamigu.yamigu_app"
-        minSdkVersion 21
+        minSdkVersion 210
         targetSdkVersion 28
-        versionCode 14
-        versionName "2.3"
+        versionCode 16
+        versionName "2.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
