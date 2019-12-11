@@ -38,10 +38,11 @@ import org.json.JSONObject;
 import org.json.JSONStringer;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    private SharedPreferences preferences;
+    private SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
     private SharedPreferences.Editor editor;
     private String auth_token;
     private int id = 0;
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -169,13 +170,25 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         sendRegistrationToServer(refreshedToken);
     }
     private void sendRegistrationToServer(String token) {
-        auth_token = preferences.getString("auth_token", "");
-        String url = "http://106.10.39.154:9999/api/fcm/register_device/";
-        ContentValues values = new ContentValues();
-        values.put("registration_id", token);
-        values.put("type", "android");
-        NetworkTask networkTask = new NetworkTask(url, values);
-        networkTask.execute();
+        try {
+            auth_token = preferences.getString("auth_token", "");
+            String url = "http://106.10.39.154:9999/api/fcm/register_device/";
+            ContentValues values = new ContentValues();
+            values.put("registration_id", token);
+            values.put("type", "android");
+            NetworkTask networkTask = new NetworkTask(url, values);
+            networkTask.execute();
+        } catch(NullPointerException e) {
+            preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            editor = preferences.edit();
+            auth_token = preferences.getString("auth_token", "");
+            String url = "http://106.10.39.154:9999/api/fcm/register_device/";
+            ContentValues values = new ContentValues();
+            values.put("registration_id", token);
+            values.put("type", "android");
+            NetworkTask networkTask = new NetworkTask(url, values);
+            networkTask.execute();
+        }
     }
     public class NetworkTask extends AsyncTask<Void, Void, String> {
 
