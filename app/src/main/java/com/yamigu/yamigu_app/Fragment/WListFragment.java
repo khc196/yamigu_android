@@ -612,17 +612,28 @@ public class WListFragment extends Fragment {
 //                                        return;
 //                                    }
                                     try {
-                                        String url = "http://106.10.39.154:9999/api/matching/send_request/";
-                                        ContentValues values = new ContentValues();
-                                        values.put("meeting_type", json_data.getInt("meeting_type"));
-                                        values.put("date", date_string_f);
-                                        values.put("place", json_data.getInt("place_type"));
-                                        values.put("place_string", place_string_f);
-                                        values.put("meeting_id", json_data.getInt("id"));
-                                        rl_applying.setVisibility(View.INVISIBLE);
-                                        MainActivity.dialog = ProgressDialog.show(getContext(), "", "미팅 신청중입니다...", true);
-                                        NetworkTask4 networkTask4 = new NetworkTask4(url, values);
-                                        networkTask4.execute();
+                                        int user_certified = preferences.getInt("user_certified", 0);
+                                        if(user_certified == 0) {
+                                            MainActivity.setDialog("소속을 인증해야 미팅 할 수 있어요");
+                                            MainActivity.showDialog();
+                                        }
+                                        else if(user_certified == 1) {
+                                            MainActivity.setDialog("인증이 진행중이에요!");
+                                            MainActivity.showDialog();
+                                        }
+                                        else {
+                                            String url = "http://106.10.39.154:9999/api/matching/send_request/";
+                                            ContentValues values = new ContentValues();
+                                            values.put("meeting_type", json_data.getInt("meeting_type"));
+                                            values.put("date", date_string_f);
+                                            values.put("place", json_data.getInt("place_type"));
+                                            values.put("place_string", place_string_f);
+                                            values.put("meeting_id", json_data.getInt("id"));
+                                            rl_applying.setVisibility(View.INVISIBLE);
+                                            MainActivity.dialog = ProgressDialog.show(getContext(), "", "미팅 신청중입니다...", true);
+                                            NetworkTask4 networkTask4 = new NetworkTask4(url, values);
+                                            networkTask4.execute();
+                                        }
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();

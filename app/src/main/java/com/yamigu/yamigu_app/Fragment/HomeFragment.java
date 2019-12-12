@@ -182,7 +182,16 @@ public class HomeFragment extends Fragment {
         btn_go_yamigu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ticket_count <= 0) {
+                int user_certified = preferences.getInt("user_certified", 0);
+                if(user_certified == 0) {
+                    MainActivity.setDialog("소속을 인증해야 미팅 할 수 있어요");
+                    MainActivity.showDialog();
+                }
+                else if(user_certified == 1) {
+                    MainActivity.setDialog("인증이 진행중이에요!");
+                    MainActivity.showDialog();
+                }
+                else if(ticket_count <= 0) {
                     MainActivity.setDialog("티켓이 있어야 미팅을 할 수 있어요! \n" +
                             "단, 매칭이 안되면 티켓은 돌려줘요.");
                     MainActivity.showDialog();
