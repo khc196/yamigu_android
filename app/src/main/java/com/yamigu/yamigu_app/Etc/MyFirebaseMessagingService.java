@@ -38,11 +38,17 @@ import org.json.JSONObject;
 import org.json.JSONStringer;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    private SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private String auth_token;
     private int id = 0;
+    public MyFirebaseMessagingService() {
+        try {
+            preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        } catch (NullPointerException e) {
 
+        }
+    }
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);

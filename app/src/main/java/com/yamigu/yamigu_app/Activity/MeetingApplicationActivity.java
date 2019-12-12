@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -58,6 +59,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
     private ImageView iv_question_type, iv_question_when, iv_question_where, iv_question_appeal, type_triangle, date_triangle, place_triangle;
     private EditText et_appeal;
     private LinearLayout root_view, ll_for_edit;
+    private FrameLayout fl_for_button;
     private View type_view, date_view, place_view, appeal_view;
     private MeetingApplication ma;
     private TextView tv_max_appeal_length;
@@ -117,11 +119,13 @@ public class MeetingApplicationActivity extends AppCompatActivity {
         date_triangle.setBackgroundResource(R.drawable.triangle_gray);
         place_triangle.setBackgroundResource(R.drawable.triangle_gray);
         ll_for_edit = (LinearLayout) findViewById(R.id.ll_for_edit);
+        fl_for_button = findViewById(R.id.fl_for_button);
         btn_edit = (Button) findViewById(R.id.btn_edit);
         btn_delete = (Button) findViewById(R.id.btn_delete);
         btn_okay = (Button) findViewById(R.id.btn_okay);
-        btn_okay.setVisibility(View.INVISIBLE);
-        ll_for_edit.setVisibility(View.INVISIBLE);
+        fl_for_button.setVisibility(View.GONE);
+        btn_okay.setVisibility(View.GONE);
+        ll_for_edit.setVisibility(View.GONE);
         root_view = findViewById(R.id.root_view);
         toast = Toast.makeText(getApplicationContext(), "자신과 친구들을 표현해 주세요!", Toast.LENGTH_SHORT);
         progressDialog.dismiss();
@@ -137,6 +141,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             initialize_with_prefilled_data(intent);
             appeal_view =  inflater.inflate(R.layout.appeal_view, root_view, false);
             root_view.addView(appeal_view);
+            fl_for_button.setVisibility(View.VISIBLE);
             ll_for_edit.setVisibility(View.VISIBLE);
             et_appeal = (EditText) appeal_view.findViewById(R.id.edittext_appeal);
             et_appeal.setText(ma.getAppeal());
@@ -156,6 +161,7 @@ public class MeetingApplicationActivity extends AppCompatActivity {
             initialize_with_prefilled_data(intent);
             appeal_view =  inflater.inflate(R.layout.appeal_view, root_view, false);
             root_view.addView(appeal_view);
+            fl_for_button.setVisibility(View.VISIBLE);
             btn_okay.setVisibility(View.VISIBLE);
             et_appeal = (EditText) appeal_view.findViewById(R.id.edittext_appeal);
             tv_max_appeal_length = (TextView) appeal_view.findViewById(R.id.max_appeal_length);
@@ -282,7 +288,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                     place_view.setVisibility(View.GONE);
                                     appeal_view.setVisibility(View.GONE);
                                     tv_max_appeal_length.setVisibility(View.INVISIBLE);
-                                    btn_okay.setVisibility(View.INVISIBLE);
+                                    fl_for_button.setVisibility(View.GONE);
+                                    btn_okay.setVisibility(View.GONE);
                                     tv_max_appeal_length.setVisibility(View.INVISIBLE);
                                 }
                             });
@@ -295,7 +302,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                     date_view.setVisibility(View.VISIBLE);
                                     place_view.setVisibility(View.GONE);
                                     appeal_view.setVisibility(View.GONE);
-                                    btn_okay.setVisibility(View.INVISIBLE);
+                                    fl_for_button.setVisibility(View.GONE);
+                                    btn_okay.setVisibility(View.GONE);
                                     tv_max_appeal_length.setVisibility(View.INVISIBLE);
                                 }
                             });
@@ -308,7 +316,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                     date_view.setVisibility(View.GONE);
                                     place_view.setVisibility(View.VISIBLE);
                                     appeal_view.setVisibility(View.GONE);
-                                    btn_okay.setVisibility(View.INVISIBLE);
+                                    fl_for_button.setVisibility(View.GONE);
+                                    btn_okay.setVisibility(View.GONE);
                                     tv_max_appeal_length.setVisibility(View.INVISIBLE);
                                 }
                             });
@@ -323,7 +332,8 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                     date_view.setVisibility(View.GONE);
                                     place_view.setVisibility(View.VISIBLE);
                                     appeal_view.setVisibility(View.GONE);
-                                    btn_okay.setVisibility(View.INVISIBLE);
+                                    fl_for_button.setVisibility(View.GONE);
+                                    btn_okay.setVisibility(View.GONE);
                                     tv_max_appeal_length.setVisibility(View.INVISIBLE);
                                 }
                             });
@@ -507,8 +517,10 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                                         place_view.setVisibility(View.GONE);
                                                         appeal_view.setVisibility(View.VISIBLE);
                                                         tv_max_appeal_length.setVisibility(View.VISIBLE);
-                                                        if (form_code == NEW_MEETING)
+                                                        if (form_code == NEW_MEETING) {
+                                                            fl_for_button.setVisibility(View.VISIBLE);
                                                             btn_okay.setVisibility(View.VISIBLE);
+                                                        }
                                                     }
                                                 }
                                             });
@@ -628,8 +640,10 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                                         appeal_view.setVisibility(View.VISIBLE);
                                                         tv_max_appeal_length.setVisibility(View.VISIBLE);
 
-                                                        if (form_code == NEW_MEETING)
+                                                        if (form_code == NEW_MEETING) {
+                                                            fl_for_button.setVisibility(View.VISIBLE);
                                                             btn_okay.setVisibility(View.VISIBLE);
+                                                        }
                                                     }
                                                 }
                                             });
@@ -721,8 +735,10 @@ public class MeetingApplicationActivity extends AppCompatActivity {
                                                         place_view.setVisibility(View.GONE);
                                                         appeal_view.setVisibility(View.VISIBLE);
                                                         tv_max_appeal_length.setVisibility(View.VISIBLE);
-                                                        if (form_code == NEW_MEETING)
+                                                        if (form_code == NEW_MEETING) {
+                                                            fl_for_button.setVisibility(View.VISIBLE);
                                                             btn_okay.setVisibility(View.VISIBLE);
+                                                        }
                                                     }
                                                 }
                                             });

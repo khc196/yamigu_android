@@ -129,9 +129,6 @@
                         </LinearLayout>
                     </RelativeLayout>
                 </LinearLayout>
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
                     <LinearLayout
                         android:id="@+id/root_view"
                         android:layout_width="match_parent"
@@ -139,20 +136,21 @@
                         android:orientation="vertical"
                         android:layout_marginTop="63dp">
                     </LinearLayout>
-                </ScrollView>
             </LinearLayout>
             <FrameLayout
+                android:id="@+id/fl_for_button"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_gravity="bottom"
                 android:textSize="14dp"
-                android:background="@null">
+                android:visibility="gone">
                 <Button
                     android:id="@+id/btn_okay"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#2B2825"
                     android:text="미팅 신청하기!"
+                    android:visibility="gone"
                     android:textColor="@color/colorPrimary"
                     android:fontFamily="@font/nanumgothic_font_family"
                     />
@@ -161,7 +159,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:weightSum="375"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
                     <Button
                         android:id="@+id/btn_delete"
                         android:layout_width="0dp"
