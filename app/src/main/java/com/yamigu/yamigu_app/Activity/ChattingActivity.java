@@ -138,13 +138,13 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         partner_name = intent.getExtras().getString("partner_nickname");
         date = intent.getExtras().getString("date");
 
-        place = intent.getExtras().getString("place");
+        //place = intent.getExtras().getString("place");
         type = intent.getExtras().getString("type");
         meeting_id = intent.getExtras().getString("meeting_id");
         matching_id = intent.getExtras().getString("matching_id");
         GlobalApplication.current_chatting_room = Integer.parseInt(matching_id);
         manager_name_orig = intent.getExtras().getString("manager_name");
-        manager_name = "야미구 매니저 " + manager_name_orig;
+        manager_name = manager_name_orig;
 
         partner_uid = intent.getExtras().getString("partner_uid");
         manager_uid = intent.getExtras().getString("manager_uid");
@@ -189,8 +189,19 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                 return false;
             }
         });
+        String type_name = "";
+        type_name = type;
+        if(type.contains("2:2")) {
+            type_name = "2:2 미팅";
+        }
+        else if(type.contains("3:3")) {
+            type_name = "3:3 미팅";
+        }
+        else if(type.contains("4:4")) {
+            type_name = "4:4 미팅";
+        }
         tv_title = findViewById(R.id.tv_title);
-        tv_title.setText(date + " || " + place + " || " + type);
+        tv_title.setText(date + " || " + type_name);
         uid = preferences.getString("uid", "");
 
         initViews();
@@ -224,6 +235,10 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     }
     @Override
     protected void onDestroy() {
+        GlobalApplication.ChatPreviewData cpd = GlobalApplication.unread_chat_map.get(Integer.parseInt(matching_id));
+        cpd.unread_count = 0;
+        GlobalApplication.unread_chat_map.put(Integer.parseInt(matching_id), cpd);
+
         mDatabaseReference.removeEventListener(mChildEventListener);
         clearReferences();
         super.onDestroy();
@@ -481,7 +496,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                 intent_args.put("partner_department", preferences.getString("department", ""));
                 intent_args.put("partner_nickname", preferences.getString("nickname", ""));
                 intent_args.put("date", date);
-                intent_args.put("place", place);
+                //intent_args.put("place", place);
                 intent_args.put("type", type);
                 intent_args.put("meeting_id", meeting_id);
                 intent_args.put("matching_id", matching_id);
@@ -732,7 +747,7 @@ class ListMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
         } else if (holder instanceof ItemMessageManagerHolder) {
             ((ItemMessageManagerHolder) holder).setType(conversation.getListMessageData().get(position).message);
-            ((ItemMessageManagerHolder) holder).usrName.setText(conversation.getListMessageData().get(position).userName);
+            ((ItemMessageManagerHolder) holder).usrName.setText("야미구 매니저 " + conversation.getListMessageData().get(position).userName);
             ((ItemMessageManagerHolder) holder).txtTime.setText(format.format(conversation.getListMessageData().get(position).time));
             ((ItemMessageManagerHolder) holder).txtContent.setText(conversation.getListMessageData().get(position).message);
             Bitmap currentAvata;
@@ -892,7 +907,7 @@ class ItemMessageManagerHolder extends RecyclerView.ViewHolder {
                 chatting_content_belong_man.setText(ChattingActivity.partner_belong + " " + ChattingActivity.partner_department);
             }
             chatting_content_date.setText(ChattingActivity.date);
-            chatting_content_place.setText(ChattingActivity.place);
+            //chatting_content_place.setText(ChattingActivity.place);
             String type_name = "";
             if(ChattingActivity.type.equals("2:2")) {
                 type_name = "2:2 미팅";
@@ -901,7 +916,7 @@ class ItemMessageManagerHolder extends RecyclerView.ViewHolder {
                 type_name = "3:3 미팅";
             }
             else if(ChattingActivity.type.equals("4:4")) {
-                type_name = "4:4 소개팅";
+                type_name = "4:4 미팅";
             }
             chatting_content_type.setText(type_name);
         }

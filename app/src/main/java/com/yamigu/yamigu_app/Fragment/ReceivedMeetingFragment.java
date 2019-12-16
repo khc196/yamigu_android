@@ -264,13 +264,13 @@ public class ReceivedMeetingFragment extends Fragment {
                 }
                 if(jsonArray.length() > 0) {
                     is_initialized = true;
-                    rl_num_display.setVisibility(View.INVISIBLE);
+                    rl_num_display.setVisibility(View.VISIBLE);
                     page_layout.setVisibility(View.VISIBLE);
                     empty_layout.setVisibility(View.INVISIBLE);
                     ll_btn_layout.setVisibility(View.VISIBLE);
                 }
                 else {
-                    rl_num_display.setVisibility(View.VISIBLE);
+                    rl_num_display.setVisibility(View.INVISIBLE);
                     page_layout.setVisibility(View.INVISIBLE);
                     empty_layout.setVisibility(View.VISIBLE);
                     ll_btn_layout.setVisibility(View.INVISIBLE);

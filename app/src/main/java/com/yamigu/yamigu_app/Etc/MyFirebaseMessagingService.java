@@ -112,7 +112,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("partner_department", intent_args.getString("partner_department"));
                 intent.putExtra("partner_nickname",  intent_args.getString("partner_nickname"));
                 intent.putExtra("date", intent_args.getString("date"));
-                intent.putExtra("place", intent_args.getString("place"));
+//                intent.putExtra("place", intent_args.getString("place"));
                 intent.putExtra("type", intent_args.getString("type"));
                 intent.putExtra("meeting_id", intent_args.getString("meeting_id"));
                 intent.putExtra("matching_id", intent_args.getString("matching_id"));
@@ -120,14 +120,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("partner_uid", intent_args.getString("partner_uid"));
                 intent.putExtra("manager_uid", intent_args.getString("manager_uid"));
                 intent.putExtra("accepted_at", intent_args.getLong("accepted_at"));
+
                 id = Integer.parseInt(intent_args.getString("partner_uid"));
             } catch(JSONException e) {
                 e.printStackTrace();
+            } catch(NumberFormatException e){
+                try {
+                    id = Integer.parseInt(intent_args.getString("matching_id")) + Integer.parseInt(intent_args.getString("meeting_id"));
+                } catch(JSONException e2) {
+
+                }
             }
+
         }
         else {
             try {
-            id = intent_args.getInt("match_id");
+            id = intent_args.getInt("matching_id");
+
             } catch(JSONException e) {
                 e.printStackTrace();
             }
