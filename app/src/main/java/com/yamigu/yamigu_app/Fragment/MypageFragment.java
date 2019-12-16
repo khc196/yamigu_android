@@ -122,6 +122,7 @@ public class MypageFragment extends Fragment {
     private int user_certified;
     private final int REQ_CODE_SELECT_IMAGE = 100;
     int serverResponseCode = 0;
+    private boolean is_canceled = false;
     ProgressDialog dialog = null;
 
     String upLoadServerUri = "http://106.10.39.154:9999/api/user/change/avata/";
@@ -259,6 +260,7 @@ public class MypageFragment extends Fragment {
                     btn_edit_nickname.setVisibility(View.GONE);
                     globalMenu.findItem(R.id.menu_cancel).setVisible(true);
                     globalMenu.findItem(R.id.menu_complete).setVisible(true);
+                    is_canceled = false;
                 }
             });
             profile_img.setOnClickListener(new View.OnClickListener() {
@@ -284,6 +286,7 @@ public class MypageFragment extends Fragment {
                 @Override
                 public void afterTextChanged(Editable editable) {
                     globalMenu.findItem(R.id.menu_complete).setEnabled(false);
+                    nickname_validated = false;
                     if(!editable.toString().equals("")) {
                         String url = "http://106.10.39.154:9999/api/user/validation/nickname/"+editable.toString();
                         ContentValues values = new ContentValues();
@@ -381,7 +384,6 @@ public class MypageFragment extends Fragment {
         globalMenu = menu;
         menu.findItem(R.id.menu_complete).setVisible(false);
         menu.findItem(R.id.menu_cancel).setVisible(false);
-        menu.findItem(R.id.menu_complete).setEnabled(false);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -409,6 +411,7 @@ public class MypageFragment extends Fragment {
                 tv_available_nickname.setVisibility(View.GONE);
                 globalMenu.findItem(R.id.menu_cancel).setVisible(false);
                 globalMenu.findItem(R.id.menu_complete).setVisible(false);
+                is_canceled = true;
                 return true;
         }
         return true;
@@ -488,7 +491,7 @@ public class MypageFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             validated_from_server = false;
-
+            if(is_canceled) return;
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(s);
@@ -501,7 +504,6 @@ public class MypageFragment extends Fragment {
 
             String pattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]*$";
             Editable editable = et_nickname.getText();
-            globalMenu.findItem(R.id.menu_complete).setVisible(true);
             try {
                 int length = editable.toString().getBytes("euc-kr").length;
                 boolean is_validate =  length > 0 && length <= 12 && Pattern.matches(pattern, editable.toString());
