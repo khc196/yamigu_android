@@ -44,14 +44,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private int id = 0;
     public MyFirebaseMessagingService() {
         try {
-            preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            preferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
         } catch (NullPointerException e) {
 
         }
     }
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
         editor = preferences.edit();
         id = preferences.getInt("fcm_id", 0);
         if(remoteMessage.getData() == null)
@@ -63,16 +63,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         sendNotification(data);
     }
     private void sendNotification(JSONObject data) {
+        int group_num = 0;
         if(!preferences.getBoolean("push_noti_avail", true))
             return;
         String title = "";
         String message = "";
         String clickAction = "";
+        int badge_count = 0;
+        int id = 0;
         JSONObject intent_args = new JSONObject();
         try {
             title = data.getString("title");
             message = data.getString("content");
             clickAction = data.getString("clickAction");
+            badge_count = data.getInt("badge");
             intent_args = new JSONObject(data.getString("intentArgs"));
         } catch(JSONException e) {
             e.printStackTrace();
@@ -93,6 +97,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if(activityName.equals(".ChattingActivity")) {
             if(!preferences.getBoolean("chat_noti_avail", true))
                 return;
+            group_num = 1;
             try {
                 if (GlobalApplication.isAppOnForeground(getApplicationContext()) && ((GlobalApplication) getApplicationContext()).getCurrentActivity().getLocalClassName().equals("Activity.ChattingActivity")) {
                     return;
@@ -115,12 +120,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("partner_uid", intent_args.getString("partner_uid"));
                 intent.putExtra("manager_uid", intent_args.getString("manager_uid"));
                 intent.putExtra("accepted_at", intent_args.getLong("accepted_at"));
+                id = Integer.parseInt(intent_args.getString("partner_uid"));
             } catch(JSONException e) {
                 e.printStackTrace();
             }
         }
         else {
-            intent = new Intent(this, NotificationActivity.class);
+            try {
+            id = intent_args.getInt("match_id");
+            } catch(JSONException e) {
+                e.printStackTrace();
+            }
+            group_num = 2;
+            intent = new Intent(this, MainActivity.class);
         }
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(intent);
@@ -154,6 +166,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         builder.setAutoCancel(true);
         builder.setDefaults(Notification.DEFAULT_ALL);
         builder.setWhen(System.currentTimeMillis());
+        builder.setGroup(Integer.toString(group_num));
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setContentText(message);
         builder.setContentIntent(pendingIntent);
@@ -165,7 +178,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         //Log.d("NOTIID", ""+id);
         mManager.notify(id, builder.build());
-        id++;
+        //id++;
         editor.putInt("fcm_id", id);
         editor.apply();
     }
@@ -178,14 +191,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendRegistrationToServer(String token) {
         try {
             auth_token = preferences.getString("auth_token", "");
-            String url = "http://106.10.39.154:9999/api/fcm/register_device/";
-            ContentValues values = new ContentValues();
-            values.put("registration_id", token);
-            values.put("type", "android");
-            NetworkTask networkTask = new NetworkTask(url, values);
-            networkTask.execute();
+            if(!auth_token.isEmpty()) {
+                String url = "http://106.10.39.154:9999/api/fcm/register_device/";
+                ContentValues values = new ContentValues();
+                values.put("registration_id", token);
+                values.put("type", "android");
+                NetworkTask networkTask = new NetworkTask(url, values);
+                networkTask.execute();
+            }
         } catch(NullPointerException e) {
-            preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            preferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
             editor = preferences.edit();
             auth_token = preferences.getString("auth_token", "");
             String url = "http://106.10.39.154:9999/api/fcm/register_device/";

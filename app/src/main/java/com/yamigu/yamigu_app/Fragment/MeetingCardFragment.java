@@ -119,7 +119,7 @@ public class MeetingCardFragment extends Fragment {
                 SimpleDateFormat sdf = new SimpleDateFormat("M월d일");
                 date_string = sdf.format(before_date);
                 place_string = args.getString("place_type_name");
-                description.loadData("<div style=\"display:table; width:100%; height:100%; background-color:rgba(255,255,255, 0);overflow-y:hidden;\"><div style=\"display: table-cell; vertical-align: middle; text-align:center; word-break: break-all; color: black; font-size:12px; padding:3px;overflow-y:hidden;overflow-x:hidden;\">"+desc_string+"</div></div>", "text/html;charset=UTF-8", "UTF-8");
+                description.loadData("<div style=\"display:table; width:100%; height:100%; background-color:rgba(255,255,255, 0);overflow-y:hidden;\"><div style=\"display: table-cell; vertical-align: middle;  word-break: break-all; color: black; font-size:12px; padding:3px;overflow-y:hidden;overflow-x:hidden;\">"+desc_string+"</div></div>", "text/html;charset=UTF-8", "UTF-8");
                 profile1.setText(profile1_string);
                 profile2.setText(profile2_string);
                 date.setText(date_string);

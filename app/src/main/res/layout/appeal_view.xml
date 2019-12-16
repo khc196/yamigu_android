@@ -15,12 +15,13 @@ android:layout_height="match_parent">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="18dp"
-        android:layout_marginTop="7dp"
         android:src="@drawable/question_appeal"
         />
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="16.7dp"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,11 +32,11 @@ android:layout_height="match_parent">
                 android:layout_gravity="center_horizontal"
                 >
                 <EditText
+                            android:singleLine="true"
                     android:id="@+id/edittext_appeal"
                     android:layout_width="379dp"
                     android:layout_height="268dp"
                     android:background="@drawable/shadow_box"
-                    android:layout_marginTop="7dp"
                     android:gravity="top"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
@@ -52,8 +53,8 @@ android:layout_height="match_parent">
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|bottom"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="13dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginBottom="35dp"
                     android:text="0 / 100"
                     android:fontFamily="@font/nanumgothic_font_family"
                     android:textColor="@color/colorHint"

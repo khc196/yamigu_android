@@ -46,6 +46,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kakao.kakaolink.v2.KakaoLinkResponse;
+import com.kakao.kakaolink.v2.KakaoLinkService;
+import com.kakao.message.template.ButtonObject;
+import com.kakao.message.template.ContentObject;
+import com.kakao.message.template.FeedTemplate;
+import com.kakao.message.template.LinkObject;
+import com.kakao.message.template.SocialObject;
+import com.kakao.network.ErrorResult;
+import com.kakao.network.callback.ResponseCallback;
+import com.kakao.plusfriend.PlusFriendService;
+import com.kakao.util.KakaoParameterException;
+import com.kakao.util.exception.KakaoException;
+import com.kakao.util.helper.log.Logger;
 import com.yamigu.yamigu_app.Activity.CertificationUActivity;
 import com.yamigu.yamigu_app.Activity.CertificationWActivity;
 import com.yamigu.yamigu_app.Activity.ChattingActivity;
@@ -78,6 +91,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -89,8 +104,8 @@ public class MypageFragment extends Fragment {
     private SharedPreferences.Editor editor;
     private ProfileCard profileCard;
     private InviteFriends inviteFriends;
-    private ImageButton btn_chat_manager, btn_notification, btn_ticket;
-    private TextView tv_nickname, tv_age, tv_belong, tv_department, tv_available_nickname, tv_num_of_ticket, tv_num_of_noti;
+    private ImageButton btn_chat_manager, btn_notification, btn_ticket, btn_kakao_share;
+    private TextView tv_nickname, tv_age, tv_belong, tv_department, tv_available_nickname, tv_num_of_ticket, tv_num_of_noti, tv_invite_code;
     private EditText et_nickname;
     private ImageButton btn_edit_nickname;
     public static CircularImageView profile_img;
@@ -102,6 +117,7 @@ public class MypageFragment extends Fragment {
     private boolean nickname_validated;
     private String nickname;
     private String profile_url;
+    private String invite_code;
     private Menu globalMenu;
     private int user_certified;
     private final int REQ_CODE_SELECT_IMAGE = 100;
@@ -155,6 +171,8 @@ public class MypageFragment extends Fragment {
 
         profileCard = view.findViewById(R.id.profile_card);
         inviteFriends = view.findViewById(R.id.invite_friend);
+        btn_kakao_share = inviteFriends.findViewById(R.id.btn_kakao_share);
+        tv_invite_code = inviteFriends.findViewById(R.id.code);
         btn_chat_manager = view.findViewById(R.id.btn_kakao_chat);
         tv_nickname = profileCard.findViewById(R.id.name);
         tv_age = profileCard.findViewById(R.id.age);
@@ -175,10 +193,30 @@ public class MypageFragment extends Fragment {
         btn_certificating.setVisibility(View.INVISIBLE);
         profile_url = preferences.getString("profile", "");
 
+        if(MainActivity.dialog.isShowing()) {
+            MainActivity.dialog.dismiss();
+        }
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //tv_num_of_ticket.setText(Integer.toString(HomeFragment.ticket_count));
+        //tv_num_of_noti.setText(Integer.toString(GlobalApplication.unread_noti_count));
         user_certified = preferences.getInt("user_certified", 0);
         int num_of_ticket = preferences.getInt("num_of_ticket", 0);
         tv_num_of_ticket.setText(Integer.toString(num_of_ticket));
         tv_num_of_noti.setText(GlobalApplication.unread_noti_count+"");
+
+        tv_nickname.setText(preferences.getString("nickname", ""));
+        tv_age.setText(" (" + preferences.getInt("age", 0) + ")");
+        tv_belong.setText(preferences.getString("belong", ""));
+        tv_department.setText(preferences.getString("department", ""));
+        auth_token = preferences.getString("auth_token", "");
+        invite_code = preferences.getString("invite_code", "e14lksd");
+        tv_invite_code.setText(invite_code);
+
         if(user_certified == 0) {
             btn_certificating.setVisibility(View.VISIBLE);
             label_certificated.setVisibility(View.INVISIBLE);
@@ -211,6 +249,7 @@ public class MypageFragment extends Fragment {
         else {
             btn_certificating.setVisibility(View.INVISIBLE);
             label_certificated.setVisibility(View.VISIBLE);
+            fl_meeting_card.setAlpha(1.0f);
             btn_edit_nickname.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -244,12 +283,14 @@ public class MypageFragment extends Fragment {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
+                    globalMenu.findItem(R.id.menu_complete).setEnabled(false);
                     if(!editable.toString().equals("")) {
                         String url = "http://106.10.39.154:9999/api/user/validation/nickname/"+editable.toString();
                         ContentValues values = new ContentValues();
                         NetworkTask networkTask = new NetworkTask(url, values);
+                        nickname_validated = false;
                         networkTask.execute();
-                        tv_available_nickname.setVisibility(View.VISIBLE);
+                        //tv_available_nickname.setVisibility(View.VISIBLE);
                     }
                     else {
                         nickname_validated = false;
@@ -278,49 +319,56 @@ public class MypageFragment extends Fragment {
                     ((MainActivity)getContext()).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                 }
             });
-        }
-//        String base64AvataUser = preferences.getString("avata", "default");
-//        Log.d("avata", base64AvataUser);
-//        Bitmap bitmapAvata;
-//        if (!base64AvataUser.equals("default")) {
-//            byte[] decodedString = Base64.decode(base64AvataUser, Base64.DEFAULT);
-//            bitmapAvata = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-//        } else {
-//            bitmapAvata = null;
-//        }
-//        if(bitmapAvata != null) {
-//            while(bitmapAvata.getWidth() < profile_img.getWidth()) {
-//                bitmapAvata = Bitmap.createScaledBitmap(bitmapAvata, bitmapAvata.getWidth() * 2, bitmapAvata.getHeight() * 2, false);
-//            }
-//            while(bitmapAvata.getHeight() < profile_img.getHeight()) {
-//                bitmapAvata = Bitmap.createScaledBitmap(bitmapAvata, bitmapAvata.getWidth() * 2, bitmapAvata.getHeight() * 2, false);
-//            }
-//            profile_img.setImageBitmap(bitmapAvata);
-//        }
-//
-        if(!profile_url.isEmpty()) {
-//            profile_img.setImageBitmap(GlobalApplication.bitmap_map.get(profile_url));
-//            ContentValues values = new ContentValues();
-//            NetworkTask3 networkTask3 = new NetworkTask3(profile_url, values, profile_img);
-//            networkTask3.execute();
-        }
-        tv_nickname.setText(preferences.getString("nickname", ""));
-        tv_age.setText(" (" + preferences.getInt("age", 0) + ")");
-        tv_belong.setText(preferences.getString("belong", ""));
-        tv_department.setText(preferences.getString("department", ""));
-        auth_token = preferences.getString("auth_token", "");
 
-        if(MainActivity.dialog.isShowing()) {
-            MainActivity.dialog.dismiss();
-        }
-        return view;
-    }
+            btn_kakao_share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FeedTemplate params = FeedTemplate
+                            .newBuilder(ContentObject.newBuilder("야미구 - 야! 미팅 하나만 구해줘",
+                                    "http://106.10.39.154:9999/media/yamigu_kakao_share2.png",
+                                    LinkObject.newBuilder().setWebUrl("https://www.yamigu.party")
+                                            .setMobileWebUrl("https://www.yamigu.party")
+                                    .setAndroidExecutionParams("market://details?id=com.yamigu.yamigu_app")
+                                    .setIosExecutionParams("https://itunes.apple.com/app/id1485834674").build())
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        tv_num_of_ticket.setText(Integer.toString(HomeFragment.ticket_count));
-        tv_num_of_noti.setText(Integer.toString(GlobalApplication.unread_noti_count));
+                                    .setDescrption("초대코드: "+invite_code +"를 입력하고\n친구와 함께 야미구에서 미팅을 즐겨보세요!")
+                                    .build())
+                            .addButton(new ButtonObject("야미구 시작하기", LinkObject.newBuilder()
+                                    .setWebUrl("'https://www.yamigu.party")
+                                    .setMobileWebUrl("'https://www.yamigu.party")
+                                    .setAndroidExecutionParams("market://details?id=com.yamigu.yamigu_app")
+                                    .setIosExecutionParams("https://itunes.apple.com/app/id1485834674")
+                                    .build()))
+                            .build();
+
+                    Map<String, String> serverCallbackArgs = new HashMap<String, String>();
+                    serverCallbackArgs.put("user_id", "${current_user_id}");
+                    serverCallbackArgs.put("product_id", "${shared_product_id}");
+
+                    KakaoLinkService.getInstance().sendDefault(getContext(), params, serverCallbackArgs, new ResponseCallback<KakaoLinkResponse>() {
+                        @Override
+                        public void onFailure(ErrorResult errorResult) {
+                            Logger.e(errorResult.toString());
+                        }
+
+                        @Override
+                        public void onSuccess(KakaoLinkResponse result) {
+                            Log.d("KaKaoLinkCallback", result.toString());
+                        }
+                    });
+                }
+            });
+            btn_chat_manager.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        PlusFriendService.getInstance().chat(getContext(), "_xjxamkT");
+                    } catch (KakaoException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
     @Override
     public void onPause() {
@@ -453,6 +501,7 @@ public class MypageFragment extends Fragment {
 
             String pattern = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]*$";
             Editable editable = et_nickname.getText();
+            globalMenu.findItem(R.id.menu_complete).setVisible(true);
             try {
                 int length = editable.toString().getBytes("euc-kr").length;
                 boolean is_validate =  length > 0 && length <= 12 && Pattern.matches(pattern, editable.toString());
@@ -512,7 +561,6 @@ public class MypageFragment extends Fragment {
             tv_nickname.setText(after_nickname);
             et_nickname.setHint(after_nickname);
             et_nickname.setText("");
-            tv_available_nickname.setVisibility(View.GONE);
             editor.putString("nickname", after_nickname);
             editor.apply();
 

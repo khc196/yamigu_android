@@ -188,6 +188,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if(!nickname_validated) {
                     return;
                 }
+                friend_code = et_friendcode.getText().toString();
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("friend_code", friend_code);
 //                intent.putExtra("realname", real_name);

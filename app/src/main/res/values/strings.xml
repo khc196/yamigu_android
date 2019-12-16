@@ -1,5 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="kakao_app_key">8f227ce17d6a3f4f4cee01b62114ac95</string>
+    <string name="kakao_scheme">kakao8f227ce17d6a3f4f4cee01b62114ac95</string>
+    <string name="kakaolink_host">kakaolink</string>
     <string name="default_notification_channel_id">yamigu_notification_channel_id</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

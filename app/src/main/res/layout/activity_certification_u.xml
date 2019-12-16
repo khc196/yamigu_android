@@ -52,6 +52,7 @@
                 android:fontFamily="@font/roboto_font_family"
                 />
             <EditText
+                            android:singleLine="true"
                 android:id="@+id/et_university"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
@@ -78,6 +79,7 @@
                 android:fontFamily="@font/roboto_font_family"
                 />
             <EditText
+                            android:singleLine="true"
                 android:id="@+id/et_major"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"

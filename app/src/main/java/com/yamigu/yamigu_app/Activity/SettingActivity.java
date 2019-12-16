@@ -11,6 +11,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
@@ -25,7 +27,10 @@ import com.kakao.auth.Session;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.yamigu.yamigu_app.CustomLayout.CustomDialog3;
+import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
+
+import org.json.JSONArray;
 
 import java.util.jar.Attributes;
 
@@ -34,9 +39,10 @@ public class SettingActivity extends AppCompatActivity {
     private Switch switch_push, switch_chatting;
     private Button btn_view_notification, btn_app_version, btn_view_private, btn_view_using, btn_logout, btn_withdrawal;
     private TextView tv_version;
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
+    private SharedPreferences preferences, preferences2;
+    private SharedPreferences.Editor editor, editor2;
     private CustomDialog3 popupDialog;
+    private String auth_token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +60,11 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences2 = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
         editor = preferences.edit();
+        editor2 = preferences2.edit();
+
+        auth_token = preferences.getString("auth_token", "");
         switch_push = (Switch) findViewById(R.id.switch_push);
         switch_chatting = (Switch) findViewById(R.id.switch_chatting);
         btn_view_notification = (Button) findViewById(R.id.btn_view_notification);
@@ -71,8 +81,8 @@ public class SettingActivity extends AppCompatActivity {
         } catch(PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        GlobalApplication.chat_noti_avail = preferences.getBoolean("chat_noti_avail", true);
-        GlobalApplication.push_noti_avail = preferences.getBoolean("push_noti_avail", true);
+        GlobalApplication.chat_noti_avail = preferences2.getBoolean("chat_noti_avail", true);
+        GlobalApplication.push_noti_avail = preferences2.getBoolean("push_noti_avail", true);
 
         switch_push.setChecked(GlobalApplication.push_noti_avail);
         switch_chatting.setChecked(GlobalApplication.chat_noti_avail);
@@ -81,13 +91,13 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 GlobalApplication.push_noti_avail = !GlobalApplication.push_noti_avail;
-                editor.putBoolean("push_noti_avail", GlobalApplication.push_noti_avail);
+                editor2.putBoolean("push_noti_avail", GlobalApplication.push_noti_avail);
                 if(!GlobalApplication.push_noti_avail) {
                     GlobalApplication.chat_noti_avail = false;
-                    editor.putBoolean("chat_noti_avail", GlobalApplication.chat_noti_avail);
+                    editor2.putBoolean("chat_noti_avail", GlobalApplication.chat_noti_avail);
                     switch_chatting.setChecked(GlobalApplication.chat_noti_avail);
                 }
-                editor.apply();
+                editor2.apply();
 
             }
         });
@@ -95,8 +105,8 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 GlobalApplication.chat_noti_avail = !GlobalApplication.chat_noti_avail;
-                editor.putBoolean("chat_noti_avail", GlobalApplication.chat_noti_avail);
-                editor.apply();
+                editor2.putBoolean("chat_noti_avail", GlobalApplication.chat_noti_avail);
+                editor2.apply();
             }
         });
         btn_withdrawal.setPaintFlags(btn_withdrawal.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -197,7 +207,10 @@ public class SettingActivity extends AppCompatActivity {
                             preferences.edit().clear().commit();
                             session.close();
                             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().remove("isFirstRun").commit();
-                            redirectLoginActivity();
+                            String url = "http://106.10.39.154:9999/api/auth/withdrawal/";
+                            ContentValues values = new ContentValues();
+                            NetworkTask networkTask = new NetworkTask(url, values);
+                            networkTask.execute();
                         }
                     });
                 }
@@ -209,5 +222,30 @@ public class SettingActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finishAffinity();
+    }
+    public class NetworkTask extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+
+        public NetworkTask(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+            result = requestHttpURLConnection.request(getApplicationContext(), url, values, "POST", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            redirectLoginActivity();
+        }
     }
 }

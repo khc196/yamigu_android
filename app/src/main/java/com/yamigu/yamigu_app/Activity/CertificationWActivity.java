@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.yamigu.yamigu_app.Etc.ImageFilePath;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
@@ -103,13 +104,13 @@ public class CertificationWActivity extends AppCompatActivity {
         });
         Intent intent = getIntent();
         nickname = intent.getExtras().getString("nickname");
-//        friend_code = intent.getExtras().getString("friend_code");
-//        real_name = intent.getExtras().getString("realname");
+        friend_code = intent.getExtras().getString("friend_code", "");
+//        real_name = intent.getExtras().gsetString("realname");
 //        phonenumber = intent.getExtras().getString("phonenumber");
 //        gender_string = intent.getExtras().getString("gender");
 //        birthdate = intent.getExtras().getString("birthdate");
 //        nickname = preferences.getString("nickname", "");
-        friend_code = preferences.getString("friend_code", "");
+        //friend_code = preferences.getString("friend_code", "");
         real_name = preferences.getString("real_name", "");
         phonenumber = preferences.getString("phonenumber", "");
         gender_string = preferences.getString("gender_string", "");
@@ -200,6 +201,7 @@ public class CertificationWActivity extends AppCompatActivity {
                 values.put("is_student", false);
                 values.put("belong", belong);
                 values.put("department", department);
+                values.put("friend_code", friend_code);
                 dialog = new ProgressDialog(CertificationWActivity.this);
                 NetworkTask networkTask = new NetworkTask(url, values);
                 networkTask.execute();
@@ -217,6 +219,7 @@ public class CertificationWActivity extends AppCompatActivity {
                 values.put("gender", gender);
                 values.put("nickname", nickname);
                 values.put("is_student", false);
+                values.put("friend_code", friend_code);
                 dialog = new ProgressDialog(CertificationWActivity.this);
                 NetworkTask networkTask = new NetworkTask(url, values);
                 networkTask.execute();
@@ -448,6 +451,40 @@ public class CertificationWActivity extends AppCompatActivity {
             editor.putString("department", department);
             editor.putBoolean("is_student", false);
             editor.commit();
+            String url = "http://106.10.39.154:9999/api/fcm/register_device/";
+            String fcm_token = FirebaseInstanceId.getInstance().getToken();
+            ContentValues values = new ContentValues();
+            values.put("registration_id", fcm_token);
+            values.put("type", "android");
+            NetworkTask2 networkTask2 = new NetworkTask2(url, values);
+            networkTask2.execute();
+        }
+    }
+    public class NetworkTask2 extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask2(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+
+            result = requestHttpURLConnection.request(getApplicationContext(), url, values, "POST", auth_token); // 해당 URL로 부터 결과물을 얻어온다.
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            GlobalApplication.initFirebase();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);

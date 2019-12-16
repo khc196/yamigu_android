@@ -135,7 +135,7 @@ public class NotificationActivity extends AppCompatActivity {
         TextView tv_notification_content = v.findViewById(R.id.tv_notification_content);
         TextView tv_notification_time = v.findViewById(R.id.tv_notification_time);
         final long type =  notificationData.type;
-        String type_string_array[] = {"", "신청!", "매칭!", "거절!", "대기!", "완료!", "취소!"};
+        String type_string_array[] = {"", "신청!", "매칭!", "거절!", "완료!", "취소!", "초대!"};
         tv_notification_type.setText(type_string_array[(int)type]);
         tv_notification_content.setText(notificationData.content);
 
@@ -148,9 +148,14 @@ public class NotificationActivity extends AppCompatActivity {
                         return;
                     }
                     mLastClickTime = SystemClock.elapsedRealtime();
-                    notificationData.isUnread = false;
-                    GlobalApplication.notiDB.child(notificationData.id).setValue(notificationData);
-                    GlobalApplication.unread_noti_count --;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notificationData.isUnread = false;
+                            GlobalApplication.notiDB.child(notificationData.id).setValue(notificationData);
+                            GlobalApplication.unread_noti_count --;
+                        }
+                    }).start();
                     finish();
                 }
             });

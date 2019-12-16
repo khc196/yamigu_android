@@ -3,7 +3,7 @@ package com.yamigu.yamigu_app.Etc.Model;
 public class NotificationData
 {
     public String id;
-    public Boolean isUnread;
+    public boolean isUnread;
     public long type;
     public long time;
     public String content;
@@ -23,12 +23,5 @@ public class NotificationData
 
     public String getContent() {
         return content;
-    }
-    public Boolean getIsUnread() {
-        return isUnread;
-    }
-
-    public Boolean getUnread() {
-        return isUnread;
     }
 }

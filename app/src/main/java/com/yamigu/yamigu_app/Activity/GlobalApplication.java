@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class GlobalApplication extends Application {
@@ -62,10 +63,10 @@ public class GlobalApplication extends Application {
     public static ArrayList<String> active_date_list;
     public static HashSet<Integer> matching_id_set;
     public static boolean push_noti_avail = true, chat_noti_avail = true;
-    private SharedPreferences preferences;
+    private static SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     public static  DatabaseReference notiDB;
-    private ChildEventListener mChildEventListener;
+    private static ChildEventListener mChildEventListener;
     public static HomeFragment homefragment;
     public static NotificationActivity notiActivity;
     private static String uid;
@@ -132,21 +133,11 @@ public class GlobalApplication extends Application {
         }
         return false;
     }
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-        notification_map = new HashMap<>();
-        bitmap_map = new HashMap<>();
-        unread_chat_map = new HashMap<>();
-        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        editor = preferences.edit();
-        // Kakao Sdk 초기화
-        KakaoSDK.init(new KakaoSDKAdapter());
+    public static void initFirebase() {
         uid = preferences.getString("uid", "");
         notiDB = FirebaseDatabase.getInstance().getReference("user/"+ uid + "/notifications");
-        active_date_list = new ArrayList<>();
-        matching_id_set = new HashSet<>();
+        if(mChildEventListener != null)
+            notiDB.removeEventListener(mChildEventListener);
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -164,17 +155,30 @@ public class GlobalApplication extends Application {
                         notificationData.time = timestamp;
                         notificationData.type = type;
                         notificationData.content = content;
+
                         notification_map.put(id, notificationData);
                         if (isUnread) {
                             try {
-                                unread_noti_count++;
-                                if(homefragment != null && homefragment.isResumed()) {
+                                int unread_noti_count_ = 0;
+                                for(Map.Entry<String, NotificationData> elem: notification_map.entrySet()) {
+                                    if(elem.getValue().isUnread) {
+                                        unread_noti_count_++;
+                                    }
+                                }
+                                unread_noti_count = unread_noti_count_;
+                                if(type == 4) {
+                                    MainActivity.setDialog("인증 완료 기념으로 미팅티켓 1장을 무료로 드렸어요.\n신청하기를 눌러 야미구를 시작해보세요!");
+                                    MainActivity.showDialog();
+                                    GlobalApplication.userCertChange = false;
+                                }
+                                if(homefragment != null && homefragment.isResumed() && MainActivity.pager.getCurrentItem() == 0) {
                                     homefragment.onResume();
                                     homefragment.refresh();
                                 }
-                                if(notiActivity != null && getCurrentActivity().getLocalClassName().equals("Activity.NotificationActivity")) {
+                                if(notiActivity != null && getGlobalApplicationContext().getCurrentActivity().getLocalClassName().equals("Activity.NotificationActivity")) {
                                     notiActivity.refresh();
                                 }
+
                             } catch (NullPointerException e) {
                                 //e.printStackTrace();
                             }
@@ -205,7 +209,12 @@ public class GlobalApplication extends Application {
                         if (isUnread) {
                             try {
                                 unread_noti_count++;
-                                if(homefragment != null) {
+                                if(type == 4) {
+                                    MainActivity.setDialog("인증 완료 기념으로 미팅티켓 1장을 무료로 드렸어요.\n신청하기를 눌러 야미구를 시작해보세요!");
+                                    MainActivity.showDialog();
+                                    GlobalApplication.userCertChange = false;
+                                }
+                                else if(homefragment != null) {
                                     homefragment.onResume();
                                     homefragment.refresh();
                                     //Log.d("UNREADCOUNT", unread_noti_count+"");
@@ -235,6 +244,22 @@ public class GlobalApplication extends Application {
             }
         };
         notiDB.addChildEventListener(mChildEventListener);
+    }
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+        notification_map = new HashMap<>();
+        bitmap_map = new HashMap<>();
+        unread_chat_map = new HashMap<>();
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = preferences.edit();
+        // Kakao Sdk 초기화
+        KakaoSDK.init(new KakaoSDKAdapter());
+        uid = preferences.getString("uid", "");
+        active_date_list = new ArrayList<>();
+        matching_id_set = new HashSet<>();
+
 
     }
     private static ChildEventListener makeChildEventListener(final MyMeetingCard_Chat myMeetingCard_chat, final int matching_id) {

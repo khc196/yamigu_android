@@ -189,6 +189,7 @@
                 </LinearLayout>
 
             <EditText
+                            android:singleLine="true"
                 android:id="@+id/et_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
@@ -215,6 +216,7 @@
                 android:fontFamily="@font/roboto_font_family"
                 />
             <EditText
+                            android:singleLine="true"
                 android:id="@+id/et_friendcode"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"

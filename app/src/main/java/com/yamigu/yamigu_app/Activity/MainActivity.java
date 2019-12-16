@@ -137,11 +137,11 @@ public class MainActivity extends AppCompatActivity {
         mainFragmentAdapter.addItem(new MypageFragment());
         mainFragmentAdapter.addItem(new MoreFragment());
         pager.setAdapter(mainFragmentAdapter);
-        if(GlobalApplication.userCertChange) {
-            setDialog("인증 완료 기념으로 미팅티켓 1장을 무료로 드렸어요.\n신청하기를 눌러 야미구를 시작해보세요!");
-            showDialog();
-            GlobalApplication.userCertChange = false;
-        }
+//        if(GlobalApplication.userCertChange) {
+//            setDialog("인증 완료 기념으로 미팅티켓 1장을 무료로 드렸어요.\n신청하기를 눌러 야미구를 시작해보세요!");
+//            showDialog();
+//            GlobalApplication.userCertChange = false;
+//        }
         nav_yamigu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

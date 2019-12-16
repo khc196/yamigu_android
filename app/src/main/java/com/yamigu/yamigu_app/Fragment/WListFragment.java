@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
@@ -87,6 +88,7 @@ public class WListFragment extends Fragment {
     public static boolean invisible_flag = true;
     private boolean isFirstLoading = true;
     private TextView tv_no_meeting;
+    private long mLastRefreshTime = 0;
     public WListFragment() {
         this.active_type_set = new HashSet<>();
         this.active_place_set = new HashSet<>();
@@ -204,12 +206,15 @@ public class WListFragment extends Fragment {
         //((MainActivity)getActivity()).refresh();
     }
     public void refresh() {
-        String url = refresh_url;
-        //MainActivity.dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
+        if(MainActivity.pager.getCurrentItem() == 1 && SystemClock.elapsedRealtime() - mLastRefreshTime > 1000) {
+            mLastRefreshTime = SystemClock.elapsedRealtime();
+            String url = refresh_url;
+            //MainActivity.dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
 
-        ContentValues values = new ContentValues();
-        NetworkTask2 networkTask2 = new NetworkTask2(url, values);
-        networkTask2.execute();
+            ContentValues values = new ContentValues();
+            NetworkTask2 networkTask2 = new NetworkTask2(url, values);
+            networkTask2.execute();
+        }
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -550,7 +555,7 @@ public class WListFragment extends Fragment {
                             "<body>"+
                             "<div style=" +
                             "\"display:table; width:100%; height:100%; background-color:rgba(255,255,255, 0);overflow-y:hidden;\">" +
-                            "<div style=\"display: table-cell; vertical-align: middle; text-align:center; word-break: break-all; color: black; font-size:14px;overflow-y:hidden;overflow-x:hidden;" +
+                            "<div style=\"display: table-cell; vertical-align: middle; word-break: break-all; color: black; font-size:14px;overflow-y:hidden;overflow-x:hidden;" +
                             "\">"
                             +desc_string+
                             "</div>" +

@@ -239,6 +239,7 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
     protected void redirectMainActivity() {
+        GlobalApplication.initFirebase();
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();
         final Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -404,6 +405,7 @@ public class SplashActivity extends AppCompatActivity {
                     editor.putInt("gender", jsonObject.getInt("gender"));
                     editor.putInt("age", jsonObject.getInt("age"));
                     editor.putString("uid", jsonObject.getString("uid"));
+                    editor.putString("invite_code", jsonObject.getString("invite_code"));
                     if(userCertified == 1 && jsonObject.getInt("user_certified") == 2) {
                         GlobalApplication.userCertChange = true;
                     }

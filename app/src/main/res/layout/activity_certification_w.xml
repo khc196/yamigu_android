@@ -68,6 +68,7 @@
                 android:paddingRight="16dp"
                 android:inputType="text"
                 android:fontFamily="@font/roboto_font_family"
+                android:singleLine="true"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -80,6 +81,7 @@
                 />
 
             <EditText
+                            android:singleLine="true"
                 android:id="@+id/et_job"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"

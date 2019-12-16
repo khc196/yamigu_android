@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
 //        callback = new SessionCallback();
 //        Session.getCurrentSession().addCallback(callback);
 //        Session.getCurrentSession().checkAndImplicitOpen();
-        userCertified = preferences.getInt("user_certifed", 0);
+        userCertified = preferences.getInt("user_certified", 0);
         mAuth = FirebaseAuth.getInstance();
         tv_what_is_yamigu = (TextView) findViewById(R.id.tv_what_is_yamigu);
         btn_login_kakao = (ImageButton) findViewById(R.id.btn_login_kakao);
@@ -187,6 +187,7 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
     protected void redirectMainActivity() {
+        GlobalApplication.initFirebase();
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).commit();
         final Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -313,6 +314,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putInt("num_of_ticket", jsonObject.getInt("ticket"));
                 editor.putString("real_name", jsonObject.getString("real_name"));
                 editor.putString("phonenumber", jsonObject.getString("phone"));
+                editor.putString("invite_code", jsonObject.getString("invite_code"));
                 editor.apply();
             } catch(JSONException e) {
                 e.printStackTrace();

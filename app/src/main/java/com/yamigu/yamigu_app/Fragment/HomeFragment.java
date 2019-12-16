@@ -114,6 +114,8 @@ public class HomeFragment extends Fragment {
     public static int ACTION_START_CHAT = 1;
     private long mLastClickTime = 0;
     private boolean isFirstLoading = true;
+    private long mLastRefreshTime = 0;
+
     View view;
     private class MyMeetingCardFrame {
         private MyMeetingCard mmc_list[];
@@ -171,7 +173,7 @@ public class HomeFragment extends Fragment {
         userDB = FirebaseDatabase.getInstance().getReference("user/" + uid);
         ll_root_pane = view.findViewById(R.id.root_pane);
         mm_root_pane = view.findViewById(R.id.my_meeting_root);
-        ll_root_pane.setVisibility(View.INVISIBLE);
+        ll_root_pane.setVisibility(View.VISIBLE);
 //        tb = (Toolbar) view.findViewById(R.id.toolbar_h) ;
 //        ((AppCompatActivity)getActivity()).setSupportActionBar(tb) ;
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
@@ -251,12 +253,6 @@ public class HomeFragment extends Fragment {
         super.onResume();
 //        ChildEventListener notiChildEventListenerForNotification = makeChildEventListenerForNotification();
 //        notiDB = loadNotifications(notiChildEventListenerForNotification);
-        try {
-            ll_root_pane.setVisibility(View.INVISIBLE);
-        }
-        catch (NullPointerException e) {
-
-        }
         if(MainActivity.pager.getCurrentItem() == 0) {
             refresh();
         }
@@ -279,29 +275,34 @@ public class HomeFragment extends Fragment {
         this.context = context;
     }
     public void refresh() {
-        myMeetingCardFrame = new MyMeetingCardFrame(view);
-        tv_unread_noti_count.setVisibility(View.VISIBLE);
-        tv_ticket_count.setVisibility(View.VISIBLE);
-        tv_ticket_count.setText(Integer.toString(ticket_count));
-
-        tv_unread_noti_count.setText(Integer.toString(GlobalApplication.unread_noti_count));
-        if(GlobalApplication.unread_noti_count == 0) {
-            tv_unread_noti_count.setVisibility(View.INVISIBLE);
-        }
-        else {
+        if(!isFirstLoading && MainActivity.pager.getCurrentItem() == 0 && SystemClock.elapsedRealtime() - mLastRefreshTime > 1000) {
+            mLastRefreshTime = SystemClock.elapsedRealtime();
+            ll_root_pane.setVisibility(View.INVISIBLE);
+            myMeetingCardFrame = new MyMeetingCardFrame(view);
             tv_unread_noti_count.setVisibility(View.VISIBLE);
-        }
-        String url = "http://106.10.39.154:9999/api/meetings/my/";
-        ContentValues values = new ContentValues();
-        NetworkTask networkTask = new NetworkTask(url, values);
-        networkTask.execute();
-        String url2 = "http://106.10.39.154:9999/api/user/info/";
-        ContentValues values2 = new ContentValues();
-        NetworkTask6 networkTask6 = new NetworkTask6(url2, values2);
-        networkTask6.execute();
+            tv_ticket_count.setVisibility(View.VISIBLE);
+            tv_ticket_count.setText(Integer.toString(ticket_count));
 
-        if(fragmentAdapter != null) {
-            fragmentAdapter.notifyDataSetChanged();
+            tv_unread_noti_count.setText(Integer.toString(GlobalApplication.unread_noti_count));
+            if (GlobalApplication.unread_noti_count == 0) {
+                tv_unread_noti_count.setVisibility(View.INVISIBLE);
+            } else {
+                tv_unread_noti_count.setVisibility(View.VISIBLE);
+            }
+
+            String url = "http://106.10.39.154:9999/api/meetings/my/";
+            ContentValues values = new ContentValues();
+            NetworkTask networkTask = new NetworkTask(url, values);
+            networkTask.execute();
+
+            String url2 = "http://106.10.39.154:9999/api/user/info/";
+            ContentValues values2 = new ContentValues();
+            NetworkTask6 networkTask6 = new NetworkTask6(url2, values2);
+            networkTask6.execute();
+
+            if (fragmentAdapter != null) {
+                fragmentAdapter.notifyDataSetChanged();
+            }
         }
     }
     @Override
@@ -1079,6 +1080,7 @@ public class HomeFragment extends Fragment {
                 btn_go_yamigu.setVisibility(View.GONE);
             }
             ArrayList<String> date_list = new ArrayList<>();
+            ((MainActivity)context).setMyMeetingCount(0);
             if(!isFirstLoading) {
                 for(int i = 0; i < myMeetingCardFrame.getActive_length(); i++) {
                     try {
@@ -1128,6 +1130,7 @@ public class HomeFragment extends Fragment {
                                 Date date_obj = new SimpleDateFormat("yyyy-MM-dd").parse(before_date);
                                 final String date = date_obj.getMonth() + 1 + "월" + " " + date_obj.getDate() + "일";
                                 boolean flag = false;
+
                                 String manager_profile_url = "";
                                 for(int j = 0 ; j < received_request.getInt("count"); j++) {
                                     JSONObject request_obj = received_request.getJSONArray("data").getJSONObject(j);
@@ -1247,7 +1250,7 @@ public class HomeFragment extends Fragment {
                                     super.onAnimationEnd(animation);
                                 }
                             });
-                }
+            }
             else {
                 isFirstLoading = false;
             }
@@ -1420,6 +1423,7 @@ public class HomeFragment extends Fragment {
                     meetingCardFragment.setArguments(bundle);
                     fragmentAdapter.addItem(meetingCardFragment);
                 }
+                isFirstLoading = false;
                 refresh();
             } catch(JSONException e) {
                 e.printStackTrace();
@@ -1466,6 +1470,7 @@ public class HomeFragment extends Fragment {
                 editor.putInt("num_of_ticket", jsonObject.getInt("ticket"));
                 editor.putString("real_name", jsonObject.getString("real_name"));
                 editor.putString("phonenumber", jsonObject.getString("phone"));
+                editor.putString("invite_code", jsonObject.getString("invite_code"));
                 editor.apply();
                 ticket_count = preferences.getInt("num_of_ticket", 0);
                 tv_ticket_count.setText(Integer.toString(ticket_count));

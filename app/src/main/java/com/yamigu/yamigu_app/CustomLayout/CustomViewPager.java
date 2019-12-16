@@ -32,11 +32,11 @@ public class CustomViewPager extends ViewPager
                     //Log.d("HEIGHT", h + "");
                 }
                 heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+                super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             }
         } catch(IllegalStateException e) {
 
         }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }
 
