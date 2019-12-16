@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{
-                            Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
         }
         setContentView(R.layout.activity_main);
         findViewById(R.id.overall_layout).setOnTouchListener(new View.OnTouchListener() {
@@ -243,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
         clearReferences();
         super.onDestroy();
     }
-
     private void clearReferences(){
         Activity currActivity = ((GlobalApplication)getApplicationContext()).getCurrentActivity();
         if (this.equals(currActivity))

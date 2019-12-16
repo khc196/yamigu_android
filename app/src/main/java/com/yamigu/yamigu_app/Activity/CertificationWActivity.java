@@ -1,6 +1,7 @@
 package com.yamigu.yamigu_app.Activity;
 
 
+import android.Manifest;
 import android.app.Activity;
 
 import android.app.ProgressDialog;
@@ -8,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
@@ -17,6 +19,8 @@ import android.preference.PreferenceManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -179,10 +183,20 @@ public class CertificationWActivity extends AppCompatActivity {
         });
         btn_attach_file.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){  // 클릭하면 ACTION_PICK 연결로 기본 갤러리를 불러옵니다.
-                Intent intent = new Intent(ACTION_PICK);
-                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+                if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(CertificationWActivity.this,
+                            new String[]{
+                                    Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                }
+                if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(CertificationWActivity.this,
+                            new String[]{
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+                }
+//                Intent intent = new Intent(ACTION_PICK);
+//                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+//                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
             }
         });
         btn_go_home.setOnClickListener(new View.OnClickListener() {
@@ -266,6 +280,30 @@ public class CertificationWActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+            case 2:
+                {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(ACTION_PICK);
+                    intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                    intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+                } else {
+
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
     public int uploadFile(String sourceFileUri) {
