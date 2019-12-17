@@ -14,6 +14,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -125,7 +126,7 @@ public class MypageFragment extends Fragment {
     int serverResponseCode = 0;
     private boolean is_canceled = false;
     ProgressDialog dialog = null;
-
+    private long mLastCheckTime = 0;
     String upLoadServerUri = "http://106.10.39.154:9999/api/user/change/avata/";
 
     /**********  File Path *************/
@@ -295,7 +296,9 @@ public class MypageFragment extends Fragment {
                 public void afterTextChanged(Editable editable) {
                     globalMenu.findItem(R.id.menu_complete).setEnabled(false);
                     nickname_validated = false;
-                    if(!editable.toString().equals("")) {
+
+                    if(!editable.toString().equals("") && SystemClock.elapsedRealtime() - mLastCheckTime > 100) {
+                        mLastCheckTime = SystemClock.elapsedRealtime();
                         String url = "http://106.10.39.154:9999/api/user/validation/nickname/"+editable.toString();
                         ContentValues values = new ContentValues();
                         NetworkTask networkTask = new NetworkTask(url, values);

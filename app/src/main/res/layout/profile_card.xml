@@ -74,6 +74,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/roboto_font_family"
+                            android:inputType="textNoSuggestions"
                             android:gravity="bottom"
                             android:hint="김찬열"
                             android:paddingLeft="0dp"
