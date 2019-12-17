@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bottom_border"
+        android:paddingLeft="39dp"
+        android:text="알림"
+        android:textSize="20dp"
+        android:textColor="@color/colorNormal"
+        android:gravity="center_vertical"
+        android:fontFamily="@font/nanumgothic_font_family"
+        android:textStyle="bold"/>
+    <Switch
+        android:id="@+id/switch_push"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingRight="39dp"
+        android:paddingLeft="39dp"
+        android:background="@drawable/bottom_border_gray"
+        android:text="푸시알림"
+        android:textSize="14dp"
+        android:textColor="@color/colorNormal"
+        android:fontFamily="@font/nanumgothic_font_family">
+    </Switch>
+    <Switch
+        android:id="@+id/switch_chatting"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingRight="39dp"
+        android:paddingLeft="39dp"
+        android:background="@drawable/bottom_border_gray"
+
+        android:text="채팅알림"
+        android:textSize="14dp"
+        android:textColor="@color/colorNormal"
+        android:fontFamily="@font/nanumgothic_font_family">
+    </Switch>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bottom_border_gray"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/btn_view_notification"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingRight="39dp"
+            android:paddingLeft="39dp"
+            android:text="공지사항"
+            android:gravity="left|center_vertical"
+            android:textSize="14dp"
+            android:textColor="@color/colorNormal"
+            android:background="?android:selectableItemBackground"
+            style="?android:attr/borderlessButtonStyle"
+            android:fontFamily="@font/nanumgothic_font_family"/>
+    </LinearLayout>
+</LinearLayout>

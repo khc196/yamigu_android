@@ -4,6 +4,7 @@ package com.yamigu.yamigu_app.Activity;
 import android.app.Activity;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -18,8 +19,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.preference.PreferenceManager;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -64,89 +67,108 @@ public class SettingActivity extends AppCompatActivity {
         editor = preferences.edit();
         editor2 = preferences2.edit();
 
-        auth_token = preferences.getString("auth_token", "");
-        switch_push = (Switch) findViewById(R.id.switch_push);
-        switch_chatting = (Switch) findViewById(R.id.switch_chatting);
-        btn_view_notification = (Button) findViewById(R.id.btn_view_notification);
-        btn_app_version = (Button) findViewById(R.id.btn_app_version);
-        btn_view_private = (Button) findViewById(R.id.btn_view_private);
-        btn_view_using = (Button) findViewById(R.id.btn_view_using);
-        btn_logout = (Button) findViewById(R.id.btn_logout);
-        btn_withdrawal = findViewById(R.id.btn_withdrawal);
-        tv_version = findViewById(R.id.tv_version);
-        try {
-            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            String versionName = packageInfo.versionName;
-            tv_version.setText(versionName);
-        } catch(PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        GlobalApplication.chat_noti_avail = preferences2.getBoolean("chat_noti_avail", true);
-        GlobalApplication.push_noti_avail = preferences2.getBoolean("push_noti_avail", true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LinearLayout root_view = findViewById(R.id.root_view);
+                        final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        switch_push.setChecked(GlobalApplication.push_noti_avail);
-        switch_chatting.setChecked(GlobalApplication.chat_noti_avail);
+                        View notification_view = inflater.inflate(R.layout.setting_notification_view, root_view,false);
+                        View information_view = inflater.inflate(R.layout.setting_information_view, root_view,false);
+                        View withdrawal_view = inflater.inflate(R.layout.setting_withdrawal_vew, root_view,false);
+                        root_view.addView(notification_view);
+                        root_view.addView(information_view);
+                        root_view.addView(withdrawal_view);
+                        auth_token = preferences.getString("auth_token", "");
+                        switch_push = (Switch) notification_view.findViewById(R.id.switch_push);
+                        switch_chatting = (Switch) notification_view.findViewById(R.id.switch_chatting);
+                        btn_view_notification = (Button) notification_view.findViewById(R.id.btn_view_notification);
+                        btn_app_version = (Button) information_view.findViewById(R.id.btn_app_version);
+                        btn_view_private = (Button) information_view.findViewById(R.id.btn_view_private);
+                        btn_view_using = (Button) information_view.findViewById(R.id.btn_view_using);
+                        btn_logout = (Button) information_view.findViewById(R.id.btn_logout);
+                        btn_withdrawal = withdrawal_view.findViewById(R.id.btn_withdrawal);
+                        tv_version = information_view.findViewById(R.id.tv_version);
+                        try {
+                            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                            String versionName = packageInfo.versionName;
+                            tv_version.setText(versionName);
+                        } catch(PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        GlobalApplication.chat_noti_avail = preferences2.getBoolean("chat_noti_avail", true);
+                        GlobalApplication.push_noti_avail = preferences2.getBoolean("push_noti_avail", true);
 
-        switch_push.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GlobalApplication.push_noti_avail = !GlobalApplication.push_noti_avail;
-                editor2.putBoolean("push_noti_avail", GlobalApplication.push_noti_avail);
-                if(!GlobalApplication.push_noti_avail) {
-                    GlobalApplication.chat_noti_avail = false;
-                    editor2.putBoolean("chat_noti_avail", GlobalApplication.chat_noti_avail);
-                    switch_chatting.setChecked(GlobalApplication.chat_noti_avail);
-                }
-                editor2.apply();
+                        switch_push.setChecked(GlobalApplication.push_noti_avail);
+                        switch_chatting.setChecked(GlobalApplication.chat_noti_avail);
 
-            }
-        });
-        switch_chatting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GlobalApplication.chat_noti_avail = !GlobalApplication.chat_noti_avail;
-                editor2.putBoolean("chat_noti_avail", GlobalApplication.chat_noti_avail);
-                editor2.apply();
-            }
-        });
-        btn_withdrawal.setPaintFlags(btn_withdrawal.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                        switch_push.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                GlobalApplication.push_noti_avail = !GlobalApplication.push_noti_avail;
+                                editor2.putBoolean("push_noti_avail", GlobalApplication.push_noti_avail);
+                                if(!GlobalApplication.push_noti_avail) {
+                                    GlobalApplication.chat_noti_avail = false;
+                                    editor2.putBoolean("chat_noti_avail", GlobalApplication.chat_noti_avail);
+                                    switch_chatting.setChecked(GlobalApplication.chat_noti_avail);
+                                }
+                                editor2.apply();
 
-        btn_view_notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), NoticeActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+                            }
+                        });
+                        switch_chatting.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                GlobalApplication.chat_noti_avail = !GlobalApplication.chat_noti_avail;
+                                editor2.putBoolean("chat_noti_avail", GlobalApplication.chat_noti_avail);
+                                editor2.apply();
+                            }
+                        });
+                        btn_withdrawal.setPaintFlags(btn_withdrawal.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+                        btn_view_notification.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(getApplicationContext(), NoticeActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+                            }
+                        });
+                        btn_logout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Dialog("로그아웃 하시겠습니까?");
+                            }
+                        });
+                        btn_withdrawal.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Dialog("회원탈퇴시 3개월간 재가입이 불가능합니다.\n정말 탈퇴하시겠습니까?");
+                            }
+                        });
+                        btn_view_private.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(getApplicationContext(), PrivacyActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+                            }
+                        });
+                        btn_view_using.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(getApplicationContext(), TermsActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
+                            }
+                        });
+                    }
+                });
             }
-        });
-        btn_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialog("로그아웃 하시겠습니까?");
-            }
-        });
-        btn_withdrawal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialog("회원탈퇴시 3개월간 재가입이 불가능합니다.\n정말 탈퇴하시겠습니까?");
-            }
-        });
-        btn_view_private.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), PrivacyActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
-            }
-        });
-        btn_view_using.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), TermsActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
-            }
-        });
+        }).start();
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
     @Override
