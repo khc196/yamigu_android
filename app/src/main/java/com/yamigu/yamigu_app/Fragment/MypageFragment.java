@@ -330,56 +330,55 @@ public class MypageFragment extends Fragment {
                     ((MainActivity)getContext()).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_fadeout_short);
                 }
             });
-
-            btn_kakao_share.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FeedTemplate params = FeedTemplate
-                            .newBuilder(ContentObject.newBuilder("야미구 - 야! 미팅 하나만 구해줘",
-                                    "http://106.10.39.154:9999/media/yamigu_kakao_share2.png",
-                                    LinkObject.newBuilder().setWebUrl("https://www.yamigu.party")
-                                            .setMobileWebUrl("https://www.yamigu.party")
-                                    .setAndroidExecutionParams("market://details?id=com.yamigu.yamigu_app")
-                                    .setIosExecutionParams("https://itunes.apple.com/app/id1485834674").build())
-
-                                    .setDescrption("초대코드: "+invite_code +"를 입력하고\n친구와 함께 야미구에서 미팅을 즐겨보세요!")
-                                    .build())
-                            .addButton(new ButtonObject("야미구 시작하기", LinkObject.newBuilder()
-                                    .setWebUrl("'https://www.yamigu.party")
-                                    .setMobileWebUrl("'https://www.yamigu.party")
-                                    .setAndroidExecutionParams("market://details?id=com.yamigu.yamigu_app")
-                                    .setIosExecutionParams("https://itunes.apple.com/app/id1485834674")
-                                    .build()))
-                            .build();
-
-                    Map<String, String> serverCallbackArgs = new HashMap<String, String>();
-                    serverCallbackArgs.put("user_id", "${current_user_id}");
-                    serverCallbackArgs.put("product_id", "${shared_product_id}");
-
-                    KakaoLinkService.getInstance().sendDefault(getContext(), params, serverCallbackArgs, new ResponseCallback<KakaoLinkResponse>() {
-                        @Override
-                        public void onFailure(ErrorResult errorResult) {
-                            Logger.e(errorResult.toString());
-                        }
-
-                        @Override
-                        public void onSuccess(KakaoLinkResponse result) {
-                            Log.d("KaKaoLinkCallback", result.toString());
-                        }
-                    });
-                }
-            });
-            btn_chat_manager.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        PlusFriendService.getInstance().chat(getContext(), "_xjxamkT");
-                    } catch (KakaoException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
         }
+        btn_kakao_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FeedTemplate params = FeedTemplate
+                        .newBuilder(ContentObject.newBuilder("야미구 - 야! 미팅 하나만 구해줘",
+                                "http://106.10.39.154:9999/media/yamigu_kakao_share2.png",
+                                LinkObject.newBuilder().setWebUrl("https://www.yamigu.party")
+                                        .setMobileWebUrl("https://www.yamigu.party")
+                                        .setAndroidExecutionParams("market://details?id=com.yamigu.yamigu_app")
+                                        .setIosExecutionParams("https://itunes.apple.com/app/id1485834674").build())
+
+                                .setDescrption("초대코드: "+invite_code +"를 입력하고\n친구와 함께 야미구에서 미팅을 즐겨보세요!")
+                                .build())
+                        .addButton(new ButtonObject("야미구 시작하기", LinkObject.newBuilder()
+                                .setWebUrl("'https://www.yamigu.party")
+                                .setMobileWebUrl("'https://www.yamigu.party")
+                                .setAndroidExecutionParams("market://details?id=com.yamigu.yamigu_app")
+                                .setIosExecutionParams("https://itunes.apple.com/app/id1485834674")
+                                .build()))
+                        .build();
+
+                Map<String, String> serverCallbackArgs = new HashMap<String, String>();
+                serverCallbackArgs.put("user_id", "${current_user_id}");
+                serverCallbackArgs.put("product_id", "${shared_product_id}");
+
+                KakaoLinkService.getInstance().sendDefault(getContext(), params, serverCallbackArgs, new ResponseCallback<KakaoLinkResponse>() {
+                    @Override
+                    public void onFailure(ErrorResult errorResult) {
+                        Logger.e(errorResult.toString());
+                    }
+
+                    @Override
+                    public void onSuccess(KakaoLinkResponse result) {
+                        Log.d("KaKaoLinkCallback", result.toString());
+                    }
+                });
+            }
+        });
+        btn_chat_manager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    PlusFriendService.getInstance().chat(getContext(), "_xjxamkT");
+                } catch (KakaoException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
     @Override
     public void onPause() {
