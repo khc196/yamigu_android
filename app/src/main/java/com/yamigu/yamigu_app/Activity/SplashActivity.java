@@ -8,6 +8,7 @@ import android.app.Activity;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -16,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -30,6 +32,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,6 +54,7 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
+import com.yamigu.yamigu_app.CustomLayout.CustomDialog2;
 import com.yamigu.yamigu_app.Network.RequestHttpURLConnection;
 import com.yamigu.yamigu_app.R;
 
@@ -94,6 +98,7 @@ public class SplashActivity extends AppCompatActivity {
         editor = preferences.edit();
         isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
         userCertified = preferences.getInt("user_certified", 0);
+
         mAuth = FirebaseAuth.getInstance();
         mHandler = new Handler();
         mRunnable1 = new Runnable() {
@@ -168,8 +173,11 @@ public class SplashActivity extends AppCompatActivity {
         }
          */
 
-        mHandler.postDelayed(mRunnable1, 1000);
-        mHandler.postDelayed(mRunnable2, 1000);
+        String url = "http://106.10.39.154:9999/api/version_check/android/";
+        ContentValues values = new ContentValues();
+        NetworkTask4 networkTask4 = new NetworkTask4(url, values);
+        networkTask4.execute();
+
 
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
     }
@@ -475,6 +483,66 @@ public class SplashActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             mHandler.postDelayed(mRunnable4, 300);
+        }
+    }
+    public class NetworkTask4 extends AsyncTask<Void, Void, String> {
+
+        private String url;
+        private ContentValues values;
+        private RequestHttpURLConnection requestHttpURLConnection;
+        public NetworkTask4(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result; // 요청 결과를 저장할 변수.
+            requestHttpURLConnection = new RequestHttpURLConnection();
+            result = requestHttpURLConnection.request(getApplicationContext(), url, values, "GET", ""); // 해당 URL로 부터 결과물을 얻어온다.
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            super.onPostExecute(s);
+            JSONObject jsonObject;
+            try {
+                jsonObject = new JSONObject(s);
+                int latest_version_code = jsonObject.getInt("latest_version");
+                PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                int version_code = packageInfo.versionCode;
+                if(version_code != latest_version_code) {
+                    CustomDialog2 popupDialog = new CustomDialog2(SplashActivity.this);
+                    popupDialog.setCancelable(true);
+                    popupDialog.setCanceledOnTouchOutside(true);
+                    popupDialog.text = "최신버전으로 업데이트 후 사용해 주세요!";
+                    popupDialog.getWindow().setGravity(Gravity.CENTER);
+                    popupDialog.show();
+                    popupDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                            } catch (android.content.ActivityNotFoundException anfe) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                            }
+                            finish();
+                        }
+                    });
+                }
+                else {
+                    mHandler.postDelayed(mRunnable1, 1000);
+                    mHandler.postDelayed(mRunnable2, 1000);
+                }
+            } catch(PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            } catch(JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

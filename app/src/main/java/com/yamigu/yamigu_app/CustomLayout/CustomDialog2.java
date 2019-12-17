@@ -39,7 +39,6 @@ public class CustomDialog2 extends Dialog {
 
     public CustomDialog2(Context context) {
         super(context, R.style.ThemeDialogCustom);
-
     }
 }
 

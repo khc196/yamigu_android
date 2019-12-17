@@ -1080,6 +1080,8 @@ public class HomeFragment extends Fragment {
             ArrayList<String> date_list = new ArrayList<>();
             ((MainActivity)context).setMyMeetingCount(0);
                 for(int i = 0; i < myMeetingCardFrame.getActive_length(); i++) {
+                    myMeetingCardFrame.mmc_list[i].setOnClickListener(null);
+                    myMeetingCardFrame.mmc_c_list[i].setOnClickListener(null);
                     try {
                         final int meeting_id = jsonArray.getJSONObject(i).getInt("id");
                         int matching_id = 0;

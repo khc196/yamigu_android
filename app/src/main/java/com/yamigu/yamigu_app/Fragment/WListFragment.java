@@ -182,6 +182,7 @@ public class WListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        active_date_set = new HashSet<>();
         invisible_flag = true;
         if(!is_initialized) {
             is_initialized = true;
@@ -210,10 +211,10 @@ public class WListFragment extends Fragment {
             mLastRefreshTime = SystemClock.elapsedRealtime();
             String url = refresh_url;
             //MainActivity.dialog = ProgressDialog.show(getContext(), "", "로딩중입니다...", true);
-
-            ContentValues values = new ContentValues();
-            NetworkTask2 networkTask2 = new NetworkTask2(url, values);
-            networkTask2.execute();
+            activateDates(active_date_set);
+//            ContentValues values = new ContentValues();
+//            NetworkTask2 networkTask2 = new NetworkTask2(url, values);
+//            networkTask2.execute();
         }
     }
     @Override
