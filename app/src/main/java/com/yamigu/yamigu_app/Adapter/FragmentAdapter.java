@@ -32,6 +32,9 @@ public class FragmentAdapter extends FragmentPagerAdapter {
         fragments.add(fragment);
     }
     public void clear() {
+        for(int i = 0; i < fragments.size(); i++) {
+            fragments.remove(i);
+        }
         fragments.clear();
     }
 }

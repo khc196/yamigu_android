@@ -15,6 +15,8 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -81,6 +83,25 @@ public class NotificationActivity extends AppCompatActivity {
         refresh();
         //loadNotifications(notiChildEventListenerForNotification);
         ((GlobalApplication)getApplicationContext()).setCurrentActivity(this);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar_noti, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_noti:
+                for(Map.Entry<String, NotificationData> noti_data: GlobalApplication.notification_map.entrySet()) {
+                    NotificationData notificationData = noti_data.getValue();
+                    notificationData.isUnread = false;
+                    GlobalApplication.notiDB.child(noti_data.getKey()).setValue(notificationData);
+                }
+                GlobalApplication.unread_noti_count = 0;
+                finish();
+        }
+        return true;
     }
     @Override
     protected void onDestroy() {

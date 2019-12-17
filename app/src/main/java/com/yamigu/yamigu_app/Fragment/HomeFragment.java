@@ -242,10 +242,11 @@ public class HomeFragment extends Fragment {
         tabIndicator = view.findViewById(R.id.tab_indicator);
         tabIndicator.setupWithViewPager(pager);
 
-        String url5 = "http://106.10.39.154:9999/api/meetings/recommendation/";
-        ContentValues values5 = new ContentValues();
-        NetworkTask5 networkTask5 = new NetworkTask5(url5, values5);
-        networkTask5.execute();
+//        String url5 = "http://106.10.39.154:9999/api/meetings/recommendation/";
+//        ContentValues values5 = new ContentValues();
+//        NetworkTask5 networkTask5 = new NetworkTask5(url5, values5);
+//        networkTask5.execute();
+        //refresh();
         return view;
     }
     @Override
@@ -253,9 +254,7 @@ public class HomeFragment extends Fragment {
         super.onResume();
 //        ChildEventListener notiChildEventListenerForNotification = makeChildEventListenerForNotification();
 //        notiDB = loadNotifications(notiChildEventListenerForNotification);
-        if(MainActivity.pager.getCurrentItem() == 0) {
-            refresh();
-        }
+        refresh();
         //((MainActivity)getActivity()).refresh();
     }
     @Override
@@ -275,7 +274,7 @@ public class HomeFragment extends Fragment {
         this.context = context;
     }
     public void refresh() {
-        if(!isFirstLoading && MainActivity.pager.getCurrentItem() == 0 && SystemClock.elapsedRealtime() - mLastRefreshTime > 1000) {
+        if(MainActivity.pager.getCurrentItem() == 0 && SystemClock.elapsedRealtime() - mLastRefreshTime > 1000) {
             mLastRefreshTime = SystemClock.elapsedRealtime();
             ll_root_pane.setVisibility(View.INVISIBLE);
             myMeetingCardFrame = new MyMeetingCardFrame(view);
@@ -294,15 +293,14 @@ public class HomeFragment extends Fragment {
             ContentValues values = new ContentValues();
             NetworkTask networkTask = new NetworkTask(url, values);
             networkTask.execute();
-
+            String url5 = "http://106.10.39.154:9999/api/meetings/recommendation/";
+            ContentValues values5 = new ContentValues();
+            NetworkTask5 networkTask5 = new NetworkTask5(url5, values5);
+            networkTask5.execute();
             String url2 = "http://106.10.39.154:9999/api/user/info/";
             ContentValues values2 = new ContentValues();
             NetworkTask6 networkTask6 = new NetworkTask6(url2, values2);
             networkTask6.execute();
-
-            if (fragmentAdapter != null) {
-                fragmentAdapter.notifyDataSetChanged();
-            }
         }
     }
     @Override
@@ -1081,7 +1079,6 @@ public class HomeFragment extends Fragment {
             }
             ArrayList<String> date_list = new ArrayList<>();
             ((MainActivity)context).setMyMeetingCount(0);
-            if(!isFirstLoading) {
                 for(int i = 0; i < myMeetingCardFrame.getActive_length(); i++) {
                     try {
                         final int meeting_id = jsonArray.getJSONObject(i).getInt("id");
@@ -1250,10 +1247,6 @@ public class HomeFragment extends Fragment {
                                     super.onAnimationEnd(animation);
                                 }
                             });
-            }
-            else {
-                isFirstLoading = false;
-            }
         }
     }
     public class NetworkTask2 extends AsyncTask<Void, Void, String> {
@@ -1424,7 +1417,10 @@ public class HomeFragment extends Fragment {
                     fragmentAdapter.addItem(meetingCardFragment);
                 }
                 isFirstLoading = false;
-                refresh();
+                if (fragmentAdapter != null) {
+                    fragmentAdapter.notifyDataSetChanged();
+                }
+                //refresh();
             } catch(JSONException e) {
                 e.printStackTrace();
             }

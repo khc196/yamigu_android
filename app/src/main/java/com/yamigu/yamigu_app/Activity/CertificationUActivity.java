@@ -194,15 +194,21 @@ public class CertificationUActivity extends AppCompatActivity {
                             new String[]{
                                     Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                 }
-                if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(CertificationUActivity.this,
-                            new String[]{
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+                else {
+                    Intent intent = new Intent(ACTION_PICK);
+                    intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                    intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
                 }
-                Intent intent = new Intent(ACTION_PICK);
-                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+//                if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions(CertificationUActivity.this,
+//                            new String[]{
+//                                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+//                }
+//                Intent intent = new Intent(ACTION_PICK);
+//                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+//                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
             }
         });
 

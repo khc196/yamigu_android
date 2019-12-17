@@ -214,7 +214,7 @@ public class GlobalApplication extends Application {
                                     MainActivity.showDialog();
                                     GlobalApplication.userCertChange = false;
                                 }
-                                else if(homefragment != null) {
+                                if(homefragment != null) {
                                     homefragment.onResume();
                                     homefragment.refresh();
                                     //Log.d("UNREADCOUNT", unread_noti_count+"");
